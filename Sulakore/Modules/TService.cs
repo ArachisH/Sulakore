@@ -40,7 +40,7 @@ namespace Sulakore.Modules
         protected TService(TService parent)
             : this(null, parent)
         { }
-        protected internal TService(IModule container)
+        protected TService(IModule container)
             : this(container, null)
         { }
         private TService(IModule container, TService parent)

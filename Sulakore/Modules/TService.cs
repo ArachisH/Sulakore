@@ -34,14 +34,15 @@ namespace Sulakore.Modules
         public HGameData GameData => Installer.GameData;
         public IHConnection Connection => Installer.Connection;
 
+        public TService(IModule container)
+            : this(container, null)
+        { }
+
         protected TService()
             : this(null)
         { }
         protected TService(TService parent)
             : this(null, parent)
-        { }
-        protected TService(IModule container)
-            : this(container, null)
         { }
         private TService(IModule container, TService parent)
         {

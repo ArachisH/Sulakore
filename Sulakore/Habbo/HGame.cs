@@ -603,7 +603,7 @@ namespace Sulakore.Habbo
             assignDataMethod.ReturnTypeIndex = 2;
             int assignDataMethodIndex = abc.AddMethod(assignDataMethod);
 
-            var bitmapParam = new ASParameter(abc, assignDataMethod);
+            var bitmapParam = new ASParameter(abc.Pool, assignDataMethod);
             bitmapParam.TypeIndex = abc.Pool.GetMultinameIndex("BitmapData");
             assignDataMethod.Parameters.Add(bitmapParam);
 
@@ -725,7 +725,7 @@ namespace Sulakore.Habbo
             ASMethod dataSendMethod = bigCameraHandlerInstance.GetMethod(0, dataSendTraitName, "Boolean");
             if (dataSendMethod == null) return false;
 
-            var bitmapDataParam = new ASParameter(abc, dataSendMethod);
+            var bitmapDataParam = new ASParameter(abc.Pool, dataSendMethod);
             bitmapDataParam.TypeIndex = abc.Pool.GetMultinameIndex("BitmapData");
             dataSendMethod.Parameters.Add(bitmapDataParam);
 
@@ -954,7 +954,7 @@ namespace Sulakore.Habbo
                 if (getLocal1.Register != 4) continue;
 
                 if (visibleButtonsCode[i + 1].OP != OPCode.GetProperty) continue;
-                GetPropertyIns getProperty1 = (GetPropertyIns)visibleButtonsCode[i + 1];
+                var getProperty1 = (GetPropertyIns)visibleButtonsCode[i + 1];
 
                 if (getProperty1.PropertyName.Name != "name") continue;
                 var pushString1 = (PushStringIns)visibleButtonsCode[i + 2];
@@ -1189,7 +1189,7 @@ namespace Sulakore.Habbo
             addValueMethod.ReturnTypeIndex = 2; // void
             int addTypeMethodIndex = abc.AddMethod(addValueMethod);
 
-            var valueParam = new ASParameter(abc, addValueMethod);
+            var valueParam = new ASParameter(abc.Pool, addValueMethod);
             valueParam.NameIndex = abc.Pool.AddConstant("value");
             valueParam.TypeIndex = abc.Pool.GetMultinameIndex("Object");
             addValueMethod.Parameters.Add(valueParam);
@@ -1406,7 +1406,7 @@ namespace Sulakore.Habbo
             int sendMessageMethodIndex = abc.AddMethod(sendMessageMethod);
 
             // The parameters for the instructions to expect / use.
-            var idParam = new ASParameter(abc, sendMessageMethod);
+            var idParam = new ASParameter(abc.Pool, sendMessageMethod);
             idParam.NameIndex = abc.Pool.AddConstant("id");
             idParam.TypeIndex = abc.Pool.GetMultinameIndex("int");
             sendMessageMethod.Parameters.Add(idParam);

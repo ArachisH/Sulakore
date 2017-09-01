@@ -51,7 +51,10 @@ namespace Sulakore.Habbo.Messages
                         if (game.Messages.TryGetValue(hash, out List<MessageItem> messages) && messages.Count == 1)
                         {
                             id = messages[0].Id;
-                            _namesByHash.Add(hash, name);
+                            if (!_namesByHash.ContainsKey(hash))
+                            {
+                                _namesByHash.Add(hash, name);
+                            }
                         }
 
                         _ids[name] = id;

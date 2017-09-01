@@ -1882,6 +1882,24 @@ namespace Sulakore.Habbo
                 return (Hash = output.GenerateMD5Hash());
             }
         }
+        public int GetMatchDeviation(MessageItem message)
+        {
+            if (Class.QName.Name == message.Class.QName.Name) return 0;
+
+            int cClassRankTotal = 0;
+            foreach (MessageReference reference in References)
+            {
+                cClassRankTotal += reference.ClassRank;
+            }
+
+            int pClassRankTotal = 0;
+            foreach (MessageReference reference in message.References)
+            {
+                pClassRankTotal += reference.ClassRank;
+            }
+
+            return Math.Abs(cClassRankTotal - pClassRankTotal);
+        }
         public bool HasMethodReference(ASMethod method)
         {
             return References.Any(r => r.FromMethod == method);
@@ -1928,10 +1946,6 @@ namespace Sulakore.Habbo
                 }
             }
             return null;
-        }
-        private int GetDifference(int a, int b)
-        {
-            return Math.Abs(a - b);
         }
 
         #region Structure Extraction

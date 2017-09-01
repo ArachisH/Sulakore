@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 using Sulakore.Habbo;
 using Sulakore.Network;
+using Sulakore.Habbo.Messages;
 using Sulakore.Network.Protocol;
 
 namespace Sulakore.Modules
@@ -29,6 +30,9 @@ namespace Sulakore.Modules
             get => (_parent?.Installer ?? _installer);
             set => _installer = value;
         }
+
+        public Incoming In => Installer.In;
+        public Outgoing Out => Installer.Out;
 
         public HGame Game => Installer.Game;
         public HGameData GameData => Installer.GameData;
@@ -191,6 +195,9 @@ namespace Sulakore.Modules
             HNode IHConnection.Local => throw new NotSupportedException();
             HNode IHConnection.Remote => throw new NotSupportedException();
 
+            public Incoming In { get; }
+            public Outgoing Out { get; }
+
             public HGame Game { get; set; }
             public HGameData GameData { get; }
             public IHConnection Connection => this;
@@ -208,6 +215,8 @@ namespace Sulakore.Modules
                     [4] = HandleGameDataSynchronize
                 };
 
+                In = new Incoming();
+                Out = new Outgoing();
                 GameData = new HGameData();
                 Task handleInstallerDataTask = HandleInstallerDataAsync();
             }
@@ -258,6 +267,10 @@ namespace Sulakore.Modules
 
                 Game.Disassemble();
                 Game.GenerateMessageHashes();
+
+                string hashesPath = packet.ReadUTF8();
+                In.Load(Game, hashesPath);
+                Out.Load(Game, hashesPath);
 
                 _module.Synchronize(Game);
             }

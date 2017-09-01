@@ -1,62 +1,63 @@
-﻿using System.IO;
-using System.Linq;
-using System.Reflection;
+﻿using System;
+using System.IO;
 using System.Collections.Generic;
-
-using static Sulakore.NativeMethods;
 
 namespace Sulakore.Habbo.Messages
 {
     public abstract class Identifiers
     {
         private readonly string _section;
-        private readonly Dictionary<string, List<string>> _hashNames;
+        private readonly Dictionary<string, ushort> _ids;
+        private readonly Dictionary<string, string> _namesByHash;
 
         public Identifiers()
         {
             _section = GetType().Name;
-            _hashNames = new Dictionary<string, List<string>>();
+            _ids = new Dictionary<string, ushort>();
+            _namesByHash = new Dictionary<string, string>();
         }
 
-        public string[] GetHashName(string hash)
+        public ushort this[string name]
         {
-            if (_hashNames.TryGetValue(hash, out List<string> names))
-            {
-                return names.ToArray();
-            }
-            return new string[0];
+            get => _ids[name];
+            set => _ids[name] = value;
         }
 
-        public void LoadFromHashes(HGame game, string path)
+        public string GetName(string hash)
         {
-            path = Path.GetFullPath(path);
-            foreach (PropertyInfo property in GetType()
-                .GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly))
+            _namesByHash.TryGetValue(hash, out string name);
+            return name;
+        }
+        public void Load(HGame game, string path)
+        {
+            using (var input = new StreamReader(path))
             {
-                var output = new char[64];
-                GetPrivateProfileString(_section, property.Name, "-", output, output.Length, path);
-                if (output[0] == '-')
+                bool isInSection = false;
+                while (!input.EndOfStream)
                 {
-                    throw new KeyNotFoundException($"Failed to find key '{property.Name}' in '{path}'.");
+                    string line = input.ReadLine();
+                    if (line.StartsWith("[") && line.EndsWith("]"))
+                    {
+                        Console.WriteLine($"[{_section}]");
+                        isInSection = (line == ("[" + _section + "]"));
+                    }
+                    else if (isInSection)
+                    {
+                        string[] values = line.Split('=');
+                        string name = values[0].Trim();
+                        string hash = values[1].Trim();
+
+                        var id = ushort.MaxValue;
+                        if (game.Messages.TryGetValue(hash, out List<MessageItem> messages) && messages.Count == 1)
+                        {
+                            id = messages[0].Id;
+                            _namesByHash.Add(hash, name);
+                        }
+
+                        _ids[name] = id;
+                        GetType().GetProperty(name)?.SetValue(this, id);
+                    }
                 }
-
-                var hash = new string(output).TrimEnd('\0');
-
-                var id = ushort.MaxValue;
-                if (game.Messages.TryGetValue(hash, out List<MessageItem> messages) && messages.Count == 1)
-                {
-                    id = messages.First().Id;
-                }
-
-                List<string> names = null;
-                if (!_hashNames.TryGetValue(hash, out names))
-                {
-                    names = new List<string>();
-                    _hashNames.Add(hash, names);
-                }
-                names.Add(property.Name);
-
-                property.SetValue(this, id);
             }
         }
     }

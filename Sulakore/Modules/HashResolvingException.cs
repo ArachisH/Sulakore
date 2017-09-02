@@ -12,7 +12,7 @@ namespace Sulakore.Modules
         public HashResolvingException(string revision, IDictionary<string, IList<string>> unresolved)
             : base($"Failed to resolve '{unresolved.Count}' hash value(s) from revision '{revision}'.")
         {
-            Unresolved = Unresolved
+            Unresolved = unresolved
                 .ToDictionary(u => u.Key, u => u.Value.ToArray());
         }
     }

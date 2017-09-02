@@ -1263,14 +1263,14 @@ namespace Sulakore.Habbo
             return (modifyCount == 2);
         }
 
-        public IEnumerable<ushort> GetMessageIds(string hash)
+        public ushort[] GetMessageIds(string hash)
         {
             List<MessageItem> messages = null;
             if (Messages.TryGetValue(hash, out messages))
             {
-                return messages.Select(m => m.Id);
+                return messages.Select(m => m.Id).ToArray();
             }
-            return Enumerable.Empty<ushort>();
+            return null;
         }
 
         private void LoadMessages()

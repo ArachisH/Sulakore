@@ -100,21 +100,49 @@ namespace Sulakore.Modules
 
         public virtual void Synchronize(HGame game)
         {
+            var unresolved = new Dictionary<string, IList<string>>();
             foreach (PropertyInfo property in _container.GetType().GetAllProperties())
             {
                 var messageIdAtt = property.GetCustomAttribute<MessageIdAttribute>();
                 if (string.IsNullOrWhiteSpace(messageIdAtt?.Hash)) continue;
 
-                ushort id = game.GetMessageIds(messageIdAtt.Hash).First();
-                property.SetValue(_container, id);
+                ushort[] ids = game.GetMessageIds(messageIdAtt.Hash);
+                if (ids != null)
+                {
+                    property.SetValue(_container, ids[0]);
+                }
+                else
+                {
+                    if (!unresolved.TryGetValue(messageIdAtt.Hash, out IList<string> users))
+                    {
+                        users = new List<string>();
+                        unresolved.Add(messageIdAtt.Hash, users);
+                    }
+                    users.Add("Property: " + property.Name);
+                }
             }
-
             foreach (DataCaptureAttribute dataCaptureAtt in _unknownDataAttributes)
             {
                 if (string.IsNullOrWhiteSpace(dataCaptureAtt.Hash)) continue;
 
-                ushort id = game.GetMessageIds(dataCaptureAtt.Hash).First();
-                AddCallback(dataCaptureAtt, id);
+                ushort[] ids = game.GetMessageIds(dataCaptureAtt.Hash);
+                if (ids != null)
+                {
+                    AddCallback(dataCaptureAtt, ids[0]);
+                }
+                else
+                {
+                    if (!unresolved.TryGetValue(dataCaptureAtt.Hash, out IList<string> users))
+                    {
+                        users = new List<string>();
+                        unresolved.Add(dataCaptureAtt.Hash, users);
+                    }
+                    users.Add(dataCaptureAtt.GetType().Name + ": " + dataCaptureAtt.Method.Name);
+                }
+            }
+            if (unresolved.Count > 0)
+            {
+                throw new HashResolvingException(game.Revision, unresolved);
             }
         }
         public virtual void Synchronize(HGameData gameData)

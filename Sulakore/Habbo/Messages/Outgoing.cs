@@ -101,6 +101,7 @@
         public ushort JukeBoxRequestPlayList { get; set; }
         public ushort JukeBoxRequestTrackCode { get; set; }
         public ushort JukeBoxRequestTrackData { get; set; }
+        public ushort LatencyTest { get; set; }
         public ushort MachineID { get; set; }
         public ushort MannequinSaveLook { get; set; }
         public ushort MannequinSaveName { get; set; }
@@ -138,7 +139,7 @@
         public ushort PetPickup { get; set; }
         public ushort PetPlace { get; set; }
         public ushort PickNewUserGift { get; set; }
-        public ushort Ping { get; set; }
+        public ushort Pong { get; set; }
         public ushort PostItDelete { get; set; }
         public ushort PostItPlace { get; set; }
         public ushort PostItRequestData { get; set; }

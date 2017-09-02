@@ -172,6 +172,7 @@
         public ushort JukeBoxPlaylistFull { get; set; }
         public ushort JukeBoxTrackCode { get; set; }
         public ushort JukeBoxTrackData { get; set; }
+        public ushort LatencyResponse { get; set; }
         public ushort LeprechaunStarterBundle { get; set; }
         public ushort LoadFriendRequests { get; set; }
         public ushort LoveLockFurniFinished { get; set; }
@@ -252,9 +253,9 @@
         public ushort PetStatusUpdate { get; set; }
         public ushort PetTrainingPanel { get; set; }
         public ushort PickMonthlyClubGiftNotification { get; set; }
+        public ushort Ping { get; set; }
         public ushort PollQuestions { get; set; }
         public ushort PollStart { get; set; }
-        public ushort Pong { get; set; }
         public ushort PostItData { get; set; }
         public ushort PostItStickyPoleOpen { get; set; }
         public ushort PresentItemOpened { get; set; }
@@ -346,7 +347,6 @@
         public ushort SimplePollAnswer { get; set; }
         public ushort SimplePollAnswers { get; set; }
         public ushort SimplePollStart { get; set; }
-        public ushort SomeConnection { get; set; }
         public ushort StaffAlertAndOpenHabboWay { get; set; }
         public ushort StaffAlertWIthLinkAndOpenHabboWay { get; set; }
         public ushort StaffAlertWithLink { get; set; }

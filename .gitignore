@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 /Sulakore.Sandbox/Properties/launchSettings.json
+/Sulakore.Sandbox

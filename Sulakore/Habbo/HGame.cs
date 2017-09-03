@@ -1525,7 +1525,7 @@ namespace Sulakore.Habbo
             if (connectMethod == null) return false;
 
             ASCode connectCode = connectMethod.Body.ParseCode();
-            int insertIndex = connectCode.IndexOf(OPCode.DebugLine);
+            int insertIndex = connectCode.IndexOf(OPCode.PushByte);
 
             if (host == null)
             {

@@ -1882,6 +1882,11 @@ namespace Sulakore.Habbo
                 return (Hash = output.GenerateMD5Hash());
             }
         }
+        public bool HasMethodReference(ASMethod method)
+        {
+            return References.Any(r => r.FromMethod == method);
+        }
+
         public int GetMatchDeviation(MessageItem message)
         {
             if (Class.QName.Name == message.Class.QName.Name) return 0;
@@ -1900,9 +1905,22 @@ namespace Sulakore.Habbo
 
             return Math.Abs(cClassRankTotal - pClassRankTotal);
         }
-        public bool HasMethodReference(ASMethod method)
+        public MessageItem GetClosestMatch(IEnumerable<MessageItem> messages)
         {
-            return References.Any(r => r.FromMethod == method);
+            MessageItem closestMatch = null;
+            int lowestDeviation = int.MaxValue;
+            foreach (MessageItem message in messages)
+            {
+                int deviation = GetMatchDeviation(message);
+                if (deviation == 0) return message;
+
+                if (deviation < lowestDeviation)
+                {
+                    closestMatch = message;
+                    lowestDeviation = deviation;
+                }
+            }
+            return closestMatch;
         }
 
         private ASClass GetMessageParser()

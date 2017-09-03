@@ -1525,9 +1525,11 @@ namespace Sulakore.Habbo
             if (connectMethod == null) return false;
 
             ASCode connectCode = connectMethod.Body.ParseCode();
+            int insertIndex = connectCode.IndexOf(OPCode.DebugLine);
+
             if (host == null)
             {
-                connectCode.InsertRange(4, new ASInstruction[]
+                connectCode.InsertRange(insertIndex, new ASInstruction[]
                 {
                     // this.infoHost = getProperty("connection.info.host");
                     new GetLocal0Ins(),
@@ -1539,7 +1541,7 @@ namespace Sulakore.Habbo
             }
             else
             {
-                connectCode.InsertRange(4, new ASInstruction[]
+                connectCode.InsertRange(insertIndex, new ASInstruction[]
                 {
                     // this.infoHost = {host};
                     new GetLocal0Ins(),
@@ -1561,6 +1563,7 @@ namespace Sulakore.Habbo
                 var pushIntIns = (PushIntIns)instruction;
                 pushIntIns.ValueIndex = magicInverseIndex;
             }
+            connectMethod.Body.MaxStack += 4;
             connectMethod.Body.Code = connectCode.ToArray();
             return true;
         }

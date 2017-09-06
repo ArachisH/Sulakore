@@ -90,6 +90,7 @@
         public ushort GameCenterFeaturedPlayers { get; set; }
         public ushort GameCenterGame { get; set; }
         public ushort GameCenterGameList { get; set; }
+        public ushort GenerateSecretKey { get; set; }
         public ushort GenericAlert { get; set; }
         public ushort GenericErrorMessages { get; set; }
         public ushort GiftConfiguration { get; set; }
@@ -391,6 +392,7 @@
         public ushort VerifyMobilePhoneCodeWindow { get; set; }
         public ushort VerifyMobilePhoneDone { get; set; }
         public ushort VerifyMobilePhoneWindow { get; set; }
+        public ushort VerifyPrimes { get; set; }
         public ushort VipTutorialsStart { get; set; }
         public ushort WallItemUpdate { get; set; }
         public ushort WatchAndEarnReward { get; set; }

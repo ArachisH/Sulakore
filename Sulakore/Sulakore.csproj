@@ -4,10 +4,22 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Submodules\Flazzy\Flazzy\Flazzy.csproj">
-      <HintPath>$(SolutionDir)\Submodules\Flazzy\Flazzy\Flazzy.csproj</HintPath>
-    </ProjectReference>
-  </ItemGroup>
+  <PropertyGroup>
+    <FirstFlazzy>..\Submodules\Flazzy\Flazzy\Flazzy.csproj</FirstFlazzy>
+    <SecondFlazzy>..\..\..\Submodules\Flazzy\Flazzy\Flazzy.csproj</SecondFlazzy>
+  </PropertyGroup>
+
+  <Choose>
+    <When Condition="Exists($(FirstFlazzy))">
+      <ItemGroup>
+        <ProjectReference Include="$(FirstFlazzy)" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <ProjectReference Include="$(SecondFlazzy)" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
 
 </Project>

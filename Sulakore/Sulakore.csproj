@@ -5,7 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)\Submodules\Flazzy\Flazzy\Flazzy.csproj"/>
+    <ProjectReference Include="..\Submodules\Flazzy\Flazzy\Flazzy.csproj">
+      <HintPath>$(SolutionDir)\Submodules\Flazzy\Flazzy\Flazzy.csproj</HintPath>
+    </ProjectReference>
   </ItemGroup>
 
 </Project>

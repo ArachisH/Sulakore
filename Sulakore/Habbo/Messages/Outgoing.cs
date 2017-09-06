@@ -28,6 +28,7 @@
         public ushort ChangeNameCheckUsername { get; set; }
         public ushort ChangeRelation { get; set; }
         public ushort CheckPetName { get; set; }
+        public ushort ClientVariables { get; set; }
         public ushort CloseDice { get; set; }
         public ushort CompostMonsterplant { get; set; }
         public ushort ConfirmChangeName { get; set; }
@@ -92,6 +93,7 @@
         public ushort HotelViewRequestBonusRare { get; set; }
         public ushort HotelViewRequestCommunityGoal { get; set; }
         public ushort HotelViewRequestConcurrentUsers { get; set; }
+        public ushort InitCrypto { get; set; }
         public ushort IgnoreRoomUser { get; set; }
         public ushort InviteFriends { get; set; }
         public ushort JukeBoxAddSoundTrack { get; set; }
@@ -282,10 +284,10 @@
         public ushort SearchRoomsVisited { get; set; }
         public ushort SearchRoomsWithRights { get; set; }
         public ushort SearchUser { get; set; }
-        public ushort SecureLogin { get; set; }
         public ushort SellItem { get; set; }
         public ushort SetHomeRoom { get; set; }
         public ushort SetStackHelperHeight { get; set; }
+        public ushort SSOTicket { get; set; }
         public ushort StalkFriend { get; set; }
         public ushort TakeBackItem { get; set; }
         public ushort TestInventory { get; set; }

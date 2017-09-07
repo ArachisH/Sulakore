@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Collections.Generic;
 
 namespace Sulakore.Habbo.Messages
@@ -38,7 +37,6 @@ namespace Sulakore.Habbo.Messages
                     string line = input.ReadLine();
                     if (line.StartsWith("[") && line.EndsWith("]"))
                     {
-                        Console.WriteLine($"[{_section}]");
                         isInSection = (line == ("[" + _section + "]"));
                     }
                     else if (isInSection)

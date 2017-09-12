@@ -27,6 +27,22 @@ namespace Sulakore.Habbo.Messages
             _namesByHash.TryGetValue(hash, out string name);
             return name;
         }
+
+        public void Save(string path)
+        {
+            using (var output = new StreamWriter(path))
+            {
+                Save(output);
+            }
+        }
+        public void Save(StreamWriter output)
+        {
+            output.WriteLine($"[{_section}]");
+            foreach (string name in _ids.Keys)
+            {
+                output.WriteLine($"{name}={_ids[name]}");
+            }
+        }
         public void Load(HGame game, string path)
         {
             using (var input = new StreamReader(path))

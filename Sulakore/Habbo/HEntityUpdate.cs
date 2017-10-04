@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Collections.Generic;
 
 using Sulakore.Network.Protocol;
 
@@ -80,13 +79,14 @@ namespace Sulakore.Habbo
             }
         }
 
-        public static IEnumerable<HEntityUpdate> Parse(HPacket packet)
+        public static HEntityUpdate[] Parse(HPacket packet)
         {
-            int entityActionCount = packet.ReadInt32();
-            for (int i = 0; i < entityActionCount; i++)
+            var updates = new HEntityUpdate[packet.ReadInt32()];
+            for (int i = 0; i < updates.Length; i++)
             {
-                yield return new HEntityUpdate(packet);
+                updates[i] = new HEntityUpdate(packet);
             }
+            return updates;
         }
     }
 }

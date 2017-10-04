@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Protocol;
 
 namespace Sulakore.Habbo
 {
@@ -42,15 +40,17 @@ namespace Sulakore.Habbo
             }
         }
 
-        public static IEnumerable<HItem> Parse(HPacket packet)
+        public static HItem[] Parse(HPacket packet)
         {
-            packet.ReadInt32();
-            packet.ReadInt32();
-            int itemCount = packet.ReadInt32();
-            for (int i = 0; i < itemCount; i++)
+            int loc1 = packet.ReadInt32();
+            int loc2 = packet.ReadInt32();
+
+            var items = new HItem[packet.ReadInt32()];
+            for (int i = 0; i < items.Length; i++)
             {
-                yield return new HItem(packet);
+                items[i] = new HItem(packet);
             }
+            return items;
         }
     }
 }

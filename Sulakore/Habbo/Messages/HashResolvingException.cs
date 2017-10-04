@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Sulakore.Modules
+namespace Sulakore.Habbo.Messages
 {
     public sealed class HashResolvingException : Exception
     {

@@ -50,7 +50,7 @@ namespace Sulakore.Habbo
             Facing = furni.Facing;
         }
 
-        public static IEnumerable<HFurniture> Parse(HPacket packet)
+        public static HFurniture[] Parse(HPacket packet)
         {
             int ownersCount = packet.ReadInt32();
             var owners = new Dictionary<int, string>(ownersCount);
@@ -59,14 +59,15 @@ namespace Sulakore.Habbo
                 owners.Add(packet.ReadInt32(), packet.ReadUTF8());
             }
 
-            int furniCount = packet.ReadInt32();
-            for (int i = 0; i < furniCount; i++)
+            var furniture = new HFurniture[packet.ReadInt32()];
+            for (int i = 0; i < furniture.Length; i++)
             {
                 var furni = new HFurniture(packet);
                 furni.OwnerName = owners[furni.OwnerId];
 
-                yield return furni;
+                furniture[i] = furni;
             }
+            return furniture;
         }
     }
 }

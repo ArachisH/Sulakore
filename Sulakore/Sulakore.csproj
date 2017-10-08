@@ -2,21 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+
     <GlobalFlazzyProject>..\..\Flazzy\Flazzy\Flazzy.csproj</GlobalFlazzyProject>
-    <LocalFlazzySubmodule>$(SolutionDir)Submodules\Flazzy\Flazzy\Flazzy.csproj</LocalFlazzySubmodule>
+    <LocalFlazzyProject>$(SolutionDir)Submodules\Flazzy\Flazzy\Flazzy.csproj</LocalFlazzyProject>
   </PropertyGroup>
 
-  <Choose>
-    <When Condition="Exists($(LocalFlazzySubmodule))">
-      <ItemGroup>
-        <ProjectReference Condition="Exists($(LocalFlazzySubmodule))" Include="$(LocalFlazzySubmodule)" />
-      </ItemGroup>
-    </When>
-    <Otherwise>
-      <ItemGroup>
-        <ProjectReference Condition="Exists($(GlobalFlazzyProject))" Include="$(GlobalFlazzyProject)" />
-      </ItemGroup>
-    </Otherwise>
-  </Choose>
+  <ItemGroup>
+    <ProjectReference Condition="Exists($(LocalFlazzyProject))" Include="$(LocalFlazzyProject)" />
+    <ProjectReference Condition="!Exists($(LocalFlazzyProject)) And Exists($(GlobalFlazzyProject))" Include="$(GlobalFlazzyProject)" />
+  </ItemGroup>
 
 </Project>

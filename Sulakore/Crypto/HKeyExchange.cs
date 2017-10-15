@@ -8,8 +8,9 @@ namespace Sulakore.Crypto
 {
     public class HKeyExchange : IDisposable
     {
-        private readonly int _blockSize;
         private readonly Random _numberGenerator;
+
+        private const int BLOCK_SIZE = 128;
 
         public BigInteger Modulus { get; }
         public BigInteger Exponent { get; }
@@ -21,7 +22,7 @@ namespace Sulakore.Crypto
 
         public BigInteger DHPrime { get; private set; }
         public BigInteger DHGenerator { get; private set; }
-        
+
         public bool CanDecrypt => (PrivateExponent != BigInteger.Zero);
         public PKCSPadding Padding { get; set; } = PKCSPadding.MaxByte;
 
@@ -41,9 +42,6 @@ namespace Sulakore.Crypto
 
             GenerateDHPrimes(256);
             GenerateDHKeys(DHPrime, DHGenerator);
-
-            _blockSize = (RSA.KeySize -
-                RSA.LegalKeySizes[0].SkipSize) / 8;
         }
         public HKeyExchange(int exponent, string modulus)
             : this(exponent, modulus, string.Empty)
@@ -73,9 +71,6 @@ namespace Sulakore.Crypto
 
             RSA = new RSACryptoServiceProvider();
             RSA.ImportParameters(keys);
-
-            _blockSize = (RSA.KeySize -
-                RSA.LegalKeySizes[0].SkipSize) / 8;
         }
 
         public virtual string GetSignedP()
@@ -141,7 +136,7 @@ namespace Sulakore.Crypto
 
         protected virtual byte[] PKCSPad(byte[] data)
         {
-            var buffer = new byte[_blockSize - 1];
+            var buffer = new byte[BLOCK_SIZE - 1];
             int dataStartPos = (buffer.Length - data.Length);
 
             buffer[0] = (byte)Padding;

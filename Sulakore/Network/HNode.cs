@@ -54,7 +54,7 @@ namespace Sulakore.Network
 
         private async Task<bool> ConnectAsync()
         {
-            bool connected = false;
+            bool connected = true;
             try
             {
                 IPEndPoint endPoint = (SOCKS5EndPoint ?? EndPoint);

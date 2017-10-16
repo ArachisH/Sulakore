@@ -149,7 +149,7 @@ namespace Sulakore.Network.Protocol
         {
             switch (name)
             {
-                case "EVWIRE": return EvaWire;
+                case "EVAWIRE": return EvaWire;
                 case "WEDGIE-IN": return WedgieIn;
                 case "WEDGIE-OUT": return WedgieOut;
 

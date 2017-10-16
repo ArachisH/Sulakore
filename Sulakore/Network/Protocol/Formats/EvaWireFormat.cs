@@ -8,7 +8,7 @@ namespace Sulakore.Network.Protocol
     public class EvaWireFormat : HFormat
     {
         public override int IdPosition => 4;
-        public override string Name => "EVWIRE";
+        public override string Name => "EVAWIRE";
 
         public EvaWireFormat()
             : base(false)
@@ -127,7 +127,7 @@ namespace Sulakore.Network.Protocol
         public override async Task<HPacket> ReceivePacketAsync(HNode node)
         {
             byte[] lengthBlock = await node.ReceiveAsync(4).ConfigureAwait(false);
-            if (lengthBlock.Length != 4)
+            if (lengthBlock?.Length != 4)
             {
                 node.Disconnect();
                 return null;
@@ -141,7 +141,7 @@ namespace Sulakore.Network.Protocol
                 int bytesLeft = (body.Length - totalBytesRead);
                 int bytesRead = await node.ReceiveAsync(body, totalBytesRead, bytesLeft).ConfigureAwait(false);
 
-                if (!node.IsConnected || (bytesRead == 0 && ++nullBytesReadCount >= 2))
+                if (!node.IsConnected || (bytesRead <= 0 && ++nullBytesReadCount >= 2))
                 {
                     node.Disconnect();
                     return null;

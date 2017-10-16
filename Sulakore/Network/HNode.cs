@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Text;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -13,15 +14,16 @@ namespace Sulakore.Network
     {
         private static readonly Dictionary<int, TcpListener> _listeners;
 
-        public bool IsConnected
-        {
-            get { return Client.Connected; }
-        }
+        public bool IsConnected => Client.Connected;
 
         public Socket Client { get; }
         public HFormat InFormat { get; set; }
         public HFormat OutFormat { get; set; }
         public HotelEndPoint EndPoint { get; private set; }
+
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public IPEndPoint SOCKS5EndPoint { get; set; }
 
         public RC4 Encrypter { get; set; }
         public bool IsEncrypting { get; set; }
@@ -42,30 +44,119 @@ namespace Sulakore.Network
             {
                 throw new ArgumentNullException(nameof(client));
             }
+
+            InFormat = HFormat.EvaWire;
+            OutFormat = HFormat.EvaWire;
+
             Client = client;
             Client.NoDelay = true;
         }
 
-        public Task ConnectAsync(string host, int port)
+        private async Task<bool> ConnectAsync()
         {
-            return ConnectAsync(HotelEndPoint.Parse(host, port));
+            bool connected = false;
+            try
+            {
+                IPEndPoint endPoint = (SOCKS5EndPoint ?? EndPoint);
+                IAsyncResult result = Client.BeginConnect(endPoint, null, null);
+                await Task.Factory.FromAsync(result, Client.EndConnect).ConfigureAwait(false);
+
+                if (!Client.Connected) return (connected = false);
+                if (SOCKS5EndPoint != null)
+                {
+                    await SendAsync(new byte[]
+                    {
+                        0x05, // Version 5
+                        0x02, // 2 Authentication Methods Present
+                        0x00, // No Authentication
+                        0x02  // Username + Password
+                    }).ConfigureAwait(false);
+
+                    byte[] response = await ReceiveAsync(2).ConfigureAwait(false);
+                    if (response?.Length != 2 || response[1] == 0xFF) return (connected = false);
+
+                    int index = 0;
+                    byte[] payload = null;
+                    if (response[1] == 0x02) // Username + Password Required
+                    {
+                        index = 0;
+                        payload = new byte[byte.MaxValue];
+
+                        payload[index++] = 0x05; // Version 5
+
+                        // Username
+                        payload[index++] = (byte)Username.Length;
+                        byte[] usernameData = Encoding.Default.GetBytes(Username);
+                        Buffer.BlockCopy(usernameData, 0, payload, index, usernameData.Length);
+                        index += usernameData.Length;
+
+                        // Password
+                        payload[index++] = (byte)Password.Length;
+                        byte[] passwordData = Encoding.Default.GetBytes(Password);
+                        Buffer.BlockCopy(passwordData, 0, payload, index, passwordData.Length);
+                        index += passwordData.Length;
+
+                        await SendAsync(payload, index - 1).ConfigureAwait(false);
+                        response = await ReceiveAsync(2).ConfigureAwait(false);
+                        if (response?.Length != 2 || response[1] != 0x00) return (connected = false);
+                    }
+
+                    index = 0;
+                    payload = new byte[255];
+                    payload[index++] = 0x05;
+                    payload[index++] = 0x01;
+                    payload[index++] = 0x00;
+
+                    payload[index++] = (byte)(EndPoint.AddressFamily ==
+                        AddressFamily.InterNetwork ? 0x01 : 0x04);
+
+                    // Destination Address
+                    byte[] addressBytes = EndPoint.Address.GetAddressBytes();
+                    Buffer.BlockCopy(addressBytes, 0, payload, index, addressBytes.Length);
+                    index += (ushort)addressBytes.Length;
+
+                    byte[] portData = BitConverter.GetBytes(EndPoint.Port);
+                    if (BitConverter.IsLittleEndian)
+                    {
+                        // Big-Endian Byte Order
+                        Array.Reverse(portData);
+                    }
+                    Buffer.BlockCopy(portData, 0, payload, index, portData.Length);
+                    index += portData.Length;
+
+                    await SendAsync(payload, index - 1);
+                    response = await ReceiveAsync(byte.MaxValue);
+                    if (response?.Length != 2 || response[1] != 0x00) return (connected = false);
+                }
+            }
+            catch { return (connected = false); }
+            finally
+            {
+                if (!connected)
+                {
+                    Disconnect();
+                }
+            }
+            return IsConnected;
         }
-        public async Task ConnectAsync(IPEndPoint endpoint)
+        public Task<bool> ConnectAsync(IPEndPoint endpoint)
         {
             EndPoint = (endpoint as HotelEndPoint);
             if (EndPoint == null)
             {
                 EndPoint = new HotelEndPoint(endpoint);
             }
-
-            IAsyncResult result = Client.BeginConnect(endpoint, null, null);
-            await Task.Factory.FromAsync(result, Client.EndConnect).ConfigureAwait(false);
+            return ConnectAsync();
         }
-        public Task ConnectAsync(IPAddress address, int port)
+        public Task<bool> ConnectAsync(string host, int port)
+        {
+            return ConnectAsync(HotelEndPoint.Parse(host, port));
+        }
+        public Task<bool> ConnectAsync(IPAddress address, int port)
         {
             return ConnectAsync(new HotelEndPoint(address, port));
         }
-        public Task ConnectAsync(IPAddress[] addresses, int port)
+        public Task<bool> ConnectAsync(IPAddress[] addresses, int port)
         {
             return ConnectAsync(new HotelEndPoint(addresses[0], port));
         }
@@ -150,6 +241,7 @@ namespace Sulakore.Network
         {
             var buffer = new byte[size];
             int read = await ReceiveAsync(buffer, 0, size, socketFlags).ConfigureAwait(false);
+            if (read == -1) return null;
 
             var trimmedBuffer = new byte[read];
             Buffer.BlockCopy(buffer, 0, trimmedBuffer, 0, read);
@@ -158,28 +250,37 @@ namespace Sulakore.Network
         }
         protected async Task<int> SendAsync(byte[] buffer, int offset, int size, SocketFlags socketFlags)
         {
-            if (!IsConnected)
-            {
-                return 0;
-            }
-
+            if (!IsConnected) return -1;
             if (IsEncrypting && Encrypter != null)
             {
                 buffer = Encrypter.Parse(buffer);
             }
 
-            IAsyncResult result = Client.BeginSend(buffer, offset, size, socketFlags, null, null);
-            return await Task.Factory.FromAsync(result, Client.EndSend).ConfigureAwait(false);
+            int sent = -1;
+            try
+            {
+                IAsyncResult result = Client.BeginSend(buffer, offset, size, socketFlags, null, null);
+                sent = await Task.Factory.FromAsync(result, Client.EndSend).ConfigureAwait(false);
+            }
+            catch { sent = -1; }
+            return sent;
         }
         protected async Task<int> ReceiveAsync(byte[] buffer, int offset, int size, SocketFlags socketFlags)
         {
-            if (!IsConnected)
+            if (!IsConnected) return -1;
+            if (buffer == null)
             {
-                return 0;
+                throw new NullReferenceException("Buffer cannot be null.");
             }
+            else if (buffer.Length == 0 || size == 0) return 0;
 
-            IAsyncResult result = Client.BeginReceive(buffer, offset, size, socketFlags, null, null);
-            int read = await Task.Factory.FromAsync(result, Client.EndReceive).ConfigureAwait(false);
+            int read = -1;
+            try
+            {
+                IAsyncResult result = Client.BeginReceive(buffer, offset, size, socketFlags, null, null);
+                read = await Task.Factory.FromAsync(result, Client.EndReceive).ConfigureAwait(false);
+            }
+            catch { read = -1; }
 
             if (read > 0 && IsDecrypting && Decrypter != null)
             {
@@ -199,7 +300,7 @@ namespace Sulakore.Network
                     Client.Shutdown(SocketShutdown.Both);
                     Client.Disconnect(false);
                 }
-                catch (SocketException) { }
+                catch { }
             }
         }
 
@@ -213,8 +314,12 @@ namespace Sulakore.Network
             {
                 if (IsConnected)
                 {
-                    Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
-                    Client.Shutdown(SocketShutdown.Both);
+                    try
+                    {
+                        Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
+                        Client.Shutdown(SocketShutdown.Both);
+                    }
+                    catch { }
                 }
                 Client.Close();
             }

@@ -183,7 +183,7 @@ namespace Sulakore.Network.Protocol
             if (IsOutgoing)
             {
                 byte[] lengthBlock = await node.ReceiveAsync(3).ConfigureAwait(false);
-                if (lengthBlock.Length != 3)
+                if (lengthBlock?.Length != 3)
                 {
                     node.Disconnect();
                     return null;
@@ -197,7 +197,7 @@ namespace Sulakore.Network.Protocol
                     int bytesLeft = (body.Length - totalBytesRead);
                     int bytesRead = await node.ReceiveAsync(body, totalBytesRead, bytesLeft).ConfigureAwait(false);
 
-                    if (!node.IsConnected || (bytesRead == 0 && ++nullBytesReadCount >= 2))
+                    if (!node.IsConnected || (bytesRead <= 0 && ++nullBytesReadCount >= 2))
                     {
                         node.Disconnect();
                         return null;
@@ -226,7 +226,7 @@ namespace Sulakore.Network.Protocol
                 if (data == null)
                 {
                     byte[] idBlock = await node.PeekAsync(2).ConfigureAwait(false);
-                    if (idBlock.Length != 2)
+                    if (idBlock?.Length != 2)
                     {
                         node.Disconnect();
                         return null;
@@ -235,7 +235,7 @@ namespace Sulakore.Network.Protocol
                     do
                     {
                         byte[] block = await node.ReceiveAsync(256).ConfigureAwait(false);
-                        if (!node.IsConnected || (block.Length == 0 && ++nullBytesReadCount >= 2))
+                        if (!node.IsConnected || (block.Length <= 0 && ++nullBytesReadCount >= 2))
                         {
                             node.Disconnect();
                             return null;

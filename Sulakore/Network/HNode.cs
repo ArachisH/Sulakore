@@ -45,6 +45,11 @@ namespace Sulakore.Network
                 throw new ArgumentNullException(nameof(client));
             }
 
+            if (client.RemoteEndPoint != null)
+            {
+                EndPoint = new HotelEndPoint((IPEndPoint)client.RemoteEndPoint);
+            }
+
             InFormat = HFormat.EvaWire;
             OutFormat = HFormat.EvaWire;
 
@@ -124,9 +129,9 @@ namespace Sulakore.Network
                     Buffer.BlockCopy(portData, 0, payload, index, portData.Length);
                     index += portData.Length;
 
-                    await SendAsync(payload, index - 1);
+                    await SendAsync(payload, index);
                     response = await ReceiveAsync(byte.MaxValue);
-                    if (response?.Length != 2 || response[1] != 0x00) return (connected = false);
+                    if (response?.Length < 2 || response[1] != 0x00) return (connected = false);
                 }
             }
             catch { return (connected = false); }

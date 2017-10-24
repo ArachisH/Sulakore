@@ -5,7 +5,7 @@ using Sulakore.Network.Protocol;
 
 namespace Sulakore.Habbo
 {
-    public class HEntityUpdate
+    public class HEntityUpdate : HData
     {
         public int Index { get; set; }
         public bool IsController { get; set; }

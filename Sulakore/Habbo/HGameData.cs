@@ -17,7 +17,7 @@ namespace Sulakore.Habbo
         private string _source;
         public string Source
         {
-            get { return _source; }
+            get => _source;
             set
             {
                 _source = value;

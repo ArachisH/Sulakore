@@ -11,17 +11,13 @@ namespace Sulakore.Habbo
 
         public string this[int y]
         {
-            get { return _rows[y]; }
-            set { _rows[y] = value.Substring(0, _rows[y].Length); }
+            get => _rows[y];
+            set => _rows[y] = value.Substring(0, _rows[y].Length);
         }
         public char this[int x, int y]
         {
-            get { return _rows[y][x]; }
-            set
-            {
-                _rows[y] = _rows[y].Remove(x, 1)
-                    .Insert(x, value.ToString());
-            }
+            get => _rows[y][x];
+            set => _rows[y] = _rows[y].Remove(x, 1).Insert(x, value.ToString());
         }
 
         public HMap(string map)

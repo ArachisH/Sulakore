@@ -18,14 +18,14 @@ namespace Sulakore.Network.Protocol
         private int _position;
         public int Position
         {
-            get { return _position; }
-            set { _position = value; }
+            get => _position;
+            set => _position = value;
         }
 
         private ushort _id;
         public ushort Id
         {
-            get { return _id; }
+            get => _id;
             set
             {
                 if (_id != value)
@@ -269,7 +269,7 @@ namespace Sulakore.Network.Protocol
             byte[] data = Format.GetBytes(value);
             int removeLength = ReadUInt16(position);
 
-            Replace(data, removeLength, position);
+            Replace(data, removeLength + 2, position);
         }
 
         public void Replace(bool value)

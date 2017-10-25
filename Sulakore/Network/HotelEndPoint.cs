@@ -10,7 +10,7 @@ namespace Sulakore.Network
         private string _host;
         public string Host
         {
-            get { return _host; }
+            get => _host;
             set
             {
                 _host = value;

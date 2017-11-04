@@ -33,14 +33,18 @@ namespace Sulakore.Habbo
             return (HDirection)(((int)facing + 1) & 7);
         }
 
-        public static string ToDomain(this HHotel hotel)
-        {
-            string value = hotel.ToString().ToLower();
-            return (value.Length != 5 ? value : value.Insert(3, "."));
-        }
         public static Uri ToUri(this HHotel hotel)
         {
             return new Uri($"https://www.habbo.{hotel.ToDomain()}");
+        }
+        public static string ToDomain(this HHotel hotel)
+        {
+            if (hotel == HHotel.Unknown)
+            {
+                throw new ArgumentException("Hotel cannot be 'Unknown'.", nameof(hotel));
+            }
+            string value = hotel.ToString().ToLower();
+            return (value.Length != 5 ? value : value.Insert(3, "."));
         }
 
         public static IEnumerable<MethodInfo> GetAllMethods(this Type type)

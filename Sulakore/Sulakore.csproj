@@ -2,9 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 
     <GlobalFlazzyProject>..\..\Flazzy\Flazzy\Flazzy.csproj</GlobalFlazzyProject>
     <LocalFlazzyProject>$(SolutionDir)Submodules\Flazzy\Flazzy\Flazzy.csproj</LocalFlazzyProject>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ShouldCreateLogs>False</ShouldCreateLogs>
+    <AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
+    <UpdateAssemblyVersion>True</UpdateAssemblyVersion>
+    <UpdateAssemblyFileVersion>True</UpdateAssemblyFileVersion>
+    <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
+    <AssemblyVersionSettings>None.IncrementOnDemandWithReset.None.None</AssemblyVersionSettings>
+    <AssemblyFileVersionSettings>None.IncrementOnDemandWithReset.None.None</AssemblyFileVersionSettings>
   </PropertyGroup>
 
   <ItemGroup>

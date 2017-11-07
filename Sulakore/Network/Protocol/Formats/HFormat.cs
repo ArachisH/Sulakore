@@ -103,7 +103,7 @@ namespace Sulakore.Network.Protocol
                     case TypeCode.Byte: body.Add((byte)value); break;
                     case TypeCode.Int32: body.AddRange(GetBytes((int)value)); break;
                     case TypeCode.Boolean: body.AddRange(GetBytes((bool)value)); break;
-                    case TypeCode.UInt32: body.AddRange(GetBytes((ushort)value)); break;
+                    case TypeCode.UInt16: body.AddRange(GetBytes((ushort)value)); break;
                     case TypeCode.Double: body.AddRange(GetBytes((double)value)); break;
                     case TypeCode.String: body.AddRange(GetBytes((string)value)); break;
                     case TypeCode.Char: body.AddRange(GetBytes(((char)value).ToString())); break;

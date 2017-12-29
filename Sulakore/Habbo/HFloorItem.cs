@@ -5,7 +5,7 @@ using Sulakore.Network.Protocol;
 
 namespace Sulakore.Habbo
 {
-    public class HFurniture : HData
+    public class HFloorItem : HData
     {
         public int Id { get; set; }
         public int TypeId { get; set; }
@@ -18,7 +18,7 @@ namespace Sulakore.Habbo
         public int OwnerId { get; set; }
         public string OwnerName { get; set; }
 
-        public HFurniture(HPacket packet)
+        public HFloorItem(HPacket packet)
         {
             Id = packet.ReadInt32();
             TypeId = packet.ReadInt32();
@@ -43,14 +43,14 @@ namespace Sulakore.Habbo
             }
         }
 
-        public void Update(HFurniture furni)
+        public void Update(HFloorItem furni)
         {
             Tile = furni.Tile;
             Stuff = furni.Stuff;
             Facing = furni.Facing;
         }
 
-        public static HFurniture[] Parse(HPacket packet)
+        public static HFloorItem[] Parse(HPacket packet)
         {
             int ownersCount = packet.ReadInt32();
             var owners = new Dictionary<int, string>(ownersCount);
@@ -59,10 +59,10 @@ namespace Sulakore.Habbo
                 owners.Add(packet.ReadInt32(), packet.ReadUTF8());
             }
 
-            var furniture = new HFurniture[packet.ReadInt32()];
+            var furniture = new HFloorItem[packet.ReadInt32()];
             for (int i = 0; i < furniture.Length; i++)
             {
-                var furni = new HFurniture(packet);
+                var furni = new HFloorItem(packet);
                 furni.OwnerName = owners[furni.OwnerId];
 
                 furniture[i] = furni;

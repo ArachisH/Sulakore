@@ -141,14 +141,16 @@ namespace Sulakore.Network.Protocol
                 int bytesLeft = (body.Length - totalBytesRead);
                 int bytesRead = await node.ReceiveAsync(body, totalBytesRead, bytesLeft).ConfigureAwait(false);
 
-                if (!node.IsConnected || (bytesRead <= 0 && ++nullBytesReadCount >= 2))
+                if (node.IsConnected && bytesRead > 0)
+                {
+                    nullBytesReadCount = 0;
+                    totalBytesRead += bytesRead;
+                }
+                else if (!node.IsConnected || ++nullBytesReadCount >= 2)
                 {
                     node.Disconnect();
                     return null;
                 }
-
-                nullBytesReadCount = 0;
-                totalBytesRead += bytesRead;
             }
             while (totalBytesRead != body.Length);
 

@@ -1,8 +1,9 @@
-﻿using System.Text;
+﻿using System;
+using System.Linq;
+using System.Text;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System;
 
 namespace Sulakore.Network.Protocol
 {
@@ -366,6 +367,12 @@ namespace Sulakore.Network.Protocol
                 return _toStringCache;
             }
             return (_toStringCache = AsString());
+        }
+        public bool Equals(HPacket packet)
+        {
+            if (packet.Id != Id) return false;
+            if (packet.BodyLength != BodyLength) return false;
+            return packet.ToBytes().SequenceEqual(ToBytes());
         }
 
         public static byte[] ToBytes(HFormat format, string signature)

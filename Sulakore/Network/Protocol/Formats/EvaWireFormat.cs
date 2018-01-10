@@ -126,33 +126,19 @@ namespace Sulakore.Network.Protocol
 
         public override async Task<HPacket> ReceivePacketAsync(HNode node)
         {
-            byte[] lengthBlock = await node.ReceiveAsync(4).ConfigureAwait(false);
-            if (lengthBlock?.Length != 4)
+            byte[] lengthBlock = await node.AttemptReceiveAsync(4, 3).ConfigureAwait(false);
+            if (lengthBlock == null)
             {
                 node.Disconnect();
                 return null;
             }
 
-            int totalBytesRead = 0;
-            int nullBytesReadCount = 0;
-            var body = new byte[ReadInt32(lengthBlock, 0)];
-            do
+            byte[] body = await node.AttemptReceiveAsync(ReadInt32(lengthBlock, 0), 3).ConfigureAwait(false);
+            if (body == null)
             {
-                int bytesLeft = (body.Length - totalBytesRead);
-                int bytesRead = await node.ReceiveAsync(body, totalBytesRead, bytesLeft).ConfigureAwait(false);
-
-                if (node.IsConnected && bytesRead > 0)
-                {
-                    nullBytesReadCount = 0;
-                    totalBytesRead += bytesRead;
-                }
-                else if (!node.IsConnected || ++nullBytesReadCount >= 2)
-                {
-                    node.Disconnect();
-                    return null;
-                }
+                node.Disconnect();
+                return null;
             }
-            while (totalBytesRead != body.Length);
 
             var data = new byte[4 + body.Length];
             Buffer.BlockCopy(lengthBlock, 0, data, 0, 4);

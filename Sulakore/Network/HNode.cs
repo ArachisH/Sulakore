@@ -224,6 +224,22 @@ namespace Sulakore.Network
         {
             return ReceiveAsync(buffer, offset, size, SocketFlags.None);
         }
+        public async Task<byte[]> AttemptReceiveAsync(int size, int attempts)
+        {
+            if (attempts <= 0)
+            {
+                attempts = 1;
+            }
+
+            int read = 0;
+            var data = new byte[size];
+            do
+            {
+                if (attempts-- == 0) return null;
+            }
+            while ((read += await ReceiveAsync(data, read, size - read).ConfigureAwait(false)) != size);
+            return data;
+        }
 
         public Task<byte[]> PeekAsync(int size)
         {

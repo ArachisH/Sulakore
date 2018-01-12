@@ -226,18 +226,25 @@ namespace Sulakore.Network
         }
         public async Task<byte[]> AttemptReceiveAsync(int size, int attempts)
         {
-            if (attempts <= 0)
-            {
-                attempts = 1;
-            }
-
-            int read = 0;
+            int totalBytesRead = 0;
             var data = new byte[size];
+            int nullBytesReadCount = 0;
             do
             {
-                if (attempts-- == 0) return null;
+                int bytesLeft = (data.Length - totalBytesRead);
+                int bytesRead = await ReceiveAsync(data, totalBytesRead, bytesLeft).ConfigureAwait(false);
+
+                if (IsConnected && bytesRead > 0)
+                {
+                    nullBytesReadCount = 0;
+                    totalBytesRead += bytesRead;
+                }
+                else if (!IsConnected || ++nullBytesReadCount >= attempts)
+                {
+                    return null;
+                }
             }
-            while ((read += await ReceiveAsync(data, read, size - read).ConfigureAwait(false)) != size);
+            while (totalBytesRead != data.Length);
             return data;
         }
 

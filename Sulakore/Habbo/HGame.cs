@@ -582,7 +582,6 @@ namespace Sulakore.Habbo
         }
         #endregion
 
-
         public bool InjectRawCamera()
         {
             // TODO: Try to split this up.
@@ -1056,6 +1055,20 @@ namespace Sulakore.Habbo
                 }
             }
             return Tuple.Create(host, port);
+        }
+        public bool InjectEndPointShouter(int messageId)
+        {
+            ABCFile abc = ABCFiles.Last();
+            ASInstance socketConnInstance = abc.GetFirstInstance("SocketConnection");
+            if (socketConnInstance == null) return false;
+
+            ASTrait sendFunction = InjectUniversalSendFunction(true);
+            if (sendFunction == null) return false;
+
+            ASInstance habboCommDemoInstance = abc.GetFirstInstance("HabboCommunicationDemo");
+            if (habboCommDemoInstance == null) return false;
+
+            return true;
         }
         public bool InjectEndPoint(string host, int port)
         {

@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 
 using Flazzy;
 using Flazzy.IO;
@@ -11,6 +10,8 @@ using Flazzy.Tags;
 using Flazzy.Records;
 using Flazzy.ABC.AVM2;
 using Flazzy.ABC.AVM2.Instructions;
+
+using Ionic.Zlib;
 
 namespace Sulakore.Habbo
 {
@@ -303,8 +304,6 @@ namespace Sulakore.Habbo
                     }
                 }
                 #endregion
-
-                abc.RebuildCache();
             }
             #region Symbol Renaming
             foreach (SymbolClassTag symbolTag in Tags
@@ -508,7 +507,7 @@ namespace Sulakore.Habbo
                     case OPCode.GetLex:
                     {
                         var getLex = (GetLexIns)instruction;
-                        container = abc.GetFirstClass(getLex.TypeName.Name);
+                        container = abc.GetClass(getLex.TypeName);
                         continue;
                     }
                     case OPCode.GetLocal_0:
@@ -529,7 +528,7 @@ namespace Sulakore.Habbo
                 ASMultiname messageQName = nameStack.Pop();
                 if (string.IsNullOrWhiteSpace(messageQName.Name)) continue;
 
-                ASClass messageClass = abc.GetFirstClass(messageQName.Name);
+                ASClass messageClass = abc.GetClass(messageQName);
                 if (messageClass == null) continue;
 
                 MessageItem message = null;
@@ -562,7 +561,7 @@ namespace Sulakore.Habbo
                             ASTrait hostTrait = container.GetTraits(TraitKind.Slot)
                                 .FirstOrDefault(st => st.QName == slotName);
 
-                            container = abc.GetFirstInstance(hostTrait.Type.Name);
+                            container = abc.GetInstance(hostTrait.Type);
                             callbackMethod = container.GetMethod(methodName.Name);
                         }
                     }
@@ -578,14 +577,14 @@ namespace Sulakore.Habbo
             if (!DisableEncryption()) return false;
             ABCFile abc = ABCFiles.Last();
 
-            ASInstance habboCommDemoInstance = abc.GetFirstInstance("HabboCommunicationDemo");
+            ASInstance habboCommDemoInstance = abc.GetInstance("HabboCommunicationDemo");
             if (habboCommDemoInstance == null) return false;
 
             int firstCoerceIndex = 0;
             ASCode initCryptoCode = null;
             int asInterfaceQNameIndex = 0;
             ASMethod initCryptoMethod = null;
-            foreach (ASMethod method in habboCommDemoInstance.GetMethods(1, "void"))
+            foreach (ASMethod method in habboCommDemoInstance.GetMethods(null, "void", 1))
             {
                 ASParameter parameter = method.Parameters[0];
                 if (initCryptoCode == null &&
@@ -616,35 +615,28 @@ namespace Sulakore.Habbo
         }
         public bool DisableHostChecks()
         {
-            ASMethod localHostCheckMethod = ABCFiles[0].Classes[0].GetMethods(1, "Boolean").FirstOrDefault();
+            ASMethod localHostCheckMethod = ABCFiles[0].Classes[0].GetMethod(null, "Boolean", 1);
             if (localHostCheckMethod == null) return false;
 
-            localHostCheckMethod.Body.Code[0] = (byte)OPCode.PushTrue;
-            localHostCheckMethod.Body.Code[1] = (byte)OPCode.ReturnValue;
-
-            ASInstance habboInstance = ABCFiles[1].GetFirstInstance("Habbo");
+            ASInstance habboInstance = ABCFiles[1].GetInstance("Habbo");
             if (habboInstance == null) return false;
 
-            ASMethod remoteHostCheckMethod = habboInstance.GetMethods(2, "Boolean")
-                .Where(m => m.Parameters[0].Type.Name == "String" &&
-                            m.Parameters[1].Type.Name == "Object")
-                .FirstOrDefault();
-
+            ASMethod remoteHostCheckMethod = habboInstance.GetMethod(null, "Boolean", new[] { "String", "Object" });
             if (remoteHostCheckMethod == null) return false;
-            remoteHostCheckMethod.Body.Code[0] = (byte)OPCode.PushTrue;
-            remoteHostCheckMethod.Body.Code[1] = (byte)OPCode.ReturnValue;
 
+            localHostCheckMethod.Body.Code[0] = remoteHostCheckMethod.Body.Code[0] = (byte)OPCode.PushTrue;
+            localHostCheckMethod.Body.Code[1] = remoteHostCheckMethod.Body.Code[1] = (byte)OPCode.ReturnValue;
             return LockInfoHostProperty();
         }
         public bool EnableGameCenterIcon()
         {
             ABCFile abc = ABCFiles.Last();
 
-            ASInstance bottomBarLeft = abc.GetFirstInstance("BottomBarLeft");
+            ASInstance bottomBarLeft = abc.GetInstance("BottomBarLeft");
             if (bottomBarLeft == null) return false;
 
-            ASMethod visibleButtonsMethod = bottomBarLeft.GetMethods(1, "void")
-                .First(m => m.Parameters[0].Type.Name == "String");
+            ASMethod visibleButtonsMethod = bottomBarLeft.GetMethod(null, "void", new[] { "String" });
+            if (visibleButtonsMethod == null) return false;
 
             ASCode visibleButtonsCode = visibleButtonsMethod.Body.ParseCode();
             for (int i = 0; i < visibleButtonsCode.Count; i++)
@@ -688,15 +680,15 @@ namespace Sulakore.Habbo
         {
             // TODO: Try to split this up.
             ABCFile abc = ABCFiles.Last();
-            ASInstance renderRoomInstance = abc.GetFirstInstance("RenderRoomMessageComposer");
+            ASInstance renderRoomInstance = abc.GetInstance("RenderRoomMessageComposer");
             if (renderRoomInstance == null) return false;
 
-            ASMethod isLessThan8100Method = renderRoomInstance.GetMethods(0, "Boolean").FirstOrDefault();
+            ASMethod isLessThan8100Method = renderRoomInstance.GetMethod(null, "Boolean", 0);
             if (isLessThan8100Method == null) return false;
             isLessThan8100Method.Body.Code[0] = (byte)OPCode.PushTrue;
             isLessThan8100Method.Body.Code[1] = (byte)OPCode.ReturnValue;
 
-            ASMethod photoStringifierMethod = renderRoomInstance.GetMethods(0, "void").FirstOrDefault();
+            ASMethod photoStringifierMethod = renderRoomInstance.GetMethod(null, "void", 0);
             if (photoStringifierMethod == null) return false;
             photoStringifierMethod.Body.Code[0] = (byte)OPCode.ReturnVoid;
 
@@ -740,15 +732,14 @@ namespace Sulakore.Habbo
             assignDataBody.Code = assignDataCode.ToArray();
             renderRoomInstance.AddMethod(assignDataMethod, "assignBitmap");
 
-            ASInstance smallCameraInstance = abc.GetFirstInstance("RoomThumbnailCameraWidget");
+            ASInstance smallCameraInstance = abc.GetInstance("RoomThumbnailCameraWidget");
             if (smallCameraInstance == null) return false;
 
             ASTrait smallBitmapWindowSlot = smallCameraInstance.GetSlotTraits("IBitmapWrapperWindow").FirstOrDefault();
             if (smallBitmapWindowSlot == null) return false;
 
-            ASMethod smallCaptureMethod = smallCameraInstance.GetMethods(2, "void")
-                .First(m => m.Parameters[0].Type.Name == "WindowEvent" &&
-                            m.Parameters[1].Type.Name == "IWindow");
+            ASMethod smallCaptureMethod = smallCameraInstance.GetMethod(null, "void", new string[] { "WindowEvent", "IWindow" });
+            if (smallCaptureMethod == null) return false;
 
             ASCode captureClickEventCode = smallCaptureMethod.Body.ParseCode();
             for (int i = 0; i < captureClickEventCode.Count; i++)
@@ -778,13 +769,13 @@ namespace Sulakore.Habbo
             }
             smallCaptureMethod.Body.Code = captureClickEventCode.ToArray();
 
-            ASInstance photoLabInstance = abc.GetFirstInstance("CameraPhotoLab");
+            ASInstance photoLabInstance = abc.GetInstance("CameraPhotoLab");
             if (photoLabInstance == null) return false;
 
             ASTrait bigBitmapWindowSlot = photoLabInstance.GetSlotTraits("IBitmapWrapperWindow").FirstOrDefault();
             if (bigBitmapWindowSlot == null) return false;
 
-            ASMethod bigPurchaseMethod = photoLabInstance.GetMethods(1, "void")
+            ASMethod bigPurchaseMethod = photoLabInstance.GetMethods(null, "void", 1)
                 .First(m => m.Parameters[0].Type.Name == "MouseEvent");
 
             string dataSendTraitName = null;
@@ -819,11 +810,11 @@ namespace Sulakore.Habbo
             bigPurchaseMethod.Body.Code = bigPurchaseCode.ToArray();
 
             ASInstance bigCameraHandlerInstance = photoLabInstance.GetTraits(TraitKind.Slot)
-                .Select(t => abc.GetFirstInstance(t.Type.Name))
+                .Select(t => abc.GetInstance(t.Type))
                 .FirstOrDefault();
             if (bigCameraHandlerInstance == null) return false;
 
-            ASMethod dataSendMethod = bigCameraHandlerInstance.GetMethod(0, dataSendTraitName, "Boolean");
+            ASMethod dataSendMethod = bigCameraHandlerInstance.GetMethod(dataSendTraitName, "Boolean", 0);
             if (dataSendMethod == null) return false;
 
             var bitmapDataParam = new ASParameter(abc.Pool, dataSendMethod);
@@ -855,17 +846,17 @@ namespace Sulakore.Habbo
         public bool InjectKeyShouter(int messageId)
         {
             ABCFile abc = ABCFiles.Last();
-            ASInstance socketConnInstance = abc.GetFirstInstance("SocketConnection");
+            ASInstance socketConnInstance = abc.GetInstance("SocketConnection");
             if (socketConnInstance == null) return false;
 
             ASTrait sendFunction = InjectUniversalSendFunction(true);
             if (sendFunction == null) return false;
 
-            ASInstance habboCommDemoInstance = abc.GetFirstInstance("HabboCommunicationDemo");
+            ASInstance habboCommDemoInstance = abc.GetInstance("HabboCommunicationDemo");
             if (habboCommDemoInstance == null) return false;
 
             // TODO: Implement a more "dynamic" approach(scan each method for a pattern).
-            ASMethod pubKeyVerifyMethod = habboCommDemoInstance.GetMethods(1, "void")
+            ASMethod pubKeyVerifyMethod = habboCommDemoInstance.GetMethods(null, "void", 1)
                 .Where(m => m.Body.MaxStack == 4 &&
                             m.Body.LocalCount == 10 &&
                             m.Body.MaxScopeDepth == 6 &&
@@ -900,17 +891,17 @@ namespace Sulakore.Habbo
         public bool InjectEndPointShouter(int messageId)
         {
             ABCFile abc = ABCFiles.Last();
-            ASInstance socketConnInstance = abc.GetFirstInstance("SocketConnection");
+            ASInstance socketConnInstance = abc.GetInstance("SocketConnection");
             if (socketConnInstance == null) return false;
 
             ASTrait sendFunction = InjectUniversalSendFunction(true);
             if (sendFunction == null) return false;
 
-            ASInstance habboCommDemoInstance = abc.GetFirstInstance("HabboCommunicationDemo");
+            ASInstance habboCommDemoInstance = abc.GetInstance("HabboCommunicationDemo");
             if (habboCommDemoInstance == null) return false;
 
             if (!InjectEndPointSaver(out ASTrait hostTrait, out ASTrait portTrait)) return false;
-            foreach (ASMethod method in habboCommDemoInstance.GetMethods(1, "void"))
+            foreach (ASMethod method in habboCommDemoInstance.GetMethods(null, "void", 1))
             {
                 ASParameter parameter = method.Parameters[0];
                 if (!parameter.IsOptional) continue;
@@ -923,7 +914,7 @@ namespace Sulakore.Habbo
                     if (instruction.OP != OPCode.GetLocal_2) continue;
                     if (code[i + 1].OP == OPCode.PushNull) continue;
 
-                    // local2.sendMessage(messageId, (String)local2.remoteHost, (String)local2.remotePort)
+                    // local2.sendMessage(messageId, local2.remoteHost, int(local2.remotePort))
                     code.InsertRange(i - 1, new ASInstruction[]
                     {
                         new GetLocal2Ins(),
@@ -951,10 +942,10 @@ namespace Sulakore.Habbo
         {
             ABCFile abc = ABCFiles.Last();
 
-            ASInstance socketConnInstance = abc.GetFirstInstance("SocketConnection");
+            ASInstance socketConnInstance = abc.GetInstance("SocketConnection");
             if (socketConnInstance == null) return false;
 
-            ASMethod initMethod = socketConnInstance.GetMethod(2, "init", "Boolean");
+            ASMethod initMethod = socketConnInstance.GetMethod("init", "Boolean", 2);
             if (initMethod == null) return false;
 
             ASTrait remoteHostTrait, remotePortTrait;
@@ -986,7 +977,7 @@ namespace Sulakore.Habbo
             {
                 if (@class.Traits.Count != 2) continue;
 
-                logMethod = @class.GetMethod(0, "log", "void");
+                logMethod = @class.GetMethod("log", "void", 0);
                 if (logMethod != null) break;
             }
             if (logMethod == null) return false;
@@ -1095,11 +1086,11 @@ namespace Sulakore.Habbo
         public bool InjectRSAKeys(string exponent, string modulus)
         {
             ABCFile abc = ABCFiles.Last();
-            ASClass keyObfuscatorClass = abc.GetFirstClass("KeyObfuscator");
+            ASClass keyObfuscatorClass = abc.GetClass("KeyObfuscator");
             if (keyObfuscatorClass == null) return false;
 
             int modifyCount = 0;
-            foreach (ASMethod method in keyObfuscatorClass.GetMethods(0, "String"))
+            foreach (ASMethod method in keyObfuscatorClass.GetMethods(null, "String", 0))
             {
                 int keyIndex = 0;
                 switch (method.Trait.Id)
@@ -1126,8 +1117,8 @@ namespace Sulakore.Habbo
                 ASCode code = method.Body.ParseCode();
                 code.InsertRange(0, new ASInstruction[]
                 {
-                        new PushStringIns(abc, keyIndex),
-                        new ReturnValueIns()
+                    new PushStringIns(abc, keyIndex),
+                    new ReturnValueIns()
                 });
                 method.Body.Code = code.ToArray();
             }
@@ -1143,11 +1134,11 @@ namespace Sulakore.Habbo
             }
             return null;
         }
-        
+
         private void LoadMessages()
         {
             ABCFile abc = ABCFiles.Last();
-            ASClass habboMessagesClass = abc.GetFirstClass("HabboMessages");
+            ASClass habboMessagesClass = abc.GetClass("HabboMessages");
             if (habboMessagesClass == null)
             {
                 IsPostShuffle = false;
@@ -1181,7 +1172,7 @@ namespace Sulakore.Habbo
                 ushort id = Convert.ToUInt16(primitive.Value);
 
                 getLexInst = (instructions[i + 2] as GetLexIns);
-                ASClass messageClass = abc.GetFirstClass(getLexInst.TypeName.Name);
+                ASClass messageClass = abc.GetClass(getLexInst.TypeName);
 
                 var message = new MessageItem(messageClass, isOutgoing, id);
                 (isOutgoing ? OutMessages : InMessages).Add(id, message);
@@ -1195,7 +1186,7 @@ namespace Sulakore.Habbo
                 if (id == 4000 && isOutgoing)
                 {
                     ASInstance messageInstance = messageClass.Instance;
-                    ASMethod toArrayMethod = messageInstance.GetMethods(0, "Array").First();
+                    ASMethod toArrayMethod = messageInstance.GetMethod(null, "Array", 0);
 
                     ASCode toArrayCode = toArrayMethod.Body.ParseCode();
                     int index = toArrayCode.IndexOf(OPCode.PushString);
@@ -1259,13 +1250,13 @@ namespace Sulakore.Habbo
             ABCFile abc = ABCFiles.Last();
             if (disableCrypto && !DisableEncryption()) return null;
 
-            ASInstance socketConnInstance = abc.GetFirstInstance("SocketConnection");
+            ASInstance socketConnInstance = abc.GetInstance("SocketConnection");
             if (socketConnInstance == null) return null;
 
-            ASMethod sendMethod = socketConnInstance.GetMethod(1, "send", "Boolean");
+            ASMethod sendMethod = socketConnInstance.GetMethod("send", "Boolean", 1);
             if (sendMethod == null) return null;
 
-            ASTrait sendFunctionTrait = socketConnInstance.GetMethod(1, "sendMessage", "Boolean")?.Trait;
+            ASTrait sendFunctionTrait = socketConnInstance.GetMethod("sendMessage", "Boolean", 1)?.Trait;
             if (sendFunctionTrait != null) return sendFunctionTrait;
 
             ASCode sendCode = sendMethod.Body.ParseCode();
@@ -1322,10 +1313,10 @@ namespace Sulakore.Habbo
         {
             ABCFile abc = ABCFiles.Last();
 
-            ASInstance socketConnInstance = abc.GetFirstInstance("SocketConnection");
+            ASInstance socketConnInstance = abc.GetInstance("SocketConnection");
             if (socketConnInstance == null) return false;
 
-            ASMethod sendMethod = socketConnInstance.GetMethod(1, "send", "Boolean");
+            ASMethod sendMethod = socketConnInstance.GetMethod("send", "Boolean", 1);
             if (sendMethod == null) return false;
 
             ASCode sendCode = sendMethod.Body.ParseCode();
@@ -1379,7 +1370,7 @@ namespace Sulakore.Habbo
             ASCode connectCode = connectMethod.Body.ParseCode();
             int pushByteIndex = connectCode.IndexOf(OPCode.PushByte);
 
-            ASInstance habboCommunicationManager = abc.GetFirstInstance("HabboCommunicationManager");
+            ASInstance habboCommunicationManager = abc.GetInstance("HabboCommunicationManager");
             if (habboCommunicationManager == null) return false;
 
             ASTrait infoHostSlot = habboCommunicationManager.GetSlotTraits("String").FirstOrDefault();
@@ -1417,13 +1408,13 @@ namespace Sulakore.Habbo
             if (_managerConnectMethod != null) return _managerConnectMethod;
             ABCFile abc = ABCFiles.Last();
 
-            ASInstance habboCommunicationManager = abc.GetFirstInstance("HabboCommunicationManager");
+            ASInstance habboCommunicationManager = abc.GetInstance("HabboCommunicationManager");
             if (habboCommunicationManager == null) return null;
 
             ASTrait hostTrait = habboCommunicationManager.GetSlotTraits("String").FirstOrDefault();
             if (hostTrait == null) return null;
 
-            ASMethod initComponent = habboCommunicationManager.GetMethod(0, "initComponent", "void");
+            ASMethod initComponent = habboCommunicationManager.GetMethod("initComponent", "void", 0);
             if (initComponent == null) return null;
 
             string connectMethodName = null;
@@ -1439,7 +1430,7 @@ namespace Sulakore.Habbo
             }
 
             if (string.IsNullOrWhiteSpace(connectMethodName)) return null;
-            return (_managerConnectMethod = habboCommunicationManager.GetMethod(0, connectMethodName, "void"));
+            return (_managerConnectMethod = habboCommunicationManager.GetMethod(connectMethodName, "void", 0));
         }
         private bool LockEndPointPing(string host, int port)
         {
@@ -1500,7 +1491,7 @@ namespace Sulakore.Habbo
             hostTrait = portTrait = null;
             ABCFile abc = ABCFiles.Last();
 
-            ASInstance socketConnection = abc.GetFirstInstance("SocketConnection");
+            ASInstance socketConnection = abc.GetInstance("SocketConnection");
             if (socketConnection == null) return false;
 
             foreach (ASTrait slot in socketConnection.GetTraits(TraitKind.Slot))
@@ -1519,7 +1510,7 @@ namespace Sulakore.Habbo
             portTrait = AddPublicSlot(socketConnection, "remotePort", "int");
             hostTrait = AddPublicSlot(socketConnection, "remoteHost", "String");
 
-            ASMethod init = socketConnection.GetMethod(2, "init", "Boolean");
+            ASMethod init = socketConnection.GetMethod("init", "Boolean", 2);
             if (init == null) return false;
 
             ASCode code = init.Body.ParseCode();
@@ -1759,20 +1750,17 @@ namespace Sulakore.Habbo
             WriteSorted(_bytes, base.Write);
             WriteSorted(_strings, base.Write);
         }
-        public string GenerateMD5Hash()
+        public string GenerateHash()
         {
             Flush();
-            using (var md5 = MD5.Create())
-            {
-                long curPos = BaseStream.Position;
-                BaseStream.Position = 0;
 
-                byte[] hashData = md5.ComputeHash(BaseStream);
-                string hashAsHex = (BitConverter.ToString(hashData));
+            long curPos = BaseStream.Position;
+            BaseStream.Position = 0;
 
-                BaseStream.Position = curPos;
-                return hashAsHex.Replace("-", string.Empty).ToLower();
-            }
+            byte[] data = ((MemoryStream)BaseStream).ToArray();
+
+            BaseStream.Position = curPos;
+            return Adler.Adler32(0, data, 0, data.Length).ToString("x");
         }
 
         private void WriteSorted<T>(IDictionary<T, int> storage, Action<T> writer)
@@ -1865,7 +1853,7 @@ namespace Sulakore.Habbo
                     }
                 }
                 else output.Write(Class.QName.Name);
-                return (Hash = output.GenerateMD5Hash());
+                return (Hash = output.GenerateHash());
             }
         }
         public bool HasMethodReference(ASMethod method)
@@ -1914,7 +1902,7 @@ namespace Sulakore.Habbo
             ABCFile abc = Class.GetABC();
             ASInstance instance = Class.Instance;
 
-            ASInstance superInstance = abc.GetFirstInstance(instance.Super.Name);
+            ASInstance superInstance = abc.GetInstance(instance.Super);
             if (superInstance == null) superInstance = instance;
 
             ASMethod parserGetterMethod = superInstance.GetGetter("parser")?.Method;
@@ -1939,7 +1927,7 @@ namespace Sulakore.Habbo
                     }
                     else continue;
 
-                    foreach (ASClass refClass in abc.GetClasses(multiname.Name))
+                    foreach (ASClass refClass in abc.GetClasses(multiname))
                     {
                         ASInstance refInstance = refClass.Instance;
                         if (refInstance.ContainsInterface(parserGetterMethod.ReturnType.Name))
@@ -1955,7 +1943,7 @@ namespace Sulakore.Habbo
         #region Structure Extraction
         private string[] GetIncomingStructure(ASClass @class)
         {
-            ASMethod parseMethod = @class.Instance.GetMethod(1, "parse", "Boolean");
+            ASMethod parseMethod = @class.Instance.GetMethod("parse", "Boolean", 1);
             return GetIncomingStructure(@class.Instance, parseMethod);
         }
         private string[] GetIncomingStructure(ASInstance instance, ASMethod method)
@@ -2006,12 +1994,12 @@ namespace Sulakore.Habbo
                                 }
                             }
 
-                            ASInstance innerInstance = abc.GetFirstInstance(propertyName.Name);
-                            ASMethod innerMethod = innerInstance.GetMethod(callProperty.ArgCount, callProperty.PropertyName.Name);
+                            ASInstance innerInstance = abc.GetInstance(propertyName);
+                            ASMethod innerMethod = innerInstance.GetMethod(callProperty.PropertyName.Name, null, callProperty.ArgCount);
                             if (innerMethod == null)
                             {
-                                ASClass innerClass = abc.GetFirstClass(propertyName.Name);
-                                innerMethod = innerClass.GetMethod(callProperty.ArgCount, callProperty.PropertyName.Name);
+                                ASClass innerClass = abc.GetClass(propertyName);
+                                innerMethod = innerClass.GetMethod(callProperty.PropertyName.Name, null, callProperty.ArgCount);
                             }
 
                             string[] innerStructure = GetIncomingStructure(innerInstance, innerMethod);
@@ -2031,7 +2019,7 @@ namespace Sulakore.Habbo
                     case OPCode.ConstructProp:
                     {
                         var constructProp = (ConstructPropIns)next;
-                        ASInstance innerInstance = abc.GetFirstInstance(constructProp.PropertyName.Name);
+                        ASInstance innerInstance = abc.GetInstance(constructProp.PropertyName);
 
                         string[] innerStructure = GetIncomingStructure(innerInstance, innerInstance.Constructor);
                         if (innerStructure != null)
@@ -2045,7 +2033,7 @@ namespace Sulakore.Habbo
                     case OPCode.ConstructSuper:
                     {
                         var constructSuper = (ConstructSuperIns)next;
-                        ASInstance superInstance = abc.GetFirstInstance(instance.Super.Name);
+                        ASInstance superInstance = abc.GetInstance(instance.Super);
 
                         string[] innerStructure = GetIncomingStructure(superInstance, superInstance.Constructor);
                         if (innerStructure != null)
@@ -2059,9 +2047,9 @@ namespace Sulakore.Habbo
                     case OPCode.CallSuper:
                     {
                         var callSuper = (CallSuperIns)next;
-                        ASInstance superInstance = abc.GetFirstInstance(instance.Super.Name);
+                        ASInstance superInstance = abc.GetInstance(instance.Super);
 
-                        ASMethod superMethod = superInstance.GetMethod(callSuper.ArgCount, callSuper.MethodName.Name);
+                        ASMethod superMethod = superInstance.GetMethod(callSuper.MethodName.Name, null, callSuper.ArgCount);
                         string[] innerStructure = GetIncomingStructure(superInstance, superMethod);
                         if (innerStructure != null)
                         {
@@ -2090,10 +2078,10 @@ namespace Sulakore.Habbo
 
         private string[] GetOutgoingStructure(ASClass @class)
         {
-            ASMethod getArrayMethod = @class.Instance.GetMethods(0, "Array").FirstOrDefault();
+            ASMethod getArrayMethod = @class.Instance.GetMethod(null, "Array", 0);
             if (getArrayMethod == null)
             {
-                ASClass superClass = @class.GetABC().GetFirstClass(@class.Instance.Super.Name);
+                ASClass superClass = @class.GetABC().GetClass(@class.Instance.Super);
                 return GetOutgoingStructure(superClass);
             }
             if (getArrayMethod.Body.Exceptions.Count > 0) return null;
@@ -2180,7 +2168,7 @@ namespace Sulakore.Habbo
                         if (beforeGetProp.OP == OPCode.GetLex)
                         {
                             var getLex = (GetLexIns)beforeGetProp;
-                            classToCheck = classToCheck.GetABC().GetFirstClass(getLex.TypeName.Name);
+                            classToCheck = classToCheck.GetABC().GetClass(getLex.TypeName);
                         }
 
                         string propertyTypeName = null;
@@ -2241,7 +2229,7 @@ namespace Sulakore.Habbo
                     var constructSuper = (ConstructSuperIns)instruction;
                     if (constructSuper.ArgCount > 0)
                     {
-                        ASClass superClass = @class.GetABC().GetFirstClass(@class.Instance.Super.Name);
+                        ASClass superClass = @class.GetABC().GetClass(@class.Instance.Super);
                         structure.AddRange(GetOutgoingStructure(superClass, propertyName));
                     }
                 }
@@ -2273,7 +2261,7 @@ namespace Sulakore.Habbo
                     else if (next.OP == OPCode.GetLex)
                     {
                         var getLex = (GetLexIns)next;
-                        classToCheck = classToCheck.GetABC().GetFirstClass(getLex.TypeName.Name);
+                        classToCheck = classToCheck.GetABC().GetClass(getLex.TypeName);
                     }
                     do
                     {
@@ -2328,7 +2316,7 @@ namespace Sulakore.Habbo
                     if (previous.OP == OPCode.GetLex)
                     {
                         var getLex = (GetLexIns)previous;
-                        classToCheck = classToCheck.GetABC().GetFirstClass(getLex.TypeName.Name);
+                        classToCheck = classToCheck.GetABC().GetClass(getLex.TypeName);
                     }
 
                     string propertyTypeName = null;

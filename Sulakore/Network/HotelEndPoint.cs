@@ -71,12 +71,15 @@ namespace Sulakore.Network
                     {
                         domainStart += 6;
                         int domainEnd = host.IndexOf('/', domainStart);
-                        if (domainEnd != -1)
+                        if (domainEnd == -1)
                         {
-                            string region = host.Substring(domainStart, ((domainEnd - domainStart) - 1));
-                            region = region.Replace(".", string.Empty);
-                            return GetHotel(region);
+                            domainEnd = (host.Length + 1);
                         }
+
+                        string region = host.Substring(domainStart, ((domainEnd - domainStart) - 1));
+                        region = region.Replace(".", string.Empty);
+
+                        return GetHotel(region);
                     }
                 }
             }

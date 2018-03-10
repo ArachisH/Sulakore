@@ -11,7 +11,7 @@ using Flazzy.Records;
 using Flazzy.ABC.AVM2;
 using Flazzy.ABC.AVM2.Instructions;
 
-using Ionic.Zlib;
+using System.Security.Cryptography;
 
 namespace Sulakore.Habbo
 {
@@ -1753,14 +1753,17 @@ namespace Sulakore.Habbo
         public string GenerateHash()
         {
             Flush();
+            using (var md5 = MD5.Create())
+            {
+                long curPos = BaseStream.Position;
+                BaseStream.Position = 0;
 
-            long curPos = BaseStream.Position;
-            BaseStream.Position = 0;
+                byte[] hashData = md5.ComputeHash(BaseStream);
+                string hashAsHex = (BitConverter.ToString(hashData));
 
-            byte[] data = ((MemoryStream)BaseStream).ToArray();
-
-            BaseStream.Position = curPos;
-            return Adler.Adler32(0, data, 0, data.Length).ToString("x");
+                BaseStream.Position = curPos;
+                return hashAsHex.Replace("-", string.Empty).ToLower();
+            }
         }
 
         private void WriteSorted<T>(IDictionary<T, int> storage, Action<T> writer)

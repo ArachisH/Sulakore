@@ -23,9 +23,11 @@ namespace Sulakore.Habbo
             Id = packet.ReadInt32();
             TypeId = packet.ReadInt32();
 
-            Tile = new HPoint(packet.ReadInt32(), packet.ReadInt32());
+            var tile = new HPoint(packet.ReadInt32(), packet.ReadInt32());
             Facing = (HDirection)packet.ReadInt32();
-            Tile.Z = double.Parse(packet.ReadUTF8(), CultureInfo.InvariantCulture);
+
+            tile.Z = double.Parse(packet.ReadUTF8(), CultureInfo.InvariantCulture);
+            Tile = tile;
 
             var loc1 = packet.ReadUTF8();
             var loc3 = packet.ReadInt32();

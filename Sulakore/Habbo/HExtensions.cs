@@ -33,9 +33,9 @@ namespace Sulakore.Habbo
             return (HDirection)(((int)facing + 1) & 7);
         }
 
-        public static Uri ToUri(this HHotel hotel)
+        public static Uri ToUri(this HHotel hotel, string subdomain = "www")
         {
-            return new Uri($"https://www.habbo.{hotel.ToDomain()}");
+            return new Uri($"https://{subdomain}.habbo.{hotel.ToDomain()}");
         }
         public static string ToDomain(this HHotel hotel)
         {
@@ -62,7 +62,7 @@ namespace Sulakore.Habbo
             {
                 IEnumerable<T> batch = excavator(type);
                 excavated = (excavated?.Concat(batch) ?? batch);
-                type = type.BaseType; ;
+                type = type.BaseType;
             }
             return excavated;
         }

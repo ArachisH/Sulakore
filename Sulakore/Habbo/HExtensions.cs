@@ -47,6 +47,10 @@ namespace Sulakore.Habbo
             return (value.Length != 5 ? value : value.Insert(3, "."));
         }
 
+        public static IEnumerable<MemberInfo> GetAllMembers(this Type type)
+        {
+            return type.Excavate(t => t.GetMembers(BINDINGS));
+        }
         public static IEnumerable<MethodInfo> GetAllMethods(this Type type)
         {
             return type.Excavate(t => t.GetMethods(BINDINGS));

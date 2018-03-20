@@ -1542,11 +1542,24 @@ namespace Sulakore.Habbo
             return false;
         }
 
+        public void Disassemble(bool isGeneratingHashes)
+        {
+            Disassemble(null, isGeneratingHashes);
+        }
         public override void Disassemble(Action<TagItem> callback)
         {
             base.Disassemble(callback);
             LoadMessages();
         }
+        public void Disassemble(Action<TagItem> callback, bool isGeneratingHashes)
+        {
+            Disassemble(callback);
+            if (isGeneratingHashes)
+            {
+                GenerateMessageHashes();
+            }
+        }
+
         protected override void WriteTag(TagItem tag, FlashWriter output)
         {
             if (tag.Kind == TagKind.DoABC)

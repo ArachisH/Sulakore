@@ -63,19 +63,16 @@ namespace Sulakore.Habbo.Web
                 return game;
             });
         }
-        public static Task<string> DownloadGameAsync(string revision, string directoryName)
+        public static Task DownloadGameAsync(string revision, string fileName)
         {
             return ReadContentAsync(HHotel.Com.ToUri("images"), $"/gordon/{revision}/Habbo.swf", async content =>
             {
-                string gamePath = Path.Combine(directoryName, "gordon", revision, "Habbo.swf");
-                Directory.CreateDirectory(Path.GetDirectoryName(gamePath));
-
                 using (Stream contentStream = await content.ReadAsStreamAsync().ConfigureAwait(false))
-                using (var fileStream = File.Create(gamePath))
+                using (var fileStream = File.Create(fileName))
                 {
                     await contentStream.CopyToAsync(fileStream).ConfigureAwait(false);
                 }
-                return gamePath;
+                return fileName;
             });
         }
 
@@ -84,10 +81,10 @@ namespace Sulakore.Habbo.Web
             string latestRevision = await GetLatestRevisionAsync(hotel).ConfigureAwait(false);
             return await GetGameAsync(latestRevision).ConfigureAwait(false);
         }
-        public static async Task<string> DownloadLatestGameAsync(HHotel hotel, string path)
+        public static async Task DownloadLatestGameAsync(HHotel hotel, string fileName)
         {
             string latestRevision = await GetLatestRevisionAsync(hotel).ConfigureAwait(false);
-            return await DownloadGameAsync(latestRevision, path).ConfigureAwait(false);
+            await DownloadGameAsync(latestRevision, fileName).ConfigureAwait(false);
         }
 
         public static Task<byte[]> GetFigureDataAsync(string query) =>

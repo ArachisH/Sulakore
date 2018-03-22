@@ -5,7 +5,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 
     <GlobalFlazzyProject>..\..\Flazzy\Flazzy\Flazzy.csproj</GlobalFlazzyProject>
-    <LocalFlazzyProject>$(SolutionDir)Submodules\Flazzy\Flazzy\Flazzy.csproj</LocalFlazzyProject>
+    <LocalFlazzyProject>$(ProjectDir)..\Submodules\Flazzy\Flazzy\Flazzy.csproj</LocalFlazzyProject>
   </PropertyGroup>
 
   <PropertyGroup>

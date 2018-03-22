@@ -62,7 +62,7 @@ namespace Sulakore.Habbo
         public static IEnumerable<T> Excavate<T>(this Type type, Func<Type, IEnumerable<T>> excavator)
         {
             IEnumerable<T> excavated = null;
-            while (type != null && type.BaseType != null)
+            while (type != null)
             {
                 IEnumerable<T> batch = excavator(type);
                 excavated = (excavated?.Concat(batch) ?? batch);

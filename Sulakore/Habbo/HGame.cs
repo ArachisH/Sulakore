@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 
 using Flazzy;
 using Flazzy.IO;
@@ -10,8 +11,6 @@ using Flazzy.Tags;
 using Flazzy.Records;
 using Flazzy.ABC.AVM2;
 using Flazzy.ABC.AVM2.Instructions;
-
-using System.Security.Cryptography;
 
 namespace Sulakore.Habbo
 {

@@ -30,6 +30,10 @@ namespace Sulakore.Habbo.Web
             _client.DefaultRequestHeaders.Add("Cookie", "YPF8827340282Jdskjhfiw_928937459182JAX666=127.0.0.1");
         }
 
+        public static Task<byte[]> GetFigureDataAsync(string query) => ReadContentAsync<byte[]>(HHotel.Com.ToUri(), ("/habbo-imaging/avatarimage?" + query));
+        public static async Task<HUser> GetUserAsync(string name, HHotel hotel) => HUser.Create(await ReadContentAsync<string>(hotel.ToUri(), ("/api/public/users?name=" + name)));
+        public static async Task<HProfile> GetProfileAsync(string uniqueId) => HProfile.Create(await ReadContentAsync<string>(HotelEndPoint.GetHotel(uniqueId).ToUri(), $"/api/public/users/{uniqueId}/profile"));
+
         public static async Task<string> GetLatestRevisionAsync(HHotel hotel)
         {
             string body = await ReadContentAsync<string>(hotel.ToUri(), "/gamedata/external_variables/1").ConfigureAwait(false);
@@ -63,14 +67,32 @@ namespace Sulakore.Habbo.Web
                 return game;
             });
         }
-        public static Task DownloadGameAsync(string revision, string fileName)
+        public static Task DownloadGameAsync(string revision, string fileName, IProgress<double> progress = null)
         {
             return ReadContentAsync(HHotel.Com.ToUri("images"), $"/gordon/{revision}/Habbo.swf", async content =>
             {
+                var buffer = new byte[81920];
                 using (Stream contentStream = await content.ReadAsStreamAsync().ConfigureAwait(false))
                 using (var fileStream = File.Create(fileName))
                 {
-                    await contentStream.CopyToAsync(fileStream).ConfigureAwait(false);
+                    if (content.Headers.ContentLength == null)
+                    {
+                        await contentStream.CopyToAsync(fileStream).ConfigureAwait(false);
+                        progress?.Report(100);
+                    }
+                    else
+                    {
+                        double totalBytesRead = 0;
+                        while (totalBytesRead != content.Headers.ContentLength)
+                        {
+                            int bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length);
+                            await fileStream.WriteAsync(buffer, 0, bytesRead).ConfigureAwait(false);
+
+                            totalBytesRead += bytesRead;
+                            double maximum = content.Headers.ContentLength ?? totalBytesRead;
+                            progress?.Report((totalBytesRead / maximum) * 100);
+                        }
+                    }
                 }
                 return fileName;
             });
@@ -81,20 +103,11 @@ namespace Sulakore.Habbo.Web
             string latestRevision = await GetLatestRevisionAsync(hotel).ConfigureAwait(false);
             return await GetGameAsync(latestRevision).ConfigureAwait(false);
         }
-        public static async Task DownloadLatestGameAsync(HHotel hotel, string fileName)
+        public static async Task DownloadLatestGameAsync(HHotel hotel, string fileName, IProgress<double> progress = null)
         {
             string latestRevision = await GetLatestRevisionAsync(hotel).ConfigureAwait(false);
-            await DownloadGameAsync(latestRevision, fileName).ConfigureAwait(false);
+            await DownloadGameAsync(latestRevision, fileName, progress).ConfigureAwait(false);
         }
-
-        public static Task<byte[]> GetFigureDataAsync(string query) =>
-            ReadContentAsync<byte[]>(HHotel.Com.ToUri(), ("/habbo-imaging/avatarimage?" + query));
-
-        public static async Task<HUser> GetUserAsync(string name, HHotel hotel) =>
-            HUser.Create(await ReadContentAsync<string>(hotel.ToUri(), ("/api/public/users?name=" + name)));
-
-        public static async Task<HProfile> GetProfileAsync(string uniqueId) =>
-            HProfile.Create(await ReadContentAsync<string>(HotelEndPoint.GetHotel(uniqueId).ToUri(), $"/api/public/users/{uniqueId}/profile"));
 
         public static async Task<T> ReadContentAsync<T>(Uri baseUri, string path, Func<HttpContent, Task<T>> contentConverter = null)
         {

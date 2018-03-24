@@ -67,7 +67,7 @@ namespace Sulakore.Habbo.Web
                 return game;
             });
         }
-        public static Task DownloadGameAsync(string revision, string fileName, IProgress<double> progress = null)
+        public static Task DownloadGameAsync(string revision, string fileName, Action<double> progress = null)
         {
             return ReadContentAsync(HHotel.Com.ToUri("images"), $"/gordon/{revision}/Habbo.swf", async content =>
             {
@@ -78,7 +78,7 @@ namespace Sulakore.Habbo.Web
                     if (content.Headers.ContentLength == null)
                     {
                         await contentStream.CopyToAsync(fileStream).ConfigureAwait(false);
-                        progress?.Report(100);
+                        progress?.Invoke(100);
                     }
                     else
                     {
@@ -90,7 +90,7 @@ namespace Sulakore.Habbo.Web
 
                             totalBytesRead += bytesRead;
                             double maximum = content.Headers.ContentLength ?? totalBytesRead;
-                            progress?.Report((totalBytesRead / maximum) * 100);
+                            progress?.Invoke((totalBytesRead / maximum) * 100);
                         }
                     }
                 }
@@ -103,7 +103,7 @@ namespace Sulakore.Habbo.Web
             string latestRevision = await GetLatestRevisionAsync(hotel).ConfigureAwait(false);
             return await GetGameAsync(latestRevision).ConfigureAwait(false);
         }
-        public static async Task DownloadLatestGameAsync(HHotel hotel, string fileName, IProgress<double> progress = null)
+        public static async Task DownloadLatestGameAsync(HHotel hotel, string fileName, Action<double> progress = null)
         {
             string latestRevision = await GetLatestRevisionAsync(hotel).ConfigureAwait(false);
             await DownloadGameAsync(latestRevision, fileName, progress).ConfigureAwait(false);

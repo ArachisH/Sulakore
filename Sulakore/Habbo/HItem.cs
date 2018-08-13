@@ -9,6 +9,7 @@ namespace Sulakore.Habbo
         public int RoomId { get; set; }
         public int Category { get; set; }
         public string SlotId { get; set; }
+        public object[] Stuff { get; set; }
         public int SecondsToExpiration { get; set; }
         public bool HasRentPeriodStarted { get; set; }
 
@@ -22,7 +23,7 @@ namespace Sulakore.Habbo
             packet.ReadInt32();
 
             Category = packet.ReadInt32();
-            ReadData(packet, Category);
+            Stuff = ReadData(packet, Category);
 
             packet.ReadBoolean();
             packet.ReadBoolean();

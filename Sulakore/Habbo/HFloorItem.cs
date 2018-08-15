@@ -15,6 +15,9 @@ namespace Sulakore.Habbo
         public int Category { get; set; }
         public object[] Stuff { get; set; }
 
+        public int SecondsToExpiration { get; set; }
+        public int UsagePolicy { get; set; }
+
         public int OwnerId { get; set; }
         public string OwnerName { get; set; }
 
@@ -30,13 +33,13 @@ namespace Sulakore.Habbo
             Tile = tile;
 
             var loc1 = packet.ReadUTF8();
-            var loc3 = packet.ReadInt32();
+            var extra = packet.ReadInt32();
 
             Category = packet.ReadInt32();
             Stuff = ReadData(packet, Category);
 
-            var loc4 = packet.ReadInt32();
-            var loc5 = packet.ReadInt32();
+            SecondsToExpiration = packet.ReadInt32();
+            UsagePolicy = packet.ReadInt32();
 
             OwnerId = packet.ReadInt32();
             if (TypeId < 0)

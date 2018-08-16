@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 
-    <GlobalFlazzyProject>..\..\Flazzy\Flazzy\Flazzy.csproj</GlobalFlazzyProject>
-    <LocalFlazzyProject>$(ProjectDir)..\Submodules\Flazzy\Flazzy\Flazzy.csproj</LocalFlazzyProject>
+    <LocalFlazzy>..\Submodules\Flazzy\Flazzy\Flazzy.csproj</LocalFlazzy>
+    <ParentFlazzy>$(ProjectDir)..\Submodules\Flazzy\Flazzy\Flazzy.csproj</ParentFlazzy>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -18,9 +18,17 @@
     <AssemblyFileVersionSettings>None.IncrementOnDemandWithReset.None.None</AssemblyFileVersionSettings>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Condition="Exists($(LocalFlazzyProject))" Include="$(LocalFlazzyProject)" />
-    <ProjectReference Condition="!Exists($(LocalFlazzyProject)) And Exists($(GlobalFlazzyProject))" Include="$(GlobalFlazzyProject)" />
-  </ItemGroup>
+  <Choose>
+    <When Condition="Exists($(ParentFlazzy))">
+      <ItemGroup>
+        <ProjectReference Include="$(ParentFlazzy)"/>
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <ProjectReference Include="$(LocalFlazzy)"/>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
 
 </Project>

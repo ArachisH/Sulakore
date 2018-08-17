@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Text;
+using System.Collections.Generic;
 
 namespace Sulakore.Habbo.Messages
 {
@@ -10,6 +10,8 @@ namespace Sulakore.Habbo.Messages
         private readonly Dictionary<ushort, string> _namesById;
         private readonly Dictionary<string, ushort> _idsByName;
         private readonly Dictionary<string, string> _namesByHash;
+
+        public int Id { get; set; }
 
         public Identifiers()
         {

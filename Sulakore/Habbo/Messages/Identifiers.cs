@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Sulakore.Habbo.Messages
@@ -19,6 +19,7 @@ namespace Sulakore.Habbo.Messages
             _namesByHash = new Dictionary<string, string>();
         }
         public Identifiers(HGame game, string identifiersPath)
+            : this()
         {
             Load(game, identifiersPath);
         }

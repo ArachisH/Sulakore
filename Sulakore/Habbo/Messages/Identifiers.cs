@@ -11,8 +11,6 @@ namespace Sulakore.Habbo.Messages
         private readonly Dictionary<string, ushort> _idsByName;
         private readonly Dictionary<string, string> _namesByHash;
 
-        public int Id { get; set; }
-
         public Identifiers()
         {
             _section = GetType().Name;

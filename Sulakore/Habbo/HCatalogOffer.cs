@@ -53,7 +53,7 @@ namespace Sulakore.Habbo
             throw new System.NotImplementedException();
         }
 
-        protected override void WriteTo(HPacket packet)
+        public override void WriteTo(HPacket packet)
         {
             throw new System.NotImplementedException();
         }

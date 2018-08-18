@@ -56,7 +56,7 @@ namespace Sulakore.Habbo
             Facing = furni.Facing;
         }
         
-        protected override void WriteTo(HPacket packet)
+        public override void WriteTo(HPacket packet)
         {
             packet.Write(Id);
             packet.Write(TypeId);

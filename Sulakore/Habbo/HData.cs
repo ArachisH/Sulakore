@@ -118,6 +118,6 @@ namespace Sulakore.Habbo
 
             return packet;
         }
-        protected abstract void WriteTo(HPacket packet);
+        public abstract void WriteTo(HPacket packet);
     }
 }

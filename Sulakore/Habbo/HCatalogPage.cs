@@ -49,7 +49,7 @@ namespace Sulakore.Habbo
             IsFrontPage = (packet.ReadableBytes > 0);
         }
 
-        protected override void WriteTo(HPacket packet)
+        public override void WriteTo(HPacket packet)
         {
             throw new System.NotImplementedException();
         }

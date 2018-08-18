@@ -49,7 +49,7 @@ namespace Sulakore.Habbo
             RelationshipStatus = friend.RelationshipStatus;
         }
 
-        protected override void WriteTo(HPacket packet)
+        public override void WriteTo(HPacket packet)
         {
             packet.Write(Id);
             packet.Write(Username);

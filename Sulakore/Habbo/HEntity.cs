@@ -101,7 +101,7 @@ namespace Sulakore.Habbo
             return entities;
         }
 
-        protected override void WriteTo(HPacket packet)
+        public override void WriteTo(HPacket packet)
         {
             throw new NotImplementedException();
         }

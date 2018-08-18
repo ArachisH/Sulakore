@@ -155,7 +155,11 @@ namespace Sulakore.Network.Protocol
             body.CopyTo(data, 6);
             return data;
         }
-
+        
+        public override HPacket CreatePacket()
+        {
+            return new EvaWirePacket();
+        }
         public override HPacket CreatePacket(IList<byte> data)
         {
             return new EvaWirePacket(data);

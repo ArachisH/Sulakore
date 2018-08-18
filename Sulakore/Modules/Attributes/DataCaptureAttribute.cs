@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Reflection;
-
+using Sulakore.Habbo;
 using Sulakore.Network;
 using Sulakore.Network.Protocol;
 
@@ -98,6 +98,10 @@ namespace Sulakore.Modules
                         if (parameter.ParameterType == typeof(DataInterceptedEventArgs))
                         {
                             values[i] = args;
+                        }
+                        else if (parameter.ParameterType == typeof(HPacket))
+                        {
+                            values[i] = args.Packet;
                         }
                         else if (parameter.ParameterType == typeof(byte[]))
                         {

@@ -59,21 +59,21 @@ namespace Sulakore.Network.Protocol
         {
             _structurePattern = new Regex(@"{(?<kind>id|i|s|b|d|u):(?<value>[^}]*)\}", RegexOptions.IgnoreCase);
         }
-        public HPacket(HFormat resolver)
+        public HPacket(HFormat format)
         {
             _body = new List<byte>();
 
-            Format = resolver;
+            Format = format;
         }
-        public HPacket(HFormat resolver, IList<byte> data)
-            : this(resolver)
+        public HPacket(HFormat format, IList<byte> data)
+            : this(format)
         {
-            _body.AddRange(resolver.GetBody(data));
+            _body.AddRange(format.GetBody(data));
 
             _toBytesCache = new byte[data.Count];
             data.CopyTo(_toBytesCache, 0);
 
-            Id = resolver.GetId(data);
+            Id = format.GetId(data);
         }
 
         #region Read Methods

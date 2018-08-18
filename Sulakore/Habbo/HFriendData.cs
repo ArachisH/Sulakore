@@ -21,11 +21,11 @@ namespace Sulakore.Habbo
         public HRelationship RelationshipStatus { get; set; }
 
         public HFriendData(HPacket packet)
+            : base(packet)
         {
             Id = packet.ReadInt32();
             Username = packet.ReadUTF8();
-            Gender = packet.ReadInt32() == 1 ? 
-                HGender.Male : HGender.Female;
+            Gender = (packet.ReadInt32() == 1 ? HGender.Male : HGender.Female);
 
             IsOnline = packet.ReadBoolean();
             CanFollow = packet.ReadBoolean();
@@ -33,10 +33,10 @@ namespace Sulakore.Habbo
             CategoryId = packet.ReadInt32();
             Motto = packet.ReadUTF8();
             RealName = packet.ReadUTF8();
-            packet.ReadUTF8();
+            Remnants.Enqueue(packet.ReadUTF8());
 
             IsPersisted = packet.ReadBoolean();
-            packet.ReadBoolean();
+            Remnants.Enqueue(packet.ReadBoolean());
             IsPocketHabboUser = packet.ReadBoolean();
             RelationshipStatus = (HRelationship)packet.ReadUInt16();
         }
@@ -47,6 +47,26 @@ namespace Sulakore.Habbo
             Figure = friend.Figure;
             Motto = friend.Motto;
             RelationshipStatus = friend.RelationshipStatus;
+        }
+
+        protected override void WriteTo(HPacket packet)
+        {
+            packet.Write(Id);
+            packet.Write(Username);
+            packet.Write(Gender == HGender.Male ? 1 : 0); // TODO GEEKER: Check if 0 is for Female, or is it 2? idk
+
+            packet.Write(IsOnline);
+            packet.Write(CanFollow);
+            packet.Write(Figure);
+            packet.Write(CategoryId);
+            packet.Write(Motto);
+            packet.Write(RealName);
+            packet.Write((string)Remnants.Dequeue());
+
+            packet.Write(IsPersisted);
+            packet.Write((bool)Remnants.Dequeue());
+            packet.Write(IsPocketHabboUser);
+            packet.Write((ushort)RelationshipStatus);
         }
 
         public static HFriendData[] Parse(HPacket packet)

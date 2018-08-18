@@ -269,6 +269,10 @@ namespace Sulakore.Network.Protocol
             return data;
         }
 
+        public override HPacket CreatePacket()
+        {
+            return new WedgiePacket(IsOutgoing);
+        }
         public override HPacket CreatePacket(IList<byte> data)
         {
             return new WedgiePacket(IsOutgoing, data);

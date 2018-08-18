@@ -14,6 +14,7 @@ namespace Sulakore.Habbo
         public bool HasRentPeriodStarted { get; set; }
 
         public HItem(HPacket packet)
+            : base(packet)
         {
             packet.ReadInt32();
             string unknown1 = packet.ReadUTF8();
@@ -52,6 +53,11 @@ namespace Sulakore.Habbo
                 items[i] = new HItem(packet);
             }
             return items;
+        }
+
+        protected override void WriteTo(HPacket packet)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

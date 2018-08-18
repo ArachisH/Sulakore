@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Sulakore.Network.Protocol
 {
@@ -93,7 +93,7 @@ namespace Sulakore.Network.Protocol
         public abstract ushort ReadUInt16(IList<byte> data, int index);
         public abstract double ReadDouble(IList<byte> data, int index);
 
-        public byte[] Construct(ushort id, params object[] values)
+        public byte[] GetBytes(params object[] values)
         {
             var body = new List<byte>();
             foreach (object value in values)
@@ -129,7 +129,11 @@ namespace Sulakore.Network.Protocol
                     }
                 }
             }
-            return ConstructTails(id, body);
+            return body.ToArray();
+        }
+        public byte[] Construct(ushort id, params object[] values)
+        {
+            return ConstructTails(id, GetBytes(values));
         }
         public void PlaceBytes(IList<byte> data, IList<byte> destination, int index)
         {
@@ -142,6 +146,7 @@ namespace Sulakore.Network.Protocol
         public abstract Task<HPacket> ReceivePacketAsync(HNode node);
         protected abstract byte[] ConstructTails(ushort id, IList<byte> body);
 
+        public abstract HPacket CreatePacket();
         public abstract HPacket CreatePacket(IList<byte> data);
         public abstract HPacket CreatePacket(ushort id, params object[] values);
 

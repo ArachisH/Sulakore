@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Sulakore.Network.Protocol;
+using System;
 using System.Globalization;
-
-using Sulakore.Network.Protocol;
 
 namespace Sulakore.Habbo
 {
@@ -20,6 +19,7 @@ namespace Sulakore.Habbo
         public HDirection BodyFacing { get; set; }
 
         public HEntityUpdate(HPacket packet)
+            : base(packet)
         {
             Index = packet.ReadInt32();
 
@@ -87,6 +87,11 @@ namespace Sulakore.Habbo
                 updates[i] = new HEntityUpdate(packet);
             }
             return updates;
+        }
+
+        protected override void WriteTo(HPacket packet)
+        {
+            throw new NotImplementedException();
         }
     }
 }

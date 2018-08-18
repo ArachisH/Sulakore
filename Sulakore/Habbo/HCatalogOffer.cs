@@ -6,7 +6,7 @@ namespace Sulakore.Habbo
     {
         public int Id { get; set; }
         public string DisplayName { get; set; }
-        
+
         public bool IsRentable { get; set; }
 
         public int CreditCost { get; set; }
@@ -14,9 +14,9 @@ namespace Sulakore.Habbo
         public int OtherCurrencyType { get; set; }
 
         public bool CanGift { get; set; }
-        
+
         public HCatalogProduct[] Products { get; set; }
-        
+
         public int ClubLevel { get; set; }
         public bool IsPet { get; set; }
         public bool AllowBundle { get; set; }
@@ -24,6 +24,7 @@ namespace Sulakore.Habbo
         public string PreviewImage { get; set; }
 
         public HCatalogOffer(HPacket packet)
+            : base(packet)
         {
             Id = packet.ReadInt32();
             DisplayName = packet.ReadUTF8();
@@ -35,7 +36,7 @@ namespace Sulakore.Habbo
             CanGift = packet.ReadBoolean();
 
             Products = new HCatalogProduct[packet.ReadInt32()];
-            for(int i = 0; i < Products.Length; i++)
+            for (int i = 0; i < Products.Length; i++)
             {
                 Products[i] = new HCatalogProduct(packet);
             }
@@ -45,6 +46,16 @@ namespace Sulakore.Habbo
             AllowBundle = packet.ReadBoolean();
 
             PreviewImage = packet.ReadUTF8();
+        }
+
+        public override HPacket ToPacket()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override void WriteTo(HPacket packet)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

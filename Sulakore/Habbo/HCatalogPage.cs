@@ -19,6 +19,7 @@ namespace Sulakore.Habbo
         public bool IsFrontPage { get; set; }
 
         public HCatalogPage(HPacket packet)
+            : base(packet)
         {
             Id = packet.ReadInt32();
             CatalogType = packet.ReadUTF8();
@@ -46,6 +47,11 @@ namespace Sulakore.Habbo
             AcceptSeasonCurrencyAsCredits = packet.ReadBoolean();
 
             IsFrontPage = (packet.ReadableBytes > 0);
+        }
+
+        protected override void WriteTo(HPacket packet)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

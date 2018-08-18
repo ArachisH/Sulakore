@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-
-using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Protocol;
+using System.Collections.Generic;
 
 namespace Sulakore.Habbo
 {
@@ -17,6 +16,7 @@ namespace Sulakore.Habbo
         public string OwnerName { get; set; }
 
         public HWallItem(HPacket packet)
+            : base(packet)
         {
             Id = int.Parse(packet.ReadUTF8());
             TypeId = packet.ReadInt32();
@@ -55,6 +55,11 @@ namespace Sulakore.Habbo
                 furniture[i] = furni;
             }
             return furniture;
+        }
+
+        protected override void WriteTo(HPacket packet)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

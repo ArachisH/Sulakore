@@ -18,6 +18,7 @@ namespace Sulakore.Habbo
         public HEntityUpdate LastUpdate { get; private set; }
 
         public HEntity(HPacket packet)
+            : base(packet)
         {
             Id = packet.ReadInt32();
             Name = packet.ReadUTF8();
@@ -98,6 +99,11 @@ namespace Sulakore.Habbo
                 entities[i] = new HEntity(packet);
             }
             return entities;
+        }
+
+        protected override void WriteTo(HPacket packet)
+        {
+            throw new NotImplementedException();
         }
     }
 }

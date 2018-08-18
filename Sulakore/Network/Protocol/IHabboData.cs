@@ -3,5 +3,6 @@
     public interface IHabboData
     {
         byte[] ToBytes();
+        HPacket ToPacket();
     }
 }

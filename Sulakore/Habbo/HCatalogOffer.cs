@@ -14,7 +14,6 @@ namespace Sulakore.Habbo
         public int OtherCurrencyType { get; set; }
 
         public bool CanGift { get; set; }
-
         public HCatalogProduct[] Products { get; set; }
 
         public int ClubLevel { get; set; }
@@ -47,15 +46,27 @@ namespace Sulakore.Habbo
 
             PreviewImage = packet.ReadUTF8();
         }
-
-        public override HPacket ToPacket()
-        {
-            throw new System.NotImplementedException();
-        }
-
+        
         public override void WriteTo(HPacket packet)
         {
-            throw new System.NotImplementedException();
+            packet.Write(Id);
+            packet.Write(DisplayName);
+            packet.Write(IsRentable);
+            packet.Write(CreditCost);
+            packet.Write(OtherCurrencyCost);
+            packet.Write(OtherCurrencyType);
+            packet.Write(CanGift);
+
+            packet.Write(Products.Length);
+            foreach (HCatalogProduct product in Products)
+            {
+                product.WriteTo(packet);
+            }
+
+            packet.Write(ClubLevel);
+            packet.Write(IsPet);
+            packet.Write(AllowBundle);
+            packet.Write(PreviewImage);
         }
     }
 }

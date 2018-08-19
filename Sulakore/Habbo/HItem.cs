@@ -1,4 +1,5 @@
 ﻿using Sulakore.Network.Protocol;
+using System.Collections.Generic;
 
 namespace Sulakore.Habbo
 {
@@ -16,20 +17,22 @@ namespace Sulakore.Habbo
         public HItem(HPacket packet)
             : base(packet)
         {
-            packet.ReadInt32();
+            Remnants.Enqueue(packet.ReadInt32());
+
             string unknown1 = packet.ReadUTF8();
+            Remnants.Enqueue(unknown1);
 
             Id = packet.ReadInt32();
             TypeId = packet.ReadInt32();
-            packet.ReadInt32();
+            Remnants.Enqueue(packet.ReadInt32());
 
             Category = packet.ReadInt32();
             Stuff = ReadData(packet, Category);
 
-            packet.ReadBoolean();
-            packet.ReadBoolean();
-            packet.ReadBoolean();
-            packet.ReadBoolean();
+            Remnants.Enqueue(packet.ReadBoolean());
+            Remnants.Enqueue(packet.ReadBoolean());
+            Remnants.Enqueue(packet.ReadBoolean());
+            Remnants.Enqueue(packet.ReadBoolean());
             SecondsToExpiration = packet.ReadInt32();
 
             HasRentPeriodStarted = packet.ReadBoolean();
@@ -38,8 +41,16 @@ namespace Sulakore.Habbo
             if (unknown1 == "S")
             {
                 SlotId = packet.ReadUTF8();
-                packet.ReadInt32();
+                Remnants.Enqueue(packet.ReadInt32());
             }
+        }
+
+        public override void WriteTo(HPacket packet)
+        {
+            packet.Write((int)Remnants.Dequeue());
+
+            string unknown1 = (string)Remnants.Dequeue();
+            packet.Write(unknown1);
         }
 
         public static HItem[] Parse(HPacket packet)
@@ -54,10 +65,20 @@ namespace Sulakore.Habbo
             }
             return items;
         }
-
-        public override void WriteTo(HPacket packet)
+        public static HPacket ToPacket(ushort packetId, HFormat format, IList<HItem> items)
         {
-            throw new System.NotImplementedException();
+            HPacket packet = format.CreatePacket(packetId);
+
+            packet.Write(0);
+            packet.Write(0);
+
+            packet.Write(items.Count);
+            foreach (HItem item in items)
+            {
+                item.WriteTo(packet);
+            }
+
+            return packet;
         }
     }
 }

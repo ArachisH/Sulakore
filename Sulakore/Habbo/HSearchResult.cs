@@ -42,7 +42,7 @@ namespace Sulakore.Habbo
             packet.Write(Rooms.Length);
             for (int i = 0; i < Rooms.Length; i++)
             {
-                packet.Write(Rooms[i]);
+                Rooms[i].WriteTo(packet);
             }
         }
 

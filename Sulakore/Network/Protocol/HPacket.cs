@@ -4,7 +4,6 @@ using System.Text;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Sulakore.Habbo;
 
 namespace Sulakore.Network.Protocol
 {
@@ -186,11 +185,6 @@ namespace Sulakore.Network.Protocol
         #endregion
 
         #region Write Methods
-        public void Write(HData data)
-        {
-            data.WriteTo(this);
-        }
-
         public void Write(int value)
         {
             Write(value, _body.Count);

@@ -1,6 +1,8 @@
-﻿using Sulakore.Network.Protocol;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+
+using Sulakore.Network.Protocol;
 
 namespace Sulakore.Habbo
 {
@@ -29,8 +31,11 @@ namespace Sulakore.Habbo
             HeadFacing = (HDirection)packet.ReadInt32();
             BodyFacing = (HDirection)packet.ReadInt32();
 
-            string[] actionData = packet.ReadUTF8()
-                .Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            string action = packet.ReadUTF8();
+            Remnants.Enqueue(action);
+
+            string[] actionData = action.Split(
+                new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
 
             foreach (string actionInfo in actionData)
             {
@@ -79,6 +84,19 @@ namespace Sulakore.Habbo
             }
         }
 
+        public override void WriteTo(HPacket packet)
+        {
+            packet.Write(Index);
+            packet.Write(Tile.X);
+            packet.Write(Tile.Y);
+            packet.Write(Tile.Z.ToString(CultureInfo.InvariantCulture));
+
+            packet.Write((int)HeadFacing);
+            packet.Write((int)BodyFacing);
+
+            packet.Write((string)Remnants.Dequeue());
+        }
+
         public static HEntityUpdate[] Parse(HPacket packet)
         {
             var updates = new HEntityUpdate[packet.ReadInt32()];
@@ -88,10 +106,17 @@ namespace Sulakore.Habbo
             }
             return updates;
         }
-
-        public override void WriteTo(HPacket packet)
+        public static HPacket ToPacket(ushort packetId, HFormat format, IList<HEntityUpdate> updates)
         {
-            throw new NotImplementedException();
+            HPacket packet = format.CreatePacket(packetId);
+
+            packet.Write(updates.Count);
+            foreach (HEntityUpdate update in updates)
+            {
+                update.WriteTo(packet);
+            }
+
+            return packet;
         }
     }
 }

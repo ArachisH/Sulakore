@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Globalization;
+using System.Collections.Generic;
 
 using Sulakore.Network.Protocol;
+using System.Linq;
 
 namespace Sulakore.Habbo
 {
@@ -13,6 +15,7 @@ namespace Sulakore.Habbo
         public string Name { get; set; }
         public string Motto { get; set; }
         public HGender Gender { get; set; }
+        public int EntityType { get; set; }
         public string FigureId { get; set; }
         public string FavoriteGroup { get; set; }
         public HEntityUpdate LastUpdate { get; private set; }
@@ -29,46 +32,46 @@ namespace Sulakore.Habbo
             Tile = new HPoint(packet.ReadInt32(), packet.ReadInt32(),
                 double.Parse(packet.ReadUTF8(), CultureInfo.InvariantCulture));
 
-            packet.ReadInt32();
-            int type = packet.ReadInt32();
+            Remnants.Enqueue(packet.ReadInt32());
+            EntityType = packet.ReadInt32();
 
-            switch (type)
+            switch (EntityType)
             {
                 case 1:
                 {
                     Gender = (HGender)packet.ReadUTF8().ToLower()[0];
-                    packet.ReadInt32();
-                    packet.ReadInt32();
+                    Remnants.Enqueue(packet.ReadInt32());
+                    Remnants.Enqueue(packet.ReadInt32());
                     FavoriteGroup = packet.ReadUTF8();
-                    packet.ReadUTF8();
-                    packet.ReadInt32();
-                    packet.ReadBoolean();
+                    Remnants.Enqueue(packet.ReadUTF8());
+                    Remnants.Enqueue(packet.ReadInt32());
+                    Remnants.Enqueue(packet.ReadBoolean());
                     break;
                 }
                 case 2:
                 {
-                    packet.ReadInt32();
-                    packet.ReadInt32();
-                    packet.ReadUTF8();
-                    packet.ReadInt32();
-                    packet.ReadBoolean();
-                    packet.ReadBoolean();
-                    packet.ReadBoolean();
-                    packet.ReadBoolean();
-                    packet.ReadBoolean();
-                    packet.ReadBoolean();
-                    packet.ReadInt32();
-                    packet.ReadUTF8();
+                    Remnants.Enqueue(packet.ReadInt32());
+                    Remnants.Enqueue(packet.ReadInt32());
+                    Remnants.Enqueue(packet.ReadUTF8());
+                    Remnants.Enqueue(packet.ReadInt32());
+                    Remnants.Enqueue(packet.ReadBoolean());
+                    Remnants.Enqueue(packet.ReadBoolean());
+                    Remnants.Enqueue(packet.ReadBoolean());
+                    Remnants.Enqueue(packet.ReadBoolean());
+                    Remnants.Enqueue(packet.ReadBoolean());
+                    Remnants.Enqueue(packet.ReadBoolean());
+                    Remnants.Enqueue(packet.ReadInt32());
+                    Remnants.Enqueue(packet.ReadUTF8());
                     break;
                 }
                 case 4:
                 {
-                    packet.ReadUTF8();
-                    packet.ReadInt32();
-                    packet.ReadUTF8();
+                    Remnants.Enqueue(packet.ReadUTF8());
+                    Remnants.Enqueue(packet.ReadInt32());
+                    Remnants.Enqueue(packet.ReadUTF8());
                     for (int j = packet.ReadInt32(); j > 0; j--)
                     {
-                        packet.ReadUInt16();
+                        Remnants.Enqueue(packet.ReadUInt16());
                     }
                     break;
                 }
@@ -91,6 +94,67 @@ namespace Sulakore.Habbo
             return true;
         }
 
+        public override void WriteTo(HPacket packet)
+        {
+            packet.Write(Id);
+            packet.Write(Name);
+            packet.Write(Motto);
+            packet.Write(FigureId);
+            packet.Write(Index);
+
+            packet.Write(Tile.X);
+            packet.Write(Tile.Z);
+            packet.Write(Tile.Z.ToString(CultureInfo.InvariantCulture));
+
+            packet.Write((int)Remnants.Dequeue());
+            packet.Write(EntityType);
+
+            switch (EntityType)
+            {
+                case 1:
+                {
+                    packet.Write(Gender.ToString().Substring(0, 1));
+                    packet.Write((int)Remnants.Dequeue());
+                    packet.Write((int)Remnants.Dequeue());
+                    packet.Write(FavoriteGroup);
+                    packet.Write((string)Remnants.Dequeue());
+                    packet.Write((int)Remnants.Dequeue());
+                    packet.Write((bool)Remnants.Dequeue());
+                    break;
+                }
+                case 2:
+                {
+                    packet.Write((int)Remnants.Dequeue());
+                    packet.Write((int)Remnants.Dequeue());
+                    packet.Write((string)Remnants.Dequeue());
+                    packet.Write((int)Remnants.Dequeue());
+                    packet.Write((bool)Remnants.Dequeue());
+                    packet.Write((bool)Remnants.Dequeue());
+                    packet.Write((bool)Remnants.Dequeue());
+                    packet.Write((bool)Remnants.Dequeue());
+                    packet.Write((bool)Remnants.Dequeue());
+                    packet.Write((bool)Remnants.Dequeue());
+                    packet.Write((int)Remnants.Dequeue());
+                    packet.Write((string)Remnants.Dequeue());
+                    break;
+                }
+                case 3:
+                {
+                    packet.Write((string)Remnants.Dequeue());
+                    packet.Write((int)Remnants.Dequeue());
+                    packet.Write((string)Remnants.Dequeue());
+
+                    var j = (int)Remnants.Dequeue();
+                    packet.Write(j);
+                    for (int i = 0; i < j; i++)
+                    {
+                        packet.Write((ushort)Remnants.Dequeue());
+                    }
+                    break;
+                }
+            }
+        }
+
         public static HEntity[] Parse(HPacket packet)
         {
             var entities = new HEntity[packet.ReadInt32()];
@@ -100,10 +164,17 @@ namespace Sulakore.Habbo
             }
             return entities;
         }
-
-        public override void WriteTo(HPacket packet)
+        public static HPacket ToPacket(ushort packetId, HFormat format, IList<HEntity> entities)
         {
-            throw new NotImplementedException();
+            HPacket packet = format.CreatePacket(packetId);
+
+            packet.Write(entities.Count);
+            foreach (HEntity entity in entities)
+            {
+                entity.WriteTo(packet);
+            }
+
+            return packet;
         }
     }
 }

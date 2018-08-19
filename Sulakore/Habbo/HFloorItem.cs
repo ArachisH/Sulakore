@@ -55,7 +55,7 @@ namespace Sulakore.Habbo
             Stuff = furni.Stuff;
             Facing = furni.Facing;
         }
-        
+
         public override void WriteTo(HPacket packet)
         {
             packet.Write(Id);
@@ -95,10 +95,29 @@ namespace Sulakore.Habbo
             }
             return furniture;
         }
-        public static HPacket ToPacket(IList<HFloorItem> items)
+        public static HPacket ToPacket(ushort packetId, HFormat format, IList<HFloorItem> floorItems)
         {
-            // TODO: GL GEEKER, GOT CARRIED AWAY,i give up
-            return null;
+            HPacket packet = format.CreatePacket(packetId);
+
+            packet.Write(0);
+            var owners = new Dictionary<int, string>();
+            foreach (HFloorItem floorItem in floorItems)
+            {
+                if (owners.ContainsKey(floorItem.OwnerId)) continue;
+                owners.Add(floorItem.OwnerId, floorItem.OwnerName);
+
+                packet.Write(floorItem.OwnerId);
+                packet.Write(floorItem.OwnerName);
+            }
+            packet.Write(owners.Count, 0);
+
+            packet.Write(floorItems.Count);
+            foreach (HFloorItem floorItem in floorItems)
+            {
+                floorItem.WriteTo(packet);
+            }
+
+            return packet;
         }
     }
 }

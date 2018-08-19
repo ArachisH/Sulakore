@@ -1,4 +1,5 @@
 ﻿using Sulakore.Network.Protocol;
+using System.Collections.Generic;
 
 namespace Sulakore.Habbo
 {
@@ -80,6 +81,22 @@ namespace Sulakore.Habbo
                 friends[i] = new HFriendData(packet);
             }
             return friends;
+        }
+        public static HPacket ToPacket(ushort packetId, HFormat format, IList<HFriendData> friends)
+        {
+            HPacket packet = format.CreatePacket(packetId);
+
+            packet.Write(0);
+            packet.Write(0);
+
+            packet.Write(friends.Count);
+            foreach (HFriendData friend in friends)
+            {
+                friend.WriteTo(packet);
+            }
+            // How I add 'addedFriends/removedFriends' GEEKER?!
+
+            return packet;
         }
     }
 }

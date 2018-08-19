@@ -4,5 +4,6 @@
     {
         byte[] ToBytes();
         HPacket ToPacket();
+        void WriteTo(HPacket packet);
     }
 }

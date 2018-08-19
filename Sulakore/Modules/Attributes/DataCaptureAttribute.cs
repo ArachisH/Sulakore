@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Reflection;
-using Sulakore.Habbo;
+
 using Sulakore.Network;
 using Sulakore.Network.Protocol;
 

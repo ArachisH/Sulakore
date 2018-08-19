@@ -43,7 +43,7 @@ namespace Sulakore.Habbo
 
         public override void WriteTo(HPacket packet)
         {
-            packet.Write(Type.ToString().Substring(0, 1).ToLower());
+            packet.Write((char)Type);
             switch (Type)
             {
                 case HProductType.Badge:

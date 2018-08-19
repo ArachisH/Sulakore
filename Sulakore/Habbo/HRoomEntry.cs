@@ -105,6 +105,7 @@ namespace Sulakore.Habbo
 
             //TODO: Not happy with this
             int bitmaskPosition = packet.BodyLength;
+            packet.Write(0);
             HRoomFlags flags = HRoomFlags.None;
 
             if (!string.IsNullOrEmpty(ThumbnailUrl))

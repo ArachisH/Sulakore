@@ -11,6 +11,7 @@ namespace Sulakore.Habbo
         public int Category { get; set; }
         public string SlotId { get; set; }
         public object[] Stuff { get; set; }
+        public bool IsGroupable { get; set; }
         public int SecondsToExpiration { get; set; }
         public bool HasRentPeriodStarted { get; set; }
 
@@ -29,7 +30,7 @@ namespace Sulakore.Habbo
             Category = packet.ReadInt32();
             Stuff = ReadData(packet, Category);
 
-            Remnants.Enqueue(packet.ReadBoolean());
+            IsGroupable = packet.ReadBoolean();
             Remnants.Enqueue(packet.ReadBoolean());
             Remnants.Enqueue(packet.ReadBoolean());
             Remnants.Enqueue(packet.ReadBoolean());

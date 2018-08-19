@@ -11,6 +11,7 @@ namespace Sulakore.Habbo
         public string Location { get; set; }
         public string State { get; set; }
         public int SecondsToExpiration { get; set; }
+        public int UsagePolicy { get; set; }
 
         public int OwnerId { get; set; }
         public string OwnerName { get; set; }
@@ -23,10 +24,8 @@ namespace Sulakore.Habbo
 
             Location = packet.ReadUTF8();
             State = packet.ReadUTF8();
-
             SecondsToExpiration = packet.ReadInt32();
-
-            int loc1 = packet.ReadInt32(); //usagePolicy?
+            UsagePolicy = packet.ReadInt32();
 
             OwnerId = packet.ReadInt32();
         }
@@ -35,6 +34,19 @@ namespace Sulakore.Habbo
         {
             Location = furni.Location;
             State = furni.State;
+        }
+
+        public override void WriteTo(HPacket packet)
+        {
+            packet.Write(Id);
+            packet.Write(TypeId);
+
+            packet.Write(Location);
+            packet.Write(State);
+
+            packet.Write(SecondsToExpiration);
+            packet.Write(UsagePolicy);
+            packet.Write(OwnerId);
         }
 
         public static HWallItem[] Parse(HPacket packet)
@@ -56,10 +68,29 @@ namespace Sulakore.Habbo
             }
             return furniture;
         }
-
-        public override void WriteTo(HPacket packet)
+        public static HPacket ToPacket(ushort packetId, HFormat format, IList<HWallItem> wallItems)
         {
-            throw new System.NotImplementedException();
+            HPacket packet = format.CreatePacket(packetId);
+
+            packet.Write(0);
+            var owners = new Dictionary<int, string>();
+            foreach (HWallItem wallItem in wallItems)
+            {
+                if (owners.ContainsKey(wallItem.OwnerId)) continue;
+                owners.Add(wallItem.OwnerId, wallItem.OwnerName);
+
+                packet.Write(wallItem.OwnerId);
+                packet.Write(wallItem.OwnerName);
+            }
+            packet.Write(owners.Count, 0);
+
+            packet.Write(wallItems.Count);
+            foreach (HWallItem wallItem in wallItems)
+            {
+                wallItem.WriteTo(packet);
+            }
+
+            return packet;
         }
     }
 }

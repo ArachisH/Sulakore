@@ -21,7 +21,7 @@ namespace Sulakore.Habbo
             Remnants = new Queue<object>();
         }
 
-        protected void Queue
+        //protected void Queue
         protected object[] ReadData(HPacket packet, int category)
         {
             var values = new List<object>();

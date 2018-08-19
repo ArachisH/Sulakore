@@ -94,7 +94,6 @@ namespace Sulakore.Habbo
             {
                 friend.WriteTo(packet);
             }
-            // How I add 'addedFriends/removedFriends' GEEKER?!
 
             return packet;
         }

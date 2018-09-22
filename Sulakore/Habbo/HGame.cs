@@ -78,7 +78,6 @@ namespace Sulakore.Habbo
         }
         public HGame(byte[] data)
             : this(new MemoryStream(data))
-
         { }
         public HGame(Stream input)
             : this(input, false)
@@ -216,7 +215,7 @@ namespace Sulakore.Habbo
                     int validNameIndex = -1;
                     if (!nameIndices.TryGetValue(@namespace.Name, out validNameIndex))
                     {
-                        string validName = ("Namespace_" + namespaceCount.ToString("0000"));
+                        string validName = ($"Namespace_{++namespaceCount:0000}");
                         validNameIndex = abc.Pool.AddConstant(validName, false);
 
                         nameIndices.Add(@namespace.Name, validNameIndex);
@@ -236,11 +235,11 @@ namespace Sulakore.Habbo
                     ASInstance instance = @class.Instance;
                     if (instance.IsInterface)
                     {
-                        validName = ("IInterface_" + (++interfaceCount).ToString("0000"));
+                        validName = ($"IInterface_{++interfaceCount:0000}");
                     }
                     else
                     {
-                        validName = ("Class_" + (++classCount).ToString("0000"));
+                        validName = ($"Class_{++classCount:0000}");
                     }
 
                     ASMultiname qname = instance.QName;

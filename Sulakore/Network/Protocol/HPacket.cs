@@ -324,6 +324,8 @@ namespace Sulakore.Network.Protocol
         {
             _body.RemoveRange(position, length);
             _body.InsertRange(position, value);
+
+            ResetCache();
         }
         #endregion
 

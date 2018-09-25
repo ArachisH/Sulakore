@@ -75,7 +75,7 @@ namespace Sulakore.Crypto
                     pool = new int[_table.Length];
                     Array.Copy(_table, pool, pool.Length);
                 }
-                for (int k = offset; k < length; k++)
+                for (int k = offset, l = 0; l < length; k++, l++)
                 {
                     _i++;
                     _i %= _table.Length;

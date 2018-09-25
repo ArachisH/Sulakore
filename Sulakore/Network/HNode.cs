@@ -312,8 +312,7 @@ namespace Sulakore.Network
 
             if (read > 0 && IsDecrypting && Decrypter != null)
             {
-                Decrypter.RefParse(buffer, offset, read,
-                    socketFlags.HasFlag(SocketFlags.Peek));
+                Decrypter.RefParse(buffer, offset, read, socketFlags.HasFlag(SocketFlags.Peek));
             }
             return read;
         }

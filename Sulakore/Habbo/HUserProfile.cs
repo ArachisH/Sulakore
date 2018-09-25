@@ -2,7 +2,7 @@
 
 namespace Sulakore.Habbo
 {
-    public class HUserProfile : HData
+    public class HUserProfile
     {
         public int Id { get; set; }
         public string Username { get; set; }
@@ -22,7 +22,6 @@ namespace Sulakore.Habbo
         public bool OpenProfileView { get; set; }
 
         public HUserProfile(HPacket packet)
-            : base(packet)
         {
             Id = packet.ReadInt32();
             Username = packet.ReadUTF8();
@@ -43,29 +42,6 @@ namespace Sulakore.Habbo
             }
             LastAccessSinceInSeconds = packet.ReadInt32();
             OpenProfileView = packet.ReadBoolean();
-        }
-
-        public override void WriteTo(HPacket packet)
-        {
-            packet.Write(Id);
-            packet.Write(Username);
-            packet.Write(Motto);
-            packet.Write(Figure);
-            packet.Write(CreationDate);
-            packet.Write(AchievementScore);
-            packet.Write(FriendCount);
-
-            packet.Write(IsFriend);
-            packet.Write(IsFriendRequestSent);
-            packet.Write(IsOnline);
-
-            packet.Write(Groups.Length);
-            foreach(var group in Groups)
-            {
-                group.WriteTo(packet);
-            }
-            packet.Write(LastAccessSinceInSeconds);
-            packet.Write(OpenProfileView);
         }
     }
 }

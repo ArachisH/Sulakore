@@ -2,7 +2,7 @@
 
 namespace Sulakore.Habbo
 {
-    public class HCatalogPage : HData
+    public class HCatalogPage
     {
         public int Id { get; set; }
         public string CatalogType { get; set; }
@@ -19,7 +19,6 @@ namespace Sulakore.Habbo
         public bool IsFrontPage { get; set; }
 
         public HCatalogPage(HPacket packet)
-            : base(packet)
         {
             Id = packet.ReadInt32();
             CatalogType = packet.ReadUTF8();
@@ -45,40 +44,8 @@ namespace Sulakore.Habbo
 
             OfferId = packet.ReadInt32();
             AcceptSeasonCurrencyAsCredits = packet.ReadBoolean();
-
-            //TODO: ?????????????
+            
             IsFrontPage = (packet.ReadableBytes > 0);
-        }
-
-        public override void WriteTo(HPacket packet)
-        {
-            packet.Write(Id);
-            packet.Write(CatalogType);
-            packet.Write(LayoutCode);
-
-            packet.Write(Images.Length);
-            foreach (string image in Images)
-            {
-                packet.Write(image);
-            }
-
-            packet.Write(Texts.Length);
-            foreach (string text in Texts)
-            {
-                packet.Write(text);
-            }
-
-            packet.Write(Offers.Length);
-            foreach (HCatalogOffer offer in Offers)
-            {
-                offer.WriteTo(packet);
-            }
-
-            packet.Write(OfferId);
-            packet.Write(AcceptSeasonCurrencyAsCredits);
-
-            // TODO: ????????????????????
-            // IsFrontPage??
         }
     }
 }

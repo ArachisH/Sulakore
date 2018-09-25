@@ -2,7 +2,7 @@
 
 namespace Sulakore.Habbo
 {
-    public class HSearchResult : HData
+    public class HSearchResult
     {
         public string SearchCode { get; set; }
         public string Text { get; set; }
@@ -14,7 +14,6 @@ namespace Sulakore.Habbo
         public HRoomEntry[] Rooms { get; set; }
 
         public HSearchResult(HPacket packet)
-            : base(packet)
         {
             SearchCode = packet.ReadUTF8();
             Text = packet.ReadUTF8();
@@ -27,22 +26,6 @@ namespace Sulakore.Habbo
             for (int i = 0; i < Rooms.Length; i++)
             {
                 Rooms[i] = new HRoomEntry(packet);
-            }
-        }
-        
-        public override void WriteTo(HPacket packet)
-        {
-            packet.Write(SearchCode);
-            packet.Write(Text);
-
-            packet.Write(ActionAllowed);
-            packet.Write(ForceClosed);
-            packet.Write(ViewMode);
-
-            packet.Write(Rooms.Length);
-            for (int i = 0; i < Rooms.Length; i++)
-            {
-                Rooms[i].WriteTo(packet);
             }
         }
 

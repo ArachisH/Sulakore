@@ -37,7 +37,6 @@ namespace Sulakore.Habbo
         public bool ShowEntryAd { get; set; }
 
         public HRoomEntry(HPacket packet)
-            : base(packet)
         {
             Id = packet.ReadInt32();
             Name = packet.ReadUTF8();
@@ -83,58 +82,6 @@ namespace Sulakore.Habbo
             ShowOwner = roomEntryBitmask.HasFlag(HRoomFlags.ShowOwner);
             AllowPets = roomEntryBitmask.HasFlag(HRoomFlags.AllowPets);
             ShowEntryAd = roomEntryBitmask.HasFlag(HRoomFlags.ShowRoomAd);
-        }
-
-        public override void WriteTo(HPacket packet)
-        {
-            packet.Write(Id);
-            packet.Write(Name);
-
-            packet.Write(OwnerId);
-            packet.Write(OwnerName);
-
-            packet.Write(DoorMode);
-            packet.Write(UserCount);
-            packet.Write(MaxUserCount);
-
-            packet.Write(Description);
-            packet.Write(TradeMode);
-            packet.Write(Ranking);
-            packet.Write(Category);
-            packet.Write(Stars);
-
-            //TODO: Not happy with this
-            int bitmaskPosition = packet.BodyLength;
-            packet.Write(0);
-            HRoomFlags flags = HRoomFlags.None;
-
-            if (!string.IsNullOrEmpty(ThumbnailUrl))
-            {
-                flags |= HRoomFlags.HasCustomThumbnail;
-                packet.Write(ThumbnailUrl);
-            }
-
-            if (!string.IsNullOrEmpty(GroupName) && !string.IsNullOrEmpty(GroupBadgeCode))
-            {
-                flags |= HRoomFlags.HasGroup;
-                packet.Write(GroupId);
-                packet.Write(GroupName);
-                packet.Write(GroupBadgeCode);
-            }
-
-            if (!string.IsNullOrEmpty(AdName) && !string.IsNullOrEmpty(AdDescription))
-            {
-                flags |= HRoomFlags.HasAdvertisement;
-                packet.Write(AdName);
-                packet.Write(AdDescription);
-                packet.Write(AdExpiresInMinutes);
-            }
-
-            flags |= ShowOwner ? HRoomFlags.ShowOwner : 0;
-            flags |= AllowPets ? HRoomFlags.AllowPets : 0;
-            flags |= ShowEntryAd ? HRoomFlags.ShowRoomAd : 0;
-
-            packet.Write((int)flags, bitmaskPosition);
         }
     }
 }

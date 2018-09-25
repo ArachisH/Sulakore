@@ -22,7 +22,6 @@ namespace Sulakore.Habbo
         public string OwnerName { get; set; }
 
         public HFloorItem(HPacket packet)
-            : base(packet)
         {
             Id = packet.ReadInt32();
             TypeId = packet.ReadInt32();
@@ -33,8 +32,8 @@ namespace Sulakore.Habbo
             tile.Z = double.Parse(packet.ReadUTF8(), CultureInfo.InvariantCulture);
             Tile = tile;
 
-            Remnants.Enqueue(packet.ReadUTF8());
-            Remnants.Enqueue(packet.ReadInt32());
+            packet.ReadUTF8();
+            packet.ReadInt32();
 
             Category = packet.ReadInt32();
             Stuff = ReadData(packet, Category);
@@ -45,34 +44,7 @@ namespace Sulakore.Habbo
             OwnerId = packet.ReadInt32();
             if (TypeId < 0)
             {
-                Remnants.Enqueue(packet.ReadUTF8());
-            }
-        }
-
-        public void Update(HFloorItem furni)
-        {
-            Tile = furni.Tile;
-            Stuff = furni.Stuff;
-            Facing = furni.Facing;
-        }
-
-        public override void WriteTo(HPacket packet)
-        {
-            packet.Write(Id);
-            packet.Write(TypeId);
-            packet.Write(Tile.X, Tile.X);
-            packet.Write((int)Facing);
-            packet.Write(Tile.Z.ToString(CultureInfo.InvariantCulture));
-            packet.Write((string)Remnants.Dequeue());
-            packet.Write((int)Remnants.Dequeue());
-            packet.Write(Category);
-            packet.Write(Format.GetBytes(Stuff));
-            packet.Write(SecondsToExpiration);
-            packet.Write(UsagePolicy);
-            packet.Write(OwnerId);
-            if (TypeId < 0)
-            {
-                packet.Write((string)Remnants.Dequeue());
+                packet.ReadUTF8();
             }
         }
 
@@ -94,30 +66,6 @@ namespace Sulakore.Habbo
                 furniture[i] = furni;
             }
             return furniture;
-        }
-        public static HPacket ToPacket(ushort packetId, HFormat format, IList<HFloorItem> floorItems)
-        {
-            HPacket packet = format.CreatePacket(packetId);
-
-            packet.Write(0);
-            var owners = new Dictionary<int, string>();
-            foreach (HFloorItem floorItem in floorItems)
-            {
-                if (owners.ContainsKey(floorItem.OwnerId)) continue;
-                owners.Add(floorItem.OwnerId, floorItem.OwnerName);
-
-                packet.Write(floorItem.OwnerId);
-                packet.Write(floorItem.OwnerName);
-            }
-            packet.Write(owners.Count, 0);
-
-            packet.Write(floorItems.Count);
-            foreach (HFloorItem floorItem in floorItems)
-            {
-                floorItem.WriteTo(packet);
-            }
-
-            return packet;
         }
     }
 }

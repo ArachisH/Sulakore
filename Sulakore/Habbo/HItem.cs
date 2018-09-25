@@ -1,5 +1,4 @@
 ﻿using Sulakore.Network.Protocol;
-using System.Collections.Generic;
 
 namespace Sulakore.Habbo
 {
@@ -16,42 +15,32 @@ namespace Sulakore.Habbo
         public bool HasRentPeriodStarted { get; set; }
 
         public HItem(HPacket packet)
-            : base(packet)
         {
-            Remnants.Enqueue(packet.ReadInt32());
+            packet.ReadInt32();
 
-            string unknown1 = packet.ReadUTF8();
-            Remnants.Enqueue(unknown1);
+            string loc2 = packet.ReadUTF8();
 
             Id = packet.ReadInt32();
             TypeId = packet.ReadInt32();
-            Remnants.Enqueue(packet.ReadInt32());
+            packet.ReadInt32();
 
             Category = packet.ReadInt32();
             Stuff = ReadData(packet, Category);
 
             IsGroupable = packet.ReadBoolean();
-            Remnants.Enqueue(packet.ReadBoolean());
-            Remnants.Enqueue(packet.ReadBoolean());
-            Remnants.Enqueue(packet.ReadBoolean());
+            packet.ReadBoolean();
+            packet.ReadBoolean();
+            packet.ReadBoolean();
             SecondsToExpiration = packet.ReadInt32();
 
             HasRentPeriodStarted = packet.ReadBoolean();
             RoomId = packet.ReadInt32();
 
-            if (unknown1 == "S")
+            if (loc2 == "S")
             {
                 SlotId = packet.ReadUTF8();
-                Remnants.Enqueue(packet.ReadInt32());
+                packet.ReadInt32();
             }
-        }
-
-        public override void WriteTo(HPacket packet)
-        {
-            packet.Write((int)Remnants.Dequeue());
-
-            string unknown1 = (string)Remnants.Dequeue();
-            packet.Write(unknown1);
         }
 
         public static HItem[] Parse(HPacket packet)
@@ -65,21 +54,6 @@ namespace Sulakore.Habbo
                 items[i] = new HItem(packet);
             }
             return items;
-        }
-        public static HPacket ToPacket(ushort packetId, HFormat format, IList<HItem> items)
-        {
-            HPacket packet = format.CreatePacket(packetId);
-
-            packet.Write(0);
-            packet.Write(0);
-
-            packet.Write(items.Count);
-            foreach (HItem item in items)
-            {
-                item.WriteTo(packet);
-            }
-
-            return packet;
         }
     }
 }

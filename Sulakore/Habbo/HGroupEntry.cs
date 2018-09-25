@@ -1,10 +1,8 @@
-﻿using System;
-
-using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Protocol;
 
 namespace Sulakore.Habbo
 {
-    public class HGroupEntry : IHabboData
+    public class HGroupEntry
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -28,21 +26,5 @@ namespace Sulakore.Habbo
             OwnerId = packet.ReadInt32();
             HasForum = packet.ReadBoolean();
         }
-
-        public void WriteTo(HPacket packet)
-        {
-            packet.Write(Id);
-            packet.Write(Name);
-            packet.Write(BadgeCode);
-            packet.Write(PrimaryColor);
-            packet.Write(SecondaryColor);
-
-            packet.Write(Favorite);
-            packet.Write(OwnerId);
-            packet.Write(HasForum);
-        }
-        
-        public byte[] ToBytes() => throw new NotImplementedException();
-        public HPacket ToPacket() => throw new NotSupportedException();
     }
 }

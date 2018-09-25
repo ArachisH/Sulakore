@@ -2,7 +2,7 @@
 
 namespace Sulakore.Habbo
 {
-    public class HCatalogProduct : HData
+    public class HCatalogProduct
     {
         public HProductType Type { get; set; }
         public int ClassId { get; set; }
@@ -15,7 +15,6 @@ namespace Sulakore.Habbo
         public int LimitedRemaining { get; set; }
 
         public HCatalogProduct(HPacket packet)
-            : base(packet)
         {
             Type = (HProductType)packet.ReadUTF8()[0];
             switch (Type)
@@ -35,33 +34,6 @@ namespace Sulakore.Habbo
                     {
                         LimitedTotal = packet.ReadInt32();
                         LimitedRemaining = packet.ReadInt32();
-                    }
-                    break;
-                }
-            }
-        }
-
-        public override void WriteTo(HPacket packet)
-        {
-            packet.Write((char)Type);
-            switch (Type)
-            {
-                case HProductType.Badge:
-                {
-                    packet.Write(ExtraData);
-                    break;
-                }
-                default:
-                {
-                    packet.Write(ClassId);
-                    packet.Write(ExtraData);
-                    packet.Write(ProductCount);
-
-                    packet.Write(IsLimited);
-                    if (IsLimited)
-                    {
-                        packet.Write(LimitedTotal);
-                        packet.Write(LimitedRemaining);
                     }
                     break;
                 }

@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 
 using Sulakore.Network.Protocol;
 
 namespace Sulakore.Habbo
 {
-    public class HEntityUpdate : HData
+    public class HEntityUpdate
     {
         public int Index { get; set; }
         public bool IsController { get; set; }
@@ -21,7 +20,6 @@ namespace Sulakore.Habbo
         public HDirection BodyFacing { get; set; }
 
         public HEntityUpdate(HPacket packet)
-            : base(packet)
         {
             Index = packet.ReadInt32();
 
@@ -32,11 +30,7 @@ namespace Sulakore.Habbo
             BodyFacing = (HDirection)packet.ReadInt32();
 
             string action = packet.ReadUTF8();
-            Remnants.Enqueue(action);
-
-            string[] actionData = action.Split(
-                new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
-
+            string[] actionData = action.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string actionInfo in actionData)
             {
                 string[] actionValues = actionInfo.Split(' ');
@@ -84,19 +78,6 @@ namespace Sulakore.Habbo
             }
         }
 
-        public override void WriteTo(HPacket packet)
-        {
-            packet.Write(Index);
-            packet.Write(Tile.X);
-            packet.Write(Tile.Y);
-            packet.Write(Tile.Z.ToString(CultureInfo.InvariantCulture));
-
-            packet.Write((int)HeadFacing);
-            packet.Write((int)BodyFacing);
-
-            packet.Write((string)Remnants.Dequeue());
-        }
-
         public static HEntityUpdate[] Parse(HPacket packet)
         {
             var updates = new HEntityUpdate[packet.ReadInt32()];
@@ -105,18 +86,6 @@ namespace Sulakore.Habbo
                 updates[i] = new HEntityUpdate(packet);
             }
             return updates;
-        }
-        public static HPacket ToPacket(ushort packetId, HFormat format, IList<HEntityUpdate> updates)
-        {
-            HPacket packet = format.CreatePacket(packetId);
-
-            packet.Write(updates.Count);
-            foreach (HEntityUpdate update in updates)
-            {
-                update.WriteTo(packet);
-            }
-
-            return packet;
         }
     }
 }

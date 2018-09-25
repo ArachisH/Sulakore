@@ -4,24 +4,8 @@ using Sulakore.Network.Protocol;
 
 namespace Sulakore.Habbo
 {
-    public abstract class HData : IHabboData
+    public abstract class HData
     {
-        private readonly Dictionary<int, object> _remnantQueue;
-
-        protected HFormat Format { get; }
-        protected ushort PacketId { get; }
-        protected Queue<object> Remnants { get; }
-
-        public HData(HPacket packet)
-        {
-            _remnantQueue = new Dictionary<int, object>();
-
-            PacketId = packet.Id;
-            Format = packet.Format;
-            Remnants = new Queue<object>();
-        }
-
-        //protected void Queue
         protected object[] ReadData(HPacket packet, int category)
         {
             var values = new List<object>();
@@ -111,17 +95,5 @@ namespace Sulakore.Habbo
             }
             return values.ToArray();
         }
-
-        public byte[] ToBytes()
-        {
-            return ToPacket().ToBytes();
-        }
-        public virtual HPacket ToPacket()
-        {
-            HPacket packet = Format.CreatePacket(PacketId);
-            WriteTo(packet);
-            return packet;
-        }
-        public abstract void WriteTo(HPacket packet);
     }
 }

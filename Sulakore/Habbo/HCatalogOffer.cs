@@ -2,7 +2,7 @@
 
 namespace Sulakore.Habbo
 {
-    public class HCatalogOffer : HData
+    public class HCatalogOffer
     {
         public int Id { get; set; }
         public string DisplayName { get; set; }
@@ -23,7 +23,6 @@ namespace Sulakore.Habbo
         public string PreviewImage { get; set; }
 
         public HCatalogOffer(HPacket packet)
-            : base(packet)
         {
             Id = packet.ReadInt32();
             DisplayName = packet.ReadUTF8();
@@ -45,28 +44,6 @@ namespace Sulakore.Habbo
             AllowBundle = packet.ReadBoolean();
 
             PreviewImage = packet.ReadUTF8();
-        }
-        
-        public override void WriteTo(HPacket packet)
-        {
-            packet.Write(Id);
-            packet.Write(DisplayName);
-            packet.Write(IsRentable);
-            packet.Write(CreditCost);
-            packet.Write(OtherCurrencyCost);
-            packet.Write(OtherCurrencyType);
-            packet.Write(CanGift);
-
-            packet.Write(Products.Length);
-            foreach (HCatalogProduct product in Products)
-            {
-                product.WriteTo(packet);
-            }
-
-            packet.Write(ClubLevel);
-            packet.Write(IsPet);
-            packet.Write(AllowBundle);
-            packet.Write(PreviewImage);
         }
     }
 }

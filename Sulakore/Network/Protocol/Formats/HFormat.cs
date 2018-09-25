@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Sulakore.Network.Protocol
 {
@@ -109,22 +109,11 @@ namespace Sulakore.Network.Protocol
                     case TypeCode.Char: body.AddRange(GetBytes(((char)value).ToString())); break;
                     default:
                     {
-                        IList<byte> blob = null;
-                        switch (value)
+                        if (value is IList<byte> data)
                         {
-                            case IList<byte> data:
-                            blob = data;
-                            break;
-
-                            case IHabboData data:
-                            blob = data.ToBytes();
-                            break;
+                            body.AddRange(data);
                         }
-                        if (blob == null)
-                        {
-                            throw new NullReferenceException($"Unable to convert '{value.GetType().Name}' to byte[].");
-                        }
-                        body.AddRange(blob);
+                        else throw new ArgumentException($"Unable to convert '{value.GetType().Name}' to byte[].");
                         break;
                     }
                 }

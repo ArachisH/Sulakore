@@ -215,7 +215,7 @@ namespace Sulakore.Habbo
                     int validNameIndex = -1;
                     if (!nameIndices.TryGetValue(@namespace.Name, out validNameIndex))
                     {
-                        string validName = ($"Namespace_{++namespaceCount:0000}");
+                        string validName = ($"Namespace_{namespaceCount:0000}");
                         validNameIndex = abc.Pool.AddConstant(validName, false);
 
                         nameIndices.Add(@namespace.Name, validNameIndex);

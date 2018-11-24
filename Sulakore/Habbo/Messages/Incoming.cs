@@ -141,18 +141,18 @@
         public ushort HideDoorbell { get; set; }
         public ushort HotelClosedAndOpens { get; set; }
         public ushort HotelClosesAndWillOpenAt { get; set; }
+        public ushort HotelView { get; set; }
         public ushort HotelViewBadgeButtonConfig { get; set; }
         public ushort HotelViewCatalogPageExpiring { get; set; }
         public ushort HotelViewCommunityGoal { get; set; }
-        public ushort HotelView { get; set; }
         public ushort HotelViewConcurrentUsers { get; set; }
         public ushort HotelViewCustomTimer { get; set; }
         public ushort HotelViewData { get; set; }
         public ushort HotelViewExpiringCatalogPageCommposer { get; set; }
         public ushort HotelViewHideCommunityVoteButton { get; set; }
         public ushort HotelViewNextLTDAvailable { get; set; }
-        public ushort HotelWillCloseInMinutesAndBackIn { get; set; }
         public ushort HotelWillCloseInMinutes { get; set; }
+        public ushort HotelWillCloseInMinutesAndBackIn { get; set; }
         public ushort InventoryAchievements { get; set; }
         public ushort InventoryAddEffect { get; set; }
         public ushort InventoryBadges { get; set; }
@@ -167,8 +167,8 @@
         public ushort ItemsDataUpdate { get; set; }
         public ushort JukeBoxMySongs { get; set; }
         public ushort JukeBoxNowPlayingMessage { get; set; }
-        public ushort JukeBoxPlayListAddSong { get; set; }
         public ushort JukeBoxPlayList { get; set; }
+        public ushort JukeBoxPlayListAddSong { get; set; }
         public ushort JukeBoxPlayListUpdated { get; set; }
         public ushort JukeBoxPlaylistFull { get; set; }
         public ushort JukeBoxTrackCode { get; set; }
@@ -228,8 +228,8 @@
         public ushort NewNavigatorSettings { get; set; }
         public ushort NewUserGift { get; set; }
         public ushort NewUserIdentity { get; set; }
-        public ushort NewYearResolutionCompleted { get; set; }
         public ushort NewYearResolution { get; set; }
+        public ushort NewYearResolutionCompleted { get; set; }
         public ushort NewYearResolutionProgress { get; set; }
         public ushort NewsWidgets { get; set; }
         public ushort NotEnoughPointsType { get; set; }
@@ -246,7 +246,7 @@
         public ushort PetBreedingStartFailed { get; set; }
         public ushort PetBreeds { get; set; }
         public ushort PetError { get; set; }
-        public ushort PetInformation { get; set; }
+        public ushort PetInfo { get; set; }
         public ushort PetLevelUp { get; set; }
         public ushort PetLevelUpdated { get; set; }
         public ushort PetNameError { get; set; }
@@ -407,7 +407,7 @@
         public ushort YoutubeDisplayList { get; set; }
         public ushort YoutubeMessageComposer2 { get; set; }
         public ushort YoutubeMessageComposer3 { get; set; }
-        
+
         public Incoming()
         { }
         public Incoming(HGame game, string identifiersPath)

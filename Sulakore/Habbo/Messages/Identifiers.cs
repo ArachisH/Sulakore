@@ -1,22 +1,25 @@
 ﻿using System.IO;
 using System.Text;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Sulakore.Habbo.Messages
 {
-    public abstract class Identifiers
+    public abstract class Identifiers : IEnumerable<ushort>
     {
         private readonly string _section;
         private readonly Dictionary<ushort, string> _namesById;
-        private readonly Dictionary<string, ushort> _idsByName;
+        private readonly Dictionary<ushort, string> _hashesById;
         private readonly Dictionary<string, string> _namesByHash;
+        private readonly SortedDictionary<string, ushort> _idsByName;
 
         public Identifiers()
         {
             _section = GetType().Name;
             _namesById = new Dictionary<ushort, string>();
-            _idsByName = new Dictionary<string, ushort>();
+            _hashesById = new Dictionary<ushort, string>();
             _namesByHash = new Dictionary<string, string>();
+            _idsByName = new SortedDictionary<string, ushort>();
         }
         public Identifiers(HGame game, string identifiersPath)
             : this()
@@ -43,6 +46,11 @@ namespace Sulakore.Habbo.Messages
             return _idsByName.TryGetValue(name, out id);
         }
 
+        public string GetHash(ushort id)
+        {
+            _hashesById.TryGetValue(id, out string hash);
+            return hash;
+        }
         public string GetName(ushort id)
         {
             _namesById.TryGetValue(id, out string name);
@@ -73,6 +81,7 @@ namespace Sulakore.Habbo.Messages
         {
             _namesById.Clear();
             _idsByName.Clear();
+            _hashesById.Clear();
             _namesByHash.Clear();
             using (var input = new StreamReader(identifiersPath))
             {
@@ -103,6 +112,7 @@ namespace Sulakore.Habbo.Messages
                         if (id != ushort.MaxValue)
                         {
                             _namesById[id] = name;
+                            _hashesById[id] = hash;
                         }
                         _idsByName[name] = id;
                         GetType().GetProperty(name)?.SetValue(this, id);
@@ -131,6 +141,15 @@ namespace Sulakore.Habbo.Messages
                 }
                 return builder.ToString().Trim();
             }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+        public IEnumerator<ushort> GetEnumerator()
+        {
+            return _idsByName.Values.GetEnumerator();
         }
     }
 }

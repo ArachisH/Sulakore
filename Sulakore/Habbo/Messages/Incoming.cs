@@ -212,7 +212,6 @@
         public ushort ModToolUserInfo { get; set; }
         public ushort ModToolUserRoomVisits { get; set; }
         public ushort MoodLightData { get; set; }
-        public ushort MostUselessErrorAlert { get; set; }
         public ushort MutedWhisper { get; set; }
         public ushort MysticBoxClose { get; set; }
         public ushort MysticBoxPrize { get; set; }

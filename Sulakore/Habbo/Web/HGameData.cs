@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 using Sulakore.Network;
 
-namespace Sulakore.Habbo
+namespace Sulakore.Habbo.Web
 {
     [DebuggerDisplay("Host: {InfoHost}, Port(s): {InfoPort}")]
     public class HGameData

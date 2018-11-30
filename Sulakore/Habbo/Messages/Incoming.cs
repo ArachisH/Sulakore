@@ -1,4 +1,6 @@
-﻿namespace Sulakore.Habbo.Messages
+﻿using Sulakore.Habbo.Web;
+
+namespace Sulakore.Habbo.Messages
 {
     public sealed class Incoming : Identifiers
     {

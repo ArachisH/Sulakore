@@ -1,5 +1,5 @@
-﻿using Sulakore.Habbo;
-using Sulakore.Network;
+﻿using Sulakore.Network;
+using Sulakore.Habbo.Web;
 using Sulakore.Habbo.Messages;
 
 namespace Sulakore.Modules

@@ -1,7 +1,7 @@
 ﻿using System;
 
-using Sulakore.Habbo;
 using Sulakore.Network;
+using Sulakore.Habbo.Web;
 
 namespace Sulakore.Modules
 {

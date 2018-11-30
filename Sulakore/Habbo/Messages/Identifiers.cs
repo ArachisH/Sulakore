@@ -3,6 +3,8 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 
+using Sulakore.Habbo.Web;
+
 namespace Sulakore.Habbo.Messages
 {
     public abstract class Identifiers : IEnumerable<ushort>

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 using Sulakore.Habbo;
 using Sulakore.Network;
+using Sulakore.Habbo.Web;
 using Sulakore.Habbo.Messages;
 using Sulakore.Network.Protocol;
 

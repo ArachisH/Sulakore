@@ -12,7 +12,7 @@ using Flazzy.Records;
 using Flazzy.ABC.AVM2;
 using Flazzy.ABC.AVM2.Instructions;
 
-namespace Sulakore.Habbo
+namespace Sulakore.Habbo.Web
 {
     [Flags]
     public enum Sanitizers
@@ -1122,7 +1122,36 @@ namespace Sulakore.Habbo
             }
             return (modifyCount == 2);
         }
+        
+        public ASMethod GetManagerConnectMethod()
+        {
+            if (_managerConnectMethod != null) return _managerConnectMethod;
+            ABCFile abc = ABCFiles.Last();
 
+            ASInstance habboCommunicationManager = abc.GetInstance("HabboCommunicationManager");
+            if (habboCommunicationManager == null) return null;
+
+            ASTrait hostTrait = habboCommunicationManager.GetSlotTraits("String").FirstOrDefault();
+            if (hostTrait == null) return null;
+
+            ASMethod initComponent = habboCommunicationManager.GetMethod("initComponent", "void", 0);
+            if (initComponent == null) return null;
+
+            string connectMethodName = null;
+            ASCode initComponentCode = initComponent.Body.ParseCode();
+            for (int i = initComponentCode.Count - 1; i >= 0; i--)
+            {
+                ASInstruction instruction = initComponentCode[i];
+                if (instruction.OP != OPCode.CallPropVoid) continue;
+
+                var callPropVoidIns = (CallPropVoidIns)instruction;
+                connectMethodName = callPropVoidIns.PropertyName.Name;
+                break;
+            }
+
+            if (string.IsNullOrWhiteSpace(connectMethodName)) return null;
+            return (_managerConnectMethod = habboCommunicationManager.GetMethod(connectMethodName, "void", 0));
+        }
         public ushort[] GetMessageIds(string hash)
         {
             List<MessageItem> messages = null;
@@ -1400,35 +1429,6 @@ namespace Sulakore.Habbo
             connectMethod.Body.MaxStack += 4;
             connectMethod.Body.Code = connectCode.ToArray();
             return true;
-        }
-        private ASMethod GetManagerConnectMethod()
-        {
-            if (_managerConnectMethod != null) return _managerConnectMethod;
-            ABCFile abc = ABCFiles.Last();
-
-            ASInstance habboCommunicationManager = abc.GetInstance("HabboCommunicationManager");
-            if (habboCommunicationManager == null) return null;
-
-            ASTrait hostTrait = habboCommunicationManager.GetSlotTraits("String").FirstOrDefault();
-            if (hostTrait == null) return null;
-
-            ASMethod initComponent = habboCommunicationManager.GetMethod("initComponent", "void", 0);
-            if (initComponent == null) return null;
-
-            string connectMethodName = null;
-            ASCode initComponentCode = initComponent.Body.ParseCode();
-            for (int i = initComponentCode.Count - 1; i >= 0; i--)
-            {
-                ASInstruction instruction = initComponentCode[i];
-                if (instruction.OP != OPCode.CallPropVoid) continue;
-
-                var callPropVoidIns = (CallPropVoidIns)instruction;
-                connectMethodName = callPropVoidIns.PropertyName.Name;
-                break;
-            }
-
-            if (string.IsNullOrWhiteSpace(connectMethodName)) return null;
-            return (_managerConnectMethod = habboCommunicationManager.GetMethod(connectMethodName, "void", 0));
         }
         private bool LockEndPointPing(string host, int port)
         {

@@ -60,28 +60,28 @@ namespace Sulakore.Habbo
                 Tags[i] = packet.ReadUTF8();
             }
 
-            HRoomFlags roomEntryBitmask = (HRoomFlags)packet.ReadInt32();
+            HRoomFlags roomFlags = (HRoomFlags)packet.ReadInt32();
 
-            if (roomEntryBitmask.HasFlag(HRoomFlags.HasCustomThumbnail))
+            if (roomFlags.HasFlag(HRoomFlags.HasCustomThumbnail))
             {
                 ThumbnailUrl = packet.ReadUTF8();
             }
-            if (roomEntryBitmask.HasFlag(HRoomFlags.HasGroup))
+            if (roomFlags.HasFlag(HRoomFlags.HasGroup))
             {
                 GroupId = packet.ReadInt32();
                 GroupName = packet.ReadUTF8();
                 GroupBadgeCode = packet.ReadUTF8();
             }
-            if (roomEntryBitmask.HasFlag(HRoomFlags.HasAdvertisement))
+            if (roomFlags.HasFlag(HRoomFlags.HasAdvertisement))
             {
                 AdName = packet.ReadUTF8();
                 AdDescription = packet.ReadUTF8();
                 AdExpiresInMinutes = packet.ReadInt32();
             }
 
-            ShowOwner = roomEntryBitmask.HasFlag(HRoomFlags.ShowOwner);
-            AllowPets = roomEntryBitmask.HasFlag(HRoomFlags.AllowPets);
-            ShowEntryAd = roomEntryBitmask.HasFlag(HRoomFlags.ShowRoomAd);
+            ShowOwner = roomFlags.HasFlag(HRoomFlags.ShowOwner);
+            AllowPets = roomFlags.HasFlag(HRoomFlags.AllowPets);
+            ShowEntryAd = roomFlags.HasFlag(HRoomFlags.ShowRoomAd);
         }
     }
 }

@@ -109,11 +109,7 @@ namespace Sulakore.Network
 
         public override string ToString()
         {
-            if (!string.IsNullOrWhiteSpace(Host))
-            {
-                return ($"{Hotel}:{Host}:{Port}");
-            }
-            return (Hotel + ":" + base.ToString());
+            return $"{(string.IsNullOrWhiteSpace(Host) ? Address.ToString() : Host)}:{Port}";
         }
     }
 }

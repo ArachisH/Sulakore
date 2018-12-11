@@ -268,6 +268,8 @@ namespace Sulakore.Habbo.Messages
         public ushort PurchaseOK { get; set; }
         public ushort QuestCompleted { get; set; }
         public ushort QuestExpired { get; set; }
+        public ushort ReceiveInvitation { get; set; }
+        public ushort ReceivePrivateMessage { get; set; }
         public ushort RecyclerComplete { get; set; }
         public ushort RecyclerLogic { get; set; }
         public ushort RedeemVoucherError { get; set; }

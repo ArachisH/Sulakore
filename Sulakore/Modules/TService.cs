@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Linq;
 using System.Reflection;
 using System.ComponentModel;
@@ -21,8 +22,6 @@ namespace Sulakore.Modules
         private readonly List<DataCaptureAttribute> _unknownDataAttributes;
         private readonly Dictionary<ushort, List<DataCaptureAttribute>> _outDataAttributes, _inDataAttributes;
 
-        public const int REMOTE_MODULE_PORT = 8055;
-
         public virtual bool IsStandalone { get; }
 
         private IInstaller _installer;
@@ -39,17 +38,35 @@ namespace Sulakore.Modules
         public HGameData GameData => Installer.GameData;
         public IHConnection Connection => Installer.Connection;
 
+        public static IPEndPoint DefaultModuleServer { get; }
+
+        static TService()
+        {
+            DefaultModuleServer = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8055);
+        }
+
         public TService(IModule container)
-            : this(container, null)
+            : this(container, null, null)
+        { }
+        public TService(IModule container, IPEndPoint moduleServer)
+            : this(container, null, moduleServer)
         { }
 
         protected TService()
-            : this(null)
+            : this(null, null, null)
         { }
+        protected TService(IPEndPoint moduleServer)
+            : this(null, null, moduleServer)
+        { }
+
         protected TService(TService parent)
-            : this(null, parent)
+            : this(null, parent, null)
         { }
-        private TService(IModule container, TService parent)
+        protected TService(TService parent, IPEndPoint moduleServer)
+            : this(null, parent, moduleServer)
+        { }
+
+        private TService(IModule container, TService parent, IPEndPoint moduleServer)
         {
             _parent = parent;
             _container = (container ?? this);
@@ -82,7 +99,7 @@ namespace Sulakore.Modules
             if (!IsStandalone || (Assembly.GetAssembly(_container.GetType()) != Assembly.GetEntryAssembly())) return;
             while (true)
             {
-                HNode installerNode = HNode.ConnectNewAsync("127.0.0.1", REMOTE_MODULE_PORT).Result;
+                HNode installerNode = HNode.ConnectNewAsync(moduleServer ?? DefaultModuleServer).Result;
                 if (installerNode != null)
                 {
                     installerNode.InFormat = HFormat.EvaWire;
@@ -95,7 +112,7 @@ namespace Sulakore.Modules
                     Installer = _container.Installer = new DummyInstaller(_container, installerNode);
                     break;
                 }
-                else throw new Exception($"Failed to connect to the host on port '{REMOTE_MODULE_PORT}'.");
+                else throw new Exception($"Failure to establish the connection with: {moduleServer}");
             }
         }
 

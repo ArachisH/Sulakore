@@ -1122,7 +1122,7 @@ namespace Sulakore.Habbo.Web
             }
             return (modifyCount == 2);
         }
-        
+
         public ASMethod GetManagerConnectMethod()
         {
             if (_managerConnectMethod != null) return _managerConnectMethod;
@@ -1806,7 +1806,7 @@ namespace Sulakore.Habbo.Web
 
         public ASClass Class { get; }
         public ASClass Parser { get; }
-        public string[] Structure { get; }
+        public string Structure { get; }
         public List<ushort> SharedIds { get; }
         public List<MessageReference> References { get; }
 
@@ -1955,20 +1955,20 @@ namespace Sulakore.Habbo.Web
         }
 
         #region Structure Extraction
-        private string[] GetIncomingStructure(ASClass @class)
+        private string GetIncomingStructure(ASClass @class)
         {
             ASMethod parseMethod = @class.Instance.GetMethod("parse", "Boolean", 1);
             return GetIncomingStructure(@class.Instance, parseMethod);
         }
-        private string[] GetIncomingStructure(ASInstance instance, ASMethod method)
+        private string GetIncomingStructure(ASInstance instance, ASMethod method)
         {
             if (method.Body.Exceptions.Count > 0) return null;
 
             ASCode code = method.Body.ParseCode();
             if (code.JumpExits.Count > 0 || code.SwitchExits.Count > 0) return null;
 
+            string structure = null;
             ABCFile abc = method.GetABC();
-            var structure = new List<string>();
             for (int i = 0; i < code.Count; i++)
             {
                 ASInstruction instruction = code[i];
@@ -2016,16 +2016,14 @@ namespace Sulakore.Habbo.Web
                                 innerMethod = innerClass.GetMethod(callProperty.PropertyName.Name, null, callProperty.ArgCount);
                             }
 
-                            string[] innerStructure = GetIncomingStructure(innerInstance, innerMethod);
-                            if (innerStructure != null)
-                            {
-                                structure.AddRange(innerStructure);
-                            }
-                            else return null;
+                            string innerStructure = GetIncomingStructure(innerInstance, innerMethod);
+                            if (string.IsNullOrWhiteSpace(innerStructure)) return null;
+                            structure += innerStructure;
                         }
                         else
                         {
-                            structure.Add(GetReadReturnTypeName(callProperty.PropertyName));
+                            if (!TryGetStructurePiece(callProperty.PropertyName, null, out char piece)) return null;
+                            structure += piece;
                         }
                         break;
                     }
@@ -2035,12 +2033,9 @@ namespace Sulakore.Habbo.Web
                         var constructProp = (ConstructPropIns)next;
                         ASInstance innerInstance = abc.GetInstance(constructProp.PropertyName);
 
-                        string[] innerStructure = GetIncomingStructure(innerInstance, innerInstance.Constructor);
-                        if (innerStructure != null)
-                        {
-                            structure.AddRange(innerStructure);
-                        }
-                        else return null;
+                        string innerStructure = GetIncomingStructure(innerInstance, innerInstance.Constructor);
+                        if (string.IsNullOrWhiteSpace(innerStructure)) return null;
+                        structure += innerStructure;
                         break;
                     }
 
@@ -2049,12 +2044,9 @@ namespace Sulakore.Habbo.Web
                         var constructSuper = (ConstructSuperIns)next;
                         ASInstance superInstance = abc.GetInstance(instance.Super);
 
-                        string[] innerStructure = GetIncomingStructure(superInstance, superInstance.Constructor);
-                        if (innerStructure != null)
-                        {
-                            structure.AddRange(innerStructure);
-                        }
-                        else return null;
+                        string innerStructure = GetIncomingStructure(superInstance, superInstance.Constructor);
+                        if (string.IsNullOrWhiteSpace(innerStructure)) return null;
+                        structure += innerStructure;
                         break;
                     }
 
@@ -2062,35 +2054,31 @@ namespace Sulakore.Habbo.Web
                     {
                         var callSuper = (CallSuperIns)next;
                         ASInstance superInstance = abc.GetInstance(instance.Super);
-
                         ASMethod superMethod = superInstance.GetMethod(callSuper.MethodName.Name, null, callSuper.ArgCount);
-                        string[] innerStructure = GetIncomingStructure(superInstance, superMethod);
-                        if (innerStructure != null)
-                        {
-                            structure.AddRange(innerStructure);
-                        }
-                        else return null;
+
+                        string innerStructure = GetIncomingStructure(superInstance, superMethod);
+                        if (string.IsNullOrWhiteSpace(innerStructure)) return null;
+                        structure += innerStructure;
                         break;
                     }
 
                     case OPCode.CallPropVoid:
                     {
                         var callPropVoid = (CallPropVoidIns)next;
-                        if (callPropVoid.ArgCount == 0)
-                        {
-                            structure.Add(GetReadReturnTypeName(callPropVoid.PropertyName));
-                        }
-                        else return null;
+                        if (callPropVoid.ArgCount != 0) return null;
+
+                        if (!TryGetStructurePiece(callPropVoid.PropertyName, null, out char piece)) return null;
+                        structure += piece;
                         break;
                     }
 
                     default: return null;
                 }
             }
-            return structure.ToArray();
+            return structure;
         }
 
-        private string[] GetOutgoingStructure(ASClass @class)
+        private string GetOutgoingStructure(ASClass @class)
         {
             ASMethod getArrayMethod = @class.Instance.GetMethod(null, "Array", 0);
             if (getArrayMethod == null)
@@ -2101,8 +2089,7 @@ namespace Sulakore.Habbo.Web
             if (getArrayMethod.Body.Exceptions.Count > 0) return null;
             ASCode getArrayCode = getArrayMethod.Body.ParseCode();
 
-            if (getArrayCode.JumpExits.Count > 0 ||
-                getArrayCode.SwitchExits.Count > 0)
+            if (getArrayCode.JumpExits.Count > 0 || getArrayCode.SwitchExits.Count > 0)
             {
                 // Unable to parse data structure that relies on user input that is not present,
                 // since the structure may change based on the provided input.
@@ -2134,8 +2121,7 @@ namespace Sulakore.Habbo.Web
             {
                 return GetOutgoingStructure(getArrayCode, resultPusher, argCount);
             }
-            else if (argCount == 0 ||
-                resultPusher.OP == OPCode.PushNull)
+            else if (argCount == 0 || resultPusher.OP == OPCode.PushNull)
             {
                 return null;
             }
@@ -2151,9 +2137,9 @@ namespace Sulakore.Habbo.Web
             }
             return null;
         }
-        private string[] GetOutgoingStructure(ASCode code, Local getLocal)
+        private string GetOutgoingStructure(ASCode code, Local getLocal)
         {
-            var structure = new List<string>();
+            string structure = null;
             for (int i = 0; i < code.Count; i++)
             {
                 ASInstruction instruction = code[i];
@@ -2185,30 +2171,22 @@ namespace Sulakore.Habbo.Web
                             classToCheck = classToCheck.GetABC().GetClass(getLex.TypeName);
                         }
 
-                        string propertyTypeName = null;
-                        if (TryGetTraitTypeName(classToCheck, propertyName, out propertyTypeName) ||
-                            TryGetTraitTypeName(classToCheck.Instance, propertyName, out propertyTypeName))
-                        {
-                            structure.Add(propertyTypeName);
-                        }
+                        if (!TryGetStructurePiece(propertyName, classToCheck, out char piece)) return null;
+                        structure += piece;
                     }
                 }
             }
-            return structure.ToArray();
+            return structure;
         }
-        private string[] GetOutgoingStructure(ASClass @class, ASMultiname propertyName)
+        private string GetOutgoingStructure(ASClass @class, ASMultiname propertyName)
         {
             ASMethod constructor = @class.Instance.Constructor;
             if (constructor.Body.Exceptions.Count > 0) return null;
+
             ASCode code = constructor.Body.ParseCode();
+            if (code.JumpExits.Count > 0 || code.SwitchExits.Count > 0) return null;
 
-            if (code.JumpExits.Count > 0 ||
-                code.SwitchExits.Count > 0)
-            {
-                return null;
-            }
-
-            var structure = new List<string>();
+            string structure = null;
             var pushedLocals = new Dictionary<int, int>();
             for (int i = 0; i < code.Count; i++)
             {
@@ -2219,20 +2197,21 @@ namespace Sulakore.Habbo.Web
                     var newArray = (NewArrayIns)instruction;
                     if (newArray.ArgCount > 0)
                     {
-                        var structArray = new string[newArray.ArgCount];
+                        var structurePieces = new char[newArray.ArgCount];
                         for (int j = i - 1, length = newArray.ArgCount; j >= 0; j--)
                         {
                             ASInstruction previous = code[j];
-                            if (Local.IsGetLocal(previous.OP) &&
-                                previous.OP != OPCode.GetLocal_0)
+                            if (Local.IsGetLocal(previous.OP) && previous.OP != OPCode.GetLocal_0)
                             {
                                 var local = (Local)previous;
                                 ASParameter parameter = constructor.Parameters[local.Register - 1];
-                                structArray[--length] = parameter.Type.Name;
+
+                                if (!TryGetStructurePiece(parameter.Type, null, out char piece)) return null;
+                                structurePieces[--length] = piece;
                             }
                             if (length == 0)
                             {
-                                structure.AddRange(structArray);
+                                structure += new string(structurePieces);
                                 break;
                             }
                         }
@@ -2244,7 +2223,7 @@ namespace Sulakore.Habbo.Web
                     if (constructSuper.ArgCount > 0)
                     {
                         ASClass superClass = @class.GetABC().GetClass(@class.Instance.Super);
-                        structure.AddRange(GetOutgoingStructure(superClass, propertyName));
+                        structure += GetOutgoingStructure(superClass, propertyName);
                     }
                 }
                 if (instruction.OP != OPCode.GetProperty) continue;
@@ -2264,7 +2243,9 @@ namespace Sulakore.Habbo.Web
 
                     var local = (Local)next;
                     ASParameter parameter = constructor.Parameters[local.Register - 1];
-                    structure.Add(parameter.Type.Name);
+
+                    if (!TryGetStructurePiece(parameter.Type, null, out char piece)) return null;
+                    structure += piece;
                 }
                 else
                 {
@@ -2294,27 +2275,18 @@ namespace Sulakore.Habbo.Web
                     }
                     while (next.OP != OPCode.GetProperty && next.OP != OPCode.CallProperty);
 
-                    string propertyTypeName = null;
-                    if (TryGetTraitTypeName(classToCheck, propertyName, out propertyTypeName) ||
-                        TryGetTraitTypeName(classToCheck?.Instance, propertyName, out propertyTypeName))
-                    {
-                        structure.Add(propertyTypeName);
-                    }
+                    if (!TryGetStructurePiece(propertyName, classToCheck, out char piece)) return null;
+                    structure += piece;
                 }
             }
-            if (structure.Contains("Array"))
-            {
-                // External array... impossible to check what value types are contained in this.
-                return null;
-            }
-            return structure.ToArray();
+            return structure;
         }
-        private string[] GetOutgoingStructure(ASCode code, ASInstruction beforeReturn, int length)
+        private string GetOutgoingStructure(ASCode code, ASInstruction beforeReturn, int length)
         {
             var getLocalEndIndex = -1;
             int pushingEndIndex = code.IndexOf(beforeReturn);
 
-            var structure = new string[length];
+            var structure = new char[length];
             ASInstance instance = Class.Instance;
             var pushedLocals = new Dictionary<int, int>();
             for (int i = pushingEndIndex - 1; i >= 0; i--)
@@ -2333,12 +2305,8 @@ namespace Sulakore.Habbo.Web
                         classToCheck = classToCheck.GetABC().GetClass(getLex.TypeName);
                     }
 
-                    string propertyTypeName = null;
-                    if (TryGetTraitTypeName(classToCheck, propertyName, out propertyTypeName) ||
-                        TryGetTraitTypeName(classToCheck.Instance, propertyName, out propertyTypeName))
-                    {
-                        structure[--length] = propertyTypeName;
-                    }
+                    if (!TryGetStructurePiece(propertyName, classToCheck, out char piece)) return null;
+                    structure[--length] = piece;
                 }
                 else if (Local.IsGetLocal(instruction.OP) &&
                     instruction.OP != OPCode.GetLocal_0)
@@ -2368,17 +2336,17 @@ namespace Sulakore.Habbo.Web
                         case OPCode.PushInt:
                         case OPCode.PushByte:
                         case OPCode.Convert_i:
-                        structure[structIndex] = "int";
+                        structure[structIndex] = 'i';
                         break;
 
                         case OPCode.Coerce_s:
                         case OPCode.PushString:
-                        structure[structIndex] = "String";
+                        structure[structIndex] = 's';
                         break;
 
                         case OPCode.PushTrue:
                         case OPCode.PushFalse:
-                        structure[structIndex] = "Boolean";
+                        structure[structIndex] = 'B';
                         break;
 
                         default:
@@ -2387,62 +2355,56 @@ namespace Sulakore.Habbo.Web
                 }
                 if (pushedLocals.Count == 0) break;
             }
-            return structure;
+            return new string(structure);
         }
 
-        private string GetReadReturnTypeName(ASMultiname propertyName)
+        private ASMultiname GetTraitType(ASContainer container, ASMultiname traitName)
         {
-            switch (propertyName.Name)
+            if (container == null) return traitName;
+
+            return container.GetTraits(TraitKind.Slot, TraitKind.Constant, TraitKind.Getter)
+                .Where(t => t.QName == traitName)
+                .FirstOrDefault()?.Type;
+        }
+        private bool TryGetStructurePiece(ASMultiname multiname, ASClass @class, out char piece)
+        {
+            ASMultiname returnValueType = multiname;
+            if (@class != null)
             {
-                case "readString":
-                return "String";
-
-                case "readBoolean":
-                return "Boolean";
-
-                case "readByte":
-                return "Byte";
-
-                case "readDouble":
-                return "Double";
-
-                default:
-                {
-                    if (!HGame.IsValidIdentifier(propertyName.Name, true))
-                    {
-                        // Most likely: readInt
-                        return "int";
-                    }
-                    return null;
-                }
+                returnValueType = GetTraitType(@class, multiname) ?? GetTraitType(@class.Instance, multiname);
             }
-        }
-        private string GetStrictReturnTypeName(ASMultiname propertyName)
-        {
-            switch (propertyName.Name)
+
+            switch (returnValueType.Name.ToLower())
             {
                 case "int":
-                case "getTimer": return "int";
-            }
-            return null;
-        }
-        private bool TryGetTraitTypeName(ASContainer container, ASMultiname propertyName, out string propertyTypeName)
-        {
-            if (container == null)
-            {
-                propertyTypeName =
-                    GetStrictReturnTypeName(propertyName);
-            }
-            else
-            {
-                ASTrait propertyTrait = container.GetTraits(
-                    TraitKind.Slot, TraitKind.Constant, TraitKind.Getter)
-                    .Where(t => t.QName == propertyName)
-                    .FirstOrDefault();
+                case "readint":
+                case "gettimer": piece = 'i'; break;
 
-                propertyTypeName = propertyTrait?.Type.Name;
+                case "byte":
+                case "readbyte": piece = 'b'; break;
+
+                case "double":
+                case "readdouble": piece = 'd'; break;
+
+                case "string":
+                case "readstring": piece = 's'; break;
+
+                case "boolean":
+                case "readboolean": piece = 'B'; break;
+
+                case "array": piece = char.MinValue; break;
+                default:
+                {
+                    if (!IsOutgoing && !HGame.IsValidIdentifier(returnValueType.Name, true))
+                    {
+                        piece = 'i'; // This reference call is most likely towards 'readInt'
+                    }
+                    else
+                        piece = char.MinValue;
+                    break;
+                }
             }
-            return (propertyTypeName != null);
+            return piece != char.MinValue;
         }
         #endregion
     }

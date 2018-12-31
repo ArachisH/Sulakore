@@ -116,7 +116,7 @@ namespace Sulakore.Modules
             }
         }
 
-        public virtual void Synchronize(HGame game)
+        public virtual void OnConnected()
         {
             var unresolved = new Dictionary<string, IList<string>>();
             foreach (PropertyInfo property in _container.GetType().GetAllProperties())
@@ -124,7 +124,7 @@ namespace Sulakore.Modules
                 var messageIdAtt = property.GetCustomAttribute<MessageIdAttribute>();
                 if (string.IsNullOrWhiteSpace(messageIdAtt?.Hash)) continue;
 
-                ushort[] ids = game.GetMessageIds(messageIdAtt.Hash);
+                ushort[] ids = Installer.Game.GetMessageIds(messageIdAtt.Hash);
                 if (ids != null)
                 {
                     property.SetValue(_container, ids[0]);
@@ -143,7 +143,7 @@ namespace Sulakore.Modules
             {
                 if (string.IsNullOrWhiteSpace(dataCaptureAtt.Hash)) continue;
 
-                ushort[] ids = game.GetMessageIds(dataCaptureAtt.Hash);
+                ushort[] ids = Installer.Game.GetMessageIds(dataCaptureAtt.Hash);
                 if (ids != null)
                 {
                     AddCallback(dataCaptureAtt, ids[0]);
@@ -160,11 +160,9 @@ namespace Sulakore.Modules
             }
             if (unresolved.Count > 0)
             {
-                throw new HashResolvingException(game.Revision, unresolved);
+                throw new HashResolvingException(Installer.Game.Revision, unresolved);
             }
         }
-        public virtual void Synchronize(HGameData gameData)
-        { }
 
         public virtual void HandleIncoming(DataInterceptedEventArgs e) => HandleData(_inDataAttributes, e);
         public virtual void HandleOutgoing(DataInterceptedEventArgs e) => HandleData(_outDataAttributes, e);
@@ -186,20 +184,19 @@ namespace Sulakore.Modules
 
             var description = string.Empty;
             string name = moduleAssembly.GetName().Name;
-            var moduleAtt = GetType().GetCustomAttribute<ModuleAttribute>();
+            var moduleAtt = _container.GetType().GetCustomAttribute<ModuleAttribute>();
             if (moduleAtt != null)
             {
                 name = moduleAtt.Name;
                 description = moduleAtt.Description;
             }
-
             packet.Write(moduleAssembly.GetName().Version.ToString());
 
             packet.Write(name);
             packet.Write(description);
 
             var authors = new List<AuthorAttribute>();
-            var authorsAtts = GetType().GetCustomAttributes<AuthorAttribute>();
+            var authorsAtts = _container.GetType().GetCustomAttributes<AuthorAttribute>();
             if (authorsAtts != null)
             {
                 authors.AddRange(authorsAtts);
@@ -257,8 +254,7 @@ namespace Sulakore.Modules
                 _moduleEvents = new Dictionary<ushort, Action<HPacket>>
                 {
                     [1] = HandleData,
-                    [3] = HandleGameSynchronize,
-                    [4] = HandleGameDataSynchronize
+                    [2] = HandleOnConnected
                 };
 
                 In = new Incoming();
@@ -305,25 +301,26 @@ namespace Sulakore.Modules
                     _installerNode.SendPacketAsync(handledDataPacket);
                 }
             }
-            private void HandleGameSynchronize(HPacket packet)
+            private void HandleOnConnected(HPacket packet)
             {
-                string path = packet.ReadUTF8();
-                Game = new HGame(File.ReadAllBytes(path));
-                Game.Location = path;
+                GameData.Source = packet.ReadUTF8();
+
+                int gameLength = packet.ReadInt32();
+                Game = new HGame(packet.ReadBytes(gameLength));
+                Game.Location = packet.ReadUTF8();
 
                 Game.Disassemble();
                 Game.GenerateMessageHashes();
 
-                string hashesPath = packet.ReadUTF8();
-                In.Load(Game, hashesPath);
-                Out.Load(Game, hashesPath);
-
-                _module.Synchronize(Game);
-            }
-            private void HandleGameDataSynchronize(HPacket packet)
-            {
-                GameData.Source = packet.ReadUTF8();
-                _module.Synchronize(GameData);
+                int hashesDataLength = packet.ReadInt32();
+                byte[] hashesData = packet.ReadBytes(hashesDataLength);
+                using (var hashesStream = new StreamReader(new MemoryStream(hashesData)))
+                {
+                    In.Load(Game, hashesStream);
+                    hashesStream.BaseStream.Position = 0;
+                    Out.Load(Game, hashesStream);
+                }
+                _module.OnConnected();
             }
 
             private async Task HandleInstallerDataAsync()

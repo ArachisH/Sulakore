@@ -79,46 +79,58 @@ namespace Sulakore.Habbo.Messages
                 output.WriteLine($"{name}={_idsByName[name]}");
             }
         }
+
         public void Load(HGame game, string identifiersPath)
+        {
+            using (var identifiersStream = new StreamReader(identifiersPath))
+            {
+                Load(game, identifiersStream);
+            }
+        }
+        public void Load(HGame game, Stream identifiersStream)
+        {
+            using (var wrappedIdentifiersStream = new StreamReader(identifiersStream))
+            {
+                Load(game, wrappedIdentifiersStream);
+            }
+        }
+        public void Load(HGame game, StreamReader identifiersStream)
         {
             _namesById.Clear();
             _idsByName.Clear();
             _hashesById.Clear();
             _namesByHash.Clear();
-            using (var input = new StreamReader(identifiersPath))
+            bool isInSection = false;
+            while (!identifiersStream.EndOfStream)
             {
-                bool isInSection = false;
-                while (!input.EndOfStream)
+                string line = identifiersStream.ReadLine();
+                if (line.StartsWith("[") && line.EndsWith("]"))
                 {
-                    string line = input.ReadLine();
-                    if (line.StartsWith("[") && line.EndsWith("]"))
-                    {
-                        isInSection = (line == ("[" + _section + "]"));
-                    }
-                    else if (isInSection)
-                    {
-                        string[] values = line.Split('=');
-                        string name = values[0].Trim();
-                        string hash = values[1].Trim();
+                    isInSection = (line == ("[" + _section + "]"));
+                }
+                else if (isInSection)
+                {
+                    string[] values = line.Split('=');
+                    string name = values[0].Trim();
+                    string hash = values[1].Trim();
 
-                        var id = ushort.MaxValue;
-                        if (game.Messages.TryGetValue(hash, out List<MessageItem> messages) && messages.Count == 1)
+                    var id = ushort.MaxValue;
+                    if (game.Messages.TryGetValue(hash, out List<MessageItem> messages) && messages.Count == 1)
+                    {
+                        id = messages[0].Id;
+                        if (!_namesByHash.ContainsKey(hash))
                         {
-                            id = messages[0].Id;
-                            if (!_namesByHash.ContainsKey(hash))
-                            {
-                                _namesByHash.Add(hash, name);
-                            }
+                            _namesByHash.Add(hash, name);
                         }
-
-                        if (id != ushort.MaxValue)
-                        {
-                            _namesById[id] = name;
-                            _hashesById[id] = hash;
-                        }
-                        _idsByName[name] = id;
-                        GetType().GetProperty(name)?.SetValue(this, id);
                     }
+
+                    if (id != ushort.MaxValue)
+                    {
+                        _namesById[id] = name;
+                        _hashesById[id] = hash;
+                    }
+                    _idsByName[name] = id;
+                    GetType().GetProperty(name)?.SetValue(this, id);
                 }
             }
         }

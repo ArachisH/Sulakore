@@ -162,7 +162,7 @@ namespace Sulakore.Habbo.Web
                             }
                             else name = $"param{register + 1}";
                         }
-                        else name = $"local{(register - parameters.Count) + 1}";
+                        else name = $"local{register - parameters.Count + 1}";
 
                         int nameIndex = -1;
                         if (!nameIndices.TryGetValue(name, out nameIndex))
@@ -215,7 +215,7 @@ namespace Sulakore.Habbo.Web
                     int validNameIndex = -1;
                     if (!nameIndices.TryGetValue(@namespace.Name, out validNameIndex))
                     {
-                        string validName = ($"Namespace_{namespaceCount:0000}");
+                        string validName = $"Namespace_{namespaceCount:0000}";
                         validNameIndex = abc.Pool.AddConstant(validName, false);
 
                         nameIndices.Add(@namespace.Name, validNameIndex);
@@ -235,18 +235,18 @@ namespace Sulakore.Habbo.Web
                     ASInstance instance = @class.Instance;
                     if (instance.IsInterface)
                     {
-                        validName = ($"IInterface_{++interfaceCount:0000}");
+                        validName = $"IInterface_{++interfaceCount:0000}";
                     }
                     else
                     {
-                        validName = ($"Class_{++classCount:0000}");
+                        validName = $"Class_{++classCount:0000}";
                     }
 
                     ASMultiname qname = instance.QName;
                     if (IsValidIdentifier(qname.Name)) continue;
 
                     int validNameIndex = -1;
-                    string key = ($"{qname.Namespace.Name}.{qname.Name}");
+                    string key = $"{qname.Namespace.Name}.{qname.Name}";
                     if (!nameIndices.TryGetValue(key, out validNameIndex))
                     {
                         validNameIndex = abc.Pool.AddConstant(validName, false);
@@ -331,11 +331,11 @@ namespace Sulakore.Habbo.Web
                     var fixedNamespaceName = string.Empty;
                     if (validNamespaces.TryGetValue(namespaceName, out fixedNamespaceName))
                     {
-                        fixedFullName += (fixedNamespaceName + ".");
+                        fixedFullName += fixedNamespaceName + ".";
                     }
                     else if (!string.IsNullOrWhiteSpace(namespaceName))
                     {
-                        fixedFullName += (namespaceName + ".");
+                        fixedFullName += namespaceName + ".";
                     }
 
                     var fixedClassName = string.Empty;
@@ -383,8 +383,8 @@ namespace Sulakore.Habbo.Web
                 int methodRank = 0;
                 foreach (ASMethod fromMethod in methods)
                 {
-                    bool isStatic = (fromMethod.Trait?.IsStatic ?? @class.Constructor == fromMethod);
-                    var fromContainer = (isStatic ? (ASContainer)@class : instance);
+                    bool isStatic = fromMethod.Trait?.IsStatic ?? @class.Constructor == fromMethod;
+                    var fromContainer = isStatic ? (ASContainer)@class : instance;
 
                     List<MessageReference> refernces = FindMessageReferences(@class, fromContainer, fromMethod);
                     if (refernces.Count > 0)
@@ -541,7 +541,7 @@ namespace Sulakore.Habbo.Web
                     reference.FromClass = fromClass;
                     reference.FromMethod = fromMethod;
                     reference.InstructionRank = ++instructionRank;
-                    reference.IsAnonymous = (!fromMethod.IsConstructor && fromMethod.Trait == null);
+                    reference.IsAnonymous = !fromMethod.IsConstructor && fromMethod.Trait == null;
 
                     references.Add(reference);
                 }
@@ -597,7 +597,7 @@ namespace Sulakore.Habbo.Web
                 }
                 else if (parameter.TypeIndex == asInterfaceQNameIndex)
                 {
-                    int beforeExitIndex = (initCryptoCode.Count - 6);
+                    int beforeExitIndex = initCryptoCode.Count - 6;
                     initCryptoCode.RemoveRange(beforeExitIndex, 5);
                     initCryptoCode.InsertRange(beforeExitIndex, new ASInstruction[]
                     {
@@ -787,7 +787,7 @@ namespace Sulakore.Habbo.Web
                 var constructProp = (ConstructPropIns)instruction;
                 if (constructProp.ArgCount != 2) continue;
 
-                var getProperty = (bigPurchaseCode[i + 4] as GetPropertyIns);
+                var getProperty = bigPurchaseCode[i + 4] as GetPropertyIns;
                 if (getProperty == null) return false;
                 cameraHandlerSlotNameIndex = getProperty.PropertyNameIndex;
 
@@ -799,7 +799,7 @@ namespace Sulakore.Habbo.Web
                     new GetPropertyIns(abc, abc.Pool.GetMultinameIndex("bitmap"))
                 });
 
-                var callProperty = (bigPurchaseCode[i + 8] as CallPropertyIns);
+                var callProperty = bigPurchaseCode[i + 8] as CallPropertyIns;
                 if (callProperty == null) return false;
                 dataSendTraitName = callProperty.PropertyName.Name;
                 callProperty.ArgCount = 1;
@@ -981,7 +981,7 @@ namespace Sulakore.Habbo.Web
             if (logMethod == null) return false;
 
             ASCode code = logMethod.Body.ParseCode();
-            int startIndex = (code.IndexOf(OPCode.PushScope) + 1);
+            int startIndex = code.IndexOf(OPCode.PushScope) + 1;
 
             var ifNotAvailable = new IfFalseIns() { Offset = 1 };
             ASInstruction jumpExit = code[code.IndexOf(OPCode.ReturnVoid)];
@@ -1084,43 +1084,39 @@ namespace Sulakore.Habbo.Web
         public bool InjectRSAKeys(string exponent, string modulus)
         {
             ABCFile abc = ABCFiles.Last();
-            ASClass keyObfuscatorClass = abc.GetClass("KeyObfuscator");
-            if (keyObfuscatorClass == null) return false;
 
-            int modifyCount = 0;
-            foreach (ASMethod method in keyObfuscatorClass.GetMethods(null, "String", 0))
+            ASInstance habboCommDemoInstance = abc.GetInstance("HabboCommunicationDemo");
+            if (habboCommDemoInstance == null) return false;
+
+            foreach (ASMethod method in habboCommDemoInstance.GetMethods(null, "void", 1))
             {
-                int keyIndex = 0;
-                switch (method.Trait.Id)
-                {
-                    // Get Modulus Method
-                    case 6:
-                    {
-                        modifyCount++;
-                        keyIndex = abc.Pool.AddConstant(modulus);
-                        break;
-                    }
-                    // Get Exponent Method
-                    case 7:
-                    {
-                        modifyCount++;
-                        keyIndex = abc.Pool.AddConstant(exponent);
-                        break;
-                    }
-
-                    // This is not a method we want to modify, continue enumerating.
-                    default: continue;
-                }
-
                 ASCode code = method.Body.ParseCode();
-                code.InsertRange(0, new ASInstruction[]
+                for (int i = 0; i < code.Count; i++)
                 {
-                    new PushStringIns(abc, keyIndex),
-                    new ReturnValueIns()
-                });
-                method.Body.Code = code.ToArray();
+                    ASInstruction instruction = code[i];
+                    if (instruction.OP != OPCode.GetLex) continue;
+
+                    var getLexIns = (GetLexIns)instruction;
+                    if (getLexIns.TypeName.Name.ToLower() != "rsakey") continue;
+
+                    for (int j = i; j < code.Count; j++)
+                    {
+                        ASInstruction innerInstruction = code[j];
+                        if (innerInstruction.OP != OPCode.InitProperty) continue;
+
+                        code.RemoveRange(i + 1, j - i - 2);
+                        code.InsertRange(i + 1, new ASInstruction[]
+                        {
+                            new PushStringIns(abc, modulus),
+                            new PushStringIns(abc, exponent),
+                        });
+
+                        method.Body.Code = code.ToArray();
+                        return true;
+                    }
+                }
             }
-            return (modifyCount == 2);
+            return false;
         }
 
         public ASMethod GetManagerConnectMethod()
@@ -1150,7 +1146,7 @@ namespace Sulakore.Habbo.Web
             }
 
             if (string.IsNullOrWhiteSpace(connectMethodName)) return null;
-            return (_managerConnectMethod = habboCommunicationManager.GetMethod(connectMethodName, "void", 0));
+            return _managerConnectMethod = habboCommunicationManager.GetMethod(connectMethodName, "void", 0);
         }
         public ushort[] GetMessageIds(string hash)
         {
@@ -1192,13 +1188,13 @@ namespace Sulakore.Habbo.Web
 
             for (int i = 0; i < instructions.Length; i += 3)
             {
-                var getLexInst = (instructions[i + 0] as GetLexIns);
-                bool isOutgoing = (getLexInst.TypeNameIndex == outMapTypeIndex);
+                var getLexInst = instructions[i + 0] as GetLexIns;
+                bool isOutgoing = getLexInst.TypeNameIndex == outMapTypeIndex;
 
-                var primitive = (instructions[i + 1] as Primitive);
+                var primitive = instructions[i + 1] as Primitive;
                 ushort id = Convert.ToUInt16(primitive.Value);
 
-                getLexInst = (instructions[i + 2] as GetLexIns);
+                getLexInst = instructions[i + 2] as GetLexIns;
                 ASClass messageClass = abc.GetClass(getLexInst.TypeName);
 
                 var message = new MessageItem(messageClass, isOutgoing, id);
@@ -1235,7 +1231,7 @@ namespace Sulakore.Habbo.Web
                 if (!isTrimming && Local.IsValid(instruction.OP))
                 {
                     var local = (Local)instruction;
-                    int newRegister = (local.Register - 1);
+                    int newRegister = local.Register - 1;
                     if (newRegister < 1) continue;
 
                     ASInstruction replacement = null;
@@ -1596,8 +1592,8 @@ namespace Sulakore.Habbo.Web
                 return false;
             }
 
-            return (!value.Contains("_-") &&
-                !_reservedNames.Contains(value.Trim()));
+            return !value.Contains("_-") &&
+                !_reservedNames.Contains(value.Trim());
         }
     }
 
@@ -1770,7 +1766,7 @@ namespace Sulakore.Habbo.Web
                 BaseStream.Position = 0;
 
                 byte[] hashData = md5.ComputeHash(BaseStream);
-                string hashAsHex = (BitConverter.ToString(hashData));
+                string hashAsHex = BitConverter.ToString(hashData);
 
                 BaseStream.Position = curPos;
                 return hashAsHex.Replace("-", string.Empty).ToLower();
@@ -1867,7 +1863,7 @@ namespace Sulakore.Habbo.Web
                     }
                 }
                 else output.Write(Class.QName.Name);
-                return (Hash = output.GenerateHash());
+                return Hash = output.GenerateHash();
             }
         }
         public bool HasMethodReference(ASMethod method)
@@ -2320,7 +2316,7 @@ namespace Sulakore.Habbo.Web
                 }
                 if (length == 0) break;
             }
-            for (int i = (getLocalEndIndex - 1); i >= 0; i--)
+            for (int i = getLocalEndIndex - 1; i >= 0; i--)
             {
                 ASInstruction instruction = code[i];
                 if (!Local.IsSetLocal(instruction.OP)) continue;

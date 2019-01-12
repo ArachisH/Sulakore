@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 using Sulakore.Habbo;
@@ -11,7 +12,7 @@ namespace Sulakore.Modules
     public abstract class DataCaptureAttribute : Attribute, IEquatable<DataCaptureAttribute>
     {
         public ushort? Id { get; }
-        public string Hash { get; }
+        public string Identifier { get; }
         public abstract bool IsOutgoing { get; }
 
         internal object Target { get; set; }
@@ -21,9 +22,9 @@ namespace Sulakore.Modules
         {
             Id = id;
         }
-        public DataCaptureAttribute(string hash)
+        public DataCaptureAttribute(string identifier)
         {
-            Hash = hash;
+            Identifier = identifier;
         }
 
         internal void Invoke(DataInterceptedEventArgs args)
@@ -113,6 +114,16 @@ namespace Sulakore.Modules
                             int length = args.Packet.ReadInt32(ref position);
                             values[i] = args.Packet.ReadBytes(length, ref position);
                         }
+                        else if (typeof(IList<HEntity>).IsAssignableFrom(parameter.ParameterType))
+                        {
+                            args.Packet.Position = 0;
+                            values[i] = HEntity.Parse(args.Packet);
+                        }
+                        else if (typeof(IList<HFloorItem>).IsAssignableFrom(parameter.ParameterType))
+                        {
+                            args.Packet.Position = 0;
+                            values[i] = HFloorItem.Parse(args.Packet);
+                        }
                         break;
                     }
                 }
@@ -123,7 +134,7 @@ namespace Sulakore.Modules
         public bool Equals(DataCaptureAttribute other)
         {
             if (Id != other.Id) return false;
-            if (Hash != other.Hash) return false;
+            if (Identifier != other.Identifier) return false;
             if (!Method.Equals(other.Method)) return false;
             return true;
         }

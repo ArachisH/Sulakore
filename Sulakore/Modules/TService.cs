@@ -124,7 +124,7 @@ namespace Sulakore.Modules
                 var messageIdAtt = property.GetCustomAttribute<MessageIdAttribute>();
                 if (string.IsNullOrWhiteSpace(messageIdAtt?.Hash)) continue;
 
-                ushort[] ids = Installer.Game.GetMessageIds(messageIdAtt.Hash);
+                ushort[] ids = Game.GetMessageIds(messageIdAtt.Hash);
                 if (ids != null)
                 {
                     property.SetValue(_container, ids[0]);
@@ -141,26 +141,34 @@ namespace Sulakore.Modules
             }
             foreach (DataCaptureAttribute dataCaptureAtt in _unknownDataAttributes)
             {
-                if (string.IsNullOrWhiteSpace(dataCaptureAtt.Hash)) continue;
+                if (string.IsNullOrWhiteSpace(dataCaptureAtt.Identifier)) continue;
 
-                ushort[] ids = Installer.Game.GetMessageIds(dataCaptureAtt.Hash);
+                ushort[] ids = Game.GetMessageIds(dataCaptureAtt.Identifier);
                 if (ids != null)
                 {
                     AddCallback(dataCaptureAtt, ids[0]);
                 }
                 else
                 {
-                    if (!unresolved.TryGetValue(dataCaptureAtt.Hash, out IList<string> users))
+                    var identifiers = (dataCaptureAtt.IsOutgoing ? Out : (Identifiers)In);
+                    if (identifiers.TryGetId(dataCaptureAtt.Identifier, out ushort id))
                     {
-                        users = new List<string>();
-                        unresolved.Add(dataCaptureAtt.Hash, users);
+                        AddCallback(dataCaptureAtt, id);
                     }
-                    users.Add(dataCaptureAtt.GetType().Name + ": " + dataCaptureAtt.Method.Name);
+                    else
+                    {
+                        if (!unresolved.TryGetValue(dataCaptureAtt.Identifier, out IList<string> users))
+                        {
+                            users = new List<string>();
+                            unresolved.Add(dataCaptureAtt.Identifier, users);
+                        }
+                        users.Add(dataCaptureAtt.GetType().Name + ": " + dataCaptureAtt.Method.Name);
+                    }
                 }
             }
             if (unresolved.Count > 0)
             {
-                throw new HashResolvingException(Installer.Game.Revision, unresolved);
+                throw new HashResolvingException(Game.Revision, unresolved);
             }
         }
 

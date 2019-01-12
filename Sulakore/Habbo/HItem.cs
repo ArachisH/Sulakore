@@ -10,9 +10,11 @@ namespace Sulakore.Habbo
         public int Category { get; set; }
         public string SlotId { get; set; }
         public object[] Stuff { get; set; }
+        public bool IsTradeable { get; set; }
         public bool IsGroupable { get; set; }
         public int SecondsToExpiration { get; set; }
         public bool HasRentPeriodStarted { get; set; }
+        public bool CanPlaceInMarketplace { get; set; }
 
         public HItem(HPacket packet)
         {
@@ -28,9 +30,9 @@ namespace Sulakore.Habbo
             Stuff = ReadData(packet, Category);
 
             IsGroupable = packet.ReadBoolean();
+            IsTradeable = packet.ReadBoolean();
             packet.ReadBoolean();
-            packet.ReadBoolean();
-            packet.ReadBoolean();
+            CanPlaceInMarketplace = packet.ReadBoolean();
             SecondsToExpiration = packet.ReadInt32();
 
             HasRentPeriodStarted = packet.ReadBoolean();
@@ -45,9 +47,8 @@ namespace Sulakore.Habbo
 
         public static HItem[] Parse(HPacket packet)
         {
-            int loc1 = packet.ReadInt32();
-            int loc2 = packet.ReadInt32();
-
+            packet.ReadInt32();
+            packet.ReadInt32();
             var items = new HItem[packet.ReadInt32()];
             for (int i = 0; i < items.Length; i++)
             {

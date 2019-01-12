@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Reflection;
 
+using Sulakore.Habbo;
 using Sulakore.Network;
 using Sulakore.Network.Protocol;
 
 namespace Sulakore.Modules
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-    public abstract class DataCaptureAttribute : Attribute
+    public abstract class DataCaptureAttribute : Attribute, IEquatable<DataCaptureAttribute>
     {
         public ushort? Id { get; }
         public string Hash { get; }
@@ -103,6 +104,10 @@ namespace Sulakore.Modules
                         {
                             values[i] = args.Packet;
                         }
+                        else if (parameter.ParameterType == typeof(HPoint))
+                        {
+                            values[i] = new HPoint(args.Packet.ReadInt32(ref position), args.Packet.ReadInt32(ref position));
+                        }
                         else if (parameter.ParameterType == typeof(byte[]))
                         {
                             int length = args.Packet.ReadInt32(ref position);
@@ -115,11 +120,11 @@ namespace Sulakore.Modules
             return values;
         }
 
-        public bool Equals(DataCaptureAttribute attribute)
+        public bool Equals(DataCaptureAttribute other)
         {
-            if (Id != attribute.Id) return false;
-            if (Hash != attribute.Hash) return false;
-            if (!Method.Equals(attribute.Method)) return false;
+            if (Id != other.Id) return false;
+            if (Hash != other.Hash) return false;
+            if (!Method.Equals(other.Method)) return false;
             return true;
         }
     }

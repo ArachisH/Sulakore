@@ -90,5 +90,15 @@ namespace Sulakore.Habbo
             LastUpdate = update;
             return true;
         }
+
+        public static HEntity[] Parse(HPacket packet)
+        {
+            var entities = new HEntity[packet.ReadInt32()];
+            for (int i = 0; i < entities.Length; i++)
+            {
+                entities[i] = new HEntity(packet);
+            }
+            return entities;
+        }
     }
 }

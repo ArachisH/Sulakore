@@ -88,7 +88,7 @@ namespace Sulakore.Habbo
                     break;
                 }
             }
-            if (((category & 0xFF00) & 0x100) > 0)
+            if ((category & 0xFF00 & 0x100) > 0)
             {
                 values.Add(packet.ReadInt32());
                 values.Add(packet.ReadInt32());

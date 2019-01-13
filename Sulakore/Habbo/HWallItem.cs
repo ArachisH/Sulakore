@@ -9,7 +9,9 @@ namespace Sulakore.Habbo
         public int Id { get; set; }
         public int TypeId { get; set; }
 
-        public float X { get; set; }
+        public HPoint Local { get; set; }
+        public HPoint Global { get; set; }
+
         public float Y { get; set; }
         public float Z { get; set; }
 
@@ -30,46 +32,37 @@ namespace Sulakore.Habbo
             Location = packet.ReadUTF8();
             Data = packet.ReadUTF8();
             SecondsToExpiration = packet.ReadInt32();
-            int local7 = packet.ReadInt32();
-            int local8 = packet.ReadInt32();
+            UsagePolicy = packet.ReadInt32();
+            OwnerId = packet.ReadInt32();
 
-            if (!float.IsNaN(float.Parse(Data)))
+            if (float.TryParse(Data, out float fResult))
             {
                 State = int.Parse(Data);
             }
 
             string[] locations = Location.Split(' ');
-            if (Location.IndexOf(":") == 0)
+            if (Location.IndexOf(":") == 0 && locations.Length >= 3) // False
             {
-                //false
-                if (locations.Length >= 3)
-                {
-                    string local14 = locations[0];
-                    string local15 = locations[1];
-                    Placement = locations[2];
-                    if (local14.Length > 3 && local15.Length > 2)
-                    {
-                        local14 = local14.Substring(3);
-                        local15 = local15.Substring(2);
+                Placement = locations[2];
 
-                        locations = local14.Split(',');
-                        if (locations.Length >= 2)
-                        {
-                            int local16 = int.Parse(locations[0]);
-                            int local17 = int.Parse(locations[1]);
-                            locations = local15.Split(',');
-                            if (locations.Length >= 2)
-                            {
-                                X = int.Parse(locations[0]);
-                                Y = int.Parse(locations[1]);
-                            }
-                        }
+                if (locations[0].Length <= 3 || locations[1].Length <= 2) return;
+                string firstLoc = locations[0].Substring(3);
+                string secondLoc = locations[1].Substring(2);
+
+                locations = firstLoc.Split(',');
+                if (locations.Length >= 2)
+                {
+                    Global = new HPoint(int.Parse(locations[0]), int.Parse(locations[1]));
+                    locations = secondLoc.Split(',');
+
+                    if (locations.Length >= 2)
+                    {
+                        Local = new HPoint(int.Parse(locations[0]), int.Parse(locations[1]));
                     }
                 }
             }
-            else if (locations.Length >= 2)
+            else if (locations.Length >= 2) // True
             {
-                //true
                 Placement = locations[0];
                 if (Placement == "rightwall" || Placement == "frontwall")
                 {
@@ -77,11 +70,11 @@ namespace Sulakore.Habbo
                 }
                 else Placement = "l";
 
-                string[] local21 = locations[1].Split(',');
-                if (local21.Length >= 3)
+                string[] coords = locations[1].Split(',');
+                if (coords.Length >= 3)
                 {
-                    Y = float.Parse(local21[0]);
-                    Z = float.Parse(local21[1]);
+                    Y = float.Parse(coords[0]);
+                    Z = float.Parse(coords[1]);
                 }
             }
         }

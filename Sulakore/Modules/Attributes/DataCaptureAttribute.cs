@@ -124,6 +124,11 @@ namespace Sulakore.Modules
                             args.Packet.Position = 0;
                             values[i] = HFloorItem.Parse(args.Packet);
                         }
+                        else if (typeof(IList<HWallItem>).IsAssignableFrom(parameter.ParameterType))
+                        {
+                            args.Packet.Position = 0;
+                            values[i] = HWallItem.Parse(args.Packet);
+                        }
                         break;
                     }
                 }

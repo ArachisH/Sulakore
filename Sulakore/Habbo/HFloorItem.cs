@@ -57,15 +57,15 @@ namespace Sulakore.Habbo
                 owners.Add(packet.ReadInt32(), packet.ReadUTF8());
             }
 
-            var furniture = new HFloorItem[packet.ReadInt32()];
-            for (int i = 0; i < furniture.Length; i++)
+            var floorItems = new HFloorItem[packet.ReadInt32()];
+            for (int i = 0; i < floorItems.Length; i++)
             {
-                var furni = new HFloorItem(packet);
-                furni.OwnerName = owners[furni.OwnerId];
+                var floorItem = new HFloorItem(packet);
+                floorItem.OwnerName = owners[floorItem.OwnerId];
 
-                furniture[i] = furni;
+                floorItems[i] = floorItem;
             }
-            return furniture;
+            return floorItems;
         }
     }
 }

@@ -6,6 +6,8 @@ using System.Reflection;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
+using System.Collections.ObjectModel;
 
 using Sulakore.Habbo;
 using Sulakore.Network;
@@ -37,6 +39,15 @@ namespace Sulakore.Modules
         public HGame Game => Installer.Game;
         public HGameData GameData => Installer.GameData;
         public IHConnection Connection => Installer.Connection;
+
+        private readonly IDictionary<int, HEntity> _entities;
+        public ReadOnlyDictionary<int, HEntity> Entities { get; }
+
+        private readonly IDictionary<int, HWallItem> _wallItems;
+        public ReadOnlyDictionary<int, HWallItem> WallItems { get; }
+
+        private readonly IDictionary<int, HFloorItem> _floorItems;
+        public ReadOnlyDictionary<int, HFloorItem> FloorItems { get; }
 
         public static IPEndPoint DefaultModuleServer { get; }
 
@@ -73,6 +84,15 @@ namespace Sulakore.Modules
             _unknownDataAttributes = (parent?._unknownDataAttributes ?? new List<DataCaptureAttribute>());
             _inDataAttributes = (parent?._inDataAttributes ?? new Dictionary<ushort, List<DataCaptureAttribute>>());
             _outDataAttributes = (parent?._outDataAttributes ?? new Dictionary<ushort, List<DataCaptureAttribute>>());
+
+            _entities = new ConcurrentDictionary<int, HEntity>();
+            Entities = new ReadOnlyDictionary<int, HEntity>(_entities);
+
+            _wallItems = new ConcurrentDictionary<int, HWallItem>();
+            WallItems = new ReadOnlyDictionary<int, HWallItem>(_wallItems);
+
+            _floorItems = new ConcurrentDictionary<int, HFloorItem>();
+            FloorItems = new ReadOnlyDictionary<int, HFloorItem>(_floorItems);
 
             Installer = _container.Installer;
             IsStandalone = (parent != null ? false : _container.IsStandalone);
@@ -176,6 +196,7 @@ namespace Sulakore.Modules
         public virtual void HandleOutgoing(DataInterceptedEventArgs e) => HandleData(_outDataAttributes, e);
         private void HandleData(IDictionary<ushort, List<DataCaptureAttribute>> callbacks, DataInterceptedEventArgs e)
         {
+            HandleGameObjects(e.Packet, e.IsOutgoing);
             if (callbacks.TryGetValue(e.Packet.Id, out List<DataCaptureAttribute> attributes))
             {
                 foreach (DataCaptureAttribute attribute in attributes)
@@ -184,6 +205,49 @@ namespace Sulakore.Modules
                     attribute.Invoke(e);
                 }
             }
+        }
+
+        private void HandleGameObjects(HPacket packet, bool isOutgoing)
+        {
+            packet.Position = 0;
+            if (!isOutgoing)
+            {
+                switch (In.GetName(packet.Id))
+                {
+                    case nameof(In.RoomUsers):
+                    {
+                        foreach (HEntity entity in HEntity.Parse(packet))
+                        {
+                            _entities[entity.Index] = entity;
+                        }
+                        break;
+                    }
+                    case nameof(In.RoomWallItems):
+                    {
+                        foreach (HWallItem wallItem in HWallItem.Parse(packet))
+                        {
+                            _wallItems[wallItem.Id] = wallItem;
+                        }
+                        break;
+                    }
+                    case nameof(In.RoomFloorItems):
+                    {
+                        foreach (HFloorItem floorItem in HFloorItem.Parse(packet))
+                        {
+                            _floorItems[floorItem.Id] = floorItem;
+                        }
+                        break;
+                    }
+                    case nameof(In.RoomHeightMap):
+                    {
+                        _entities.Clear();
+                        _wallItems.Clear();
+                        _floorItems.Clear();
+                        break;
+                    }
+                }
+            }
+            packet.Position = 0;
         }
 
         private void WriteModuleInfo(HPacket packet)

@@ -9,24 +9,43 @@ namespace Sulakore.Habbo
     {
         public int Id { get; set; }
         public int Index { get; set; }
-        public HPoint Tile { get; set; }
         public string Name { get; set; }
         public string Motto { get; set; }
         public HGender Gender { get; set; }
         public int EntityType { get; set; }
         public string FigureId { get; set; }
         public string FavoriteGroup { get; set; }
-        public HEntityUpdate LastUpdate { get; private set; }
+
+        private HPoint _tile;
+        public HPoint Tile => _lastUpdate?.Tile ?? _tile;
+
+        public HAction Action => _lastUpdate?.Action ?? HAction.None;
+        public bool IsController => _lastUpdate?.IsController ?? false;
+
+        private HEntityUpdate _lastUpdate;
+        public HEntityUpdate LastUpdate
+        {
+            get => _lastUpdate;
+            set
+            {
+                if (value.Index != Index)
+                {
+                    throw new Exception("Entity update data index does not match with current entity index.");
+                }
+                _lastUpdate = value;
+            }
+        }
 
         public HEntity(HPacket packet)
         {
+
             Id = packet.ReadInt32();
             Name = packet.ReadUTF8();
             Motto = packet.ReadUTF8();
             FigureId = packet.ReadUTF8();
             Index = packet.ReadInt32();
 
-            Tile = new HPoint(packet.ReadInt32(), packet.ReadInt32(),
+            _tile = new HPoint(packet.ReadInt32(), packet.ReadInt32(),
                 double.Parse(packet.ReadUTF8(), CultureInfo.InvariantCulture));
 
             packet.ReadInt32();
@@ -68,27 +87,11 @@ namespace Sulakore.Habbo
                     packet.ReadUTF8();
                     for (int j = packet.ReadInt32(); j > 0; j--)
                     {
-                       packet.ReadUInt16();
+                        packet.ReadUInt16();
                     }
                     break;
                 }
             }
-        }
-
-        public void Update(HEntityUpdate update)
-        {
-            if (!TryUpdate(update))
-            {
-                throw new ArgumentException("Entity index does not match.", nameof(update));
-            }
-        }
-        public bool TryUpdate(HEntityUpdate update)
-        {
-            if (Index != update.Index) return false;
-
-            Tile = update.Tile;
-            LastUpdate = update;
-            return true;
         }
 
         public static HEntity[] Parse(HPacket packet)

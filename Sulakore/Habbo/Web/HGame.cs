@@ -26,6 +26,7 @@ namespace Sulakore.Habbo.Web
     public class HGame : ShockwaveFlash
     {
         private ASMethod _managerConnectMethod;
+        private ASInstance _habboCommunicationDemo;
 
         private readonly Dictionary<DoABCTag, ABCFile> _abcFileTags;
         private readonly Dictionary<ASClass, MessageItem> _messages;
@@ -575,7 +576,7 @@ namespace Sulakore.Habbo.Web
             if (!DisableEncryption()) return false;
             ABCFile abc = ABCFiles.Last();
 
-            ASInstance habboCommDemoInstance = abc.GetInstance("HabboCommunicationDemo");
+            ASInstance habboCommDemoInstance = GetHabboCommunicationDemo();
             if (habboCommDemoInstance == null) return false;
 
             int firstCoerceIndex = 0;
@@ -787,8 +788,7 @@ namespace Sulakore.Habbo.Web
                 var constructProp = (ConstructPropIns)instruction;
                 if (constructProp.ArgCount != 2) continue;
 
-                var getProperty = bigPurchaseCode[i + 4] as GetPropertyIns;
-                if (getProperty == null) return false;
+                if (!(bigPurchaseCode[i + 4] is GetPropertyIns getProperty)) return false;
                 cameraHandlerSlotNameIndex = getProperty.PropertyNameIndex;
 
                 bigPurchaseCode.InsertRange(i + 5, new ASInstruction[]
@@ -799,8 +799,7 @@ namespace Sulakore.Habbo.Web
                     new GetPropertyIns(abc, abc.Pool.GetMultinameIndex("bitmap"))
                 });
 
-                var callProperty = bigPurchaseCode[i + 8] as CallPropertyIns;
-                if (callProperty == null) return false;
+                if (!(bigPurchaseCode[i + 8] is CallPropertyIns callProperty)) return false;
                 dataSendTraitName = callProperty.PropertyName.Name;
                 callProperty.ArgCount = 1;
                 break;
@@ -850,7 +849,7 @@ namespace Sulakore.Habbo.Web
             ASTrait sendFunction = InjectUniversalSendFunction(true);
             if (sendFunction == null) return false;
 
-            ASInstance habboCommDemoInstance = abc.GetInstance("HabboCommunicationDemo");
+            ASInstance habboCommDemoInstance = GetHabboCommunicationDemo();
             if (habboCommDemoInstance == null) return false;
 
             // TODO: Implement a more "dynamic" approach(scan each method for a pattern).
@@ -895,7 +894,7 @@ namespace Sulakore.Habbo.Web
             ASTrait sendFunction = InjectUniversalSendFunction(true);
             if (sendFunction == null) return false;
 
-            ASInstance habboCommDemoInstance = abc.GetInstance("HabboCommunicationDemo");
+            ASInstance habboCommDemoInstance = GetHabboCommunicationDemo();
             if (habboCommDemoInstance == null) return false;
 
             if (!InjectEndPointSaver(out ASTrait hostTrait, out ASTrait portTrait)) return false;
@@ -1085,7 +1084,7 @@ namespace Sulakore.Habbo.Web
         {
             ABCFile abc = ABCFiles.Last();
 
-            ASInstance habboCommDemoInstance = abc.GetInstance("HabboCommunicationDemo");
+            ASInstance habboCommDemoInstance = GetHabboCommunicationDemo();
             if (habboCommDemoInstance == null) return false;
 
             foreach (ASMethod method in habboCommDemoInstance.GetMethods(null, "void", 1))
@@ -1161,7 +1160,18 @@ namespace Sulakore.Habbo.Web
         private void LoadMessages()
         {
             ABCFile abc = ABCFiles.Last();
-            ASClass habboMessagesClass = abc.GetClass("HabboMessages");
+
+            ASClass habboMessagesClass = null;
+            foreach (ASClass @class in abc.Classes)
+            {
+                if (@class.Traits.Count != 2 || @class.Instance.Traits.Count != 2) continue;
+                if (@class.Traits[0].Type.Name != "Map" || @class.Traits[1].Type.Name != "Map") continue;
+                if (@class.Traits[0].Kind != TraitKind.Constant || @class.Traits[1].Kind != TraitKind.Constant) continue;
+
+                habboMessagesClass = @class;
+                break;
+            }
+
             if (habboMessagesClass == null)
             {
                 IsPostShuffle = false;
@@ -1534,6 +1544,24 @@ namespace Sulakore.Habbo.Web
                 }
             }
             return false;
+        }
+
+        private ASInstance GetHabboCommunicationDemo()
+        {
+            if (_habboCommunicationDemo == null)
+            {
+                foreach (ASInstance instance in ABCFiles.Last().Instances)
+                {
+                    if (instance.IsInterface) continue;
+                    if (instance.InterfaceIndices.Count > 0) continue;
+                    if (instance.Constructor.Parameters.Count != 3) continue;
+                    if (!instance.Super.Name.Equals("Component", StringComparison.OrdinalIgnoreCase)) continue;
+
+                    _habboCommunicationDemo = instance;
+                    break;
+                }
+            }
+            return _habboCommunicationDemo;
         }
 
         public void Disassemble(bool isGeneratingHashes)

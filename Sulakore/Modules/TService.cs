@@ -393,6 +393,9 @@ namespace Sulakore.Modules
                     Out.Load(Game, hashesStream);
                 }
                 _module.OnConnected();
+
+                string identifier = packet.ReadUTF8();
+                _installerNode.SendPacketAsync(1, identifier);
             }
 
             private async Task HandleInstallerDataAsync()

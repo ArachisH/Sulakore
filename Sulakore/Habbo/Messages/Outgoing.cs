@@ -227,7 +227,7 @@ namespace Sulakore.Habbo.Messages
         public ushort RequestTags { get; set; }
         public ushort RequestTalenTrack { get; set; }
         public ushort RequestTargetOffer { get; set; }
-        public ushort RequestUserCitizinShip { get; set; }
+        public ushort RequestUserCitizenShip { get; set; }
         public ushort RequestUserClub { get; set; }
         public ushort RequestUserCredits { get; set; }
         public ushort RequestUserData { get; set; }

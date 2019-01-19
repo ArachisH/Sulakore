@@ -377,7 +377,7 @@ namespace Sulakore.Habbo.Messages
         public ushort UpdateUserLook { get; set; }
         public ushort UserAchievementScore { get; set; }
         public ushort UserBadges { get; set; }
-        public ushort UserCitizinShip { get; set; }
+        public ushort UserCitizenShip { get; set; }
         public ushort UserClothes { get; set; }
         public ushort UserClub { get; set; }
         public ushort UserCredits { get; set; }

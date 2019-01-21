@@ -20,9 +20,6 @@ namespace Sulakore.Modules
             Name = name;
         }
 
-        public override string ToString()
-        {
-            return Name;
-        }
+        public override string ToString() => Name;
     }
 }

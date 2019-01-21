@@ -122,17 +122,14 @@ namespace Sulakore.Modules
                 HNode installerNode = HNode.ConnectNewAsync(moduleServer ?? DefaultModuleServer).Result;
                 if (installerNode != null)
                 {
-                    installerNode.InFormat = HFormat.EvaWire;
-                    installerNode.OutFormat = HFormat.EvaWire;
-
                     var infoPacketOut = new EvaWirePacket(0);
                     WriteModuleInfo(infoPacketOut);
 
-                    installerNode.SendPacketAsync(infoPacketOut).Wait();
+                    installerNode.SendPacketAsync(infoPacketOut).GetAwaiter().GetResult();
                     Installer = _container.Installer = new DummyInstaller(_container, installerNode);
                     break;
                 }
-                else throw new Exception($"Failure to establish the connection with: {moduleServer}");
+                else throw new Exception($"Failed to establish connection with the module server: {moduleServer}");
             }
         }
 
@@ -156,7 +153,7 @@ namespace Sulakore.Modules
                         users = new List<string>();
                         unresolved.Add(messageIdAtt.Hash, users);
                     }
-                    users.Add("Property: " + property.Name);
+                    users.Add($"Property({property.Name})");
                 }
             }
             foreach (DataCaptureAttribute dataCaptureAtt in _unknownDataAttributes)
@@ -182,7 +179,7 @@ namespace Sulakore.Modules
                             users = new List<string>();
                             unresolved.Add(dataCaptureAtt.Identifier, users);
                         }
-                        users.Add(dataCaptureAtt.GetType().Name + ": " + dataCaptureAtt.Method.Name);
+                        users.Add($"Method({dataCaptureAtt.Method.Name})");
                     }
                 }
             }
@@ -305,7 +302,6 @@ namespace Sulakore.Modules
             private readonly IModule _module;
             private readonly HNode _installerNode;
             private readonly Dictionary<ushort, Action<HPacket>> _moduleEvents;
-            private readonly Dictionary<DataInterceptedEventArgs, string> _dataIdentifiers;
 
             HNode IHConnection.Local => throw new NotSupportedException();
             HNode IHConnection.Remote => throw new NotSupportedException();
@@ -321,8 +317,6 @@ namespace Sulakore.Modules
             {
                 _module = module;
                 _installerNode = installerNode;
-                _dataIdentifiers = new Dictionary<DataInterceptedEventArgs, string>();
-
                 _moduleEvents = new Dictionary<ushort, Action<HPacket>>
                 {
                     [1] = HandleData,
@@ -337,8 +331,6 @@ namespace Sulakore.Modules
 
             private void HandleData(HPacket packet)
             {
-                string identifier = packet.ReadUTF8();
-
                 int step = packet.ReadInt32();
                 bool isOutgoing = packet.ReadBoolean();
                 var format = HFormat.GetFormat(packet.ReadUTF8());
@@ -346,9 +338,7 @@ namespace Sulakore.Modules
 
                 int ogDataLength = packet.ReadInt32();
                 byte[] ogData = packet.ReadBytes(ogDataLength);
-
                 var args = new DataInterceptedEventArgs(format.CreatePacket(ogData), step, isOutgoing, ContinueAsync);
-                _dataIdentifiers.Add(args, identifier);
 
                 bool isOriginal = packet.ReadBoolean();
                 if (!isOriginal)
@@ -358,19 +348,28 @@ namespace Sulakore.Modules
                     args.Packet = format.CreatePacket(packetData);
                 }
 
-                if (isOutgoing)
+                try
                 {
-                    _module.HandleOutgoing(args);
+                    if (isOutgoing)
+                    {
+                        _module.HandleOutgoing(args);
+                    }
+                    else
+                    {
+                        _module.HandleIncoming(args);
+                    }
                 }
-                else
+                catch
                 {
-                    _module.HandleIncoming(args);
+                    if (args.IsOriginal != isOriginal) // Was this packet modified before throwing an error?
+                    {
+                        args.Restore();
+                    }
                 }
 
                 if (!args.WasRelayed)
                 {
-                    HPacket handledDataPacket = CreateHandledDataPacket(args, false);
-                    _installerNode.SendPacketAsync(handledDataPacket);
+                    _installerNode.SendPacketAsync(CreateHandledDataPacket(args, false));
                 }
             }
             private void HandleOnConnected(HPacket packet)
@@ -393,9 +392,6 @@ namespace Sulakore.Modules
                     Out.Load(Game, hashesStream);
                 }
                 _module.OnConnected();
-
-                string identifier = packet.ReadUTF8();
-                _installerNode.SendPacketAsync(1, identifier);
             }
 
             private async Task HandleInstallerDataAsync()
@@ -448,7 +444,7 @@ namespace Sulakore.Modules
             private HPacket CreateHandledDataPacket(DataInterceptedEventArgs args, bool isContinuing)
             {
                 var handledDataPacket = new EvaWirePacket(1);
-                handledDataPacket.Write(_dataIdentifiers[args]);
+                handledDataPacket.Write(args.Step + args.IsOutgoing.ToString());
 
                 handledDataPacket.Write(isContinuing);
                 if (isContinuing)

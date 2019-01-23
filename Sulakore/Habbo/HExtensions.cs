@@ -8,7 +8,7 @@ namespace Sulakore.Habbo
     public static class HExtensions
     {
         private static readonly Random _rng;
-        private const BindingFlags BINDINGS = (BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
+        private const BindingFlags BINDINGS = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance;
 
         static HExtensions()
         {
@@ -44,7 +44,7 @@ namespace Sulakore.Habbo
                 throw new ArgumentException("Hotel cannot be 'Unknown'.", nameof(hotel));
             }
             string value = hotel.ToString().ToLower();
-            return (value.Length != 5 ? value : value.Insert(3, "."));
+            return value.Length != 5 ? value : value.Insert(3, ".");
         }
 
         public static IEnumerable<MemberInfo> GetAllMembers(this Type type)
@@ -65,7 +65,7 @@ namespace Sulakore.Habbo
             while (type != null)
             {
                 IEnumerable<T> batch = excavator(type);
-                excavated = (excavated?.Concat(batch) ?? batch);
+                excavated = excavated?.Concat(batch) ?? batch;
                 type = type.BaseType;
             }
             return excavated;

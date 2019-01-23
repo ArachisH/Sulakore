@@ -45,7 +45,7 @@ namespace Sulakore.Habbo
             OfferId = packet.ReadInt32();
             AcceptSeasonCurrencyAsCredits = packet.ReadBoolean();
             
-            IsFrontPage = (packet.ReadableBytes > 0);
+            IsFrontPage = packet.ReadableBytes > 0;
         }
     }
 }

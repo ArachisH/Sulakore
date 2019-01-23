@@ -62,11 +62,11 @@ namespace Sulakore.Network
             bool connected = true;
             try
             {
-                IPEndPoint endPoint = (SOCKS5EndPoint ?? EndPoint);
+                IPEndPoint endPoint = SOCKS5EndPoint ?? EndPoint;
                 IAsyncResult result = Client.BeginConnect(endPoint, null, null);
                 await Task.Factory.FromAsync(result, Client.EndConnect).ConfigureAwait(false);
 
-                if (!Client.Connected) return (connected = false);
+                if (!Client.Connected) return connected = false;
                 if (SOCKS5EndPoint != null)
                 {
                     await SendAsync(new byte[]
@@ -78,7 +78,7 @@ namespace Sulakore.Network
                     }).ConfigureAwait(false);
 
                     byte[] response = await ReceiveAsync(2).ConfigureAwait(false);
-                    if (response?.Length != 2 || response[1] == 0xFF) return (connected = false);
+                    if (response?.Length != 2 || response[1] == 0xFF) return connected = false;
 
                     int index = 0;
                     byte[] payload = null;
@@ -103,7 +103,7 @@ namespace Sulakore.Network
 
                         await SendAsync(payload, index).ConfigureAwait(false);
                         response = await ReceiveAsync(2).ConfigureAwait(false);
-                        if (response?.Length != 2 || response[1] != 0x00) return (connected = false);
+                        if (response?.Length != 2 || response[1] != 0x00) return connected = false;
                     }
 
                     index = 0;
@@ -131,10 +131,10 @@ namespace Sulakore.Network
 
                     await SendAsync(payload, index);
                     response = await ReceiveAsync(byte.MaxValue);
-                    if (response?.Length < 2 || response[1] != 0x00) return (connected = false);
+                    if (response?.Length < 2 || response[1] != 0x00) return connected = false;
                 }
             }
-            catch { return (connected = false); }
+            catch { return connected = false; }
             finally
             {
                 if (!connected)
@@ -146,7 +146,7 @@ namespace Sulakore.Network
         }
         public Task<bool> ConnectAsync(IPEndPoint endpoint)
         {
-            EndPoint = (endpoint as HotelEndPoint);
+            EndPoint = endpoint as HotelEndPoint;
             if (EndPoint == null)
             {
                 EndPoint = new HotelEndPoint(endpoint);
@@ -231,7 +231,7 @@ namespace Sulakore.Network
             int nullBytesReadCount = 0;
             do
             {
-                int bytesLeft = (data.Length - totalBytesRead);
+                int bytesLeft = data.Length - totalBytesRead;
                 int bytesRead = await ReceiveAsync(data, totalBytesRead, bytesLeft).ConfigureAwait(false);
 
                 if (IsConnected && bytesRead > 0)

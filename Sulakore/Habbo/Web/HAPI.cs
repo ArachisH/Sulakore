@@ -21,7 +21,7 @@ namespace Sulakore.Habbo.Web
             {
                 UseProxy = false,
                 UseCookies = false,
-                AutomaticDecompression = (DecompressionMethods.GZip | DecompressionMethods.Deflate)
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             };
 
             _client = new HttpClient(_handler);
@@ -30,14 +30,14 @@ namespace Sulakore.Habbo.Web
             _client.DefaultRequestHeaders.Add("Cookie", "YPF8827340282Jdskjhfiw_928937459182JAX666=127.0.0.1");
         }
 
-        public static Task<byte[]> GetFigureDataAsync(string query) => ReadContentAsync<byte[]>(HHotel.Com.ToUri(), ("/habbo-imaging/avatarimage?" + query));
-        public static async Task<HUser> GetUserAsync(string name, HHotel hotel) => HUser.Create(await ReadContentAsync<string>(hotel.ToUri(), ("/api/public/users?name=" + name)));
+        public static Task<byte[]> GetFigureDataAsync(string query) => ReadContentAsync<byte[]>(HHotel.Com.ToUri(), "/habbo-imaging/avatarimage?" + query);
+        public static async Task<HUser> GetUserAsync(string name, HHotel hotel) => HUser.Create(await ReadContentAsync<string>(hotel.ToUri(), "/api/public/users?name=" + name));
         public static async Task<HProfile> GetProfileAsync(string uniqueId) => HProfile.Create(await ReadContentAsync<string>(HotelEndPoint.GetHotel(uniqueId).ToUri(), $"/api/public/users/{uniqueId}/profile"));
 
         public static async Task<string> GetLatestRevisionAsync(HHotel hotel)
         {
             string body = await ReadContentAsync<string>(hotel.ToUri(), "/gamedata/external_variables/1").ConfigureAwait(false);
-            int revisionStartIndex = (body.LastIndexOf("/gordon/") + 8);
+            int revisionStartIndex = body.LastIndexOf("/gordon/") + 8;
             if (revisionStartIndex != 7)
             {
                 int revisionEndIndex = body.IndexOf('/', revisionStartIndex);
@@ -90,7 +90,7 @@ namespace Sulakore.Habbo.Web
 
                             totalBytesRead += bytesRead;
                             double maximum = content.Headers.ContentLength ?? totalBytesRead;
-                            progress?.Invoke((totalBytesRead / maximum) * 100);
+                            progress?.Invoke(totalBytesRead / maximum * 100);
                         }
                     }
                 }
@@ -114,7 +114,7 @@ namespace Sulakore.Habbo.Web
             using (var request = new HttpRequestMessage(HttpMethod.Get, $"{baseUri.GetLeftPart(UriPartial.Authority)}{path}"))
             using (HttpResponseMessage response = await _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false))
             {
-                ServicePointManager.FindServicePoint(request.RequestUri).ConnectionLeaseTimeout = (30 * 1000);
+                ServicePointManager.FindServicePoint(request.RequestUri).ConnectionLeaseTimeout = 30 * 1000;
                 if (!response.IsSuccessStatusCode) return default(T);
                 if (contentConverter == null)
                 {

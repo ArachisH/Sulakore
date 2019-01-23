@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Net;
 using System.Linq;
 using System.Reflection;
@@ -29,7 +28,7 @@ namespace Sulakore.Modules
         private IInstaller _installer;
         public virtual IInstaller Installer
         {
-            get => (_parent?.Installer ?? _installer);
+            get => _parent?.Installer ?? _installer;
             set => _installer = value;
         }
 
@@ -80,10 +79,10 @@ namespace Sulakore.Modules
         private TService(IModule container, TService parent, IPEndPoint moduleServer)
         {
             _parent = parent;
-            _container = (container ?? this);
-            _unknownDataAttributes = (parent?._unknownDataAttributes ?? new List<DataCaptureAttribute>());
-            _inDataAttributes = (parent?._inDataAttributes ?? new Dictionary<ushort, List<DataCaptureAttribute>>());
-            _outDataAttributes = (parent?._outDataAttributes ?? new Dictionary<ushort, List<DataCaptureAttribute>>());
+            _container = container ?? this;
+            _unknownDataAttributes = parent?._unknownDataAttributes ?? new List<DataCaptureAttribute>();
+            _inDataAttributes = parent?._inDataAttributes ?? new Dictionary<ushort, List<DataCaptureAttribute>>();
+            _outDataAttributes = parent?._outDataAttributes ?? new Dictionary<ushort, List<DataCaptureAttribute>>();
 
             _entities = new ConcurrentDictionary<int, HEntity>();
             Entities = new ReadOnlyDictionary<int, HEntity>(_entities);
@@ -95,7 +94,7 @@ namespace Sulakore.Modules
             FloorItems = new ReadOnlyDictionary<int, HFloorItem>(_floorItems);
 
             Installer = _container.Installer;
-            IsStandalone = (parent != null ? false : _container.IsStandalone);
+            IsStandalone = parent != null ? false : _container.IsStandalone;
             if (LicenseManager.UsageMode != LicenseUsageMode.Runtime) return;
 
             foreach (MethodInfo method in _container.GetType().GetAllMethods())
@@ -133,61 +132,7 @@ namespace Sulakore.Modules
             }
         }
 
-        public virtual void OnConnected()
-        {
-            var unresolved = new Dictionary<string, IList<string>>();
-            foreach (PropertyInfo property in _container.GetType().GetAllProperties())
-            {
-                var messageIdAtt = property.GetCustomAttribute<MessageIdAttribute>();
-                if (string.IsNullOrWhiteSpace(messageIdAtt?.Hash)) continue;
-
-                ushort[] ids = Game.GetMessageIds(messageIdAtt.Hash);
-                if (ids != null)
-                {
-                    property.SetValue(_container, ids[0]);
-                }
-                else
-                {
-                    if (!unresolved.TryGetValue(messageIdAtt.Hash, out IList<string> users))
-                    {
-                        users = new List<string>();
-                        unresolved.Add(messageIdAtt.Hash, users);
-                    }
-                    users.Add($"Property({property.Name})");
-                }
-            }
-            foreach (DataCaptureAttribute dataCaptureAtt in _unknownDataAttributes)
-            {
-                if (string.IsNullOrWhiteSpace(dataCaptureAtt.Identifier)) continue;
-
-                ushort[] ids = Game.GetMessageIds(dataCaptureAtt.Identifier);
-                if (ids != null)
-                {
-                    AddCallback(dataCaptureAtt, ids[0]);
-                }
-                else
-                {
-                    var identifiers = (dataCaptureAtt.IsOutgoing ? Out : (Identifiers)In);
-                    if (identifiers.TryGetId(dataCaptureAtt.Identifier, out ushort id))
-                    {
-                        AddCallback(dataCaptureAtt, id);
-                    }
-                    else
-                    {
-                        if (!unresolved.TryGetValue(dataCaptureAtt.Identifier, out IList<string> users))
-                        {
-                            users = new List<string>();
-                            unresolved.Add(dataCaptureAtt.Identifier, users);
-                        }
-                        users.Add($"Method({dataCaptureAtt.Method.Name})");
-                    }
-                }
-            }
-            if (unresolved.Count > 0)
-            {
-                throw new HashResolvingException(Game.Revision, unresolved);
-            }
-        }
+        public virtual void OnConnected() => ResolveMessageCallbacks();
 
         public virtual void HandleIncoming(DataInterceptedEventArgs e) => HandleData(_inDataAttributes, e);
         public virtual void HandleOutgoing(DataInterceptedEventArgs e) => HandleData(_outDataAttributes, e);
@@ -204,49 +149,50 @@ namespace Sulakore.Modules
             }
         }
 
-        private void HandleGameObjects(HPacket packet, bool isOutgoing)
-        {
-            packet.Position = 0;
-            if (!isOutgoing)
-            {
-                switch (In.GetName(packet.Id))
-                {
-                    case nameof(In.RoomUsers):
-                    {
-                        foreach (HEntity entity in HEntity.Parse(packet))
-                        {
-                            _entities[entity.Index] = entity;
-                        }
-                        break;
-                    }
-                    case nameof(In.RoomWallItems):
-                    {
-                        foreach (HWallItem wallItem in HWallItem.Parse(packet))
-                        {
-                            _wallItems[wallItem.Id] = wallItem;
-                        }
-                        break;
-                    }
-                    case nameof(In.RoomFloorItems):
-                    {
-                        foreach (HFloorItem floorItem in HFloorItem.Parse(packet))
-                        {
-                            _floorItems[floorItem.Id] = floorItem;
-                        }
-                        break;
-                    }
-                    case nameof(In.RoomHeightMap):
-                    {
-                        _entities.Clear();
-                        _wallItems.Clear();
-                        _floorItems.Clear();
-                        break;
-                    }
-                }
-            }
-            packet.Position = 0;
-        }
+        public HMessages GetMessages(bool isOutgoing) => isOutgoing ? (HMessages)Out : In;
+        public HMessage GetMessage(ushort id, bool isOutgoing) => GetMessages(isOutgoing).GetMessage(id);
+        public HMessage GetMessage(string identifier, bool isOutgoing) => GetMessages(isOutgoing).GetMessage(identifier);
 
+        private void ResolveMessageCallbacks()
+        {
+            var unresolved = new Dictionary<string, IList<string>>();
+            foreach (PropertyInfo property in _container.GetType().GetAllProperties())
+            {
+                var messageAtt = property.GetCustomAttribute<MessageAttribute>();
+                if (string.IsNullOrWhiteSpace(messageAtt?.Identifier)) continue;
+
+                HMessage message = GetMessage(messageAtt.Identifier, messageAtt.IsOutgoing);
+                if (message == null)
+                {
+                    if (!unresolved.TryGetValue(messageAtt.Identifier, out IList<string> users))
+                    {
+                        users = new List<string>();
+                        unresolved.Add(messageAtt.Identifier, users);
+                    }
+                    users.Add($"Property({property.Name})");
+                }
+                else property.SetValue(_container, message);
+            }
+            foreach (DataCaptureAttribute dataCaptureAtt in _unknownDataAttributes)
+            {
+                if (string.IsNullOrWhiteSpace(dataCaptureAtt.Identifier)) continue;
+                HMessage message = GetMessage(dataCaptureAtt.Identifier, dataCaptureAtt.IsOutgoing);
+                if (message == null)
+                {
+                    if (!unresolved.TryGetValue(dataCaptureAtt.Identifier, out IList<string> users))
+                    {
+                        users = new List<string>();
+                        unresolved.Add(dataCaptureAtt.Identifier, users);
+                    }
+                    users.Add($"Method({dataCaptureAtt.Method})");
+                }
+                else AddCallback(dataCaptureAtt, message.Id);
+            }
+            if (unresolved.Count > 0)
+            {
+                throw new MessageResolvingException(Game.Revision, unresolved);
+            }
+        }
         private void WriteModuleInfo(HPacket packet)
         {
             var moduleAssembly = Assembly.GetAssembly(_container.GetType());
@@ -277,11 +223,50 @@ namespace Sulakore.Modules
                 packet.Write(author.Name);
             }
         }
+        private void HandleGameObjects(HPacket packet, bool isOutgoing)
+        {
+            packet.Position = 0;
+            if (!isOutgoing)
+            {
+                if (packet.Id == In.RoomUsers)
+                {
+                    HEntity[] entities = HEntity.Parse(packet);
+                    foreach (HEntity entity in entities)
+                    {
+                        _entities[entity.Index] = entity;
+                    }
+                    //_container.OnEntitiesLoaded(entities.Length);
+                }
+                else if (packet.Id == In.RoomWallItems)
+                {
+                    HWallItem[] wallItems = HWallItem.Parse(packet);
+                    foreach (HWallItem wallItem in wallItems)
+                    {
+                        _wallItems[wallItem.Id] = wallItem;
+                    }
+                    //_container.OnWallItemsLoaded(wallItems.Length);
+                }
+                else if (packet.Id == In.RoomFloorItems)
+                {
+                    HFloorItem[] floorItems = HFloorItem.Parse(packet);
+                    foreach (HFloorItem floorItem in floorItems)
+                    {
+                        _floorItems[floorItem.Id] = floorItem;
+                    }
+                    //_container.OnFloorItemsLoaded(floorItems.Length);
+                }
+                else if (packet.Id == In.RoomHeightMap)
+                {
+                    _entities.Clear();
+                    _wallItems.Clear();
+                    _floorItems.Clear();
+                }
+            }
+            packet.Position = 0;
+        }
         private void AddCallback(DataCaptureAttribute attribute, ushort id)
         {
-            Dictionary<ushort, List<DataCaptureAttribute>> callbacks =
-                (attribute.IsOutgoing ? _outDataAttributes : _inDataAttributes);
-
+            Dictionary<ushort, List<DataCaptureAttribute>> callbacks = attribute.IsOutgoing ? _outDataAttributes : _inDataAttributes;
             if (!callbacks.TryGetValue(id, out List<DataCaptureAttribute> attributes))
             {
                 attributes = new List<DataCaptureAttribute>();
@@ -376,21 +361,10 @@ namespace Sulakore.Modules
             {
                 GameData.Source = packet.ReadUTF8();
 
-                int gameLength = packet.ReadInt32();
-                Game = new HGame(packet.ReadBytes(gameLength));
-                Game.Location = packet.ReadUTF8();
+                int messagesJsonDataLength = packet.ReadInt32();
+                byte[] messagesJsonData = packet.ReadBytes(messagesJsonDataLength);
+                // TODO: Deserialize into the In, and Out properties
 
-                Game.Disassemble();
-                Game.GenerateMessageHashes();
-
-                int hashesDataLength = packet.ReadInt32();
-                byte[] hashesData = packet.ReadBytes(hashesDataLength);
-                using (var hashesStream = new StreamReader(new MemoryStream(hashesData)))
-                {
-                    In.Load(Game, hashesStream);
-                    hashesStream.BaseStream.Position = 0;
-                    Out.Load(Game, hashesStream);
-                }
                 _module.OnConnected();
             }
 

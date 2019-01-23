@@ -10,7 +10,7 @@ namespace Sulakore.Habbo
         public int X { get; set; }
         public int Y { get; set; }
         public double Z { get; set; }
-        public bool IsEmpty => (Equals(Empty));
+        public bool IsEmpty => Equals(Empty);
 
         public static readonly HPoint Empty;
 
@@ -42,9 +42,9 @@ namespace Sulakore.Habbo
         public override int GetHashCode()
         {
             int hashCode = 1861411795;
-            hashCode = (hashCode * -1521134295 + base.GetHashCode());
-            hashCode = (hashCode * -1521134295 + X.GetHashCode());
-            hashCode = (hashCode * -1521134295 + Y.GetHashCode());
+            hashCode = hashCode * -1521134295 + base.GetHashCode();
+            hashCode = hashCode * -1521134295 + X.GetHashCode();
+            hashCode = hashCode * -1521134295 + Y.GetHashCode();
             return hashCode;
         }
         public override string ToString() => $"{{X={X},Y={Y},Z={Z}}}";
@@ -57,7 +57,7 @@ namespace Sulakore.Habbo
             }
             return false;
         }
-        public bool Equals(HPoint point) => (X == point.X && Y == point.Y);
+        public bool Equals(HPoint point) => X == point.X && Y == point.Y;
 
         public static char ToLevel(double z)
         {
@@ -76,11 +76,11 @@ namespace Sulakore.Habbo
         {
             if (level >= '0' && level <= '9')
             {
-                return (level - 48);
+                return level - 48;
             }
             else if (level >= 'a' && level <= 't')
             {
-                return (level - 87);
+                return level - 87;
             }
             return 0;
         }

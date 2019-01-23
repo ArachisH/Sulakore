@@ -16,7 +16,7 @@ namespace Sulakore.Network.Protocol
 
         private static HFormat GetFormat(bool isOutgoing)
         {
-            return (isOutgoing ? HFormat.WedgieOut : HFormat.WedgieIn);
+            return isOutgoing ? HFormat.WedgieOut : HFormat.WedgieIn;
         }
         public static byte[] Construct(bool isOutgoing, ushort id, params object[] values)
         {

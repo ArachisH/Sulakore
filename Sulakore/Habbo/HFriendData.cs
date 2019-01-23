@@ -24,7 +24,7 @@ namespace Sulakore.Habbo
         {
             Id = packet.ReadInt32();
             Username = packet.ReadUTF8();
-            Gender = (packet.ReadInt32() == 1 ? HGender.Male : HGender.Female);
+            Gender = packet.ReadInt32() == 1 ? HGender.Male : HGender.Female;
 
             IsOnline = packet.ReadBoolean();
             CanFollow = packet.ReadBoolean();

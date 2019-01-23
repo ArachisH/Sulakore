@@ -38,7 +38,7 @@ namespace Sulakore.Network.Protocol
         }
         public override int GetSize(string value)
         {
-            return (2 + Encoding.UTF8.GetByteCount(value));
+            return 2 + Encoding.UTF8.GetByteCount(value);
         }
         public override int GetSize(ushort value)
         {
@@ -88,10 +88,10 @@ namespace Sulakore.Network.Protocol
 
         public override int ReadInt32(IList<byte> data, int index)
         {
-            int result = (data[index++] << 24);
-            result += (data[index++] << 16);
-            result += (data[index++] << 8);
-            return (result + data[index]);
+            int result = data[index++] << 24;
+            result += data[index++] << 16;
+            result += data[index++] << 8;
+            return result + data[index];
         }
         public override string ReadUTF8(IList<byte> data, int index)
         {
@@ -107,11 +107,11 @@ namespace Sulakore.Network.Protocol
         }
         public override bool ReadBoolean(IList<byte> data, int index)
         {
-            return (data[index] == 1);
+            return data[index] == 1;
         }
         public override ushort ReadUInt16(IList<byte> data, int index)
         {
-            int result = (data[index++] << 8);
+            int result = data[index++] << 8;
             return (ushort)(result + data[index]);
         }
         public override double ReadDouble(IList<byte> data, int index)

@@ -43,7 +43,7 @@ namespace Sulakore.Crypto
                     _j %= _table.Length;
                     Swap(_i, _j);
 
-                    int rightXOR = (_table[_i] + _table[_j]);
+                    int rightXOR = _table[_i] + _table[_j];
                     rightXOR = _table[rightXOR % _table.Length];
 
                     parsed[k] = (byte)(data[k] ^ rightXOR);
@@ -83,7 +83,7 @@ namespace Sulakore.Crypto
                     _j %= _table.Length;
                     Swap(_i, _j);
 
-                    int rightXOR = (_table[_i] + _table[_j]);
+                    int rightXOR = _table[_i] + _table[_j];
                     rightXOR = _table[rightXOR % _table.Length];
 
                     data[k] ^= (byte)rightXOR;

@@ -10,27 +10,27 @@ namespace Sulakore.Network.Protocol
         private readonly Dictionary<HNode, List<byte>> _dataCrumbs;
 
         public override int IdPosition { get; }
-        public override string Name => (IsOutgoing ? "WEDGIE-OUT" : "WEDGIE-IN");
+        public override string Name => IsOutgoing ? "WEDGIE-OUT" : "WEDGIE-IN";
 
         public WedgieFormat(bool isOutgoing)
             : base(isOutgoing)
         {
             _dataCrumbs = new Dictionary<HNode, List<byte>>();
 
-            IdPosition = (isOutgoing ? 3 : 0);
+            IdPosition = isOutgoing ? 3 : 0;
         }
 
         public override ushort GetId(IList<byte> data)
         {
-            int idIndex = (IsOutgoing ? 3 : 0);
+            int idIndex = IsOutgoing ? 3 : 0;
             int result = ReadUnmaskedByte(data, ref idIndex);
 
-            result = ((result << 6) | ReadUnmaskedByte(data, ref idIndex));
+            result = (result << 6) | ReadUnmaskedByte(data, ref idIndex);
             return (ushort)result;
         }
         public override byte[] GetBody(IList<byte> data)
         {
-            int bodyStart = (IsOutgoing ? 5 : 2);
+            int bodyStart = IsOutgoing ? 5 : 2;
             var body = new byte[(data.Count - (IsOutgoing ? 5 : 3))];
             for (int i = 0; i < body.Length; i++)
             {
@@ -59,7 +59,7 @@ namespace Sulakore.Network.Protocol
         public override int GetSize(string value)
         {
             int valueSize = Encoding.UTF8.GetByteCount(value);
-            valueSize += (IsOutgoing ? (GetSize(valueSize)) : 1);
+            valueSize += IsOutgoing ? GetSize(valueSize) : 1;
 
             return valueSize;
         }
@@ -74,7 +74,7 @@ namespace Sulakore.Network.Protocol
 
         public override byte[] GetBytes(int value)
         {
-            int mask = ((value < 0) ? 4 : 0);
+            int mask = (value < 0) ? 4 : 0;
             value = Math.Abs(value);
 
             var buffer = new byte[6];
@@ -133,13 +133,13 @@ namespace Sulakore.Network.Protocol
         {
             var value = ReadUnmaskedByte(data, ref index);
 
-            var result = (value & 3);
-            var isNegative = ((value & 4) == 4);
-            var byteCount = (((value & 56) >> 3) | 0);
+            var result = value & 3;
+            var isNegative = (value & 4) == 4;
+            var byteCount = ((value & 56) >> 3) | 0;
             for (int i = 1, j = 2; i < byteCount; i++, j += 6)
             {
                 value = ReadUnmaskedByte(data, ref index);
-                result = ((value << j) | result);
+                result = (value << j) | result;
             }
             if (isNegative)
             {
@@ -166,7 +166,7 @@ namespace Sulakore.Network.Protocol
         }
         public override bool ReadBoolean(IList<byte> data, int index)
         {
-            return (ReadInt32(data, index) == 1);
+            return ReadInt32(data, index) == 1;
         }
         public override ushort ReadUInt16(IList<byte> data, int index)
         {
@@ -194,7 +194,7 @@ namespace Sulakore.Network.Protocol
                 var body = new byte[ReadUInt16(lengthBlock, 1)];
                 do
                 {
-                    int bytesLeft = (body.Length - totalBytesRead);
+                    int bytesLeft = body.Length - totalBytesRead;
                     int bytesRead = await node.ReceiveAsync(body, totalBytesRead, bytesLeft).ConfigureAwait(false);
 
                     if (!node.IsConnected || (bytesRead <= 0 && ++nullBytesReadCount >= 2))
@@ -252,7 +252,7 @@ namespace Sulakore.Network.Protocol
         }
         protected override byte[] ConstructTails(ushort id, IList<byte> body)
         {
-            int bodyStart = (IsOutgoing ? 5 : 2);
+            int bodyStart = IsOutgoing ? 5 : 2;
             var data = new byte[(IsOutgoing ? 5 : 3) + body.Count];
             if (IsOutgoing)
             {
@@ -288,7 +288,7 @@ namespace Sulakore.Network.Protocol
             int blockEndIndex = dataCrumb.IndexOf(1);
             if (blockEndIndex != -1)
             {
-                int length = (blockEndIndex + 1);
+                int length = blockEndIndex + 1;
                 data = new byte[length];
 
                 dataCrumb.CopyTo(0, data, 0, length);

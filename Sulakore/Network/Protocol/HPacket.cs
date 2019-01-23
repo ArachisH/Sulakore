@@ -336,7 +336,7 @@ namespace Sulakore.Network.Protocol
         }
         public int GetReadableBytes(int position)
         {
-            return (_body.Count - position);
+            return _body.Count - position;
         }
 
         protected virtual byte[] AsBytes()
@@ -349,7 +349,7 @@ namespace Sulakore.Network.Protocol
             for (int i = 0; i <= 13; i++)
             {
                 result = result.Replace(((char)i).ToString(),
-                    ("[" + i + "]"));
+                    "[" + i + "]");
             }
             return result;
         }
@@ -360,7 +360,7 @@ namespace Sulakore.Network.Protocol
             {
                 return _toBytesCache;
             }
-            return (_toBytesCache = AsBytes());
+            return _toBytesCache = AsBytes();
         }
         public override string ToString()
         {
@@ -368,7 +368,7 @@ namespace Sulakore.Network.Protocol
             {
                 return _toStringCache;
             }
-            return (_toStringCache = AsString());
+            return _toStringCache = AsString();
         }
         public bool Equals(HPacket packet)
         {
@@ -384,7 +384,7 @@ namespace Sulakore.Network.Protocol
             {
                 for (int i = 0; i <= 13; i++)
                 {
-                    signature = signature.Replace(("[" + i + "]"),
+                    signature = signature.Replace("[" + i + "]",
                         ((char)i).ToString());
                 }
                 return Encoding.Default.GetBytes(signature);

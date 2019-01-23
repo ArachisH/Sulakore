@@ -22,12 +22,12 @@ namespace Sulakore.Network
         public DateTime Timestamp { get; }
 
         public bool IsOriginal => Packet.ToString().Equals(_ogString);
-        public bool IsContinuable => (_continuation != null && !HasContinued);
+        public bool IsContinuable => _continuation != null && !HasContinued;
 
         private bool _isBlocked;
         public bool IsBlocked
         {
-            get => (_args?.IsBlocked ?? _isBlocked);
+            get => _args?.IsBlocked ?? _isBlocked;
             set
             {
                 if (_args != null)
@@ -41,7 +41,7 @@ namespace Sulakore.Network
         private HPacket _packet;
         public HPacket Packet
         {
-            get => (_args?.Packet ?? _packet);
+            get => _args?.Packet ?? _packet;
             set
             {
                 if (_args != null)
@@ -55,7 +55,7 @@ namespace Sulakore.Network
         private bool _wasRelayed;
         public bool WasRelayed
         {
-            get => (_args?.WasRelayed ?? _wasRelayed);
+            get => _args?.WasRelayed ?? _wasRelayed;
             private set
             {
                 if (_args != null)
@@ -69,7 +69,7 @@ namespace Sulakore.Network
         private bool _hasContinued;
         public bool HasContinued
         {
-            get => (_args?.HasContinued ?? _hasContinued);
+            get => _args?.HasContinued ?? _hasContinued;
             private set
             {
                 if (_args != null)

@@ -63,7 +63,7 @@ namespace Sulakore.Network
                         }
 
                         if (value[0] == '.') value = value.Substring(1);
-                        value = value.Substring(0, (value.StartsWith("com") ? 5 : 2));
+                        value = value.Substring(0, value.StartsWith("com") ? 5 : 2);
                     }
                     if (Enum.TryParse(value, true, out HHotel hotel)) return hotel;
                     break;
@@ -83,7 +83,7 @@ namespace Sulakore.Network
         }
         public static HotelEndPoint GetEndPoint(HHotel hotel)
         {
-            int port = (hotel == HHotel.Com ? 38101 : 30000);
+            int port = hotel == HHotel.Com ? 38101 : 30000;
             string host = $"game-{GetRegion(hotel)}.habbo.com";
             return Parse(host, port);
         }

@@ -40,8 +40,6 @@ namespace Sulakore.Habbo.Messages
         }
 
         public static implicit operator ushort(HMessage message) => message.Id;
-        //public static implicit operator HMessage(ushort id) => new HMessage(id);
-        //public static implicit operator HMessage(int id) => new HMessage((ushort)id);
 
         public override string ToString() => Id.ToString();
         public bool Equals(HMessage other) => Id == other.Id;

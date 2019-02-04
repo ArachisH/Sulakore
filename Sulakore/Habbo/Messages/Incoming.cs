@@ -35,7 +35,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage CameraCompetitionStatus { get; set; }
         public HMessage CameraPrice { get; set; }
         public HMessage CameraPublishWaitMessage { get; set; }
-        public HMessage CameraPurchaseSuccesfull { get; set; }
+        public HMessage CameraPurchaseSuccesful { get; set; }
         public HMessage CameraRoomThumbnailSaved { get; set; }
         public HMessage CameraURL { get; set; }
         public HMessage CanCreateEvent { get; set; }
@@ -352,7 +352,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage SimplePollAnswers { get; set; }
         public HMessage SimplePollStart { get; set; }
         public HMessage StaffAlertAndOpenHabboWay { get; set; }
-        public HMessage StaffAlertWIthLinkAndOpenHabboWay { get; set; }
+        public HMessage StaffAlertWithLinkAndOpenHabboWay { get; set; }
         public HMessage StaffAlertWithLink { get; set; }
         public HMessage StalkError { get; set; }
         public HMessage SubmitCompetitionRoom { get; set; }

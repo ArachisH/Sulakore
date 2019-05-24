@@ -1,6 +1,6 @@
-﻿using System.Collections;
+﻿using System.Reflection;
+using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace Sulakore.Habbo.Messages
 {
@@ -12,7 +12,7 @@ namespace Sulakore.Habbo.Messages
         public bool IsOutgoing { get; }
 
         public HMessage this[ushort id] => _byId[id];
-        public HMessage this[string name] => _byName[name];
+        public HMessage this[string identifier] => GetMessage(identifier);
 
         public HMessages(bool isOutgoing)
             : this(isOutgoing, 0)

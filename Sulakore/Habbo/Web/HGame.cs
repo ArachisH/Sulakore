@@ -4,6 +4,8 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
+using Sulakore.Habbo.Messages;
+
 using Flazzy;
 using Flazzy.IO;
 using Flazzy.ABC;
@@ -11,6 +13,8 @@ using Flazzy.Tags;
 using Flazzy.Records;
 using Flazzy.ABC.AVM2;
 using Flazzy.ABC.AVM2.Instructions;
+
+using static Sulakore.Habbo.Messages.HMessage;
 
 namespace Sulakore.Habbo.Web
 {
@@ -28,8 +32,9 @@ namespace Sulakore.Habbo.Web
         private ASMethod _managerConnectMethod;
         private ASInstance _habboCommunicationDemo;
 
+        private readonly Dictionary<string, string> _hashNames;
+        private readonly Dictionary<ASClass, HMessage> _messages;
         private readonly Dictionary<DoABCTag, ABCFile> _abcFileTags;
-        private readonly Dictionary<ASClass, MessageItem> _messages;
 
         private static readonly string[] _reservedNames = new[]
         {
@@ -46,9 +51,9 @@ namespace Sulakore.Habbo.Web
         public List<ABCFile> ABCFiles { get; }
         public bool IsPostShuffle { get; private set; } = true;
 
-        public SortedDictionary<ushort, MessageItem> InMessages { get; }
-        public SortedDictionary<ushort, MessageItem> OutMessages { get; }
-        public SortedDictionary<string, List<MessageItem>> Messages { get; }
+        public SortedDictionary<ushort, HMessage> InMessages { get; }
+        public SortedDictionary<ushort, HMessage> OutMessages { get; }
+        public SortedDictionary<string, List<HMessage>> Messages { get; }
 
         private int _revisionIndex;
         public string Revision
@@ -89,14 +94,18 @@ namespace Sulakore.Habbo.Web
         protected HGame(FlashReader input)
             : base(input)
         {
+            _hashNames = new Dictionary<string, string>();
+            _messages = new Dictionary<ASClass, HMessage>();
             _abcFileTags = new Dictionary<DoABCTag, ABCFile>();
-            _messages = new Dictionary<ASClass, MessageItem>();
 
             ABCFiles = new List<ABCFile>();
-            InMessages = new SortedDictionary<ushort, MessageItem>();
-            OutMessages = new SortedDictionary<ushort, MessageItem>();
-            Messages = new SortedDictionary<string, List<MessageItem>>();
+            InMessages = new SortedDictionary<ushort, HMessage>();
+            OutMessages = new SortedDictionary<ushort, HMessage>();
+            Messages = new SortedDictionary<string, List<HMessage>>();
         }
+
+        public void ImportHashNames(string hashNamesPath)
+        { }
 
         public void Sanitize(Sanitizers sanitizations)
         {
@@ -355,12 +364,12 @@ namespace Sulakore.Habbo.Web
         public void GenerateMessageHashes()
         {
             FindMessagesReferences();
-            foreach (MessageItem message in OutMessages.Values.Concat(InMessages.Values))
+            foreach (HMessage message in OutMessages.Values.Concat(InMessages.Values))
             {
-                List<MessageItem> group = null;
+                List<HMessage> group = null;
                 if (!Messages.TryGetValue(message.GenerateHash(), out group))
                 {
-                    group = new List<MessageItem>();
+                    group = new List<HMessage>();
                     Messages.Add(message.Hash, group);
                 }
                 group.Add(message);
@@ -387,12 +396,12 @@ namespace Sulakore.Habbo.Web
                     bool isStatic = fromMethod.Trait?.IsStatic ?? @class.Constructor == fromMethod;
                     var fromContainer = isStatic ? (ASContainer)@class : instance;
 
-                    List<MessageReference> refernces = FindMessageReferences(@class, fromContainer, fromMethod);
+                    List<HReference> refernces = FindHReferences(@class, fromContainer, fromMethod);
                     if (refernces.Count > 0)
                     {
                         methodRank++;
                     }
-                    foreach (MessageReference reference in refernces)
+                    foreach (HReference reference in refernces)
                     {
                         reference.IsStatic = isStatic;
                         reference.ClassRank = classRank;
@@ -406,15 +415,15 @@ namespace Sulakore.Habbo.Web
                 }
             }
 
-            var froms = new Dictionary<ASContainer, List<MessageReference>>();
-            foreach (MessageItem incomingMsg in InMessages.Values)
+            var froms = new Dictionary<ASContainer, List<HReference>>();
+            foreach (HMessage incomingMsg in InMessages.Values)
             {
-                foreach (MessageReference reference in incomingMsg.References)
+                foreach (HReference reference in incomingMsg.References)
                 {
-                    List<MessageReference> references = null;
+                    List<HReference> references = null;
                     if (!froms.TryGetValue(reference.FromMethod.Container, out references))
                     {
-                        references = new List<MessageReference>();
+                        references = new List<HReference>();
                         froms.Add(reference.FromMethod.Container, references);
                     }
                     if (!references.Contains(reference))
@@ -428,7 +437,7 @@ namespace Sulakore.Habbo.Web
             foreach (ASClass @class in abc.Classes)
             {
                 ASContainer container = null;
-                List<MessageReference> references = null;
+                List<HReference> references = null;
                 if (froms.TryGetValue(@class, out references))
                 {
                     container = @class;
@@ -439,8 +448,8 @@ namespace Sulakore.Habbo.Web
                 }
                 if (container != null)
                 {
-                    var methodReferenceGroups = new Dictionary<ASMethod, List<MessageReference>>();
-                    foreach (MessageReference reference in references)
+                    var methodReferenceGroups = new Dictionary<ASMethod, List<HReference>>();
+                    foreach (HReference reference in references)
                     {
                         reference.FromClass = @class;
                         reference.InstructionRank = -1;
@@ -448,10 +457,10 @@ namespace Sulakore.Habbo.Web
                         reference.IsStatic = container.IsStatic;
                         reference.GroupCount = references.Count;
 
-                        List<MessageReference> methodReferences = null;
+                        List<HReference> methodReferences = null;
                         if (!methodReferenceGroups.TryGetValue(reference.FromMethod, out methodReferences))
                         {
-                            methodReferences = new List<MessageReference>();
+                            methodReferences = new List<HReference>();
                             methodReferenceGroups.Add(reference.FromMethod, methodReferences);
                         }
                         methodReferences.Add(reference);
@@ -460,10 +469,10 @@ namespace Sulakore.Habbo.Web
                     int methodRank = 1;
                     foreach (ASMethod method in container.GetMethods())
                     {
-                        List<MessageReference> methodReferences = null;
+                        List<HReference> methodReferences = null;
                         if (methodReferenceGroups.TryGetValue(method, out methodReferences))
                         {
-                            foreach (MessageReference reference in methodReferences)
+                            foreach (HReference reference in methodReferences)
                             {
                                 reference.MethodRank = methodRank;
                             }
@@ -474,13 +483,13 @@ namespace Sulakore.Habbo.Web
                 }
             }
         }
-        private List<MessageReference> FindMessageReferences(ASClass fromClass, ASContainer fromContainer, ASMethod fromMethod)
+        private List<HReference> FindHReferences(ASClass fromClass, ASContainer fromContainer, ASMethod fromMethod)
         {
             int instructionRank = 0;
             ABCFile abc = fromMethod.GetABC();
 
             var nameStack = new Stack<ASMultiname>();
-            var references = new List<MessageReference>();
+            var references = new List<HReference>();
 
             ASContainer container = null;
             ASCode code = fromMethod.Body.ParseCode();
@@ -494,7 +503,7 @@ namespace Sulakore.Habbo.Web
                     case OPCode.NewFunction:
                     {
                         var newFunction = (NewFunctionIns)instruction;
-                        references.AddRange(FindMessageReferences(fromClass, fromContainer, newFunction.Method));
+                        references.AddRange(FindHReferences(fromClass, fromContainer, newFunction.Method));
                         continue;
                     }
                     case OPCode.GetProperty:
@@ -530,11 +539,11 @@ namespace Sulakore.Habbo.Web
                 ASClass messageClass = abc.GetClass(messageQName);
                 if (messageClass == null) continue;
 
-                MessageItem message = null;
+                HMessage message = null;
                 if (!_messages.TryGetValue(messageClass, out message)) continue;
-                if (message.HasMethodReference(fromMethod)) continue;
+                if (message.References.Any(r => r.FromMethod == fromMethod)) continue;
 
-                var reference = new MessageReference();
+                var reference = new HReference();
                 message.References.Add(reference);
 
                 if (message.IsOutgoing)
@@ -579,7 +588,6 @@ namespace Sulakore.Habbo.Web
             ASInstance habboCommDemoInstance = GetHabboCommunicationDemo();
             if (habboCommDemoInstance == null) return false;
 
-            int firstCoerceIndex = 0;
             ASCode initCryptoCode = null;
             int asInterfaceQNameIndex = 0;
             ASMethod initCryptoMethod = null;
@@ -593,7 +601,7 @@ namespace Sulakore.Habbo.Web
                     initCryptoMethod = method;
                     initCryptoCode = method.Body.ParseCode();
 
-                    firstCoerceIndex = initCryptoCode.IndexOf(OPCode.Coerce);
+                    int firstCoerceIndex = initCryptoCode.IndexOf(OPCode.Coerce);
                     asInterfaceQNameIndex = ((CoerceIns)initCryptoCode[firstCoerceIndex]).TypeNameIndex;
                 }
                 else if (parameter.TypeIndex == asInterfaceQNameIndex)
@@ -1149,7 +1157,7 @@ namespace Sulakore.Habbo.Web
         }
         public ushort[] GetMessageIds(string hash)
         {
-            List<MessageItem> messages = null;
+            List<HMessage> messages = null;
             if (Messages.TryGetValue(hash, out messages))
             {
                 return messages.Select(m => m.Id).ToArray();
@@ -1207,12 +1215,13 @@ namespace Sulakore.Habbo.Web
                 getLexInst = instructions[i + 2] as GetLexIns;
                 ASClass messageClass = abc.GetClass(getLexInst.TypeName);
 
-                var message = new MessageItem(messageClass, isOutgoing, id);
+                var message = new HMessage(id, isOutgoing, messageClass);
                 (isOutgoing ? OutMessages : InMessages).Add(id, message);
 
                 if (_messages.ContainsKey(messageClass))
                 {
-                    _messages[messageClass].SharedIds.Add(id);
+                    // TODO: What to do if message is also identified with different ID?
+                   // _messages[messageClass].SharedIds.Add(id);
                 }
                 else _messages.Add(messageClass, message);
 
@@ -1746,26 +1755,26 @@ namespace Sulakore.Habbo.Web
             switch (kind)
             {
                 case ConstantKind.Double:
-                Write((double)value);
-                break;
+                    Write((double)value);
+                    break;
                 case ConstantKind.Integer:
-                Write((int)value);
-                break;
+                    Write((int)value);
+                    break;
                 case ConstantKind.UInteger:
-                Write((uint)value);
-                break;
+                    Write((uint)value);
+                    break;
                 case ConstantKind.String:
-                Write((string)value);
-                break;
+                    Write((string)value);
+                    break;
                 case ConstantKind.Null:
-                Write("null");
-                break;
+                    Write("null");
+                    break;
                 case ConstantKind.True:
-                Write(true);
-                break;
+                    Write(true);
+                    break;
                 case ConstantKind.False:
-                Write(false);
-                break;
+                    Write(false);
+                    break;
             }
         }
         public void Write(ASContainer container, bool includeTraits)
@@ -1821,629 +1830,5 @@ namespace Sulakore.Habbo.Web
             }
             else writer(value);
         }
-    }
-    public class MessageItem
-    {
-        public ushort Id { get; set; }
-        public string Hash { get; set; }
-        public bool IsOutgoing { get; set; }
-
-        public ASClass Class { get; }
-        public ASClass Parser { get; }
-        public string Structure { get; }
-        public List<ushort> SharedIds { get; }
-        public List<MessageReference> References { get; }
-
-        public MessageItem(ASClass messageClass, bool isOutgoing, ushort id)
-        {
-            Id = id;
-            Class = messageClass;
-            IsOutgoing = isOutgoing;
-
-            SharedIds = new List<ushort>();
-            References = new List<MessageReference>();
-
-            if (!IsOutgoing)
-            {
-                Parser = GetMessageParser();
-                if (Parser != null)
-                {
-                    Structure = GetIncomingStructure(Parser);
-                }
-            }
-            else
-            {
-                Structure = GetOutgoingStructure(Class);
-            }
-        }
-
-        public string GenerateHash()
-        {
-            if (!string.IsNullOrWhiteSpace(Hash))
-            {
-                return Hash;
-            }
-            using (var output = new HashWriter(false))
-            {
-                output.Write(IsOutgoing);
-                if (!HGame.IsValidIdentifier(Class.QName.Name, true))
-                {
-                    output.Write(Class.Instance, true);
-                    output.Write(Class.Instance.Constructor);
-
-                    output.Write(References.Count);
-                    foreach (MessageReference reference in References)
-                    {
-                        output.Write(reference.IsStatic);
-                        output.Write(reference.IsAnonymous);
-
-                        output.Write(reference.MethodRank);
-                        output.Write(reference.InstructionRank);
-
-                        output.Write(reference.FromMethod);
-
-                        output.Write(reference.FromClass.Constructor);
-                        output.Write(reference.FromClass.Instance.Constructor);
-                    }
-                    if (!IsOutgoing && Parser != null)
-                    {
-                        output.Write(Parser.Instance, true);
-                    }
-                }
-                else output.Write(Class.QName.Name);
-                return Hash = output.GenerateHash();
-            }
-        }
-        public bool HasMethodReference(ASMethod method)
-        {
-            return References.Any(r => r.FromMethod == method);
-        }
-
-        public int GetMatchDeviation(MessageItem message)
-        {
-            if (Class.QName.Name == message.Class.QName.Name) return 0;
-
-            int cClassRankTotal = 0;
-            foreach (MessageReference reference in References)
-            {
-                cClassRankTotal += reference.ClassRank;
-            }
-
-            int pClassRankTotal = 0;
-            foreach (MessageReference reference in message.References)
-            {
-                pClassRankTotal += reference.ClassRank;
-            }
-
-            return Math.Abs(cClassRankTotal - pClassRankTotal);
-        }
-        public MessageItem GetClosestMatch(IEnumerable<MessageItem> messages)
-        {
-            MessageItem closestMatch = null;
-            int lowestDeviation = int.MaxValue;
-            foreach (MessageItem message in messages)
-            {
-                int deviation = GetMatchDeviation(message);
-                if (deviation == 0) return message;
-
-                if (deviation < lowestDeviation)
-                {
-                    closestMatch = message;
-                    lowestDeviation = deviation;
-                }
-            }
-            return closestMatch;
-        }
-
-        private ASClass GetMessageParser()
-        {
-            ABCFile abc = Class.GetABC();
-            ASInstance instance = Class.Instance;
-
-            ASInstance superInstance = abc.GetInstance(instance.Super);
-            if (superInstance == null) superInstance = instance;
-
-            ASMethod parserGetterMethod = superInstance.GetGetter("parser")?.Method;
-            if (parserGetterMethod == null) return null;
-
-            IEnumerable<ASMethod> methods = instance.GetMethods();
-            foreach (ASMethod method in methods.Concat(new[] { instance.Constructor }))
-            {
-                ASCode code = method.Body.ParseCode();
-                foreach (ASInstruction instruction in code)
-                {
-                    ASMultiname multiname = null;
-                    if (instruction.OP == OPCode.FindPropStrict)
-                    {
-                        var findPropStrictIns = (FindPropStrictIns)instruction;
-                        multiname = findPropStrictIns.PropertyName;
-                    }
-                    else if (instruction.OP == OPCode.GetLex)
-                    {
-                        var getLexIns = (GetLexIns)instruction;
-                        multiname = getLexIns.TypeName;
-                    }
-                    else continue;
-
-                    foreach (ASClass refClass in abc.GetClasses(multiname))
-                    {
-                        ASInstance refInstance = refClass.Instance;
-                        if (refInstance.ContainsInterface(parserGetterMethod.ReturnType.Name))
-                        {
-                            return refClass;
-                        }
-                    }
-                }
-            }
-            return null;
-        }
-
-        #region Structure Extraction
-        private string GetIncomingStructure(ASClass @class)
-        {
-            ASMethod parseMethod = @class.Instance.GetMethod("parse", "Boolean", 1);
-            return GetIncomingStructure(@class.Instance, parseMethod);
-        }
-        private string GetIncomingStructure(ASInstance instance, ASMethod method)
-        {
-            if (method.Body.Exceptions.Count > 0) return null;
-
-            ASCode code = method.Body.ParseCode();
-            if (code.JumpExits.Count > 0 || code.SwitchExits.Count > 0) return null;
-
-            string structure = null;
-            ABCFile abc = method.GetABC();
-            for (int i = 0; i < code.Count; i++)
-            {
-                ASInstruction instruction = code[i];
-                if (instruction.OP != OPCode.GetLocal_1) continue;
-
-                ASInstruction next = code[++i];
-                switch (next.OP)
-                {
-                    case OPCode.CallProperty:
-                    {
-                        var callProperty = (CallPropertyIns)next;
-                        if (callProperty.ArgCount > 0)
-                        {
-                            ASMultiname propertyName = null;
-                            ASInstruction previous = code[i - 2];
-
-                            switch (previous.OP)
-                            {
-                                case OPCode.GetLex:
-                                {
-                                    var getLex = (GetLexIns)previous;
-                                    propertyName = getLex.TypeName;
-                                    break;
-                                }
-
-                                case OPCode.ConstructProp:
-                                {
-                                    var constructProp = (ConstructPropIns)previous;
-                                    propertyName = constructProp.PropertyName;
-                                    break;
-                                }
-
-                                case OPCode.GetLocal_0:
-                                {
-                                    propertyName = instance.QName;
-                                    break;
-                                }
-                            }
-
-                            ASInstance innerInstance = abc.GetInstance(propertyName);
-                            ASMethod innerMethod = innerInstance.GetMethod(callProperty.PropertyName.Name, null, callProperty.ArgCount);
-                            if (innerMethod == null)
-                            {
-                                ASClass innerClass = abc.GetClass(propertyName);
-                                innerMethod = innerClass.GetMethod(callProperty.PropertyName.Name, null, callProperty.ArgCount);
-                            }
-
-                            string innerStructure = GetIncomingStructure(innerInstance, innerMethod);
-                            if (string.IsNullOrWhiteSpace(innerStructure)) return null;
-                            structure += innerStructure;
-                        }
-                        else
-                        {
-                            if (!TryGetStructurePiece(callProperty.PropertyName, null, out char piece)) return null;
-                            structure += piece;
-                        }
-                        break;
-                    }
-
-                    case OPCode.ConstructProp:
-                    {
-                        var constructProp = (ConstructPropIns)next;
-                        ASInstance innerInstance = abc.GetInstance(constructProp.PropertyName);
-
-                        string innerStructure = GetIncomingStructure(innerInstance, innerInstance.Constructor);
-                        if (string.IsNullOrWhiteSpace(innerStructure)) return null;
-                        structure += innerStructure;
-                        break;
-                    }
-
-                    case OPCode.ConstructSuper:
-                    {
-                        var constructSuper = (ConstructSuperIns)next;
-                        ASInstance superInstance = abc.GetInstance(instance.Super);
-
-                        string innerStructure = GetIncomingStructure(superInstance, superInstance.Constructor);
-                        if (string.IsNullOrWhiteSpace(innerStructure)) return null;
-                        structure += innerStructure;
-                        break;
-                    }
-
-                    case OPCode.CallSuper:
-                    {
-                        var callSuper = (CallSuperIns)next;
-                        ASInstance superInstance = abc.GetInstance(instance.Super);
-                        ASMethod superMethod = superInstance.GetMethod(callSuper.MethodName.Name, null, callSuper.ArgCount);
-
-                        string innerStructure = GetIncomingStructure(superInstance, superMethod);
-                        if (string.IsNullOrWhiteSpace(innerStructure)) return null;
-                        structure += innerStructure;
-                        break;
-                    }
-
-                    case OPCode.CallPropVoid:
-                    {
-                        var callPropVoid = (CallPropVoidIns)next;
-                        if (callPropVoid.ArgCount != 0) return null;
-
-                        if (!TryGetStructurePiece(callPropVoid.PropertyName, null, out char piece)) return null;
-                        structure += piece;
-                        break;
-                    }
-
-                    default: return null;
-                }
-            }
-            return structure;
-        }
-
-        private string GetOutgoingStructure(ASClass @class)
-        {
-            ASMethod getArrayMethod = @class.Instance.GetMethod(null, "Array", 0);
-            if (getArrayMethod == null)
-            {
-                ASClass superClass = @class.GetABC().GetClass(@class.Instance.Super);
-                return GetOutgoingStructure(superClass);
-            }
-            if (getArrayMethod.Body.Exceptions.Count > 0) return null;
-            ASCode getArrayCode = getArrayMethod.Body.ParseCode();
-
-            if (getArrayCode.JumpExits.Count > 0 || getArrayCode.SwitchExits.Count > 0)
-            {
-                // Unable to parse data structure that relies on user input that is not present,
-                // since the structure may change based on the provided input.
-                return null;
-            }
-
-            ASInstruction resultPusher = null;
-            for (int i = getArrayCode.Count - 1; i >= 0; i--)
-            {
-                ASInstruction instruction = getArrayCode[i];
-                if (instruction.OP == OPCode.ReturnValue)
-                {
-                    resultPusher = getArrayCode[i - 1];
-                    break;
-                }
-            }
-
-            int argCount = -1;
-            if (resultPusher.OP == OPCode.ConstructProp)
-            {
-                argCount = ((ConstructPropIns)resultPusher).ArgCount;
-            }
-            else if (resultPusher.OP == OPCode.NewArray)
-            {
-                argCount = ((NewArrayIns)resultPusher).ArgCount;
-            }
-
-            if (argCount > 0)
-            {
-                return GetOutgoingStructure(getArrayCode, resultPusher, argCount);
-            }
-            else if (argCount == 0 || resultPusher.OP == OPCode.PushNull)
-            {
-                return null;
-            }
-
-            if (resultPusher.OP == OPCode.GetProperty)
-            {
-                var getProperty = (GetPropertyIns)resultPusher;
-                return GetOutgoingStructure(Class, getProperty.PropertyName);
-            }
-            else if (Local.IsGetLocal(resultPusher.OP))
-            {
-                return GetOutgoingStructure(getArrayCode, (Local)resultPusher);
-            }
-            return null;
-        }
-        private string GetOutgoingStructure(ASCode code, Local getLocal)
-        {
-            string structure = null;
-            for (int i = 0; i < code.Count; i++)
-            {
-                ASInstruction instruction = code[i];
-                if (instruction == getLocal) break;
-                if (!Local.IsGetLocal(instruction.OP)) continue;
-
-                var local = (Local)instruction;
-                if (local.Register != getLocal.Register) continue;
-
-                for (i += 1; i < code.Count; i++)
-                {
-                    ASInstruction next = code[i];
-                    if (next.OP != OPCode.CallPropVoid) continue;
-
-                    var callPropVoid = (CallPropVoidIns)next;
-                    if (callPropVoid.PropertyName.Name != "push") continue;
-
-                    ASInstruction previous = code[i - 1];
-                    if (previous.OP == OPCode.GetProperty)
-                    {
-                        ASClass classToCheck = Class;
-                        var getProperty = (GetPropertyIns)previous;
-                        ASMultiname propertyName = getProperty.PropertyName;
-
-                        ASInstruction beforeGetProp = code[i - 2];
-                        if (beforeGetProp.OP == OPCode.GetLex)
-                        {
-                            var getLex = (GetLexIns)beforeGetProp;
-                            classToCheck = classToCheck.GetABC().GetClass(getLex.TypeName);
-                        }
-
-                        if (!TryGetStructurePiece(propertyName, classToCheck, out char piece)) return null;
-                        structure += piece;
-                    }
-                }
-            }
-            return structure;
-        }
-        private string GetOutgoingStructure(ASClass @class, ASMultiname propertyName)
-        {
-            ASMethod constructor = @class.Instance.Constructor;
-            if (constructor.Body.Exceptions.Count > 0) return null;
-
-            ASCode code = constructor.Body.ParseCode();
-            if (code.JumpExits.Count > 0 || code.SwitchExits.Count > 0) return null;
-
-            string structure = null;
-            var pushedLocals = new Dictionary<int, int>();
-            for (int i = 0; i < code.Count; i++)
-            {
-                ASInstruction next = null;
-                ASInstruction instruction = code[i];
-                if (instruction.OP == OPCode.NewArray)
-                {
-                    var newArray = (NewArrayIns)instruction;
-                    if (newArray.ArgCount > 0)
-                    {
-                        var structurePieces = new char[newArray.ArgCount];
-                        for (int j = i - 1, length = newArray.ArgCount; j >= 0; j--)
-                        {
-                            ASInstruction previous = code[j];
-                            if (Local.IsGetLocal(previous.OP) && previous.OP != OPCode.GetLocal_0)
-                            {
-                                var local = (Local)previous;
-                                ASParameter parameter = constructor.Parameters[local.Register - 1];
-
-                                if (!TryGetStructurePiece(parameter.Type, null, out char piece)) return null;
-                                structurePieces[--length] = piece;
-                            }
-                            if (length == 0)
-                            {
-                                structure += new string(structurePieces);
-                                break;
-                            }
-                        }
-                    }
-                }
-                else if (instruction.OP == OPCode.ConstructSuper)
-                {
-                    var constructSuper = (ConstructSuperIns)instruction;
-                    if (constructSuper.ArgCount > 0)
-                    {
-                        ASClass superClass = @class.GetABC().GetClass(@class.Instance.Super);
-                        structure += GetOutgoingStructure(superClass, propertyName);
-                    }
-                }
-                if (instruction.OP != OPCode.GetProperty) continue;
-
-                var getProperty = (GetPropertyIns)instruction;
-                if (getProperty.PropertyName != propertyName) continue;
-
-                next = code[++i];
-                ASClass classToCheck = @class;
-                if (Local.IsGetLocal(next.OP))
-                {
-                    if (next.OP == OPCode.GetLocal_0)
-                    {
-                        classToCheck = @class;
-                        continue;
-                    }
-
-                    var local = (Local)next;
-                    ASParameter parameter = constructor.Parameters[local.Register - 1];
-
-                    if (!TryGetStructurePiece(parameter.Type, null, out char piece)) return null;
-                    structure += piece;
-                }
-                else
-                {
-                    if (next.OP == OPCode.FindPropStrict)
-                    {
-                        classToCheck = null;
-                    }
-                    else if (next.OP == OPCode.GetLex)
-                    {
-                        var getLex = (GetLexIns)next;
-                        classToCheck = classToCheck.GetABC().GetClass(getLex.TypeName);
-                    }
-                    do
-                    {
-                        next = code[++i];
-                        propertyName = null;
-                        if (next.OP == OPCode.GetProperty)
-                        {
-                            getProperty = (GetPropertyIns)next;
-                            propertyName = getProperty.PropertyName;
-                        }
-                        else if (next.OP == OPCode.CallProperty)
-                        {
-                            var callProperty = (CallPropertyIns)next;
-                            propertyName = callProperty.PropertyName;
-                        }
-                    }
-                    while (next.OP != OPCode.GetProperty && next.OP != OPCode.CallProperty);
-
-                    if (!TryGetStructurePiece(propertyName, classToCheck, out char piece)) return null;
-                    structure += piece;
-                }
-            }
-            return structure;
-        }
-        private string GetOutgoingStructure(ASCode code, ASInstruction beforeReturn, int length)
-        {
-            var getLocalEndIndex = -1;
-            int pushingEndIndex = code.IndexOf(beforeReturn);
-
-            var structure = new char[length];
-            ASInstance instance = Class.Instance;
-            var pushedLocals = new Dictionary<int, int>();
-            for (int i = pushingEndIndex - 1; i >= 0; i--)
-            {
-                ASInstruction instruction = code[i];
-                if (instruction.OP == OPCode.GetProperty)
-                {
-                    ASClass classToCheck = Class;
-                    var getProperty = (GetPropertyIns)instruction;
-                    ASMultiname propertyName = getProperty.PropertyName;
-
-                    ASInstruction previous = code[i - 1];
-                    if (previous.OP == OPCode.GetLex)
-                    {
-                        var getLex = (GetLexIns)previous;
-                        classToCheck = classToCheck.GetABC().GetClass(getLex.TypeName);
-                    }
-
-                    if (!TryGetStructurePiece(propertyName, classToCheck, out char piece)) return null;
-                    structure[--length] = piece;
-                }
-                else if (Local.IsGetLocal(instruction.OP) &&
-                    instruction.OP != OPCode.GetLocal_0)
-                {
-                    var local = (Local)instruction;
-                    pushedLocals.Add(local.Register, --length);
-                    if (getLocalEndIndex == -1)
-                    {
-                        getLocalEndIndex = i;
-                    }
-                }
-                if (length == 0) break;
-            }
-            for (int i = getLocalEndIndex - 1; i >= 0; i--)
-            {
-                ASInstruction instruction = code[i];
-                if (!Local.IsSetLocal(instruction.OP)) continue;
-
-                int structIndex = -1;
-                var local = (Local)instruction;
-                if (pushedLocals.TryGetValue(local.Register, out structIndex))
-                {
-                    ASInstruction beforeSet = code[i - 1];
-                    pushedLocals.Remove(local.Register);
-                    switch (beforeSet.OP)
-                    {
-                        case OPCode.PushInt:
-                        case OPCode.PushByte:
-                        case OPCode.Convert_i:
-                        structure[structIndex] = 'i';
-                        break;
-
-                        case OPCode.Coerce_s:
-                        case OPCode.PushString:
-                        structure[structIndex] = 's';
-                        break;
-
-                        case OPCode.PushTrue:
-                        case OPCode.PushFalse:
-                        structure[structIndex] = 'B';
-                        break;
-
-                        default:
-                        throw new Exception($"Don't know what this value type is, tell someone about this please.\r\nOP: {beforeSet.OP}");
-                    }
-                }
-                if (pushedLocals.Count == 0) break;
-            }
-            return new string(structure);
-        }
-
-        private ASMultiname GetTraitType(ASContainer container, ASMultiname traitName)
-        {
-            if (container == null) return traitName;
-
-            return container.GetTraits(TraitKind.Slot, TraitKind.Constant, TraitKind.Getter)
-                .Where(t => t.QName == traitName)
-                .FirstOrDefault()?.Type;
-        }
-        private bool TryGetStructurePiece(ASMultiname multiname, ASClass @class, out char piece)
-        {
-            ASMultiname returnValueType = multiname;
-            if (@class != null)
-            {
-                returnValueType = GetTraitType(@class, multiname) ?? GetTraitType(@class.Instance, multiname);
-            }
-
-            switch (returnValueType.Name.ToLower())
-            {
-                case "int":
-                case "readint":
-                case "gettimer": piece = 'i'; break;
-
-                case "byte":
-                case "readbyte": piece = 'b'; break;
-
-                case "double":
-                case "readdouble": piece = 'd'; break;
-
-                case "string":
-                case "readstring": piece = 's'; break;
-
-                case "boolean":
-                case "readboolean": piece = 'B'; break;
-
-                case "array": piece = char.MinValue; break;
-                default:
-                {
-                    if (!IsOutgoing && !HGame.IsValidIdentifier(returnValueType.Name, true))
-                    {
-                        piece = 'i'; // This reference call is most likely towards 'readInt'
-                    }
-                    else
-                        piece = char.MinValue;
-                    break;
-                }
-            }
-            return piece != char.MinValue;
-        }
-        #endregion
-    }
-    public class MessageReference
-    {
-        public bool IsStatic { get; set; }
-        public bool IsAnonymous { get; set; }
-
-        public int ClassRank { get; set; }
-        public int MethodRank { get; set; }
-        public int InstructionRank { get; set; }
-
-        public int GroupCount { get; set; }
-
-        public ASClass FromClass { get; set; }
-        public ASMethod FromMethod { get; set; }
     }
 }

@@ -26,7 +26,7 @@ namespace Sulakore.Habbo.Messages
         public ASClass Parser { get; }
         public List<HReference> References { get; }
 
-        public static implicit operator ushort(HMessage message) => message.Id;
+        public static implicit operator ushort(HMessage message) => message?.Id ?? ushort.MaxValue;
 
         public HMessage()
             : this(ushort.MaxValue, false, null, null, null)
@@ -517,21 +517,21 @@ namespace Sulakore.Habbo.Messages
                         case OPCode.PushInt:
                         case OPCode.PushByte:
                         case OPCode.Convert_i:
-                            structure[structIndex] = 'i';
-                            break;
+                        structure[structIndex] = 'i';
+                        break;
 
                         case OPCode.Coerce_s:
                         case OPCode.PushString:
-                            structure[structIndex] = 's';
-                            break;
+                        structure[structIndex] = 's';
+                        break;
 
                         case OPCode.PushTrue:
                         case OPCode.PushFalse:
-                            structure[structIndex] = 'B';
-                            break;
+                        structure[structIndex] = 'B';
+                        break;
 
                         default:
-                            throw new Exception($"Don't know what this value type is, tell someone about this please.\r\nOP: {beforeSet.OP}");
+                        throw new Exception($"Don't know what this value type is, tell someone about this please.\r\nOP: {beforeSet.OP}");
                     }
                 }
                 if (pushedLocals.Count == 0) break;

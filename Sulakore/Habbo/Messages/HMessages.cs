@@ -11,7 +11,7 @@ namespace Sulakore.Habbo.Messages
 
         public bool IsOutgoing { get; }
 
-        public HMessage this[ushort id] => _byId[id];
+        public HMessage this[ushort id] => GetMessage(id);
         public HMessage this[string identifier] => GetMessage(identifier);
 
         public HMessages(bool isOutgoing)
@@ -39,6 +39,40 @@ namespace Sulakore.Habbo.Messages
                     PropertyInfo property = GetType().GetProperty(message.Name);
                     property?.SetValue(this, message);
                 }
+            }
+        }
+
+        public void Remove(HMessage message)
+        {
+            _byId.Remove(message.Id);
+            if (string.IsNullOrWhiteSpace(message.Hash))
+            {
+                _byHash.Remove(message.Hash);
+            }
+            if (!string.IsNullOrWhiteSpace(message.Name))
+            {
+                _byName.Remove(message.Name);
+                GetType().GetProperty(message.Name)?.SetValue(this, null);
+            }
+        }
+        public void AddOrUpdate(HMessage message)
+        {
+            message.IsOutgoing = IsOutgoing;
+            if (!_byId.ContainsKey(message.Id))
+            {
+                _byId.Add(message.Id, message);
+            }
+            if (!string.IsNullOrWhiteSpace(message.Name))
+            {
+                if (!_byName.ContainsKey(message.Name))
+                {
+                    _byName.Add(message.Name, message);
+                }
+                GetType().GetProperty(message.Name).SetValue(this, message);
+            }
+            if (!string.IsNullOrWhiteSpace(message.Hash) && !_byHash.ContainsKey(message.Hash))
+            {
+                _byHash.Add(message.Hash, message);
             }
         }
 

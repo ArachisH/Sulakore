@@ -18,21 +18,11 @@ using static Sulakore.Habbo.Messages.HMessage;
 
 namespace Sulakore.Habbo.Web
 {
-    [Flags]
-    public enum Sanitizers
-    {
-        None = 0,
-        Deobfuscate = 1,
-        RegisterRename = 2,
-        IdentifierRename = 4
-    }
-
     public class HGame : ShockwaveFlash
     {
         private ASMethod _managerConnectMethod;
         private ASInstance _habboCommunicationDemo;
 
-        private readonly Dictionary<string, string> _hashNames;
         private readonly Dictionary<ASClass, HMessage> _messages;
         private readonly Dictionary<DoABCTag, ABCFile> _abcFileTags;
 
@@ -51,8 +41,8 @@ namespace Sulakore.Habbo.Web
         public List<ABCFile> ABCFiles { get; }
         public bool IsPostShuffle { get; private set; } = true;
 
-        public SortedDictionary<ushort, HMessage> InMessages { get; }
-        public SortedDictionary<ushort, HMessage> OutMessages { get; }
+        public Incoming In { get; }
+        public Outgoing Out { get; }
         public SortedDictionary<string, List<HMessage>> Messages { get; }
 
         private int _revisionIndex;
@@ -94,287 +84,62 @@ namespace Sulakore.Habbo.Web
         protected HGame(FlashReader input)
             : base(input)
         {
-            _hashNames = new Dictionary<string, string>();
             _messages = new Dictionary<ASClass, HMessage>();
             _abcFileTags = new Dictionary<DoABCTag, ABCFile>();
 
+            In = new Incoming();
+            Out = new Outgoing();
             ABCFiles = new List<ABCFile>();
-            InMessages = new SortedDictionary<ushort, HMessage>();
-            OutMessages = new SortedDictionary<ushort, HMessage>();
             Messages = new SortedDictionary<string, List<HMessage>>();
         }
 
-        public void ImportHashNames(string hashNamesPath)
-        { }
-
-        public void Sanitize(Sanitizers sanitizations)
-        {
-            if (sanitizations.HasFlag(Sanitizers.IdentifierRename))
-            {
-                RenameIdentifiers();
-            }
-            if (sanitizations.HasFlag(Sanitizers.Deobfuscate))
-            {
-                Deobfuscate();
-            }
-            if (sanitizations.HasFlag(Sanitizers.RegisterRename))
-            {
-                RenameRegisters();
-            }
-        }
-        #region Sanitation
-        protected void Deobfuscate()
-        {
-            foreach (ABCFile abc in ABCFiles)
-            {
-                foreach (ASMethodBody body in abc.MethodBodies)
-                {
-                    if (body.Exceptions.Count > 0) continue;
-                    if (body.Code[0] == 0x27 && body.Code[1] == 0x26) // PushFalse, PushTrue
-                    {
-                        ASCode code = body.ParseCode();
-                        code.Deobfuscate();
-
-                        body.Code = code.ToArray();
-                    }
-                }
-            }
-        }
-        protected void RenameRegisters()
-        {
-            foreach (ABCFile abc in ABCFiles)
-            {
-                var nameIndices = new Dictionary<string, int>();
-                foreach (ASMethodBody body in abc.MethodBodies)
-                {
-                    if (body.Exceptions.Count > 0) continue;
-                    if (body.Code.Length <= 50 && !body.Code.Contains((byte)OPCode.Debug)) continue;
-
-                    ASCode code = body.ParseCode();
-                    if (!code.Contains(OPCode.Debug)) continue;
-
-                    bool wasModified = false;
-                    List<ASParameter> parameters = body.Method.Parameters;
-                    foreach (DebugIns debug in code.GetOPGroup(OPCode.Debug))
-                    {
-                        if (debug.Name != "k") continue;
-
-                        string name = string.Empty;
-                        ASParameter parameter = null;
-                        int register = debug.RegisterIndex;
-                        if (register < parameters.Count)
-                        {
-                            parameter = parameters[register];
-                            if (!string.IsNullOrWhiteSpace(parameter.Name))
-                            {
-                                nameIndices.Add(parameter.Name, parameter.NameIndex);
-                                name = parameter.Name;
-                            }
-                            else name = $"param{register + 1}";
-                        }
-                        else name = $"local{register - parameters.Count + 1}";
-
-                        int nameIndex = -1;
-                        if (!nameIndices.TryGetValue(name, out nameIndex))
-                        {
-                            nameIndex = abc.Pool.AddConstant(name, false);
-                            nameIndices.Add(name, nameIndex);
-                        }
-                        if (parameter != null)
-                        {
-                            parameter.NameIndex = nameIndex;
-                        }
-
-                        debug.NameIndex = nameIndex;
-                        wasModified = true;
-                    }
-                    if (wasModified)
-                    {
-                        body.Code = code.ToArray();
-                    }
-                }
-            }
-        }
-        protected void RenameIdentifiers()
-        {
-            // [InvalidNamespaceName] - [ValidNamespaceName]
-            var validNamespaces = new Dictionary<string, string>();
-            // [ValidNamespaceName.InvalidClassName] - [ValidClassName]
-            var validClasses = new SortedDictionary<string, string>();
-
-            int classCount = 0;
-            int interfaceCount = 0;
-            int namespaceCount = 0;
-            foreach (ABCFile abc in ABCFiles)
-            {
-                var nameIndices = new Dictionary<string, int>();
-                foreach (KeyValuePair<string, string> fixedNames in validNamespaces.Concat(validClasses))
-                {
-                    int index = abc.Pool.AddConstant(fixedNames.Value, false);
-                    nameIndices.Add(fixedNames.Key, index);
-                }
-
-                #region Namespace Renaming
-                foreach (ASNamespace @namespace in abc.Pool.Namespaces)
-                {
-                    if (@namespace == null) continue;
-
-                    namespaceCount++;
-                    if (IsValidIdentifier(@namespace.Name)) continue;
-
-                    int validNameIndex = -1;
-                    if (!nameIndices.TryGetValue(@namespace.Name, out validNameIndex))
-                    {
-                        string validName = $"Namespace_{namespaceCount:0000}";
-                        validNameIndex = abc.Pool.AddConstant(validName, false);
-
-                        nameIndices.Add(@namespace.Name, validNameIndex);
-                        if (!validNamespaces.ContainsKey(@namespace.Name))
-                        {
-                            validNamespaces.Add(@namespace.Name, validName);
-                        }
-                    }
-                    else namespaceCount--;
-                    @namespace.NameIndex = validNameIndex;
-                }
-                #endregion
-                #region Class Renaming
-                foreach (ASClass @class in abc.Classes)
-                {
-                    var validName = string.Empty;
-                    ASInstance instance = @class.Instance;
-                    if (instance.IsInterface)
-                    {
-                        validName = $"IInterface_{++interfaceCount:0000}";
-                    }
-                    else
-                    {
-                        validName = $"Class_{++classCount:0000}";
-                    }
-
-                    ASMultiname qname = instance.QName;
-                    if (IsValidIdentifier(qname.Name)) continue;
-
-                    int validNameIndex = -1;
-                    string key = $"{qname.Namespace.Name}.{qname.Name}";
-                    if (!nameIndices.TryGetValue(key, out validNameIndex))
-                    {
-                        validNameIndex = abc.Pool.AddConstant(validName, false);
-
-                        nameIndices.Add(key, validNameIndex);
-                        if (!validClasses.ContainsKey(key))
-                        {
-                            validClasses.Add(key, validName);
-                        }
-                    }
-                    else if (instance.IsInterface)
-                    {
-                        interfaceCount--;
-                    }
-                    else
-                    {
-                        classCount--;
-                    }
-                    qname.NameIndex = validNameIndex;
-                }
-                #endregion
-                #region Multiname Renaming
-                foreach (ASMultiname multiname in abc.Pool.Multinames)
-                {
-                    if (string.IsNullOrWhiteSpace(multiname?.Name)) continue;
-                    if (IsValidIdentifier(multiname.Name)) continue;
-
-                    var validClassKeys = new List<string>();
-                    switch (multiname.Kind)
-                    {
-                        default: continue;
-                        case MultinameKind.QName:
-                        {
-                            validClassKeys.Add($"{multiname.Namespace.Name}.{multiname.Name}");
-                            break;
-                        }
-                        case MultinameKind.Multiname:
-                        {
-                            foreach (ASNamespace @namespace in multiname.NamespaceSet.GetNamespaces())
-                            {
-                                validClassKeys.Add($"{@namespace.Name}.{multiname.Name}");
-                            }
-                            break;
-                        }
-                    }
-                    foreach (string key in validClassKeys)
-                    {
-                        int validNameIndex = -1;
-                        if (nameIndices.TryGetValue(key, out validNameIndex))
-                        {
-                            multiname.NameIndex = validNameIndex;
-                        }
-                    }
-                }
-                #endregion
-            }
-            #region Symbol Renaming
-            foreach (SymbolClassTag symbolTag in Tags
-                .Where(t => t.Kind == TagKind.SymbolClass)
-                .Cast<SymbolClassTag>())
-            {
-                for (int i = 0; i < symbolTag.Names.Count; i++)
-                {
-                    string fullName = symbolTag.Names[i];
-
-                    string className = fullName;
-                    var namespaceName = string.Empty;
-                    string[] names = fullName.Split('.');
-                    if (names.Length == 2)
-                    {
-                        className = names[1];
-                        namespaceName = names[0];
-
-                        if (IsValidIdentifier(namespaceName) &&
-                            IsValidIdentifier(className))
-                        {
-                            continue;
-                        }
-                    }
-
-                    var fixedFullName = string.Empty;
-                    var fixedNamespaceName = string.Empty;
-                    if (validNamespaces.TryGetValue(namespaceName, out fixedNamespaceName))
-                    {
-                        fixedFullName += fixedNamespaceName + ".";
-                    }
-                    else if (!string.IsNullOrWhiteSpace(namespaceName))
-                    {
-                        fixedFullName += namespaceName + ".";
-                    }
-
-                    var fixedClassName = string.Empty;
-                    if (validClasses.TryGetValue($"{fixedNamespaceName}.{className}", out fixedClassName))
-                    {
-                        fixedFullName += fixedClassName;
-                    }
-                    else fixedFullName += className;
-                    symbolTag.Names[i] = fixedFullName;
-                }
-            }
-            #endregion
-        }
-        #endregion
-
         public void GenerateMessageHashes()
         {
+            GenerateMessageHashes(null);
+        }
+        public void GenerateMessageHashes(string hashNamesPath)
+        {
+            Dictionary<string, string> hashNames = null;
+            if (File.Exists(hashNamesPath))
+            {
+                hashNames = new Dictionary<string, string>();
+                string[] lines = File.ReadAllLines(hashNamesPath);
+                foreach (string line in lines)
+                {
+                    if (string.IsNullOrWhiteSpace(line)) continue;
+
+                    string[] values = line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (values.Length != 3) continue;
+
+                    string name = values[0];
+                    string hash = values[2];
+
+                    if (hash == "-1") continue;
+                    hashNames.Add(hash, name);
+                }
+            }
+
             FindMessagesReferences();
-            foreach (HMessage message in OutMessages.Values.Concat(InMessages.Values))
+            foreach (HMessage message in Out.Concat(In))
             {
                 List<HMessage> group = null;
-                if (!Messages.TryGetValue(message.GenerateHash(), out group))
+                string hash = message.GenerateHash();
+                if (!Messages.TryGetValue(hash, out group))
                 {
                     group = new List<HMessage>();
-                    Messages.Add(message.Hash, group);
+                    Messages.Add(hash, group);
                 }
+
+                if (hashNames != null && hashNames.TryGetValue(hash, out string name))
+                {
+                    message.Name = name;
+                }
+
+                (message.IsOutgoing ? Out : (HMessages)In).AddOrUpdate(message);
                 group.Add(message);
             }
         }
+
         #region Message Reference Searching
         private void FindMessagesReferences()
         {
@@ -416,7 +181,7 @@ namespace Sulakore.Habbo.Web
             }
 
             var froms = new Dictionary<ASContainer, List<HReference>>();
-            foreach (HMessage incomingMsg in InMessages.Values)
+            foreach (HMessage incomingMsg in In)
             {
                 foreach (HReference reference in incomingMsg.References)
                 {
@@ -953,8 +718,7 @@ namespace Sulakore.Habbo.Web
             ASMethod initMethod = socketConnInstance.GetMethod("init", "Boolean", 2);
             if (initMethod == null) return false;
 
-            ASTrait remoteHostTrait, remotePortTrait;
-            if (!InjectEndPointSaver(out remoteHostTrait, out remotePortTrait)) return false;
+            if (!InjectEndPointSaver(out _, out _)) return false;
 
             ASCode code = initMethod.Body.ParseCode();
             for (int i = 0; i < code.Count; i++)
@@ -972,121 +736,6 @@ namespace Sulakore.Habbo.Web
             }
             initMethod.Body.Code = code.ToArray();
             return LockEndPointPing(host, port);
-        }
-        public bool InjectDebugLogger(string functionName)
-        {
-            ABCFile abc = ABCFiles[1];
-
-            ASMethod logMethod = null;
-            foreach (ASClass @class in abc.Classes)
-            {
-                if (@class.Traits.Count != 2) continue;
-
-                logMethod = @class.GetMethod("log", "void", 0);
-                if (logMethod != null) break;
-            }
-            if (logMethod == null) return false;
-
-            ASCode code = logMethod.Body.ParseCode();
-            int startIndex = code.IndexOf(OPCode.PushScope) + 1;
-
-            var ifNotAvailable = new IfFalseIns() { Offset = 1 };
-            ASInstruction jumpExit = code[code.IndexOf(OPCode.ReturnVoid)];
-
-            code.InsertRange(startIndex, new ASInstruction[]
-            {
-                /*
-                 * if(ExternalInterface.available)
-                 * {
-                 *     ExternalInterface.call({functionName});
-                 * }
-                 */
-                new GetLexIns(abc, abc.Pool.GetMultinameIndex("ExternalInterface")),
-                new GetPropertyIns(abc, abc.Pool.GetMultinameIndex("available")),
-                ifNotAvailable,
-                new GetLexIns(abc, abc.Pool.GetMultinameIndex("ExternalInterface")),
-                new PushStringIns(abc, functionName),
-                new GetLocal1Ins(),
-                new CallPropVoidIns(abc, abc.Pool.GetMultinameIndex("call"), 2)
-            });
-
-            code.JumpExits[ifNotAvailable] = jumpExit;
-            logMethod.Body.Code = code.ToArray();
-            logMethod.Body.MaxStack += 3;
-            return true;
-        }
-        public bool InjectMessageLogger(string functionName)
-        {
-            ABCFile abc = ABCFiles.Last();
-            ASInstance decoderInstance = null;
-            foreach (ASInstance instance in abc.Instances)
-            {
-                if (instance.IsInterface) continue;
-                if (instance.Traits.Count != 12) continue;
-                if (instance.Constructor.Parameters.Count != 2) continue;
-                if (instance.Constructor.Parameters[0].Type.Name != "int") continue;
-                if (instance.Constructor.Parameters[1].Type.Name != "ByteArray") continue;
-
-                decoderInstance = instance;
-                break;
-            }
-
-            var structureQName = new ASMultiname(abc.Pool);
-            structureQName.NameIndex = abc.Pool.AddConstant("values");
-            structureQName.Kind = MultinameKind.QName;
-            structureQName.NamespaceIndex = 1; // Public
-
-            var valuesSlot = new ASTrait(abc);
-            valuesSlot.Kind = TraitKind.Slot;
-            valuesSlot.QNameIndex = abc.Pool.AddConstant(structureQName);
-            valuesSlot.TypeIndex = abc.Pool.GetMultinameIndex("Array");
-            decoderInstance.Traits.Add(valuesSlot);
-
-            ASCode ctorCode = decoderInstance.Constructor.Body.ParseCode();
-            ctorCode.InsertRange(ctorCode.Count - 2, new ASInstruction[]
-            {
-                new GetLocal0Ins(),
-                new GetLocal1Ins(),
-                new NewArrayIns(1),
-                new SetPropertyIns(abc, valuesSlot.QNameIndex)
-            });
-            decoderInstance.Constructor.Body.Code = ctorCode.ToArray();
-
-            var addValueMethod = new ASMethod(abc);
-            addValueMethod.ReturnTypeIndex = 2; // void
-            int addTypeMethodIndex = abc.AddMethod(addValueMethod);
-
-            var valueParam = new ASParameter(abc.Pool, addValueMethod);
-            valueParam.NameIndex = abc.Pool.AddConstant("value");
-            valueParam.TypeIndex = abc.Pool.GetMultinameIndex("Object");
-            addValueMethod.Parameters.Add(valueParam);
-
-            var addValueBody = new ASMethodBody(abc);
-            addValueBody.MethodIndex = addTypeMethodIndex;
-            addValueBody.InitialScopeDepth = 5;
-            addValueBody.Code = new byte[0];
-            addValueBody.MaxScopeDepth = 6;
-            addValueBody.LocalCount = 2;
-            addValueBody.MaxStack = 3;
-            abc.AddMethodBody(addValueBody);
-
-            var addTypeCode = new ASCode(abc, addValueBody);
-            addTypeCode.AddRange(new ASInstruction[]
-            {
-                new GetLocal0Ins(),
-                new PushScopeIns(),
-
-                new GetLocal0Ins(),
-                new GetPropertyIns(abc, valuesSlot.QNameIndex),
-                new GetLocal1Ins(),
-                new CallPropVoidIns(abc, abc.Pool.GetMultinameIndex("push"), 1),
-
-                new ReturnVoidIns()
-            });
-            addValueBody.Code = addTypeCode.ToArray();
-
-            decoderInstance.AddMethod(addValueMethod, "addValue");
-            return true;
         }
         public bool InjectRSAKeys(string exponent, string modulus)
         {
@@ -1216,12 +865,12 @@ namespace Sulakore.Habbo.Web
                 ASClass messageClass = abc.GetClass(getLexInst.TypeName);
 
                 var message = new HMessage(id, isOutgoing, messageClass);
-                (isOutgoing ? OutMessages : InMessages).Add(id, message);
+                (isOutgoing ? Out : (HMessages)In).AddOrUpdate(message);
 
                 if (_messages.ContainsKey(messageClass))
                 {
                     // TODO: What to do if message is also identified with different ID?
-                   // _messages[messageClass].SharedIds.Add(id);
+                    // _messages[messageClass].SharedIds.Add(id);
                 }
                 else _messages.Add(messageClass, message);
 
@@ -1585,7 +1234,7 @@ namespace Sulakore.Habbo.Web
         public void Disassemble(Action<TagItem> callback, bool isGeneratingHashes)
         {
             Disassemble(callback);
-            if (isGeneratingHashes)
+            if (IsPostShuffle && isGeneratingHashes)
             {
                 GenerateMessageHashes();
             }
@@ -1629,8 +1278,7 @@ namespace Sulakore.Habbo.Web
                 return false;
             }
 
-            return !value.Contains("_-") &&
-                !_reservedNames.Contains(value.Trim());
+            return !value.Contains("_-") && !_reservedNames.Contains(value.Trim());
         }
     }
 
@@ -1755,26 +1403,26 @@ namespace Sulakore.Habbo.Web
             switch (kind)
             {
                 case ConstantKind.Double:
-                    Write((double)value);
-                    break;
+                Write((double)value);
+                break;
                 case ConstantKind.Integer:
-                    Write((int)value);
-                    break;
+                Write((int)value);
+                break;
                 case ConstantKind.UInteger:
-                    Write((uint)value);
-                    break;
+                Write((uint)value);
+                break;
                 case ConstantKind.String:
-                    Write((string)value);
-                    break;
+                Write((string)value);
+                break;
                 case ConstantKind.Null:
-                    Write("null");
-                    break;
+                Write("null");
+                break;
                 case ConstantKind.True:
-                    Write(true);
-                    break;
+                Write(true);
+                break;
                 case ConstantKind.False:
-                    Write(false);
-                    break;
+                Write(false);
+                break;
             }
         }
         public void Write(ASContainer container, bool includeTraits)

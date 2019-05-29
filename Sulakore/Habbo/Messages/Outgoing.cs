@@ -120,7 +120,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage ModToolRequestRoomChatlog { get; set; }
         public HMessage ModToolRequestRoomInfo { get; set; }
         public HMessage ModToolRequestRoomUserChatlog { get; set; }
-        public HMessage ModToolRequestRoomVisits { get; set; }
         public HMessage ModToolRequestUserChatlog { get; set; }
         public HMessage ModToolRequestUserInfo { get; set; }
         public HMessage ModToolRoomAlert { get; set; }

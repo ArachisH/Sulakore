@@ -22,8 +22,12 @@ namespace Sulakore.Habbo.Messages
         public string Name { get; set; }
         public string Structure { get; set; }
 
-        public ASClass Class { get; }
-        public ASClass Parser { get; }
+        public ASClass Class { get; set; }
+        public string ClassName { get; }
+
+        public ASClass Parser { get; set; }
+        public string ParserName { get; }
+
         public List<HReference> References { get; }
 
         public static implicit operator ushort(HMessage message) => message?.Id ?? ushort.MaxValue;
@@ -34,15 +38,18 @@ namespace Sulakore.Habbo.Messages
         public HMessage(ushort id, bool isOutgoing, ASClass messageClass)
         {
             Id = id;
-            Class = messageClass;
             IsOutgoing = isOutgoing;
             References = new List<HReference>();
+
+            Class = messageClass;
+            ClassName = messageClass.QName.Name;
 
             if (!IsOutgoing)
             {
                 Parser = GetMessageParser();
                 if (Parser != null)
                 {
+                    ParserName = Parser.QName.Name;
                     Structure = GetIncomingStructure(Parser);
                 }
             }

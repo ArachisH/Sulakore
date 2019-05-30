@@ -139,7 +139,6 @@ namespace Sulakore.Habbo.Web
                 group.Add(message);
             }
         }
-
         #region Message Reference Searching
         private void FindMessagesReferences()
         {
@@ -1279,6 +1278,21 @@ namespace Sulakore.Habbo.Web
             }
 
             return !value.Contains("_-") && !_reservedNames.Contains(value.Trim());
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                _messages.Clear();
+                _abcFileTags.Clear();
+                foreach (ABCFile abc in ABCFiles)
+                {
+                    abc.Dispose();
+                }
+                ABCFiles.Clear();
+            }
         }
     }
 

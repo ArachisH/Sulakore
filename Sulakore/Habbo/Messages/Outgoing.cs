@@ -137,6 +137,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage NavigatorCollapseCategory { get; set; }
         public HMessage NavigatorUncollapseCategory { get; set; }
         public HMessage NewNavigatorAction { get; set; }
+        public HMessage NuxScriptProceed { get; set; }
         public HMessage OpenRecycleBox { get; set; }
         public HMessage PetPackageName { get; set; }
         public HMessage PetPickup { get; set; }

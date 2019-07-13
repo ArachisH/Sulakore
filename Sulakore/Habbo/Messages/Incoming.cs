@@ -155,6 +155,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage HotelViewNextLTDAvailable { get; set; }
         public HMessage HotelWillCloseInMinutes { get; set; }
         public HMessage HotelWillCloseInMinutesAndBackIn { get; set; }
+        public HMessage InClientLink { get; set; }
         public HMessage InventoryAchievements { get; set; }
         public HMessage InventoryAddEffect { get; set; }
         public HMessage InventoryBadges { get; set; }
@@ -234,6 +235,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage NewYearResolutionProgress { get; set; }
         public HMessage NewsWidgets { get; set; }
         public HMessage NotEnoughPointsType { get; set; }
+        public HMessage NotificationDialog { get; set; }
         public HMessage NuxAlert { get; set; }
         public HMessage ObjectOnRoller { get; set; }
         public HMessage OldPublicRooms { get; set; }

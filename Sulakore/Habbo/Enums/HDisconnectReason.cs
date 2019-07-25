@@ -5,6 +5,9 @@ namespace Sulakore.Habbo
     /// </summary>
     public enum HDisconnectReason
     {
+        Unknown = -1,
+        MaintenanceBreak = -2,
+
         Logout = 0,
         JustBanned = 1,
         ConcurrentLogin = 2,
@@ -12,7 +15,7 @@ namespace Sulakore.Habbo
         AvatarIdentityChange = 4,
         RemoveFurnitureTool = 5,
         StillBanned = 10,
-        DualLoginByID = 11,
+        DualLoginById = 11,
         HotelClosed = 12,
         DualLoginByIP = 13,
         PeerConnectionMissing = 16,
@@ -22,9 +25,9 @@ namespace Sulakore.Habbo
         IncorrectPassword = 20,
         InvalidLoginTicket = 22,
 
-        VersionCheckURL = 23,
+        VersionCheckUrl = 23,
         VersionCheckProperty = 24,
-        VersionCheckMachineID = 25,
+        VersionCheckMachineId = 25,
 
         NoMessengerSession = 26,
         UserNotFound = 27,
@@ -41,18 +44,26 @@ namespace Sulakore.Habbo
         SocketReadLength = 106,
         SocketReadBody = 107,
         SocketReadPolicy = 108,
-        SocketIoException = 109,
+        SocketIOException = 109,
         SocketWrongCrypto = 110,
 
         ProxyRuntimeException = 111,
         Idle = 112,
         PongTimeout = 113,
         IdleNotAuthenticated = 114,
-        IdleNoUserID = 115,
+        IdleNoUserId = 115,
         WriteClosedChannel = 116,
 
         SocketWriteException1 = 117,
         SocketWriteException2 = 118,
-        SocketWriteException3 = 119
+        SocketWriteException3 = 119,
+
+        TooManyBytesPendingWrite = 120,
+        IdleConnectionPolicyRequest = 121,
+        IncompatibleClientVersion = 122,
+        CredentialsRemoved = 123,
+        InsufficientSecurityLevel = 124,
+        TooManyUndefinedClientMessages = 125,
+        InvalidParameterRange = 126
     }
 }

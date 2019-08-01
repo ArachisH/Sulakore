@@ -65,7 +65,7 @@ namespace Sulakore.Network
                         if (value[0] == '.') value = value.Substring(1);
                         value = value.Substring(0, value.StartsWith("com") ? 5 : 2);
                     }
-                    if (Enum.TryParse(value, true, out HHotel hotel)) return hotel;
+                    if (Enum.TryParse(value, true, out HHotel hotel) && Enum.IsDefined(typeof(HHotel), hotel)) return hotel;
                     break;
                 }
             }

@@ -56,7 +56,7 @@ namespace Sulakore.Habbo.Web
         private void ExtractVariables()
         {
             _variables.Clear();
-            MatchCollection matches = Regex.Matches(Source, FLASH_VAR_PATTERN, RegexOptions.Multiline);
+            MatchCollection matches = Regex.Matches(Source, FLASH_VAR_PATTERN, RegexOptions.Multiline | RegexOptions.Compiled);
             foreach (Match match in matches)
             {
                 string value = match.Groups["value"].Value;

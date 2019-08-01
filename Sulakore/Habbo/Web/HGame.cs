@@ -905,7 +905,7 @@ namespace Sulakore.Habbo.Web
                 if (!isTrimming && Local.IsValid(instruction.OP))
                 {
                     var local = (Local)instruction;
-                    int newRegister = local.Register - 1;
+                    int newRegister = local.Register - (IsPostShuffle ? 1 : 3);
                     if (newRegister < 1) continue;
 
                     ASInstruction replacement = null;
@@ -921,12 +921,25 @@ namespace Sulakore.Habbo.Web
                 }
                 else if (isTrimming)
                 {
-                    if (instruction.OP != OPCode.CallProperty) continue;
+                    if (instruction.OP != OPCode.SetLocal) continue;
 
-                    var callProperty = (CallPropertyIns)instruction;
-                    if (callProperty.PropertyName.Name != "encode") continue;
+                    var setLocal = (SetLocalIns)instruction;
+                    if (IsPostShuffle && setLocal.Register != 4) continue;
+                    if (!IsPostShuffle && setLocal.Register != 6) continue;
 
-                    sendCode.RemoveRange(0, i - 4);
+                    for (int j = i - 1; j >= 0; j--)
+                    {
+                        if (sendCode[j].OP != OPCode.GetLocal_0) continue;
+                        sendCode.RemoveRange(0, j);
+                        break;
+                    }
+
+                    if (!IsPostShuffle)
+                    {
+                        sendCode.RemoveAt(5);
+                        ((CallPropertyIns)sendCode[5]).ArgCount = 2;
+                    }
+
                     int idNameIndex = abc.Pool.AddConstant("id");
                     int valuesNameIndex = abc.Pool.AddConstant("values");
 

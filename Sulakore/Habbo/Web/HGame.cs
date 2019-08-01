@@ -663,7 +663,7 @@ namespace Sulakore.Habbo.Web
             ASInstance socketConnInstance = abc.GetInstance("SocketConnection");
             if (socketConnInstance == null) return false;
 
-            ASTrait sendFunction = InjectUniversalSendFunction(true);
+            ASTrait sendFunction = InjectUniversalSendFunction(IsPostShuffle);
             if (sendFunction == null) return false;
 
             ASInstance habboCommDemoInstance = GetHabboCommunicationDemo();
@@ -672,6 +672,8 @@ namespace Sulakore.Habbo.Web
             if (!InjectEndPointSaver(out ASTrait hostTrait, out ASTrait portTrait)) return false;
             foreach (ASMethod method in habboCommDemoInstance.GetMethods(null, "void", 1))
             {
+                if (!IsPostShuffle && !method.Name.EndsWith("onConnectionEstablished")) continue;
+
                 ASParameter parameter = method.Parameters[0];
                 if (!parameter.IsOptional) continue;
                 if (parameter.Type.Name != "Event") continue;
@@ -891,6 +893,11 @@ namespace Sulakore.Habbo.Web
         }
         private void SimplifySendCode(ABCFile abc, ASCode sendCode)
         {
+            if (!IsPostShuffle)
+            {
+                sendCode.Deobfuscate();
+            }
+
             bool isTrimming = true;
             for (int i = 0; i < sendCode.Count; i++)
             {
@@ -943,7 +950,7 @@ namespace Sulakore.Habbo.Web
             ASInstance socketConnInstance = abc.GetInstance("SocketConnection");
             if (socketConnInstance == null) return null;
 
-            ASMethod sendMethod = socketConnInstance.GetMethod("send", "Boolean", 1);
+            ASMethod sendMethod = socketConnInstance.GetMethod("send", "Boolean", IsPostShuffle ? 1 : 2);
             if (sendMethod == null) return null;
 
             ASTrait sendFunctionTrait = socketConnInstance.GetMethod("sendMessage", "Boolean", 1)?.Trait;
@@ -1207,6 +1214,9 @@ namespace Sulakore.Habbo.Web
         {
             if (_habboCommunicationDemo == null)
             {
+                _habboCommunicationDemo = ABCFiles.Last().GetInstance("HabboCommunicationDemo");
+                if (_habboCommunicationDemo != null) return _habboCommunicationDemo;
+
                 foreach (ASInstance instance in ABCFiles.Last().Instances)
                 {
                     if (instance.IsInterface) continue;

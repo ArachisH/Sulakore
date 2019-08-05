@@ -836,30 +836,34 @@ namespace Sulakore.Habbo.Web
 
             foreach (ASMethod method in habboCommDemoInstance.GetMethods(null, "void", 1))
             {
+                if (method.Body.LocalCount < 10) continue;
+
                 ASCode code = method.Body.ParseCode();
                 for (int i = 0; i < code.Count; i++)
                 {
                     ASInstruction instruction = code[i];
-                    if (instruction.OP != OPCode.GetLex) continue;
 
-                    var getLexIns = (GetLexIns)instruction;
-                    if (getLexIns.TypeName.Name.ToLower() != "rsakey") continue;
+                    if (instruction.OP != OPCode.InitProperty) continue;
+                    var initProperty = (InitPropertyIns)instruction;
 
-                    for (int j = i; j < code.Count; j++)
+                    if (code[i + 3].OP != OPCode.GetProperty) continue;
+                    var getProperty = (GetPropertyIns)code[i + 3];
+
+                    if (initProperty.PropertyNameIndex != getProperty.PropertyNameIndex) continue;
+                    if (code[i + 8].OP != OPCode.CallPropVoid) continue;
+
+                    var callPropVoid = (CallPropVoidIns)code[i + 8];
+                    if (callPropVoid.ArgCount != 3) continue; // Don't use the 'verify' name, as it could get shuffled in the future
+
+                    code.RemoveRange(i - 7, 6);
+                    code.InsertRange(i - 7, new ASInstruction[]
                     {
-                        ASInstruction innerInstruction = code[j];
-                        if (innerInstruction.OP != OPCode.InitProperty) continue;
-
-                        code.RemoveRange(i + 1, j - i - 2);
-                        code.InsertRange(i + 1, new ASInstruction[]
-                        {
                             new PushStringIns(abc, modulus),
                             new PushStringIns(abc, exponent),
-                        });
+                    });
 
-                        method.Body.Code = code.ToArray();
-                        return true;
-                    }
+                    method.Body.Code = code.ToArray();
+                    return true;
                 }
             }
             return false;

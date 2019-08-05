@@ -399,6 +399,95 @@ namespace Sulakore.Habbo.Web
             localHostCheckMethod.Body.Code[1] = remoteHostCheckMethod.Body.Code[1] = (byte)OPCode.ReturnValue;
             return LockInfoHostProperty();
         }
+        public bool EnableDescriptions()
+        {
+            ABCFile abc = ABCFiles.Last();
+
+            ASInstance habboLocalizationManager = abc.GetInstance("HabboLocalizationManager");
+            if (habboLocalizationManager == null) return false;
+
+            ASMethod getBadgeName = habboLocalizationManager.GetMethod("getBadgeName", "String", 1);
+            if (getBadgeName == null) return false;
+
+            ASMethod getBadgeDesc = habboLocalizationManager.GetMethod("getBadgeDesc", "String", 1);
+            if (getBadgeDesc == null) return false;
+
+            ASInstance furnitureDataParser = abc.GetInstance("FurnitureDataParser");
+            if (furnitureDataParser == null) return false;
+
+            int descriptionNameIndex = 0;
+            foreach (ASMethod method in furnitureDataParser.GetMethods(null, null, 1))
+            {
+                if (method.Parameters[0].Type.Name != "XML") continue;
+
+                ASCode code = method.Body.ParseCode();
+                for (int i = 0; i < code.Count; i++)
+                {
+                    ASInstruction instruction = code[i];
+                    if (instruction.OP != OPCode.GetProperty) continue;
+
+                    var getProperty = (GetPropertyIns)instruction;
+                    if (getProperty.PropertyName.Name != "name") continue;
+
+                    if (descriptionNameIndex == 0)
+                    {
+                        descriptionNameIndex = abc.Pool.AddConstant(new ASMultiname(abc.Pool)
+                        {
+                            Kind = MultinameKind.Multiname,
+                            NameIndex = abc.Pool.AddConstant("description"),
+                            NamespaceSetIndex = getProperty.PropertyName.NamespaceSetIndex
+                        });
+                    }
+
+                    code[i + 1] = new GetLocal1Ins();
+                    code.Insert((i + 2), new GetPropertyIns(abc, descriptionNameIndex));
+
+                    method.Body.MaxStack += 2;
+                    method.Body.Code = code.ToArray();
+                    break;
+                }
+            }
+
+            ASMethod someMethodThatReturnsAnIntIdkMan = habboLocalizationManager.GetMethods(null, "int", 1)
+                .FirstOrDefault(m => m.Parameters[0].Type.Name == "String");
+            if (someMethodThatReturnsAnIntIdkMan == null) return false;
+
+            getBadgeDesc.Body.Code = getBadgeName.Body.Code;
+            getBadgeDesc.Body.MaxStack = 5;
+            getBadgeDesc.Body.LocalCount = 4;
+            getBadgeDesc.Body.MaxScopeDepth = 7;
+            getBadgeDesc.Body.InitialScopeDepth = 6;
+
+            ASCode getBadgeDescCode = getBadgeDesc.Body.ParseCode();
+            for (int i = 0; i < getBadgeDescCode.Count; i++)
+            {
+                ASInstruction instruction = getBadgeDescCode[i];
+                if (instruction.OP == OPCode.PushString)
+                {
+                    var pushString = (PushStringIns)instruction;
+                    if (pushString.Value == "badge_name_")
+                    {
+                        pushString.Value = "badge_desc_";
+                    }
+                }
+                else if (instruction.OP == OPCode.SetLocal_3)
+                {
+                    getBadgeDescCode.InsertRange(i + 1, new ASInstruction[]
+                    {
+                        new GetLocal0Ins(),
+                        new GetLocal3Ins(),
+                        new PushStringIns(abc, "limit"),
+                        new GetLocal0Ins(),
+                        new GetLocal1Ins(),
+                        new CallPropertyIns(abc, someMethodThatReturnsAnIntIdkMan.Trait.QNameIndex, 1),
+                        new CallPropVoidIns(abc, abc.Pool.GetMultinameIndex("registerParameter"), 3)
+                    });
+                    break;
+                }
+            }
+            getBadgeDesc.Body.Code = getBadgeDescCode.ToArray();
+            return true;
+        }
         public bool EnableGameCenterIcon()
         {
             ABCFile abc = ABCFiles.Last();

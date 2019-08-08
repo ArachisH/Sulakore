@@ -8,7 +8,7 @@ namespace Sulakore.Crypto
 {
     public class HKeyExchange : IDisposable
     {
-        private const int BLOCK_SIZE = 128;
+        private const int BLOCK_SIZE = 256;
         private readonly Random _numberGenerator;
 
         public BigInteger Modulus { get; }

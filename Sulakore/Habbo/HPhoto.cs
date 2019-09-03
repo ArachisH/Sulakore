@@ -49,6 +49,9 @@ namespace Sulakore.Habbo
         [DataMember(Name = "roomid", Order = 4)]
         public int RoomId { get; set; }
 
+        [DataMember(Name = "zoom", Order = 5)]
+        public int Zoom { get; set; }
+
         static HPhoto()
         {
             _serializer = new DataContractJsonSerializer(typeof(HPhoto));

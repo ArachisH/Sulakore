@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Globalization;
+using System.Collections.Generic;
 
 using Sulakore.Network.Protocol;
 
@@ -35,13 +36,13 @@ namespace Sulakore.Habbo
             UsagePolicy = packet.ReadInt32();
             OwnerId = packet.ReadInt32();
 
-            if (float.TryParse(Data, out float fResult))
+            if (float.TryParse(Data, out _))
             {
                 State = int.Parse(Data);
             }
 
             string[] locations = Location.Split(' ');
-            if (Location.IndexOf(":") == 0 && locations.Length >= 3) // False
+            if (Location.IndexOf(":") == 0 && locations.Length >= 3)
             {
                 Placement = locations[2];
 
@@ -61,7 +62,7 @@ namespace Sulakore.Habbo
                     }
                 }
             }
-            else if (locations.Length >= 2) // True
+            else if (locations.Length >= 2)
             {
                 Placement = locations[0];
                 if (Placement == "rightwall" || Placement == "frontwall")
@@ -73,8 +74,8 @@ namespace Sulakore.Habbo
                 string[] coords = locations[1].Split(',');
                 if (coords.Length >= 3)
                 {
-                    Y = float.Parse(coords[0]);
-                    Z = float.Parse(coords[1]);
+                    Y = float.Parse(coords[0], CultureInfo.InvariantCulture);
+                    Z = float.Parse(coords[1], CultureInfo.InvariantCulture);
                 }
             }
         }

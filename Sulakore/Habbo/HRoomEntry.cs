@@ -10,15 +10,15 @@ namespace Sulakore.Habbo
         public int OwnerId { get; set; }
         public string OwnerName { get; set; }
 
-        public int DoorMode { get; set; }
+        public HDoorMode DoorMode { get; set; }
         public int UserCount { get; set; }
         public int MaxUserCount { get; set; }
 
         public string Description { get; set; }
-        public int TradeMode { get; set; }
+        public HTradeMode TradeMode { get; set; }
         public int Ranking { get; set; }
-        public int Category { get; set; }
         public int Stars { get; set; }
+        public HRoomCategory Category { get; set; }
 
         public string[] Tags { get; set; }
         
@@ -44,15 +44,15 @@ namespace Sulakore.Habbo
             OwnerId = packet.ReadInt32();
             OwnerName = packet.ReadUTF8();
 
-            DoorMode = packet.ReadInt32();
+            DoorMode = (HDoorMode)packet.ReadInt32();
             UserCount = packet.ReadInt32();
             MaxUserCount = packet.ReadInt32();
 
             Description = packet.ReadUTF8();
-            TradeMode = packet.ReadInt32();
+            TradeMode = (HTradeMode)packet.ReadInt32();
             Ranking = packet.ReadInt32();
-            Category = packet.ReadInt32();
             Stars = packet.ReadInt32();
+            Category = (HRoomCategory)packet.ReadInt32();
 
             Tags = new string[packet.ReadInt32()];
             for (int i = 0; i < Tags.Length; i++)

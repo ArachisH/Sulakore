@@ -40,8 +40,8 @@ namespace Sulakore.Habbo
             }
 
             ClubLevel = packet.ReadInt32();
-            IsPet = packet.ReadBoolean();
             AllowBundle = packet.ReadBoolean();
+            IsPet = packet.ReadBoolean();
 
             PreviewImage = packet.ReadUTF8();
         }

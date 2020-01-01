@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sulakore.Habbo
+﻿namespace Sulakore.Habbo
 {
     /// <summary>
     /// Specificies a list of all existing room categories.

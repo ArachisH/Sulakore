@@ -13,7 +13,7 @@ namespace Sulakore.Habbo.Web
         private static readonly HttpClient _client;
         private static readonly HttpClientHandler _handler;
 
-        public const string CHROME_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36";
+        public const string CHROME_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36";
 
         static HAPI()
         {
@@ -115,7 +115,7 @@ namespace Sulakore.Habbo.Web
             using (HttpResponseMessage response = await _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false))
             {
                 ServicePointManager.FindServicePoint(request.RequestUri).ConnectionLeaseTimeout = 30 * 1000;
-                if (!response.IsSuccessStatusCode) return default(T);
+                if (!response.IsSuccessStatusCode) return default;
                 if (contentConverter == null)
                 {
                     Type genericType = typeof(T);
@@ -127,7 +127,7 @@ namespace Sulakore.Habbo.Web
                     {
                         return (T)(object)await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
                     }
-                    else return default(T);
+                    else return default;
                 }
                 return await contentConverter(response.Content).ConfigureAwait(false);
             }

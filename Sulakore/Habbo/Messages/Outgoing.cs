@@ -24,10 +24,10 @@ namespace Sulakore.Habbo.Messages
         public HMessage BuyMarketplaceOffer { get; set; }
         public HMessage BuyMarketplaceTokens { get; set; }
         public HMessage BuyRoomPromotion { get; set; }
-        public HMessage CameraPublishToWeb { get; set; }
-        public HMessage CameraPurchase { get; set; }
-        public HMessage CameraRoomPicture { get; set; }
-        public HMessage CameraRoomThumbnail { get; set; }
+        public HMessage PublishPhoto { get; set; }
+        public HMessage PurchasePhoto { get; set; }
+        public HMessage RenderRoom { get; set; }
+        public HMessage RenderRoomThumbnail { get; set; }
         public HMessage CancelMarketplaceOffer { get; set; }
         public HMessage CancelPoll { get; set; }
         public HMessage CancelTyping { get; set; }
@@ -222,14 +222,14 @@ namespace Sulakore.Habbo.Messages
         public HMessage ReportBully { get; set; }
         public HMessage RequestAchievementConfiguration { get; set; }
         public HMessage RequestAchievements { get; set; }
-        public HMessage RequestCameraConfiguration { get; set; }
+        public HMessage InitCamera { get; set; }
         public HMessage RequestCanCreateRoom { get; set; }
         public HMessage RequestCatalogIndex { get; set; }
         public HMessage RequestCatalogMode { get; set; }
         public HMessage RequestCatalogPage { get; set; }
         public HMessage RequestCraftingRecipes { get; set; }
         public HMessage RequestCraftingRecipesAvailable { get; set; }
-        public HMessage RequestCreateRoom { get; set; }
+        public HMessage CreateFlatMessage { get; set; }
         public HMessage RequestCredits { get; set; }
         public HMessage RequestDeleteRoom { get; set; }
         public HMessage RequestDiscount { get; set; }

@@ -228,7 +228,7 @@ namespace Sulakore.Modules
             packet.Position = 0;
             if (!isOutgoing)
             {
-                if (packet.Id == In.RoomUsers)
+                if (packet.Id == In.Users)
                 {
                     HEntity[] entities = HEntity.Parse(packet);
                     foreach (HEntity entity in entities)
@@ -237,7 +237,7 @@ namespace Sulakore.Modules
                     }
                     //_container.OnEntitiesLoaded(entities.Length);
                 }
-                else if (packet.Id == In.RoomWallItems)
+                else if (packet.Id == In.Items)
                 {
                     HWallItem[] wallItems = HWallItem.Parse(packet);
                     foreach (HWallItem wallItem in wallItems)
@@ -246,7 +246,7 @@ namespace Sulakore.Modules
                     }
                     //_container.OnWallItemsLoaded(wallItems.Length);
                 }
-                else if (packet.Id == In.RoomFloorItems)
+                else if (packet.Id == In.Objects)
                 {
                     HFloorItem[] floorItems = HFloorItem.Parse(packet);
                     foreach (HFloorItem floorItem in floorItems)
@@ -255,7 +255,7 @@ namespace Sulakore.Modules
                     }
                     //_container.OnFloorItemsLoaded(floorItems.Length);
                 }
-                else if (packet.Id == In.RoomHeightMap)
+                else if (packet.Id == In.FloorHeightMap)
                 {
                     _entities.Clear();
                     _wallItems.Clear();

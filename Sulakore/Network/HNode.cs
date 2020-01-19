@@ -2,6 +2,7 @@
 using System.Net;
 using System.Text;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
@@ -13,6 +14,8 @@ namespace Sulakore.Network
     public class HNode : IDisposable
     {
         private static readonly Dictionary<int, TcpListener> _listeners;
+
+        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
         public bool IsConnected => Client.Connected;
 
@@ -279,18 +282,21 @@ namespace Sulakore.Network
         protected async Task<int> SendAsync(byte[] buffer, int offset, int size, SocketFlags socketFlags)
         {
             if (!IsConnected) return -1;
-            if (IsEncrypting && Encrypter != null)
-            {
-                buffer = Encrypter.Parse(buffer);
-            }
 
-            int sent = -1;
+            int sent;
+            await _semaphore.WaitAsync().ConfigureAwait(false);
             try
-            {
+            { 
+                if (IsEncrypting && Encrypter != null)
+                {
+                    buffer = Encrypter.Parse(buffer);
+                }
+                
                 IAsyncResult result = Client.BeginSend(buffer, offset, size, socketFlags, null, null);
                 sent = await Task.Factory.FromAsync(result, Client.EndSend).ConfigureAwait(false);
             }
             catch { sent = -1; }
+            finally { _semaphore.Release(); }
             return sent;
         }
         protected async Task<int> ReceiveAsync(byte[] buffer, int offset, int size, SocketFlags socketFlags)

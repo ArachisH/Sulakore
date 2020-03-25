@@ -428,8 +428,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage YouTradingDisabled { get; set; }
         public HMessage YoutubeDisplayList { get; set; }
 
-        //TODO: 
-
         public Incoming()
             : base(false)
         { }

@@ -2,9 +2,11 @@
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 using Sulakore.Network;
+using Sulakore.Habbo.Web.Json;
 
 namespace Sulakore.Habbo.Web
 {
@@ -12,6 +14,7 @@ namespace Sulakore.Habbo.Web
     {
         private static readonly HttpClient _client;
         private static readonly HttpClientHandler _handler;
+        private static readonly JsonSerializerOptions _serializerOptions;
 
         public const string CHROME_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36";
 
@@ -28,11 +31,17 @@ namespace Sulakore.Habbo.Web
             _client.DefaultRequestHeaders.ConnectionClose = true;
             _client.DefaultRequestHeaders.Add("User-Agent", CHROME_USER_AGENT);
             _client.DefaultRequestHeaders.Add("Cookie", "YPF8827340282Jdskjhfiw_928937459182JAX666=127.0.0.1");
+
+            _serializerOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+            _serializerOptions.Converters.Add(new DateTimeConverter());
         }
 
         public static Task<byte[]> GetFigureDataAsync(string query) => ReadContentAsync<byte[]>(HHotel.Com.ToUri(), "/habbo-imaging/avatarimage?" + query);
-        public static async Task<HUser> GetUserAsync(string name, HHotel hotel) => HUser.Create(await ReadContentAsync<string>(hotel.ToUri(), "/api/public/users?name=" + name));
-        public static async Task<HProfile> GetProfileAsync(string uniqueId) => HProfile.Create(await ReadContentAsync<string>(HotelEndPoint.GetHotel(uniqueId).ToUri(), $"/api/public/users/{uniqueId}/profile"));
+        public static async Task<HUser> GetUserAsync(string name, HHotel hotel) => await ReadContentAsync<HUser>(hotel.ToUri(), "/api/public/users?name=" + name);
+        public static async Task<HProfile> GetProfileAsync(string uniqueId) => await ReadContentAsync<HProfile>(HotelEndPoint.GetHotel(uniqueId).ToUri(), $"/api/public/users/{uniqueId}/profile");
 
         public static async Task<string> GetLatestRevisionAsync(HHotel hotel)
         {
@@ -43,7 +52,7 @@ namespace Sulakore.Habbo.Web
                 int revisionEndIndex = body.IndexOf('/', revisionStartIndex);
                 if (revisionEndIndex != -1)
                 {
-                    return body.Substring(revisionStartIndex, revisionEndIndex - revisionStartIndex);
+                    return body[revisionStartIndex..revisionEndIndex];
                 }
             }
             return null;
@@ -111,26 +120,28 @@ namespace Sulakore.Habbo.Web
 
         public static async Task<T> ReadContentAsync<T>(Uri baseUri, string path, Func<HttpContent, Task<T>> contentConverter = null)
         {
-            using (var request = new HttpRequestMessage(HttpMethod.Get, $"{baseUri.GetLeftPart(UriPartial.Authority)}{path}"))
-            using (HttpResponseMessage response = await _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false))
+            using var request = new HttpRequestMessage(HttpMethod.Get, baseUri.GetLeftPart(UriPartial.Authority) + path);
+            using HttpResponseMessage response = await _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+            
+            ServicePointManager.FindServicePoint(request.RequestUri).ConnectionLeaseTimeout = 30 * 1000;
+            
+            if (!response.IsSuccessStatusCode) return default;
+            if (contentConverter == null)
             {
-                ServicePointManager.FindServicePoint(request.RequestUri).ConnectionLeaseTimeout = 30 * 1000;
-                if (!response.IsSuccessStatusCode) return default;
-                if (contentConverter == null)
-                {
-                    Type genericType = typeof(T);
-                    if (genericType == typeof(string))
-                    {
-                        return (T)(object)await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    }
-                    else if (genericType == typeof(byte[]))
-                    {
-                        return (T)(object)await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
-                    }
-                    else return default;
-                }
-                return await contentConverter(response.Content).ConfigureAwait(false);
+                Type genericType = typeof(T);
+
+                if (genericType == typeof(string))
+                    return (T)(object)await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                if (genericType == typeof(byte[]))
+                    return (T)(object)await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
+
+                if (response.Content.Headers.ContentType.MediaType == "application/json")
+                    return await JsonSerializer.DeserializeAsync<T>(await response.Content.ReadAsStreamAsync().ConfigureAwait(false), _serializerOptions).ConfigureAwait(false);
+                
+                return default;
             }
+            return await contentConverter(response.Content).ConfigureAwait(false);
         }
     }
 }

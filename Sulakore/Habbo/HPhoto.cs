@@ -1,61 +1,35 @@
 ﻿using System;
-using System.IO;
 using System.Text;
+using System.Text.Json;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
+using System.Text.Json.Serialization;
 
-using Sulakore.Habbo.Layers;
+using Sulakore.Habbo.Camera;
 
 namespace Sulakore.Habbo
 {
-    [DataContract]
     public class HPhoto
     {
+        private static readonly JsonSerializerOptions _serializerOptions;
         private long _timestamp;
 
-        private static readonly DateTime _unixEpoch;
-        private static readonly DataContractJsonSerializer _serializer;
+        public IList<Plane> Planes { get; set; } = new List<Plane>();
+        public IList<Sprite> Sprites { get; set; } = new List<Sprite>();
+        public Modifiers Modifiers { get; set; } = new Modifiers();
+        public IList<Filter> Filters { get; set; } = new List<Filter>();
 
-        private List<Plane> _planes;
-        [DataMember(Name = "planes", Order = 0)]
-        public List<Plane> Planes
-        {
-            get => _planes ?? (_planes = new List<Plane>());
-        }
-
-        private List<Sprite> _sprites;
-        [DataMember(Name = "sprites", Order = 1)]
-        public List<Sprite> Sprites
-        {
-            get => _sprites ?? (_sprites = new List<Sprite>());
-        }
-
-        private Modifiers _modifiers;
-        [DataMember(Name = "modifiers", Order = 2)]
-        public Modifiers Modifiers
-        {
-            get => _modifiers ?? (_modifiers = new Modifiers());
-            set { _modifiers = value; }
-        }
-
-        private List<Filter> _filters;
-        [DataMember(Name = "filters", Order = 3)]
-        public List<Filter> Filters
-        {
-            get => _filters ?? (_filters = new List<Filter>());
-        }
-
-        [DataMember(Name = "roomid", Order = 4)]
+        [JsonPropertyName("roomid")]
         public int RoomId { get; set; }
-
-        [DataMember(Name = "zoom", Order = 5)]
-        public int Zoom { get; set; }
+        public int? Zoom { get; set; }
 
         static HPhoto()
         {
-            _serializer = new DataContractJsonSerializer(typeof(HPhoto));
-            _unixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            _serializerOptions = new JsonSerializerOptions 
+            { 
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                IgnoreReadOnlyProperties = true,
+                IgnoreNullValues = true
+            };
         }
 
         private long GetStatus(ref long mod)
@@ -83,35 +57,28 @@ namespace Sulakore.Habbo
             return (tKey + tRoomId) % 100;
         }
 
+        /// <summary>
+        /// Serializes the photo data into a valid JSON representation and returns it.
+        /// </summary>
         public override string ToString()
         {
-            string json = string.Empty;
-            using (var jsonStream = new MemoryStream())
-            {
-                _serializer.WriteObject(jsonStream, this);
-
-                json = Encoding.UTF8.GetString(jsonStream.ToArray());
-                json = json.Remove(json.Length - 1, 1);
-            }
+            string json = JsonSerializer.Serialize(this, _serializerOptions)[..^1];
 
             _timestamp = (long)(
-                DateTime.UtcNow - _unixEpoch).TotalMilliseconds;
+                DateTime.UtcNow - DateTime.UnixEpoch).TotalMilliseconds;
 
             long mod = 0;
             json += ",\"status\":" + GetStatus(ref mod);
 
-            long key = json.Length;
-            key = (key + _timestamp / 100 * 17) % 1493;
+            long key = (json.Length + _timestamp / 100 * 17) % 1493;
 
             return $"{json},\"timestamp\":{GetTimestamp(json, key)},\"checksum\":{GetChecksum(mod, key)}}}";
         }
 
+        public static HPhoto Create(byte[] photoJsonData)
+            => JsonSerializer.Deserialize<HPhoto>(photoJsonData, _serializerOptions);
+
         public static HPhoto Create(string photoJson)
-        {
-            using (var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(photoJson)))
-            {
-                return (HPhoto)_serializer.ReadObject(memoryStream);
-            }
-        }
+            => JsonSerializer.Deserialize<HPhoto>(photoJson, _serializerOptions);
     }
 }

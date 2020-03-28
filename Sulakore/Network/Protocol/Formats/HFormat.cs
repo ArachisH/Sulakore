@@ -141,14 +141,13 @@ namespace Sulakore.Network.Protocol
 
         public static HFormat GetFormat(string name)
         {
-            switch (name)
+            return name switch
             {
-                case "EVAWIRE": return EvaWire;
-                case "WEDGIE-IN": return WedgieIn;
-                case "WEDGIE-OUT": return WedgieOut;
-
-                default: return null;
-            }
+                "EVAWIRE" => EvaWire,
+                "WEDGIE-IN" => WedgieIn,
+                "WEDGIE-OUT" => WedgieOut,
+                _ => null,
+            };
         }
     }
 }

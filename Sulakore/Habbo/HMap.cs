@@ -12,7 +12,7 @@ namespace Sulakore.Habbo
         public string this[int y]
         {
             get => _rows[y];
-            set => _rows[y] = value.Substring(0, _rows[y].Length);
+            set => _rows[y] = value[.._rows[y].Length];
         }
         public char this[int x, int y]
         {

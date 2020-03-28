@@ -39,14 +39,8 @@ namespace Sulakore.Habbo
             : this(x, y, ToZ(level))
         { }
 
-        public override int GetHashCode()
-        {
-            int hashCode = 1861411795;
-            hashCode = hashCode * -1521134295 + base.GetHashCode();
-            hashCode = hashCode * -1521134295 + X.GetHashCode();
-            hashCode = hashCode * -1521134295 + Y.GetHashCode();
-            return hashCode;
-        }
+        public override int GetHashCode() => HashCode.Combine(X, Y);
+
         public override string ToString() => $"{{X={X},Y={Y},Z={Z}}}";
 
         public override bool Equals(object obj)

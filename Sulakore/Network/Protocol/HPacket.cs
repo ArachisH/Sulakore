@@ -411,9 +411,8 @@ namespace Sulakore.Network.Protocol
                         case "s": values.Add(value); break;
                         case "b":
                         {
-                            byte bValue = 0;
                             value = value.Trim().ToLower();
-                            if (!byte.TryParse(value, out bValue))
+                            if (!byte.TryParse(value, out byte bValue))
                             {
                                 values.Add(value == "true");
                             }

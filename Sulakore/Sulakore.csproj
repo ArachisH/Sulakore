@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 
     <LocalFlazzy>..\Submodules\Flazzy\Flazzy\Flazzy.csproj</LocalFlazzy>
@@ -30,8 +30,4 @@
       </ItemGroup>
     </Otherwise>
   </Choose>
-
-  <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="4.7.1" />
-  </ItemGroup>
 </Project>

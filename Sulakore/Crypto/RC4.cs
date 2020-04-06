@@ -8,14 +8,10 @@ namespace Sulakore.Crypto
         private readonly int[] _table;
         private readonly object _parseLock;
 
-        public byte[] Key { get; }
-
         public RC4(byte[] key)
         {
             _table = new int[256];
             _parseLock = new object();
-
-            Key = key;
 
             for (int i = 0; i < 256; i++)
             {

@@ -10,7 +10,7 @@ namespace Sulakore.Habbo
         public int X { get; set; }
         public int Y { get; set; }
         public double Z { get; set; }
-        public bool IsEmpty => Equals(Empty);
+        public readonly bool IsEmpty => Equals(Empty);
 
         public static readonly HPoint Empty;
 
@@ -39,11 +39,10 @@ namespace Sulakore.Habbo
             : this(x, y, ToZ(level))
         { }
 
-        public override int GetHashCode() => HashCode.Combine(X, Y);
+        public readonly override int GetHashCode() => HashCode.Combine(X, Y);
+        public readonly override string ToString() => $"{{X={X},Y={Y},Z={Z}}}";
 
-        public override string ToString() => $"{{X={X},Y={Y},Z={Z}}}";
-
-        public override bool Equals(object obj)
+        public readonly override bool Equals(object obj)
         {
             if (obj is HPoint point)
             {
@@ -51,31 +50,24 @@ namespace Sulakore.Habbo
             }
             return false;
         }
-        public bool Equals(HPoint point) => X == point.X && Y == point.Y;
+        public readonly bool Equals(HPoint point) => X == point.X && Y == point.Y;
 
         public static char ToLevel(double z)
         {
-            char level = 'x';
             if (z >= 0 && z <= 9)
-            {
-                level = (char)(z + 48);
-            }
-            else if (z >= 10 && z <= 29)
-            {
-                level = (char)(z + 87);
-            }
-            return level;
+                return (char)(z + 48);
+
+            if (z >= 10 && z <= 29)
+                return (char)(z + 87);
+            return 'x';
         }
         public static double ToZ(char level)
         {
             if (level >= '0' && level <= '9')
-            {
                 return level - 48;
-            }
-            else if (level >= 'a' && level <= 't')
-            {
+
+            if (level >= 'a' && level <= 't')
                 return level - 87;
-            }
             return 0;
         }
     }

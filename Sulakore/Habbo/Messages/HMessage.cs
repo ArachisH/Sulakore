@@ -73,36 +73,35 @@ namespace Sulakore.Habbo.Messages
             {
                 return Hash;
             }
-            using (var output = new HashWriter(false))
+            
+            using var output = new HashWriter(false);
+            output.Write(IsOutgoing);
+            if (!HGame.IsValidIdentifier(Class.QName.Name, true))
             {
-                output.Write(IsOutgoing);
-                if (!HGame.IsValidIdentifier(Class.QName.Name, true))
+                output.Write(Class.Instance, true);
+                output.Write(Class.Instance.Constructor);
+
+                output.Write(References.Count);
+                foreach (HReference reference in References)
                 {
-                    output.Write(Class.Instance, true);
-                    output.Write(Class.Instance.Constructor);
+                    output.Write(reference.IsStatic);
+                    output.Write(reference.IsAnonymous);
 
-                    output.Write(References.Count);
-                    foreach (HReference reference in References)
-                    {
-                        output.Write(reference.IsStatic);
-                        output.Write(reference.IsAnonymous);
+                    output.Write(reference.MethodRank);
+                    output.Write(reference.InstructionRank);
 
-                        output.Write(reference.MethodRank);
-                        output.Write(reference.InstructionRank);
+                    output.Write(reference.FromMethod);
 
-                        output.Write(reference.FromMethod);
-
-                        output.Write(reference.FromClass.Constructor);
-                        output.Write(reference.FromClass.Instance.Constructor);
-                    }
-                    if (!IsOutgoing && Parser != null)
-                    {
-                        output.Write(Parser.Instance, true);
-                    }
+                    output.Write(reference.FromClass.Constructor);
+                    output.Write(reference.FromClass.Instance.Constructor);
                 }
-                else output.Write(Class.QName.Name);
-                return Hash = output.GenerateHash();
+                if (!IsOutgoing && Parser != null)
+                {
+                    output.Write(Parser.Instance, true);
+                }
             }
+            else output.Write(Class.QName.Name);
+            return Hash = output.GenerateHash();
         }
 
         public override string ToString() => Id.ToString();

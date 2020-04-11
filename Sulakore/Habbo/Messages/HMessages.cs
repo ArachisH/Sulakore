@@ -10,6 +10,7 @@ namespace Sulakore.Habbo.Messages
         private readonly Dictionary<string, HMessage> _byName, _byHash;
 
         public bool IsOutgoing { get; }
+        public int Count => _byId.Count;
 
         public HMessage this[ushort id] => GetMessage(id);
         public HMessage this[string identifier] => GetMessage(identifier);
@@ -31,7 +32,7 @@ namespace Sulakore.Habbo.Messages
             foreach (HMessage message in messages)
             {
                 _byId.Add(message.Id, message);
-                _byHash.Add(message.Hash, message);
+                _byHash.TryAdd(message.Hash, message); //TODO:
                 if (!string.IsNullOrWhiteSpace(message.Name))
                 {
                     _byName.Add(message.Name, message);
@@ -58,21 +59,16 @@ namespace Sulakore.Habbo.Messages
         public void AddOrUpdate(HMessage message)
         {
             message.IsOutgoing = IsOutgoing;
-            if (!_byId.ContainsKey(message.Id))
-            {
-                _byId.Add(message.Id, message);
-            }
+
+            _byId.TryAdd(message.Id, message);
             if (!string.IsNullOrWhiteSpace(message.Name))
             {
-                if (!_byName.ContainsKey(message.Name))
-                {
-                    _byName.Add(message.Name, message);
-                }
+                _byName.TryAdd(message.Name, message);
                 GetType().GetProperty(message.Name).SetValue(this, message);
             }
-            if (!string.IsNullOrWhiteSpace(message.Hash) && !_byHash.ContainsKey(message.Hash))
+            if (!string.IsNullOrWhiteSpace(message.Hash))
             {
-                _byHash.Add(message.Hash, message);
+                _byHash.TryAdd(message.Hash, message);
             }
         }
 

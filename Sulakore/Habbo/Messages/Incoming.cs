@@ -205,7 +205,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage MarketplaceBuyError { get; set; }
         public HMessage MarketplaceBuyOfferResult { get; set; }
         public HMessage MarketplaceCancelSale { get; set; }
-        public HMessage MarketplaceConfig { get; set; }
+        public HMessage MarketplaceConfiguration { get; set; }
         public HMessage MarketplaceItemPosted { get; set; }
         public HMessage MarketplaceItemStats { get; set; }
         public HMessage MarketplaceOffers { get; set; }
@@ -239,13 +239,13 @@ namespace Sulakore.Habbo.Messages
         public HMessage MysteryBoxKeys { get; set; }
         public HMessage NavigatorSettings { get; set; }
         public HMessage NewNavigatorCategoryUserCount { get; set; }
-        public HMessage NewNavigatorCollapsedCategories { get; set; }
-        public HMessage NewNavigatorEventCategories { get; set; }
-        public HMessage NewNavigatorLiftedRooms { get; set; }
-        public HMessage NewNavigatorMetaData { get; set; }
-        public HMessage NewNavigatorRoomEvent { get; set; }
-        public HMessage NewNavigatorSavedSearches { get; set; }
-        public HMessage NewNavigatorSearchResults { get; set; }
+        public HMessage CollapsedCategories { get; set; }
+        public HMessage NavigatorEventCategories { get; set; }
+        public HMessage NavigatorLiftedRooms { get; set; }
+        public HMessage NavigatorMetaData { get; set; }
+        public HMessage NavigatorRoomEvent { get; set; }
+        public HMessage NavigatorSavedSearches { get; set; }
+        public HMessage NavigatorSearchResults { get; set; }
         public HMessage NewNavigatorSettings { get; set; }
         public HMessage NewsWidgets { get; set; }
         public HMessage NewUserGift { get; set; }
@@ -415,7 +415,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage VerifyMobilePhoneWindow { get; set; }
         public HMessage VipTutorialsStart { get; set; }
         public HMessage WallItemUpdate { get; set; }
-        public HMessage WatchAndEarnReward { get; set; }
+        public HMessage OfferRewardDelivered { get; set; }
         public HMessage WelcomeGift { get; set; }
         public HMessage WelcomeGiftError { get; set; }
         public HMessage WiredConditionData { get; set; }

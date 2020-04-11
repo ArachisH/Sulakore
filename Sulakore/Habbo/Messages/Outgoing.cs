@@ -229,7 +229,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestCatalogPage { get; set; }
         public HMessage RequestCraftingRecipes { get; set; }
         public HMessage RequestCraftingRecipesAvailable { get; set; }
-        public HMessage CreateFlatMessage { get; set; }
+        public HMessage CreateFlat { get; set; }
         public HMessage RequestCredits { get; set; }
         public HMessage RequestDeleteRoom { get; set; }
         public HMessage RequestDiscount { get; set; }
@@ -274,7 +274,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestSellItem { get; set; }
         public HMessage RequestTags { get; set; }
         public HMessage RequestTalenTrack { get; set; }
-        public HMessage RequestTargetOffer { get; set; }
+        public HMessage GetTargetedOffer { get; set; }
         public HMessage RequestUserClub { get; set; }
         public HMessage RequestUserCredits { get; set; }
         public HMessage RequestUserTags { get; set; }

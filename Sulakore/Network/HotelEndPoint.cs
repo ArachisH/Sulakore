@@ -38,8 +38,8 @@ namespace Sulakore.Network
         public static HHotel GetHotel(string value)
         {
             if (string.IsNullOrWhiteSpace(value) || value.Length < 2) return HHotel.Unknown;
-            if (value.StartsWith("hh")) value = value.Substring(2, 2);
-            if (value.StartsWith("game-")) value = value.Substring(5, 2);
+            if (value.StartsWith("hh")) value = value[2..4];
+            if (value.StartsWith("game-")) value = value[5..7];
 
             switch (value)
             {
@@ -73,13 +73,14 @@ namespace Sulakore.Network
         }
         public static string GetRegion(HHotel hotel)
         {
-            switch (hotel)
+            return hotel switch
             {
-                case HHotel.Com: return "us";
-                case HHotel.ComBr: return "br";
-                case HHotel.ComTr: return "tr";
-                default: return hotel.ToString().ToLower();
-            }
+                HHotel.Com => "us",
+                HHotel.ComBr => "br",
+                HHotel.ComTr => "tr",
+
+                _ => hotel.ToString().ToLower(),
+            };
         }
         public static HotelEndPoint GetEndPoint(HHotel hotel)
         {

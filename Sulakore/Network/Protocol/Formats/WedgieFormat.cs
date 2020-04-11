@@ -52,10 +52,8 @@ namespace Sulakore.Network.Protocol
             }
             return length;
         }
-        public override int GetSize(bool value)
-        {
-            return 1;
-        }
+        public override int GetSize(bool value) => 1;
+
         public override int GetSize(string value)
         {
             int valueSize = Encoding.UTF8.GetByteCount(value);
@@ -63,10 +61,7 @@ namespace Sulakore.Network.Protocol
 
             return valueSize;
         }
-        public override int GetSize(ushort value)
-        {
-            return GetSize((int)value);
-        }
+        public override int GetSize(ushort value) => GetSize((int)value);
         public override int GetSize(double value)
         {
             throw new NotSupportedException();
@@ -112,7 +107,7 @@ namespace Sulakore.Network.Protocol
             }
             else
             {
-                data[data.Length - 1] = 2;
+                data[^1] = 2;
                 Buffer.BlockCopy(stringData, 0, data, 0, stringData.Length);
             }
             return data;
@@ -214,8 +209,7 @@ namespace Sulakore.Network.Protocol
             }
             else
             {
-                List<byte> dataCrumb = null;
-                if (!_dataCrumbs.TryGetValue(node, out dataCrumb))
+                if (!_dataCrumbs.TryGetValue(node, out List<byte> dataCrumb))
                 {
                     dataCrumb = new List<byte>();
                     _dataCrumbs.Add(node, dataCrumb);
@@ -263,7 +257,7 @@ namespace Sulakore.Network.Protocol
             else
             {
                 PlaceBytes(id, data, 0);
-                data[data.Length - 1] = 1;
+                data[^1] = 1;
             }
             body.CopyTo(data, bodyStart);
             return data;

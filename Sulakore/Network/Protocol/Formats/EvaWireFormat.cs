@@ -28,26 +28,11 @@ namespace Sulakore.Network.Protocol
             return body;
         }
 
-        public override int GetSize(int value)
-        {
-            return 4;
-        }
-        public override int GetSize(bool value)
-        {
-            return 1;
-        }
-        public override int GetSize(string value)
-        {
-            return 2 + Encoding.UTF8.GetByteCount(value);
-        }
-        public override int GetSize(ushort value)
-        {
-            return 2;
-        }
-        public override int GetSize(double value)
-        {
-            return 6;
-        }
+        public override int GetSize(int value) => 4;
+        public override int GetSize(bool value) => 1;
+        public override int GetSize(string value) => 2 + Encoding.UTF8.GetByteCount(value);
+        public override int GetSize(ushort value) => 2;
+        public override int GetSize(double value) => 6;
 
         public override byte[] GetBytes(int value)
         {

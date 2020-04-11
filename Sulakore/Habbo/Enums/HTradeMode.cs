@@ -12,10 +12,10 @@
         /// <summary>
         /// Represents a room in which only the owner and users with room rights are allowed to trade.
         /// </summary>
-        OwnerOrRoomRights = 1,
+        Controller = 1,
         /// <summary>
         /// Represents a room in which everyone is allowed to trade.
         /// </summary>
-        Everyone = 2
+        Allowed = 2
     }
 }

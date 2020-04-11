@@ -6,7 +6,7 @@ namespace Sulakore.Habbo
     {
         private readonly string[] _rows;
 
-        public int RowCount { get; }
+        public int RowCount => _rows.Length;
         public int TileCount { get; }
 
         public string this[int y]
@@ -27,31 +27,20 @@ namespace Sulakore.Habbo
             _rows = map.Split(new[] { '\r' },
                 StringSplitOptions.RemoveEmptyEntries);
 
-            RowCount = _rows.Length;
             TileCount = map.Length - RowCount;
         }
 
-        public bool IsWalkable(HPoint tile)
-        {
-            return IsWalkable(tile.X, tile.Y);
-        }
-        public bool IsWalkable(int x, int y)
-        {
-            return this[x, y] != 'x';
-        }
+        public bool IsWalkable(HPoint tile) => IsWalkable(tile.X, tile.Y);
+        public bool IsWalkable(int x, int y) => this[x, y] != 'x';
 
         public static string Adjust(string map)
         {
-            map = map?.ToLower().Trim()
+            return map?.ToLower().Trim()
                 .Replace("\n", string.Empty)
                 .Replace("[13]", "\r") ?? string.Empty;
-
-            return map;
         }
 
         public override string ToString()
-        {
-            return string.Join("\r", _rows).Trim();
-        }
+            => string.Join("\r", _rows).Trim();
     }
 }

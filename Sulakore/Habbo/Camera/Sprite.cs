@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace Sulakore.Habbo.Camera
+﻿namespace Sulakore.Habbo.Camera
 {
     public class Sprite
     {

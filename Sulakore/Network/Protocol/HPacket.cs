@@ -14,7 +14,7 @@ namespace Sulakore.Network.Protocol
         private string _toStringCache;
         private readonly List<byte> _body;
 
-        private static readonly Regex _structurePattern;
+        private static readonly Regex _structurePattern = new Regex(@"{(?<kind>id|i|s|b|d|u):(?<value>[^}]*)\}", RegexOptions.IgnoreCase);
 
         private int _position;
         public int Position
@@ -29,25 +29,25 @@ namespace Sulakore.Network.Protocol
             get => _id;
             set
             {
-                if (_id != value)
+                if (_id == value) return;
+
+                _id = value;
+                if (_toBytesCache != null || _toStringCache != null)
                 {
-                    _id = value;
-                    if (_toBytesCache != null || _toStringCache != null)
+                    byte[] idData = Format.GetBytes(value);
+                    if (_toBytesCache != null)
                     {
-                        byte[] idData = Format.GetBytes(value);
-                        if (_toBytesCache != null)
-                        {
-                            Format.PlaceBytes(idData, _toBytesCache, Format.IdPosition);
-                        }
-                        if (_toStringCache != null)
-                        {
-                            char[] characters = _toStringCache.ToCharArray();
-                            characters[Format.IdPosition] = (char)idData[0];
-                            characters[Format.IdPosition + 1] = (char)idData[1];
-                            _toStringCache = new string(characters);
-                        }
+                        HFormat.PlaceBytes(idData, _toBytesCache, Format.IdPosition);
+                    }
+                    if (_toStringCache != null)
+                    {
+                        char[] characters = _toStringCache.ToCharArray();
+                        characters[Format.IdPosition] = (char)idData[0];
+                        characters[Format.IdPosition + 1] = (char)idData[1];
+                        _toStringCache = new string(characters);
                     }
                 }
+
             }
         }
 
@@ -55,10 +55,6 @@ namespace Sulakore.Network.Protocol
         public int BodyLength => _body.Count;
         public int ReadableBytes => GetReadableBytes(Position);
 
-        static HPacket()
-        {
-            _structurePattern = new Regex(@"{(?<kind>id|i|s|b|d|u):(?<value>[^}]*)\}", RegexOptions.IgnoreCase);
-        }
         public HPacket(HFormat format)
         {
             _body = new List<byte>();
@@ -354,22 +350,9 @@ namespace Sulakore.Network.Protocol
             return result;
         }
 
-        public byte[] ToBytes()
-        {
-            if (_toBytesCache != null)
-            {
-                return _toBytesCache;
-            }
-            return _toBytesCache = AsBytes();
-        }
-        public override string ToString()
-        {
-            if (_toStringCache != null)
-            {
-                return _toStringCache;
-            }
-            return _toStringCache = AsString();
-        }
+        public byte[] ToBytes() => _toBytesCache ??= AsBytes();
+        public override string ToString() => _toStringCache ??= AsString();
+
         public bool Equals(HPacket packet)
         {
             if (packet.Id != Id) return false;

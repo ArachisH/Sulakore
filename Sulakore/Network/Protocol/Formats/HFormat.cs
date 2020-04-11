@@ -124,7 +124,7 @@ namespace Sulakore.Network.Protocol
         {
             return ConstructTails(id, GetBytes(values));
         }
-        public void PlaceBytes(IList<byte> data, IList<byte> destination, int index)
+        public static void PlaceBytes(IList<byte> data, IList<byte> destination, int index)
         {
             for (int i = 0; i < data.Count; i++)
             {
@@ -146,6 +146,7 @@ namespace Sulakore.Network.Protocol
                 "EVAWIRE" => EvaWire,
                 "WEDGIE-IN" => WedgieIn,
                 "WEDGIE-OUT" => WedgieOut,
+
                 _ => null,
             };
         }

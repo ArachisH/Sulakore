@@ -7,13 +7,8 @@ namespace Sulakore.Habbo
 {
     public static class HExtensions
     {
-        private static readonly Random _rng;
+        private static readonly Random _rng = new Random();
         private const BindingFlags BINDINGS = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance;
-
-        static HExtensions()
-        {
-            _rng = new Random();
-        }
 
         public static HSign GetRandomSign()
         {

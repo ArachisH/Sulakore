@@ -137,10 +137,7 @@ namespace Sulakore.Network
             }
         }
 
-        public byte[] GetOriginalData()
-        {
-            return _ogData;
-        }
+        public byte[] GetOriginalData() => _ogData;
 
         /// <summary>
         /// Restores the intercepted data to its initial form, before it was replaced/modified.

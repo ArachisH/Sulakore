@@ -13,7 +13,7 @@ namespace Sulakore.Network
 {
     public class HNode : IDisposable
     {
-        private static readonly Dictionary<int, TcpListener> _listeners;
+        private static readonly Dictionary<int, TcpListener> _listeners = new Dictionary<int, TcpListener>();
 
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
@@ -34,10 +34,6 @@ namespace Sulakore.Network
         public RC4 Decrypter { get; set; }
         public bool IsDecrypting { get; set; }
 
-        static HNode()
-        {
-            _listeners = new Dictionary<int, TcpListener>();
-        }
         public HNode()
             : this(new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
         { }
@@ -371,8 +367,7 @@ namespace Sulakore.Network
         }
         public static async Task<HNode> AcceptAsync(int port)
         {
-            TcpListener listener = null;
-            if (!_listeners.TryGetValue(port, out listener))
+            if (!_listeners.TryGetValue(port, out var listener))
             {
                 listener = new TcpListener(IPAddress.Any, port);
                 _listeners.Add(port, listener);
@@ -387,10 +382,7 @@ namespace Sulakore.Network
             finally
             {
                 listener.Stop();
-                if (_listeners.ContainsKey(port))
-                {
-                    _listeners.Remove(port);
-                }
+                _listeners.Remove(port);
             }
         }
 

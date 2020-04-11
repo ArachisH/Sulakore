@@ -9,7 +9,7 @@ namespace Sulakore.Crypto
     public class HKeyExchange : IDisposable
     {
         private const int BLOCK_SIZE = 256;
-        private readonly Random _numberGenerator;
+        private readonly Random _numberGenerator = new Random();
 
         public BigInteger Modulus { get; }
         public BigInteger Exponent { get; }
@@ -25,19 +25,14 @@ namespace Sulakore.Crypto
         public bool CanDecrypt => (PrivateExponent != BigInteger.Zero);
         public PKCSPadding Padding { get; set; } = PKCSPadding.MaxByte;
 
-        private HKeyExchange()
-        {
-            _numberGenerator = new Random();
-        }
         public HKeyExchange(int rsaKeySize)
-            : this()
         {
             RSA = new RSACryptoServiceProvider(rsaKeySize);
             RSAParameters keys = RSA.ExportParameters(true);
 
-            Modulus = new BigInteger(ReverseNull(keys.Modulus));
-            Exponent = new BigInteger(ReverseNull(keys.Exponent));
-            PrivateExponent = new BigInteger(ReverseNull(keys.D));
+            Modulus = new BigInteger(keys.Modulus, true, true);
+            Exponent = new BigInteger(keys.Exponent, true, true);
+            PrivateExponent = new BigInteger(keys.Exponent, true, true);
 
             GenerateDHPrimes(256);
             GenerateDHKeys(DHPrime, DHGenerator);
@@ -46,23 +41,20 @@ namespace Sulakore.Crypto
             : this(exponent, modulus, string.Empty)
         { }
         public HKeyExchange(int exponent, string modulus, string privateExponent)
-            : this()
         {
-            var keys = new RSAParameters();
-
             Exponent = new BigInteger(exponent);
-            keys.Exponent = Exponent.ToByteArray();
-            Array.Reverse(keys.Exponent);
-
             Modulus = BigInteger.Parse("0" + modulus, NumberStyles.HexNumber);
-            keys.Modulus = Modulus.ToByteArray();
-            Array.Reverse(keys.Modulus);
+
+            var keys = new RSAParameters
+            {
+                Exponent = Exponent.ToByteArray(isBigEndian: true),
+                Modulus = Modulus.ToByteArray(isBigEndian: true)
+            };
 
             if (!string.IsNullOrWhiteSpace(privateExponent))
             {
                 PrivateExponent = BigInteger.Parse("0" + privateExponent, NumberStyles.HexNumber);
-                keys.D = PrivateExponent.ToByteArray();
-                Array.Reverse(keys.D);
+                keys.D = PrivateExponent.ToByteArray(isBigEndian: true);
 
                 GenerateDHPrimes(256);
                 GenerateDHKeys(DHPrime, DHGenerator);
@@ -72,14 +64,9 @@ namespace Sulakore.Crypto
             RSA.ImportParameters(keys);
         }
 
-        public virtual string GetSignedP()
-        {
-            return Sign(DHPrime);
-        }
-        public virtual string GetSignedG()
-        {
-            return Sign(DHGenerator);
-        }
+        public virtual string GetSignedP() => Sign(DHPrime);
+        public virtual string GetSignedG() => Sign(DHGenerator);
+
         public virtual string GetPublicKey()
         {
             return (CanDecrypt ?
@@ -91,9 +78,8 @@ namespace Sulakore.Crypto
                 Decrypt(publicKey) : Verify(publicKey));
 
             byte[] sharedKey = BigInteger.ModPow(aKey,
-                DHPrivate, DHPrime).ToByteArray();
+                DHPrivate, DHPrime).ToByteArray(isBigEndian: true);
 
-            Array.Reverse(sharedKey);
             return sharedKey;
         }
         public virtual void VerifyDHPrimes(string p, string g)
@@ -133,57 +119,34 @@ namespace Sulakore.Crypto
             return Decrypt(CalculatePrivate, value);
         }
 
-        protected virtual byte[] PKCSPad(byte[] data)
+        protected void PKCSPad(Span<byte> data, int padLength)
         {
-            var buffer = new byte[BLOCK_SIZE - 1];
-            int dataStartPos = (buffer.Length - data.Length);
+            data[0] = (byte)Padding;
+            Span<byte> paddingData = data[1..(padLength - 1)];
 
-            buffer[0] = (byte)Padding;
-            Buffer.BlockCopy(data, 0, buffer, dataStartPos, data.Length);
-
-            int paddingEndPos = (dataStartPos - 1);
-            bool isRandom = (Padding == PKCSPadding.RandomByte);
-            for (int i = 1; i < paddingEndPos; i++)
+            if (Padding == PKCSPadding.RandomByte)
             {
-                buffer[i] = (byte)(isRandom ?
-                    _numberGenerator.Next(1, 256) : byte.MaxValue);
+                for (int i = 0; i < paddingData.Length; i++)
+                {
+                    paddingData[i] = (byte)_numberGenerator.Next(1, 256);
+                }
             }
-            return buffer;
+            else paddingData.Fill(byte.MaxValue);
         }
-        protected virtual byte[] PKCSUnpad(byte[] data)
+        protected Span<byte> PKCSUnpad(Span<byte> data)
         {
             Padding = (PKCSPadding)data[0];
 
-            int position = 0;
-            while (data[position++] != 0) ;
-
-            var buffer = new byte[data.Length - position];
-            Buffer.BlockCopy(data, position, buffer, 0, buffer.Length);
-
-            return buffer;
+            int dataStart = data.IndexOf((byte)0) + 1;
+            return data.Slice(dataStart);
         }
 
-        protected byte[] HexToBytes(string value)
-        {
-            var data = new byte[value.Length / 2];
-            for (int i = 0; i < value.Length; i += 2)
-            {
-                data[i / 2] = Convert.ToByte(
-                    value.Substring(i, 2), 16);
-            }
-            return data;
-        }
-        protected string BytesToHex(byte[] value)
-        {
-            return BitConverter.ToString(value)
-                .Replace("-", string.Empty);
-        }
         protected BigInteger RandomInteger(int bitSize)
         {
-            var integerData = new byte[bitSize / 8];
+            Span<byte> integerData = stackalloc byte[bitSize / 8];
             _numberGenerator.NextBytes(integerData);
 
-            integerData[integerData.Length - 1] &= 0x7f;
+            integerData[^1] &= 0x7f;
             return new BigInteger(integerData);
         }
 
@@ -193,11 +156,7 @@ namespace Sulakore.Crypto
             DHGenerator = RandomInteger(bitSize);
 
             if (DHGenerator > DHPrime)
-            {
-                BigInteger tempG = DHGenerator;
-                DHGenerator = DHPrime;
-                DHPrime = tempG;
-            }
+                (DHGenerator, DHPrime) = (DHPrime, DHGenerator);
         }
         protected virtual void GenerateDHKeys(BigInteger p, BigInteger g)
         {
@@ -207,51 +166,33 @@ namespace Sulakore.Crypto
 
         protected virtual string Encrypt(Func<BigInteger, BigInteger> calculator, BigInteger value)
         {
-            byte[] valueData = Encoding.UTF8.GetBytes(value.ToString());
-            valueData = PKCSPad(valueData);
+            //Allocate valueData buffer on stack
+            Span<byte> valueData = stackalloc byte[BLOCK_SIZE - 1];
+            string valueStr = value.ToString();
 
-            Array.Reverse(valueData);
-            var paddedInteger = new BigInteger(valueData);
+            //Writes the value string to the end of the buffer
+            int written = Encoding.UTF8.GetBytes(valueStr,
+                valueData[Index.FromEnd(valueStr.Length)..]);
 
+            //Apply PKCS pad on the value data buffer
+            PKCSPad(valueData, (valueData.Length - written));
+
+            var paddedInteger = new BigInteger(valueData, isBigEndian: true);
             BigInteger calculatedInteger = calculator(paddedInteger);
-            byte[] paddedData = calculatedInteger.ToByteArray();
-            Array.Reverse(paddedData);
 
-            string encryptedValue = BytesToHex(paddedData).ToLower();
-            return encryptedValue.StartsWith("00") ? encryptedValue.Substring(2) : encryptedValue;
+            return calculatedInteger.ToString("x").TrimStart('0');
         }
         protected virtual BigInteger Decrypt(Func<BigInteger, BigInteger> calculator, string value)
         {
             var signed = BigInteger.Parse("0" + value, NumberStyles.HexNumber);
             BigInteger paddedInteger = calculator(signed);
 
-            byte[] valueData = paddedInteger.ToByteArray();
-            Array.Reverse(valueData);
+            //Writes the paddedInteger to stack-allocated buffer
+            Span<byte> valueData = stackalloc byte[paddedInteger.GetByteCount()];
+            paddedInteger.TryWriteBytes(valueData, out int bytesWritten, isBigEndian: true);
 
             valueData = PKCSUnpad(valueData);
             return BigInteger.Parse(Encoding.UTF8.GetString(valueData));
-        }
-
-        private byte[] ReverseNull(byte[] data)
-        {
-            bool isNegative = false;
-            int newSize = data.Length;
-            if (data[0] > 127)
-            {
-                newSize += 1;
-                isNegative = true;
-            }
-
-            var reversed = new byte[newSize];
-            for (int i = 0; i < data.Length; i++)
-            {
-                reversed[i] = data[data.Length - (i + 1)];
-            }
-            if (isNegative)
-            {
-                reversed[reversed.Length - 1] = 0;
-            }
-            return reversed;
         }
 
         public virtual BigInteger CalculatePublic(BigInteger value)

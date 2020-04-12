@@ -32,7 +32,7 @@ namespace Sulakore.Crypto
 
             Modulus = new BigInteger(keys.Modulus, true, true);
             Exponent = new BigInteger(keys.Exponent, true, true);
-            PrivateExponent = new BigInteger(keys.Exponent, true, true);
+            PrivateExponent = new BigInteger(keys.D, true, true);
 
             GenerateDHPrimes(256);
             GenerateDHKeys(DHPrime, DHGenerator);

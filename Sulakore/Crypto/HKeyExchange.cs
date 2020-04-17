@@ -11,10 +11,10 @@ namespace Sulakore.Crypto
         private const int BLOCK_SIZE = 256;
         private readonly Random _numberGenerator = new Random();
 
+        public RSA RSA { get; }
         public BigInteger Modulus { get; }
         public BigInteger Exponent { get; }
         public BigInteger PrivateExponent { get; }
-        public RSACryptoServiceProvider RSA { get; }
 
         public BigInteger DHPublic { get; private set; }
         public BigInteger DHPrivate { get; private set; }
@@ -27,7 +27,7 @@ namespace Sulakore.Crypto
 
         public HKeyExchange(int rsaKeySize)
         {
-            RSA = new RSACryptoServiceProvider(rsaKeySize);
+            RSA = RSA.Create(rsaKeySize);
             RSAParameters keys = RSA.ExportParameters(true);
 
             Modulus = new BigInteger(keys.Modulus, true, true);
@@ -60,8 +60,7 @@ namespace Sulakore.Crypto
                 GenerateDHKeys(DHPrime, DHGenerator);
             }
 
-            RSA = new RSACryptoServiceProvider();
-            RSA.ImportParameters(keys);
+            RSA = RSA.Create(keys);
         }
 
         public virtual string GetSignedP() => Sign(DHPrime);
@@ -122,7 +121,7 @@ namespace Sulakore.Crypto
         protected void PKCSPad(Span<byte> data, int padLength)
         {
             data[0] = (byte)Padding;
-            Span<byte> paddingData = data[1..(padLength - 1)];
+            Span<byte> paddingData = data[1..padLength];
 
             if (Padding == PKCSPadding.RandomByte)
             {
@@ -132,6 +131,8 @@ namespace Sulakore.Crypto
                 }
             }
             else paddingData.Fill(byte.MaxValue);
+
+            paddingData[^1] = 0;
         }
         protected Span<byte> PKCSUnpad(Span<byte> data)
         {
@@ -166,7 +167,6 @@ namespace Sulakore.Crypto
 
         protected virtual string Encrypt(Func<BigInteger, BigInteger> calculator, BigInteger value)
         {
-            //Allocate valueData buffer on stack
             Span<byte> valueData = stackalloc byte[BLOCK_SIZE - 1];
             string valueStr = value.ToString();
 
@@ -174,7 +174,7 @@ namespace Sulakore.Crypto
             int written = Encoding.UTF8.GetBytes(valueStr,
                 valueData[Index.FromEnd(valueStr.Length)..]);
 
-            //Apply PKCS pad on the value data buffer
+            //PKCS pad rest of the buffer
             PKCSPad(valueData, (valueData.Length - written));
 
             var paddedInteger = new BigInteger(valueData, isBigEndian: true);
@@ -187,7 +187,6 @@ namespace Sulakore.Crypto
             var signed = BigInteger.Parse("0" + value, NumberStyles.HexNumber);
             BigInteger paddedInteger = calculator(signed);
 
-            //Writes the paddedInteger to stack-allocated buffer
             Span<byte> valueData = stackalloc byte[paddedInteger.GetByteCount()];
             paddedInteger.TryWriteBytes(valueData, out int bytesWritten, isBigEndian: true);
 

@@ -2,7 +2,7 @@
 
 namespace Sulakore.Habbo
 {
-    public class HSearchResult
+    public class HNavigatorSearchResult
     {
         public string SearchCode { get; set; }
         public string Text { get; set; }
@@ -13,7 +13,7 @@ namespace Sulakore.Habbo
 
         public HRoomEntry[] Rooms { get; set; }
 
-        public HSearchResult(HPacket packet)
+        public HNavigatorSearchResult(HPacket packet)
         {
             SearchCode = packet.ReadUTF8();
             Text = packet.ReadUTF8();
@@ -29,15 +29,15 @@ namespace Sulakore.Habbo
             }
         }
 
-        public static HSearchResult[] Parse(HPacket packet)
+        public static HNavigatorSearchResult[] Parse(HPacket packet)
         {
             string searchCode = packet.ReadUTF8();
             string filter = packet.ReadUTF8();
 
-            var results = new HSearchResult[packet.ReadInt32()];
+            var results = new HNavigatorSearchResult[packet.ReadInt32()];
             for (int i = 0; i < results.Length; i++)
             {
-                results[i] = new HSearchResult(packet);
+                results[i] = new HNavigatorSearchResult(packet);
             }
             return results;
         }

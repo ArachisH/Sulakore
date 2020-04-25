@@ -11,7 +11,6 @@ namespace Sulakore.Habbo
     public class HPhoto
     {
         private static readonly JsonSerializerOptions _serializerOptions;
-        private long _timestamp;
 
         public IList<Plane> Planes { get; set; } = new List<Plane>();
         public IList<Sprite> Sprites { get; set; } = new List<Sprite>();
@@ -24,27 +23,27 @@ namespace Sulakore.Habbo
 
         static HPhoto()
         {
-            _serializerOptions = new JsonSerializerOptions 
-            { 
+            _serializerOptions = new JsonSerializerOptions
+            {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 IgnoreReadOnlyProperties = true,
                 IgnoreNullValues = true
             };
         }
 
-        private long GetStatus(ref long mod)
+        private long GetStatus(ref long mod, ref long timestamp)
         {
-            _timestamp -= (mod = _timestamp % 100);
-            return _timestamp / 100 % 23;
+            timestamp -= (mod = timestamp % 100);
+            return timestamp / 100 % 23;
         }
         private long GetChecksum(long mod, long key)
         {
             return (mod + 13) * (key + 29);
         }
-        private long GetTimestamp(string blob, long key)
+        private long GetTimestamp(string blob, long timestamp, long key)
         {
             byte[] data = Encoding.Default.GetBytes(blob);
-            return _timestamp + Calculate(data, key, RoomId);
+            return timestamp + Calculate(data, key, RoomId);
         }
         private long Calculate(byte[] data, long key, int roomId)
         {
@@ -64,15 +63,15 @@ namespace Sulakore.Habbo
         {
             string json = JsonSerializer.Serialize(this, _serializerOptions)[..^1];
 
-            _timestamp = (long)(
+            long timestamp = (long)(
                 DateTime.UtcNow - DateTime.UnixEpoch).TotalMilliseconds;
 
             long mod = 0;
-            json += ",\"status\":" + GetStatus(ref mod);
+            json += ",\"status\":" + GetStatus(ref mod, ref timestamp);
 
-            long key = (json.Length + _timestamp / 100 * 17) % 1493;
+            long key = (json.Length + timestamp / 100 * 17) % 1493;
 
-            return $"{json},\"timestamp\":{GetTimestamp(json, key)},\"checksum\":{GetChecksum(mod, key)}}}";
+            return $"{json},\"timestamp\":{GetTimestamp(json, timestamp, key)},\"checksum\":{GetChecksum(mod, key)}}}";
         }
 
         public static HPhoto Create(byte[] photoJsonData)

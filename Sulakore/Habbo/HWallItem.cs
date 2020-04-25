@@ -5,26 +5,27 @@ using Sulakore.Network.Protocol;
 
 namespace Sulakore.Habbo
 {
+#nullable enable
     public class HWallItem
     {
         public int Id { get; set; }
         public int TypeId { get; set; }
 
-        public HPoint Local { get; set; }
-        public HPoint Global { get; set; }
+        public HPoint? Local { get; set; }
+        public HPoint? Global { get; set; }
 
-        public float Y { get; set; }
-        public float Z { get; set; }
+        public float? Y { get; set; }
+        public float? Z { get; set; }
 
         public int State { get; set; }
         public string Data { get; set; }
         public string Location { get; set; }
         public int UsagePolicy { get; set; }
-        public string Placement { get; set; }
+        public string? Placement { get; set; }
         public int SecondsToExpiration { get; set; }
 
         public int OwnerId { get; set; }
-        public string OwnerName { get; set; }
+        public string? OwnerName { get; set; }
 
         public HWallItem(HPacket packet)
         {

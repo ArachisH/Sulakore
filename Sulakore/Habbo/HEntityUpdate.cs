@@ -5,13 +5,14 @@ using Sulakore.Network.Protocol;
 
 namespace Sulakore.Habbo
 {
+#nullable enable
     public class HEntityUpdate
     {
         public int Index { get; set; }
         public bool IsController { get; set; }
 
         public HPoint Tile { get; set; }
-        public HPoint MovingTo { get; set; }
+        public HPoint? MovingTo { get; set; }
 
         public HSign Sign { get; set; }
         public HStance Stance { get; set; }

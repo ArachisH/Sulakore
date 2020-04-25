@@ -2,6 +2,7 @@
 
 namespace Sulakore.Habbo
 {
+#nullable enable
     public class HRoomEntry : HData
     {
         public int Id { get; set; }
@@ -22,15 +23,15 @@ namespace Sulakore.Habbo
 
         public string[] Tags { get; set; }
         
-        public string ThumbnailUrl { get; set; }
+        public string? ThumbnailUrl { get; set; }
         
-        public int GroupId { get; set; }
-        public string GroupName { get; set; }
-        public string GroupBadgeCode { get; set; }
+        public int? GroupId { get; set; }
+        public string? GroupName { get; set; }
+        public string? GroupBadgeCode { get; set; }
         
-        public string AdName { get; set; }
-        public string AdDescription { get; set; }
-        public int AdExpiresInMinutes { get; set; }
+        public string? AdName { get; set; }
+        public string? AdDescription { get; set; }
+        public int? AdExpiresInMinutes { get; set; }
 
         public bool ShowOwner { get; set; }
         public bool AllowPets { get; set; }

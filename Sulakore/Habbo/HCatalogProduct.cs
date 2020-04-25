@@ -2,17 +2,18 @@
 
 namespace Sulakore.Habbo
 {
+#nullable enable
     public class HCatalogProduct
     {
         public HProductType Type { get; set; }
-        public int ClassId { get; set; }
+        public int? ClassId { get; set; }
 
         public string ExtraData { get; set; }
         public int ProductCount { get; set; }
 
         public bool IsLimited { get; set; }
-        public int LimitedTotal { get; set; }
-        public int LimitedRemaining { get; set; }
+        public int? LimitedTotal { get; set; }
+        public int? LimitedRemaining { get; set; }
 
         public HCatalogProduct(HPacket packet)
         {

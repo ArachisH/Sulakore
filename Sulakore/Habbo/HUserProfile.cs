@@ -1,4 +1,6 @@
-﻿using Sulakore.Network.Protocol;
+﻿using System;
+
+using Sulakore.Network.Protocol;
 
 namespace Sulakore.Habbo
 {
@@ -8,7 +10,7 @@ namespace Sulakore.Habbo
         public string Username { get; set; }
         public string Motto { get; set; }
         public string Figure { get; set; }
-        public string CreationDate { get; set; }
+        public DateTime CreationDate { get; set; }
         public int AchievementScore { get; set; }
         public int FriendCount { get; set; }
 
@@ -18,7 +20,7 @@ namespace Sulakore.Habbo
 
         public HGroupEntry[] Groups { get; set; }
 
-        public int LastAccessSinceInSeconds { get; set; }
+        public int SinceLastAccessInSeconds { get; set; }
         public bool OpenProfileView { get; set; }
 
         public HUserProfile(HPacket packet)
@@ -27,7 +29,7 @@ namespace Sulakore.Habbo
             Username = packet.ReadUTF8();
             Motto = packet.ReadUTF8();
             Figure = packet.ReadUTF8();
-            CreationDate = packet.ReadUTF8();
+            CreationDate = DateTime.Parse(packet.ReadUTF8());
             AchievementScore = packet.ReadInt32();
             FriendCount = packet.ReadInt32();
 
@@ -40,7 +42,7 @@ namespace Sulakore.Habbo
             {
                 Groups[i] = new HGroupEntry(packet);
             }
-            LastAccessSinceInSeconds = packet.ReadInt32();
+            SinceLastAccessInSeconds = packet.ReadInt32();
             OpenProfileView = packet.ReadBoolean();
         }
     }

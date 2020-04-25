@@ -2,13 +2,14 @@
 
 namespace Sulakore.Habbo
 {
+#nullable enable
     public class HItem : HData
     {
         public int Id { get; set; }
         public int TypeId { get; set; }
         public int RoomId { get; set; }
         public int Category { get; set; }
-        public string SlotId { get; set; }
+        public string? SlotId { get; set; }
         public object[] Stuff { get; set; }
         public bool IsTradeable { get; set; }
         public bool IsGroupable { get; set; }

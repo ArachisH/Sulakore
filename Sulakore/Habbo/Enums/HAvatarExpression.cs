@@ -1,9 +1,9 @@
 ﻿namespace Sulakore.Habbo
 {
     /// <summary>
-    /// Specifies gestures a user can perform in the client.
+    /// Specifies avatar expressions a user can perform in the client.
     /// </summary>
-    public enum HGesture
+    public enum HAvatarExpression
     {
         /// <summary>
         /// Represents a player without a gesture.
@@ -16,11 +16,15 @@
         /// <summary>
         /// Represents a player blowing a kiss. (HC Only)
         /// </summary>
-        BlowKiss = 2,
+        Blow = 2,
         /// <summary>
         /// Represents a player laughing. (HC Only)
         /// </summary>
         Laugh = 3,
+        /// <summary>
+        /// Represents a player crying.
+        /// </summary>
+        Cry = 4,
         /// <summary>
         /// Represents a player sleeping.
         /// </summary>
@@ -28,7 +32,7 @@
         /// <summary>
         /// Represents a player hopping once. (HC Only)
         /// </summary>
-        PogoHop = 6,
+        Jump = 6,
         /// <summary>
         /// Represents a player with raising a thumb up.
         /// </summary>

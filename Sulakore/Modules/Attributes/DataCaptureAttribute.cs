@@ -119,10 +119,10 @@ namespace Sulakore.Modules
                             args.Packet.Position = 0;
                             values[i] = HEntity.Parse(args.Packet);
                         }
-                        else if (typeof(IList<HFloorItem>).IsAssignableFrom(parameter.ParameterType))
+                        else if (typeof(IList<HFloorObject>).IsAssignableFrom(parameter.ParameterType))
                         {
                             args.Packet.Position = 0;
-                            values[i] = HFloorItem.Parse(args.Packet);
+                            values[i] = HFloorObject.Parse(args.Packet);
                         }
                         else if (typeof(IList<HWallItem>).IsAssignableFrom(parameter.ParameterType))
                         {

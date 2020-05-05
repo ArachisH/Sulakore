@@ -20,7 +20,7 @@ namespace Sulakore.Habbo
         public int State { get; set; }
         public string Data { get; set; }
         public string Location { get; set; }
-        public int UsagePolicy { get; set; }
+        public HUsagePolicy UsagePolicy { get; set; }
         public string? Placement { get; set; }
         public int SecondsToExpiration { get; set; }
 
@@ -34,7 +34,7 @@ namespace Sulakore.Habbo
             Location = packet.ReadUTF8();
             Data = packet.ReadUTF8();
             SecondsToExpiration = packet.ReadInt32();
-            UsagePolicy = packet.ReadInt32();
+            UsagePolicy = (HUsagePolicy)packet.ReadInt32();
             OwnerId = packet.ReadInt32();
 
             if (float.TryParse(Data, out _))

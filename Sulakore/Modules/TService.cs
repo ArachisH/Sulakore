@@ -18,6 +18,8 @@ namespace Sulakore.Modules
 {
     public class TService : IModule
     {
+        public static IPEndPoint DefaultModuleServer { get; } = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8055);
+
         private readonly TService _parent;
         private readonly IModule _container;
         private readonly List<DataCaptureAttribute> _unknownDataAttributes;
@@ -45,15 +47,8 @@ namespace Sulakore.Modules
         private readonly IDictionary<int, HWallItem> _wallItems;
         public ReadOnlyDictionary<int, HWallItem> WallItems { get; }
 
-        private readonly IDictionary<int, HFloorItem> _floorItems;
-        public ReadOnlyDictionary<int, HFloorItem> FloorItems { get; }
-
-        public static IPEndPoint DefaultModuleServer { get; }
-
-        static TService()
-        {
-            DefaultModuleServer = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8055);
-        }
+        private readonly IDictionary<int, HFloorObject> _floorObjects;
+        public ReadOnlyDictionary<int, HFloorObject> FloorObjects { get; }
 
         public TService(IModule container)
             : this(container, null, null)
@@ -90,8 +85,8 @@ namespace Sulakore.Modules
             _wallItems = new ConcurrentDictionary<int, HWallItem>();
             WallItems = new ReadOnlyDictionary<int, HWallItem>(_wallItems);
 
-            _floorItems = new ConcurrentDictionary<int, HFloorItem>();
-            FloorItems = new ReadOnlyDictionary<int, HFloorItem>(_floorItems);
+            _floorObjects = new ConcurrentDictionary<int, HFloorObject>();
+            FloorObjects = new ReadOnlyDictionary<int, HFloorObject>(_floorObjects);
 
             Installer = _container.Installer;
             IsStandalone = parent != null ? false : _container.IsStandalone;
@@ -248,18 +243,18 @@ namespace Sulakore.Modules
                 }
                 else if (packet.Id == In.Objects)
                 {
-                    HFloorItem[] floorItems = HFloorItem.Parse(packet);
-                    foreach (HFloorItem floorItem in floorItems)
+                    HFloorObject[] floorObjects = HFloorObject.Parse(packet);
+                    foreach (HFloorObject floorObject in floorObjects)
                     {
-                        _floorItems[floorItem.Id] = floorItem;
+                        _floorObjects[floorObject.Id] = floorObject;
                     }
-                    //_container.OnFloorItemsLoaded(floorItems.Length);
+                    //_container.OnFloorObjectsLoaded(floorObjects.Length);
                 }
                 else if (packet.Id == In.FloorHeightMap)
                 {
                     _entities.Clear();
                     _wallItems.Clear();
-                    _floorItems.Clear();
+                    _floorObjects.Clear();
                 }
             }
             packet.Position = 0;

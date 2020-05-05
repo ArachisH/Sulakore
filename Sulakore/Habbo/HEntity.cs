@@ -13,7 +13,7 @@ namespace Sulakore.Habbo
         public string Name { get; set; }
         public string Motto { get; set; }
         public HGender Gender { get; set; }
-        public int EntityType { get; set; }
+        public HEntityType EntityType { get; set; }
         public string FigureId { get; set; }
         public string? FavoriteGroup { get; set; }
 
@@ -39,7 +39,6 @@ namespace Sulakore.Habbo
 
         public HEntity(HPacket packet)
         {
-
             Id = packet.ReadInt32();
             Name = packet.ReadUTF8();
             Motto = packet.ReadUTF8();
@@ -50,11 +49,11 @@ namespace Sulakore.Habbo
                 double.Parse(packet.ReadUTF8(), CultureInfo.InvariantCulture));
 
             packet.ReadInt32();
-            EntityType = packet.ReadInt32();
+            EntityType = (HEntityType)packet.ReadInt32();
 
             switch (EntityType)
             {
-                case 1:
+                case HEntityType.User:
                 {
                     Gender = (HGender)packet.ReadUTF8().ToLower()[0];
                     packet.ReadInt32();
@@ -65,7 +64,7 @@ namespace Sulakore.Habbo
                     packet.ReadBoolean();
                     break;
                 }
-                case 2:
+                case HEntityType.Pet:
                 {
                     packet.ReadInt32();
                     packet.ReadInt32();
@@ -81,7 +80,7 @@ namespace Sulakore.Habbo
                     packet.ReadUTF8();
                     break;
                 }
-                case 4:
+                case HEntityType.RentableBot:
                 {
                     packet.ReadUTF8();
                     packet.ReadInt32();

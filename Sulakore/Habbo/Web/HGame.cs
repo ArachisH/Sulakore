@@ -38,34 +38,15 @@ namespace Sulakore.Habbo.Web
             "var", "while", "with"
         };
 
-        public List<ABCFile> ABCFiles { get; }
-        public bool IsPostShuffle { get; private set; } = true;
-
         public Incoming In { get; }
         public Outgoing Out { get; }
+        public List<ABCFile> ABCFiles { get; }
         public SortedDictionary<string, List<HMessage>> Messages { get; }
 
-        private int _revisionIndex;
-        public string Revision
-        {
-            get
-            {
-                if (ABCFiles.Count >= 3)
-                {
-                    return ABCFiles.Last().Pool.Strings[_revisionIndex];
-                }
-                else return "PRODUCTION-000000000000-000000000";
-            }
-            set
-            {
-                if (ABCFiles.Count >= 3)
-                {
-                    ABCFiles.Last().Pool.Strings[_revisionIndex] = value;
-                }
-            }
-        }
-
         public string Location { get; set; }
+        public string Revision { get; private set; }
+        public bool IsPostShuffle { get; private set; } = true;
+        public bool HasPingInstructions { get; private set; }
 
         public HGame(string path)
             : this(File.OpenRead(path))
@@ -898,15 +879,6 @@ namespace Sulakore.Habbo.Web
             if (string.IsNullOrWhiteSpace(connectMethodName)) return null;
             return _managerConnectMethod = habboCommunicationManager.GetMethod(connectMethodName, "void", 0);
         }
-        public ushort[] GetMessageIds(string hash)
-        {
-            List<HMessage> messages = null;
-            if (Messages.TryGetValue(hash, out messages))
-            {
-                return messages.Select(m => m.Id).ToArray();
-            }
-            return null;
-        }
 
         private void LoadMessages()
         {
@@ -978,8 +950,7 @@ namespace Sulakore.Habbo.Web
 
                     if (index != -1)
                     {
-                        var pushStringIns = (PushStringIns)toArrayCode[index];
-                        _revisionIndex = pushStringIns.ValueIndex;
+                        Revision = ((PushStringIns)toArrayCode[index]).Value;
                     }
                 }
             }

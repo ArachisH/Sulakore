@@ -1127,6 +1127,25 @@ namespace Sulakore.Habbo.Web
             }
             return initiationCount;
         }
+        private void ShiftRegistersBy(ASCode code, int offset)
+        {
+            for (int i = 0; i < code.Count; i++)
+            {
+                ASInstruction instruction = code[i];
+                if (!Local.IsValid(instruction.OP)) continue;
+                if (instruction.OP == OPCode.GetLocal_0) continue;
+
+                var local = (Local)instruction;
+                if (Local.IsGetLocal(instruction.OP))
+                {
+                    code[i] = Local.CreateGet(local.Register + offset);
+                }
+                else if (Local.IsSetLocal(instruction.OP))
+                {
+                    code[i] = Local.CreateSet(local.Register + offset);
+                }
+            }
+        }
         private bool LockInfoHostProperty(out ASTrait infoHostSlot)
         {
             infoHostSlot = null;
@@ -1170,25 +1189,6 @@ namespace Sulakore.Habbo.Web
             connectMethod.Body.MaxStack += 4;
             connectMethod.Body.Code = connectCode.ToArray();
             return true;
-        }
-        private void ShiftRegistersBy(ASCode code, int offset)
-        {
-            for (int i = 0; i < code.Count; i++)
-            {
-                ASInstruction instruction = code[i];
-                if (!Local.IsValid(instruction.OP)) continue;
-                if (instruction.OP == OPCode.GetLocal_0) continue;
-
-                var local = (Local)instruction;
-                if (Local.IsGetLocal(instruction.OP))
-                {
-                    code[i] = Local.CreateGet(local.Register + offset);
-                }
-                else if (Local.IsSetLocal(instruction.OP))
-                {
-                    code[i] = Local.CreateSet(local.Register + offset);
-                }
-            }
         }
         private bool InjectEndPointSaver(out ASTrait hostTrait, out ASTrait portTrait)
         {

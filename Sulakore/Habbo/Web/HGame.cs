@@ -378,7 +378,7 @@ namespace Sulakore.Habbo.Web
 
             localHostCheckMethod.Body.Code[0] = remoteHostCheckMethod.Body.Code[0] = (byte)OPCode.PushTrue;
             localHostCheckMethod.Body.Code[1] = remoteHostCheckMethod.Body.Code[1] = (byte)OPCode.ReturnValue;
-            return LockInfoHostProperty();
+            return LockInfoHostProperty(out _);
         }
         public bool EnableDescriptions()
         {
@@ -806,7 +806,9 @@ namespace Sulakore.Habbo.Web
                 }
             }
             initMethod.Body.Code = code.ToArray();
-            return LockEndPointPing(host, port);
+
+            HasPingInstructions = GetConnectionInitiationCount() > 1;
+            return true;
         }
         public bool InjectRSAKeys(string exponent, string modulus)
         {
@@ -849,7 +851,6 @@ namespace Sulakore.Habbo.Web
             }
             return false;
         }
-
 
         private void LoadMessages()
         {
@@ -1105,8 +1106,30 @@ namespace Sulakore.Habbo.Web
             sendMethod.Body.Code = sendCode.ToArray();
             return true;
         }
-        private bool LockInfoHostProperty()
+        private int GetConnectionInitiationCount()
         {
+            int initiationCount = 0;
+            if (!LockInfoHostProperty(out ASTrait infoHostSlot)) return initiationCount;
+
+            ASMethod connectMethod = GetManagerConnectMethod();
+            if (connectMethod == null) return initiationCount;
+
+            ASCode connectCode = connectMethod.Body.ParseCode();
+            for (int i = 0; i < connectCode.Count; i++)
+            {
+                ASInstruction instruction = connectCode[i];
+
+                if (instruction.OP != OPCode.GetProperty) continue;
+                var getPropertyIns = (GetPropertyIns)instruction;
+
+                if (getPropertyIns.PropertyName != infoHostSlot.QName) continue;
+                initiationCount++;
+            }
+            return initiationCount;
+        }
+        private bool LockInfoHostProperty(out ASTrait infoHostSlot)
+        {
+            infoHostSlot = null;
             ABCFile abc = ABCFiles.Last();
 
             ASMethod connectMethod = GetManagerConnectMethod();
@@ -1118,7 +1141,7 @@ namespace Sulakore.Habbo.Web
             ASInstance habboCommunicationManager = GetHabboCommunicationManager();
             if (habboCommunicationManager == null) return false;
 
-            ASTrait infoHostSlot = habboCommunicationManager.GetSlotTraits("String").FirstOrDefault();
+            infoHostSlot = habboCommunicationManager.GetSlotTraits("String").FirstOrDefault();
             if (infoHostSlot == null) return false;
 
             int getPropertyIndex = abc.Pool.GetMultinameIndex("getProperty");
@@ -1147,41 +1170,6 @@ namespace Sulakore.Habbo.Web
             connectMethod.Body.MaxStack += 4;
             connectMethod.Body.Code = connectCode.ToArray();
             return true;
-        }
-        private bool LockEndPointPing(string host, int port)
-        {
-            ABCFile abc = ABCFiles.Last();
-            if (!LockInfoHostProperty()) return false;
-
-            ASMethod connectMethod = GetManagerConnectMethod();
-            if (connectMethod == null) return false;
-
-            ASCode connectCode = connectMethod.Body.ParseCode();
-            for (int i = 0, findPropStrictCount = 0; i < connectCode.Count; i++)
-            {
-                ASInstruction instruction = connectCode[i];
-                if (instruction.OP != OPCode.FindPropStrict || ++findPropStrictCount != 3) continue;
-
-                i++;
-                var thirdFindPropStrictIns = (FindPropStrictIns)instruction;
-                for (int j = 0; i < connectCode.Count; i++, j++)
-                {
-                    instruction = connectCode[i];
-                    if (instruction.OP != OPCode.ConstructProp) continue;
-                    if (((ConstructPropIns)instruction).PropertyNameIndex != thirdFindPropStrictIns.PropertyNameIndex) continue;
-
-                    connectCode.RemoveRange(i - j, j);
-                    connectCode.InsertRange(i - j, new ASInstruction[]
-                    {
-                        new PushStringIns(abc, host),
-                        new PushIntIns(abc, port)
-                    });
-
-                    connectMethod.Body.Code = connectCode.ToArray();
-                    return true;
-                }
-            }
-            return false;
         }
         private void ShiftRegistersBy(ASCode code, int offset)
         {

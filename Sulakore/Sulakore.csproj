@@ -21,13 +21,19 @@
   <Choose>
     <When Condition="Exists($(ParentFlazzy))">
       <ItemGroup>
-        <ProjectReference Include="$(ParentFlazzy)"/>
+        <ProjectReference Include="$(ParentFlazzy)" />
       </ItemGroup>
     </When>
     <Otherwise>
       <ItemGroup>
-        <ProjectReference Include="$(LocalFlazzy)"/>
+        <ProjectReference Include="$(LocalFlazzy)" />
       </ItemGroup>
     </Otherwise>
   </Choose>
+
+  <ItemGroup>
+    <None Update="Hashes.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

@@ -20,8 +20,8 @@ namespace Sulakore.Habbo.Web
 {
     public class HGame : ShockwaveFlash
     {
-        private ASMethod _managerConnectMethod;
-        private ASInstance _habboCommunicationDemo;
+        private ASMethod _habboCommManagerConnect;
+        private ASInstance _habboCommDemo, _habboCommManager;
 
         private readonly Dictionary<ASClass, HMessage> _messages;
         private readonly Dictionary<DoABCTag, ABCFile> _abcFileTags;
@@ -850,35 +850,6 @@ namespace Sulakore.Habbo.Web
             return false;
         }
 
-        public ASMethod GetManagerConnectMethod()
-        {
-            if (_managerConnectMethod != null) return _managerConnectMethod;
-            ABCFile abc = ABCFiles.Last();
-
-            ASInstance habboCommunicationManager = abc.GetInstance("HabboCommunicationManager");
-            if (habboCommunicationManager == null) return null;
-
-            ASTrait hostTrait = habboCommunicationManager.GetSlotTraits("String").FirstOrDefault();
-            if (hostTrait == null) return null;
-
-            ASMethod initComponent = habboCommunicationManager.GetMethod("initComponent", "void", 0);
-            if (initComponent == null) return null;
-
-            string connectMethodName = null;
-            ASCode initComponentCode = initComponent.Body.ParseCode();
-            for (int i = initComponentCode.Count - 1; i >= 0; i--)
-            {
-                ASInstruction instruction = initComponentCode[i];
-                if (instruction.OP != OPCode.CallPropVoid) continue;
-
-                var callPropVoidIns = (CallPropVoidIns)instruction;
-                connectMethodName = callPropVoidIns.PropertyName.Name;
-                break;
-            }
-
-            if (string.IsNullOrWhiteSpace(connectMethodName)) return null;
-            return _managerConnectMethod = habboCommunicationManager.GetMethod(connectMethodName, "void", 0);
-        }
 
         private void LoadMessages()
         {
@@ -1144,7 +1115,7 @@ namespace Sulakore.Habbo.Web
             ASCode connectCode = connectMethod.Body.ParseCode();
             int pushByteIndex = connectCode.IndexOf(OPCode.PushByte);
 
-            ASInstance habboCommunicationManager = abc.GetInstance("HabboCommunicationManager");
+            ASInstance habboCommunicationManager = GetHabboCommunicationManager();
             if (habboCommunicationManager == null) return false;
 
             ASTrait infoHostSlot = habboCommunicationManager.GetSlotTraits("String").FirstOrDefault();
@@ -1287,25 +1258,78 @@ namespace Sulakore.Habbo.Web
             return false;
         }
 
+        private ASMethod GetManagerConnectMethod()
+        {
+            if (_habboCommManagerConnect != null) return _habboCommManagerConnect;
+
+            ASInstance habboCommunicationManager = GetHabboCommunicationManager();
+            if (habboCommunicationManager == null) return null;
+
+            ASTrait hostTrait = habboCommunicationManager.GetSlotTraits("String").FirstOrDefault();
+            if (hostTrait == null) return null;
+
+            ASMethod initComponent = habboCommunicationManager.GetMethod("initComponent", "void", 0);
+            if (initComponent == null) return null;
+
+            string connectMethodName = null;
+            ASCode initComponentCode = initComponent.Body.ParseCode();
+            for (int i = initComponentCode.Count - 1; i >= 0; i--)
+            {
+                ASInstruction instruction = initComponentCode[i];
+                if (instruction.OP != OPCode.CallPropVoid) continue;
+
+                var callPropVoidIns = (CallPropVoidIns)instruction;
+                connectMethodName = callPropVoidIns.PropertyName.Name;
+                break;
+            }
+
+            if (string.IsNullOrWhiteSpace(connectMethodName)) return null;
+            return _habboCommManagerConnect = habboCommunicationManager.GetMethod(connectMethodName, "void", 0);
+        }
         private ASInstance GetHabboCommunicationDemo()
         {
-            if (_habboCommunicationDemo == null)
+            if (_habboCommDemo == null)
             {
-                _habboCommunicationDemo = ABCFiles.Last().GetInstance("HabboCommunicationDemo");
-                if (_habboCommunicationDemo != null) return _habboCommunicationDemo;
+                _habboCommDemo = ABCFiles.Last().GetInstance("HabboCommunicationDemo");
+                if (_habboCommDemo != null) return _habboCommDemo;
 
                 foreach (ASInstance instance in ABCFiles.Last().Instances)
                 {
-                    if (instance.IsInterface) continue;
+                    if (instance.Super == null) continue;
+                    if (!instance.Super.Name.ToLower().Equals("element") && !instance.Super.Name.ToLower().Equals("component")) continue;
+
+                    if (instance.IsStatic) continue;
                     if (instance.InterfaceIndices.Count > 0) continue;
                     if (instance.Constructor.Parameters.Count != 3) continue;
-                    if (!instance.Super.Name.Equals("Component", StringComparison.OrdinalIgnoreCase)) continue;
+                    if (instance.Traits.Count < 35 || instance.Traits.Count >= 50) continue;
 
-                    _habboCommunicationDemo = instance;
+                    _habboCommDemo = instance;
                     break;
                 }
             }
-            return _habboCommunicationDemo;
+            return _habboCommDemo;
+        }
+        private ASInstance GetHabboCommunicationManager()
+        {
+            if (_habboCommManager == null)
+            {
+                _habboCommManager = ABCFiles.Last().GetInstance("HabboCommunicationManager");
+                if (_habboCommManager != null) return _habboCommManager;
+
+                foreach (ASInstance instance in ABCFiles.Last().Instances)
+                {
+                    if (instance.Super == null) continue;
+                    if (!instance.Super.Name.ToLower().Equals("element") && !instance.Super.Name.ToLower().Equals("component")) continue;
+
+                    if (instance.InterfaceIndices.Count != 2) continue;
+                    if (instance.Constructor.Parameters.Count != 3) continue;
+                    if (instance.Traits.Count < 35 || instance.Traits.Count >= 50) continue;
+
+                    _habboCommManager = instance;
+                    break;
+                }
+            }
+            return _habboCommManager;
         }
 
         public void Disassemble(bool isGeneratingHashes)

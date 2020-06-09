@@ -103,9 +103,8 @@ namespace Sulakore.Habbo.Web
             FindMessagesReferences();
             foreach (HMessage message in Out.Concat(In))
             {
-                List<HMessage> group = null;
                 string hash = message.GenerateHash();
-                if (!Messages.TryGetValue(hash, out group))
+                if (!Messages.TryGetValue(hash, out List<HMessage> group))
                 {
                     group = new List<HMessage>();
                     Messages.Add(hash, group);

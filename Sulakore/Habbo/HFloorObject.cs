@@ -5,6 +5,7 @@ using Sulakore.Network.Protocol;
 
 namespace Sulakore.Habbo
 {
+#nullable enable
     public class HFloorObject : HData
     {
         public int Id { get; set; }
@@ -23,6 +24,8 @@ namespace Sulakore.Habbo
 
         public int OwnerId { get; set; }
         public string OwnerName { get; set; }
+
+        public string? StaticClass { get; set; }
 
         public HFloorObject(HPacket packet)
         {
@@ -47,7 +50,7 @@ namespace Sulakore.Habbo
             OwnerId = packet.ReadInt32();
             if (TypeId < 0)
             {
-                packet.ReadUTF8();
+                StaticClass = packet.ReadUTF8();
             }
         }
 

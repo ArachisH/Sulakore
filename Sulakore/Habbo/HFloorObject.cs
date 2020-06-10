@@ -12,6 +12,9 @@ namespace Sulakore.Habbo
         public HPoint Tile { get; set; }
         public HDirection Facing { get; set; }
 
+        public double Height { get; set; }
+        public int Extra { get; set; }
+
         public int Category { get; set; }
         public object[] Stuff { get; set; }
 
@@ -32,8 +35,8 @@ namespace Sulakore.Habbo
             tile.Z = double.Parse(packet.ReadUTF8(), CultureInfo.InvariantCulture);
             Tile = tile;
 
-            packet.ReadUTF8();
-            packet.ReadInt32();
+            Height = double.Parse(packet.ReadUTF8(), CultureInfo.InvariantCulture);
+            Extra = packet.ReadInt32();
 
             Category = packet.ReadInt32();
             Stuff = ReadData(packet, Category);

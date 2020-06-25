@@ -259,7 +259,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestOwnItems { get; set; }
         public HMessage RequestPetBreeds { get; set; }
         public HMessage RequestPetInfo { get; set; }
-        public HMessage RequestPetTrainingPanel { get; set; }
         public HMessage RequestPopularRooms { get; set; }
         public HMessage RequestPromotedRooms { get; set; }
         public HMessage RequestPromotionRooms { get; set; }

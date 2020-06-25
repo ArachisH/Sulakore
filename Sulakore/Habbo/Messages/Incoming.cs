@@ -26,7 +26,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage BonusRareInfo { get; set; }
         public HMessage BotError { get; set; }
         public HMessage BotSettings { get; set; }
-        public HMessage BubbleAlert { get; set; }
         public HMessage BuildersClubExpired { get; set; }
         public HMessage BuildersClubFurniCount { get; set; }
         public HMessage BuildersClubSubscriptionStatus { get; set; }

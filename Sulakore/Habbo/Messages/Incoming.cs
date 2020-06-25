@@ -263,7 +263,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage NoobnessLevel { get; set; }
         public HMessage NotEnoughPointsType { get; set; }
         public HMessage NotificationDialog { get; set; }
-        public HMessage NuxAlert { get; set; }
         public HMessage Objects { get; set; }
         public HMessage OfferRewardDelivered { get; set; }
         public HMessage OldPublicRooms { get; set; }

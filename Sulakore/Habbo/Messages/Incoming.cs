@@ -26,7 +26,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage BonusRareInfo { get; set; }
         public HMessage BotError { get; set; }
         public HMessage BotSettings { get; set; }
-        public HMessage BubbleAlert { get; set; }
         public HMessage BuildersClubExpired { get; set; }
         public HMessage BuildersClubFurniCount { get; set; }
         public HMessage BuildersClubSubscriptionStatus { get; set; }
@@ -167,7 +166,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage HideDoorbell { get; set; }
         public HMessage HotelClosedAndOpens { get; set; }
         public HMessage HotelClosesAndWillOpenAt { get; set; }
-        public HMessage HotelView { get; set; }
         public HMessage HotelViewBadgeButtonConfig { get; set; }
         public HMessage HotelViewCatalogPageExpiring { get; set; }
         public HMessage HotelViewCommunityGoal { get; set; }
@@ -264,7 +262,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage NoobnessLevel { get; set; }
         public HMessage NotEnoughPointsType { get; set; }
         public HMessage NotificationDialog { get; set; }
-        public HMessage NuxAlert { get; set; }
         public HMessage Objects { get; set; }
         public HMessage OfferRewardDelivered { get; set; }
         public HMessage OldPublicRooms { get; set; }

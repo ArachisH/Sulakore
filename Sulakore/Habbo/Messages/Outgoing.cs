@@ -259,7 +259,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestOwnItems { get; set; }
         public HMessage RequestPetBreeds { get; set; }
         public HMessage RequestPetInfo { get; set; }
-        public HMessage RequestPetTrainingPanel { get; set; }
         public HMessage RequestPopularRooms { get; set; }
         public HMessage RequestPromotedRooms { get; set; }
         public HMessage RequestPromotionRooms { get; set; }
@@ -274,7 +273,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestRoomWordFilter { get; set; }
         public HMessage RequestSellItem { get; set; }
         public HMessage RequestTags { get; set; }
-        public HMessage RequestTalenTrack { get; set; }
         public HMessage RequestUserClub { get; set; }
         public HMessage RequestUserCredits { get; set; }
         public HMessage RequestUserTags { get; set; }
@@ -357,8 +355,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage UpdateGuildSettings { get; set; }
         public HMessage UseFurniture { get; set; }
         public HMessage UseWallItem { get; set; }
-        public HMessage UserActivity { get; set; }
-        public HMessage UserNux { get; set; }
         public HMessage UserSaveLook { get; set; }
         public HMessage Username { get; set; }
         public HMessage VersionCheck { get; set; }

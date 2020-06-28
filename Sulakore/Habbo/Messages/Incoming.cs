@@ -96,6 +96,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage FloorItemUpdate { get; set; }
         public HMessage FloorPlanEditorBlockedTiles { get; set; }
         public HMessage FloorPlanEditorDoorSettings { get; set; }
+        public HMessage FollowFriendFailed { get; set; }
         public HMessage ForwardToRoom { get; set; }
         public HMessage FreezeLives { get; set; }
         public HMessage FriendChatMessage { get; set; }
@@ -368,7 +369,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage StaffAlertAndOpenHabboWay { get; set; }
         public HMessage StaffAlertWithLink { get; set; }
         public HMessage StaffAlertWithLinkAndOpenHabboWay { get; set; }
-        public HMessage StalkError { get; set; }
         public HMessage SubmitCompetitionRoom { get; set; }
         public HMessage Tags { get; set; }
         public HMessage TalentLevelUpdate { get; set; }

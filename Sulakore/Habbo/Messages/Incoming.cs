@@ -338,7 +338,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomMuted { get; set; }
         public HMessage RoomOwner { get; set; }
         public HMessage RoomPaint { get; set; }
-        public HMesage RoomPetExperience { get; set; }
+        public HMessage RoomPetExperience { get; set; }
         public HMessage RoomPetHorseFigure { get; set; }
         public HMessage RoomPetRespect { get; set; }
         public HMessage RoomRating { get; set; }

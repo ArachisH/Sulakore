@@ -136,6 +136,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage HotelViewRequestCommunityGoal { get; set; }
         public HMessage HotelViewRequestConcurrentUsers { get; set; }
         public HMessage IgnoreUser { get; set; }
+        public HMessage IgnoreUserId { get; set; }
         public HMessage InfoRetrieve { get; set; }
         public HMessage InitCamera { get; set; }
         public HMessage InitDiffieHandshake { get; set; }

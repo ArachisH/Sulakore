@@ -91,6 +91,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetHabboGroupDetails { get; set; }
         public HMessage GetHabboGuildBadges { get; set; }
         public HMessage GetIgnoredUsers { get; set; }
+        public HMessage GetItemData { get; set; }
         public HMessage GetInterstitial { get; set; }
         public HMessage GetMarketplaceCanMakeOffer { get; set; }
         public HMessage GetMarketplaceConfig { get; set; }
@@ -203,7 +204,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage PollAnswer { get; set; }
         public HMessage Pong { get; set; }
         public HMessage PostItPlace { get; set; }
-        public HMessage PostItRequestData { get; set; }
         public HMessage PostQuizAnswers { get; set; }
         public HMessage PublishPhoto { get; set; }
         public HMessage PurchasePhoto { get; set; }

@@ -195,6 +195,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage IsFirstLoginOfDay { get; set; }
         public HMessage ItemAdd { get; set; }
         public HMessage ItemDataUpdate { get; set; }
+        public HMessage ItemRemove { get; set; }
         public HMessage ItemState { get; set; }
         public HMessage ItemUpdate { get; set; }
         public HMessage Items { get; set; }
@@ -314,7 +315,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RemoveGuildFromRoom { get; set; }
         public HMessage RemovePet { get; set; }
         public HMessage RemoveRoomEvent { get; set; }
-        public HMessage RemoveWallItem { get; set; }
         public HMessage RentableItemBuyOutPrice { get; set; }
         public HMessage RentableSpaceInfo { get; set; }
         public HMessage ReportRoomForm { get; set; }

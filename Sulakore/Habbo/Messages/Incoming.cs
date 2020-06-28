@@ -332,10 +332,8 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomInvite { get; set; }
         public HMessage RoomInviteError { get; set; }
         public HMessage RoomMessagesPostedCount { get; set; }
-        public HMessage RoomModel { get; set; }
         public HMessage RoomMuted { get; set; }
         public HMessage RoomOpen { get; set; }
-        public HMessage RoomOwner { get; set; }
         public HMessage RoomPaint { get; set; }
         public HMessage RoomPetExperience { get; set; }
         public HMessage RoomPetHorseFigure { get; set; }
@@ -420,6 +418,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage WiredTriggerData { get; set; }
         public HMessage YouAreController { get; set; }
         public HMessage YouAreNotController { get; set; }
+        public HMessage YouAreOwner { get; set; }
         public HMessage YouArePlayingGame { get; set; }
         public HMessage YouAreSpectator { get; set; }
         public HMessage YouTradingDisabled { get; set; }

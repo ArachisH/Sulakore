@@ -185,6 +185,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage NavigatorAddSavedSearch { get; set; }
         public HMessage NavigatorCategoryListMode { get; set; }
         public HMessage NavigatorCollapseCategory { get; set; }
+        public HMessage NavigatorDeleteSavedSearch { get; set; }
         public HMessage NavigatorUncollapseCategory { get; set; }
         public HMessage NewNavigatorAction { get; set; }
         public HMessage NuxGetGifts { get; set; }

@@ -195,7 +195,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage InventoryRefresh { get; set; }
         public HMessage IsFirstLoginOfDay { get; set; }
         public HMessage ItemDataUpdate { get; set; }
-        public HMessage ItemExtraData { get; set; }
         public HMessage ItemState { get; set; }
         public HMessage ItemUpdate { get; set; }
         public HMessage Items { get; set; }
@@ -265,6 +264,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage NoobnessLevel { get; set; }
         public HMessage NotEnoughPointsType { get; set; }
         public HMessage NotificationDialog { get; set; }
+        public HMessage ObjectDataUpdate { get; set; }
         public HMessage Objects { get; set; }
         public HMessage OfferRewardDelivered { get; set; }
         public HMessage OldPublicRooms { get; set; }

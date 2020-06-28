@@ -182,6 +182,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage MoveObject { get; set; }
         public HMessage MovePet { get; set; }
         public HMessage MoveWallItem { get; set; }
+        public HMessage NavigatorAddSavedSearch { get; set; }
         public HMessage NavigatorCategoryListMode { get; set; }
         public HMessage NavigatorCollapseCategory { get; set; }
         public HMessage NavigatorUncollapseCategory { get; set; }

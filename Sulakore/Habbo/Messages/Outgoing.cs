@@ -70,6 +70,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GameCenterLoadGame { get; set; }
         public HMessage GameCenterRequestAccountStatus { get; set; }
         public HMessage GameCenterRequestGameStatus { get; set; }
+        public HMessage GetBadgePointLimits { get; set; }
         public HMessage GetBadges { get; set; }
         public HMessage GetBonusRareInfo { get; set; }
         public HMessage GetBundleDiscount { get; set; }
@@ -227,7 +228,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RentSpaceCancel { get; set; }
         public HMessage Report { get; set; }
         public HMessage ReportBully { get; set; }
-        public HMessage RequestAchievementConfiguration { get; set; }
         public HMessage RequestAchievements { get; set; }
         public HMessage RequestCanCreateRoom { get; set; }
         public HMessage RequestCatalogIndex { get; set; }

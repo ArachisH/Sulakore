@@ -332,7 +332,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomInvite { get; set; }
         public HMessage RoomInviteError { get; set; }
         public HMessage RoomMessagesPostedCount { get; set; }
-        public HMessage RoomModel { get; set; }
         public HMessage RoomMuted { get; set; }
         public HMessage RoomOpen { get; set; }
         public HMessage RoomOwner { get; set; }

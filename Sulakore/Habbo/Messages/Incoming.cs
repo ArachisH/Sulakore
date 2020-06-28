@@ -64,7 +64,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage CollapsedCategories { get; set; }
         public HMessage CompetitionEntrySubmitResult { get; set; }
         public HMessage CompleteDiffieHandshake { get; set; }
-        public HMessage ConnectionError { get; set; }
         public HMessage ConvertedForwardToRoom { get; set; }
         public HMessage CraftableProducts { get; set; }
         public HMessage CraftingComposerFour { get; set; }
@@ -84,6 +83,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage EffectsListRemove { get; set; }
         public HMessage EmailStatus { get; set; }
         public HMessage EpicPopupFrame { get; set; }
+        public HMessage ErrorReport { get; set; }
         public HMessage Expression { get; set; }
         public HMessage ExtendClubMessage { get; set; }
         public HMessage FavoriteRoomChanged { get; set; }

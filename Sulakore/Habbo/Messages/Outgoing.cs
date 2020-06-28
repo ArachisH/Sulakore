@@ -15,6 +15,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage ApproveAllMembershipRequests { get; set; }
         public HMessage ApproveMembershipRequest { get; set; }
         public HMessage ApproveName { get; set; }
+        public HMessage AssignRights { get; set; }
         public HMessage AvatarExpression { get; set; }
         public HMessage BotSaveSettings { get; set; }
         public HMessage BotSettings { get; set; }
@@ -69,6 +70,8 @@ namespace Sulakore.Habbo.Messages
         public HMessage GameCenterLoadGame { get; set; }
         public HMessage GameCenterRequestAccountStatus { get; set; }
         public HMessage GameCenterRequestGameStatus { get; set; }
+        public HMessage GetBadgePointLimits { get; set; }
+        public HMessage GetBadges { get; set; }
         public HMessage GetBonusRareInfo { get; set; }
         public HMessage GetBundleDiscount { get; set; }
         public HMessage GetCatalogIndex { get; set; }
@@ -88,6 +91,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetHabboGroupDetails { get; set; }
         public HMessage GetHabboGuildBadges { get; set; }
         public HMessage GetIgnoredUsers { get; set; }
+        public HMessage GetItemData { get; set; }
         public HMessage GetInterstitial { get; set; }
         public HMessage GetMarketplaceCanMakeOffer { get; set; }
         public HMessage GetMarketplaceConfig { get; set; }
@@ -122,7 +126,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage GuideUserTyping { get; set; }
         public HMessage GuideVisitUser { get; set; }
         public HMessage GuildConfirmRemoveMember { get; set; }
-        public HMessage HandleDoorbell { get; set; }
         public HMessage HorseRideSettings { get; set; }
         public HMessage HorseUseItem { get; set; }
         public HMessage HotelView { get; set; }
@@ -148,6 +151,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage LagWarningReport { get; set; }
         public HMessage LatencyPingReport { get; set; }
         public HMessage LatencyPingRequest { get; set; }
+        public HMessage LetUserIn { get; set; }
         public HMessage LookTo { get; set; }
         public HMessage MakeOffer { get; set; }
         public HMessage MannequinSaveLook { get; set; }
@@ -200,10 +204,10 @@ namespace Sulakore.Habbo.Messages
         public HMessage PollAnswer { get; set; }
         public HMessage Pong { get; set; }
         public HMessage PostItPlace { get; set; }
-        public HMessage PostItRequestData { get; set; }
         public HMessage PostQuizAnswers { get; set; }
         public HMessage PublishPhoto { get; set; }
         public HMessage PurchasePhoto { get; set; }
+        public HMessage RateFlat { get; set; }
         public HMessage Recycle { get; set; }
         public HMessage RedeemClothing { get; set; }
         public HMessage RedeemItem { get; set; }
@@ -224,7 +228,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RentSpaceCancel { get; set; }
         public HMessage Report { get; set; }
         public HMessage ReportBully { get; set; }
-        public HMessage RequestAchievementConfiguration { get; set; }
         public HMessage RequestAchievements { get; set; }
         public HMessage RequestCanCreateRoom { get; set; }
         public HMessage RequestCatalogIndex { get; set; }
@@ -244,7 +247,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestGuildManage { get; set; }
         public HMessage RequestHighestScoreRooms { get; set; }
         public HMessage RequestInitFriends { get; set; }
-        public HMessage RequestInventoryBadges { get; set; }
         public HMessage RequestInventoryBots { get; set; }
         public HMessage RequestInventoryItems { get; set; }
         public HMessage RequestInventoryPets { get; set; }
@@ -293,11 +295,9 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomSettingsSave { get; set; }
         public HMessage RoomStaffPick { get; set; }
         public HMessage RoomUserBan { get; set; }
-        public HMessage RoomUserGiveRights { get; set; }
         public HMessage RoomUserKick { get; set; }
         public HMessage RoomUserMute { get; set; }
         public HMessage RoomUsersClassification { get; set; }
-        public HMessage RoomVote { get; set; }
         public HMessage RoomWordFilterModify { get; set; }
         public HMessage SSOTicket { get; set; }
         public HMessage SaveBlockCameraFollow { get; set; }

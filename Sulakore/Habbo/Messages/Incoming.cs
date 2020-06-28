@@ -12,10 +12,8 @@ namespace Sulakore.Habbo.Messages
         public HMessage ActivityPointNotification { get; set; }
         public HMessage ActivityPoints { get; set; }
         public HMessage AddBot { get; set; }
-        public HMessage AddFloorItem { get; set; }
         public HMessage AddPet { get; set; }
         public HMessage AddUserBadge { get; set; }
-        public HMessage AddWallItem { get; set; }
         public HMessage AlertLimitedSoldOut { get; set; }
         public HMessage AlertPurchaseFailed { get; set; }
         public HMessage AlertPurchaseUnavailable { get; set; }
@@ -23,6 +21,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage AvailabilityStatus { get; set; }
         public HMessage AvatarEffect { get; set; }
         public HMessage AvatarEffects { get; set; }
+        public HMessage BadgePointLimits { get; set; }
         public HMessage BonusRareInfo { get; set; }
         public HMessage BotError { get; set; }
         public HMessage BotSettings { get; set; }
@@ -65,8 +64,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage CollapsedCategories { get; set; }
         public HMessage CompetitionEntrySubmitResult { get; set; }
         public HMessage CompleteDiffieHandshake { get; set; }
-        public HMessage ConnectionError { get; set; }
-        public HMessage ConvertedForwardToRoom { get; set; }
+        public HMessage ConvertedRoomId { get; set; }
         public HMessage CraftableProducts { get; set; }
         public HMessage CraftingComposerFour { get; set; }
         public HMessage CraftingRecipe { get; set; }
@@ -85,27 +83,33 @@ namespace Sulakore.Habbo.Messages
         public HMessage EffectsListRemove { get; set; }
         public HMessage EmailStatus { get; set; }
         public HMessage EpicPopupFrame { get; set; }
+        public HMessage ErrorReport { get; set; }
         public HMessage Expression { get; set; }
         public HMessage ExtendClubMessage { get; set; }
         public HMessage FavoriteRoomChanged { get; set; }
         public HMessage FavoriteRoomsCount { get; set; }
         public HMessage FigureSetIds { get; set; }
+        public HMessage FlatAccessible { get; set; }
         public HMessage FlatCreated { get; set; }
         public HMessage FloodCounter { get; set; }
         public HMessage FloorHeightMap { get; set; }
         public HMessage FloorItemUpdate { get; set; }
         public HMessage FloorPlanEditorBlockedTiles { get; set; }
         public HMessage FloorPlanEditorDoorSettings { get; set; }
+        public HMessage FollowFriendFailed { get; set; }
         public HMessage ForwardToRoom { get; set; }
         public HMessage FreezeLives { get; set; }
         public HMessage FriendChatMessage { get; set; }
         public HMessage FriendFindingRoom { get; set; }
+        public HMessage FriendListUpdate { get; set; }
         public HMessage FriendRequest { get; set; }
         public HMessage FriendRequestError { get; set; }
         public HMessage FriendRequests { get; set; }
         public HMessage FriendToolbarNotification { get; set; }
         public HMessage Friends { get; set; }
+        public HMessage FurniListAddOrUpdateParser { get; set; }
         public HMessage FurnitureAliases { get; set; }
+        public HMessage FurniListRemove { get; set; }
         public HMessage Game2WeeklyLeaderboard { get; set; }
         public HMessage Game2WeeklySmallLeaderboard { get; set; }
         public HMessage GameAchievementsList { get; set; }
@@ -163,7 +167,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage HeightMap { get; set; }
         public HMessage HeightMapUpdate { get; set; }
         public HMessage HelperRequestDisabled { get; set; }
-        public HMessage HideDoorbell { get; set; }
         public HMessage HotelClosedAndOpens { get; set; }
         public HMessage HotelClosesAndWillOpenAt { get; set; }
         public HMessage HotelViewBadgeButtonConfig { get; set; }
@@ -183,16 +186,16 @@ namespace Sulakore.Habbo.Messages
         public HMessage InitCamera { get; set; }
         public HMessage InitDiffieHandshake { get; set; }
         public HMessage Interstitial { get; set; }
-        public HMessage InventoryAchievements { get; set; }
         public HMessage InventoryAddEffect { get; set; }
         public HMessage InventoryBadges { get; set; }
         public HMessage InventoryBots { get; set; }
-        public HMessage InventoryItemUpdate { get; set; }
         public HMessage InventoryItems { get; set; }
         public HMessage InventoryPets { get; set; }
         public HMessage InventoryRefresh { get; set; }
         public HMessage IsFirstLoginOfDay { get; set; }
-        public HMessage ItemExtraData { get; set; }
+        public HMessage ItemAdd { get; set; }
+        public HMessage ItemDataUpdate { get; set; }
+        public HMessage ItemRemove { get; set; }
         public HMessage ItemState { get; set; }
         public HMessage ItemUpdate { get; set; }
         public HMessage Items { get; set; }
@@ -262,9 +265,13 @@ namespace Sulakore.Habbo.Messages
         public HMessage NoobnessLevel { get; set; }
         public HMessage NotEnoughPointsType { get; set; }
         public HMessage NotificationDialog { get; set; }
+        public HMessage ObjectAdd { get; set; }
+        public HMessage ObjectDataUpdate { get; set; }
+        public HMessage ObjectRemove { get; set; }
         public HMessage Objects { get; set; }
         public HMessage OfferRewardDelivered { get; set; }
         public HMessage OldPublicRooms { get; set; }
+        public HMessage OpenConnection { get; set; }
         public HMessage OpenRoomCreationWindow { get; set; }
         public HMessage OtherTradingDisabled { get; set; }
         public HMessage PeerUsersClassification { get; set; }
@@ -288,7 +295,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage Ping { get; set; }
         public HMessage PollQuestions { get; set; }
         public HMessage PollStart { get; set; }
-        public HMessage PostItData { get; set; }
         public HMessage PostItStickyPoleOpen { get; set; }
         public HMessage PresentItemOpened { get; set; }
         public HMessage PrivateRooms { get; set; }
@@ -306,13 +312,10 @@ namespace Sulakore.Habbo.Messages
         public HMessage RelationshipStatusInfo { get; set; }
         public HMessage ReloadRecycler { get; set; }
         public HMessage RemoveBot { get; set; }
-        public HMessage RemoveFloorItem { get; set; }
         public HMessage RemoveFriend { get; set; }
         public HMessage RemoveGuildFromRoom { get; set; }
-        public HMessage RemoveHabboItem { get; set; }
         public HMessage RemovePet { get; set; }
         public HMessage RemoveRoomEvent { get; set; }
-        public HMessage RemoveWallItem { get; set; }
         public HMessage RentableItemBuyOutPrice { get; set; }
         public HMessage RentableSpaceInfo { get; set; }
         public HMessage ReportRoomForm { get; set; }
@@ -333,7 +336,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomInviteError { get; set; }
         public HMessage RoomMessagesPostedCount { get; set; }
         public HMessage RoomMuted { get; set; }
-        public HMessage RoomOpen { get; set; }
+        public HMessage RoomOwner { get; set; }
         public HMessage RoomPaint { get; set; }
         public HMessage RoomPetExperience { get; set; }
         public HMessage RoomPetHorseFigure { get; set; }
@@ -366,7 +369,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage StaffAlertAndOpenHabboWay { get; set; }
         public HMessage StaffAlertWithLink { get; set; }
         public HMessage StaffAlertWithLinkAndOpenHabboWay { get; set; }
-        public HMessage StalkError { get; set; }
         public HMessage SubmitCompetitionRoom { get; set; }
         public HMessage Tags { get; set; }
         public HMessage TalentLevelUpdate { get; set; }
@@ -385,7 +387,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage UniqueMachineID { get; set; }
         public HMessage UnseenItems { get; set; }
         public HMessage UpdateFailed { get; set; }
-        public HMessage UpdateFriend { get; set; }
         public HMessage UpdateStackHeightTileHeight { get; set; }
         public HMessage UpdateUserLook { get; set; }
         public HMessage UserBadges { get; set; }

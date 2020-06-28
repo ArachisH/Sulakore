@@ -33,6 +33,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage ChangeEmail { get; set; }
         public HMessage ChangeMotto { get; set; }
         public HMessage ChangePosture { get; set; }
+        public HMessage ChangeQueue { get; set; }
         public HMessage ChangeRelation { get; set; }
         public HMessage Chat { get; set; }
         public HMessage CheckPetName { get; set; }

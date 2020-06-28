@@ -12,7 +12,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage ActivityPointNotification { get; set; }
         public HMessage ActivityPoints { get; set; }
         public HMessage AddBot { get; set; }
-        public HMessage AddFloorItem { get; set; }
         public HMessage AddPet { get; set; }
         public HMessage AddUserBadge { get; set; }
         public HMessage AddWallItem { get; set; }
@@ -265,6 +264,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage NoobnessLevel { get; set; }
         public HMessage NotEnoughPointsType { get; set; }
         public HMessage NotificationDialog { get; set; }
+        public HMessage ObjectAdd { get; set; }
         public HMessage ObjectDataUpdate { get; set; }
         public HMessage Objects { get; set; }
         public HMessage OfferRewardDelivered { get; set; }

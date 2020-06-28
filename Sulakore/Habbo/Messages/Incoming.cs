@@ -109,6 +109,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage Friends { get; set; }
         public HMessage FurniListAddOrUpdateParser { get; set; }
         public HMessage FurnitureAliases { get; set; }
+        public HMessage FurniListRemove { get; set; }
         public HMessage Game2WeeklyLeaderboard { get; set; }
         public HMessage Game2WeeklySmallLeaderboard { get; set; }
         public HMessage GameAchievementsList { get; set; }
@@ -310,7 +311,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RemoveFloorItem { get; set; }
         public HMessage RemoveFriend { get; set; }
         public HMessage RemoveGuildFromRoom { get; set; }
-        public HMessage RemoveHabboItem { get; set; }
         public HMessage RemovePet { get; set; }
         public HMessage RemoveRoomEvent { get; set; }
         public HMessage RemoveWallItem { get; set; }

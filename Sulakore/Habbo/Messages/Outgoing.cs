@@ -204,6 +204,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage PostQuizAnswers { get; set; }
         public HMessage PublishPhoto { get; set; }
         public HMessage PurchasePhoto { get; set; }
+        public HMessage RateFlat { get; set; }
         public HMessage Recycle { get; set; }
         public HMessage RedeemClothing { get; set; }
         public HMessage RedeemItem { get; set; }
@@ -298,7 +299,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomUserKick { get; set; }
         public HMessage RoomUserMute { get; set; }
         public HMessage RoomUsersClassification { get; set; }
-        public HMessage RoomVote { get; set; }
         public HMessage RoomWordFilterModify { get; set; }
         public HMessage SSOTicket { get; set; }
         public HMessage SaveBlockCameraFollow { get; set; }

@@ -89,6 +89,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage FavoriteRoomChanged { get; set; }
         public HMessage FavoriteRoomsCount { get; set; }
         public HMessage FigureSetIds { get; set; }
+        public HMessage FlatAccessDenied { get; set; }
         public HMessage FlatAccessible { get; set; }
         public HMessage FlatCreated { get; set; }
         public HMessage FloodCounter { get; set; }

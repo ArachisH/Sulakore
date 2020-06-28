@@ -102,6 +102,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage FreezeLives { get; set; }
         public HMessage FriendChatMessage { get; set; }
         public HMessage FriendFindingRoom { get; set; }
+        public HMessage FriendListUpdate { get; set; }
         public HMessage FriendRequest { get; set; }
         public HMessage FriendRequestError { get; set; }
         public HMessage FriendRequests { get; set; }
@@ -387,7 +388,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage UniqueMachineID { get; set; }
         public HMessage UnseenItems { get; set; }
         public HMessage UpdateFailed { get; set; }
-        public HMessage UpdateFriend { get; set; }
         public HMessage UpdateStackHeightTileHeight { get; set; }
         public HMessage UpdateUserLook { get; set; }
         public HMessage UserBadges { get; set; }

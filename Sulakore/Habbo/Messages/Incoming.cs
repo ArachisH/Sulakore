@@ -266,6 +266,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage NotificationDialog { get; set; }
         public HMessage ObjectAdd { get; set; }
         public HMessage ObjectDataUpdate { get; set; }
+        public HMessage ObjectRemove { get; set; }
         public HMessage Objects { get; set; }
         public HMessage OfferRewardDelivered { get; set; }
         public HMessage OldPublicRooms { get; set; }
@@ -309,7 +310,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RelationshipStatusInfo { get; set; }
         public HMessage ReloadRecycler { get; set; }
         public HMessage RemoveBot { get; set; }
-        public HMessage RemoveFloorItem { get; set; }
         public HMessage RemoveFriend { get; set; }
         public HMessage RemoveGuildFromRoom { get; set; }
         public HMessage RemovePet { get; set; }

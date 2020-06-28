@@ -271,6 +271,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage Objects { get; set; }
         public HMessage OfferRewardDelivered { get; set; }
         public HMessage OldPublicRooms { get; set; }
+        public HMessage OpenConnection { get; set; }
         public HMessage OpenRoomCreationWindow { get; set; }
         public HMessage OtherTradingDisabled { get; set; }
         public HMessage PeerUsersClassification { get; set; }
@@ -336,7 +337,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomMessagesPostedCount { get; set; }
         public HMessage RoomModel { get; set; }
         public HMessage RoomMuted { get; set; }
-        public HMessage RoomOpen { get; set; }
         public HMessage RoomOwner { get; set; }
         public HMessage RoomPaint { get; set; }
         public HMessage RoomPetExperience { get; set; }

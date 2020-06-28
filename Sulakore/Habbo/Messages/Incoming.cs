@@ -14,7 +14,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage AddBot { get; set; }
         public HMessage AddPet { get; set; }
         public HMessage AddUserBadge { get; set; }
-        public HMessage AddWallItem { get; set; }
         public HMessage AlertLimitedSoldOut { get; set; }
         public HMessage AlertPurchaseFailed { get; set; }
         public HMessage AlertPurchaseUnavailable { get; set; }
@@ -194,6 +193,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage InventoryPets { get; set; }
         public HMessage InventoryRefresh { get; set; }
         public HMessage IsFirstLoginOfDay { get; set; }
+        public HMessage ItemAdd { get; set; }
         public HMessage ItemDataUpdate { get; set; }
         public HMessage ItemState { get; set; }
         public HMessage ItemUpdate { get; set; }

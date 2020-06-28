@@ -123,7 +123,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage GuideUserTyping { get; set; }
         public HMessage GuideVisitUser { get; set; }
         public HMessage GuildConfirmRemoveMember { get; set; }
-        public HMessage HandleDoorbell { get; set; }
         public HMessage HorseRideSettings { get; set; }
         public HMessage HorseUseItem { get; set; }
         public HMessage HotelView { get; set; }
@@ -149,6 +148,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage LagWarningReport { get; set; }
         public HMessage LatencyPingReport { get; set; }
         public HMessage LatencyPingRequest { get; set; }
+        public HMessage LetUserIn { get; set; }
         public HMessage LookTo { get; set; }
         public HMessage MakeOffer { get; set; }
         public HMessage MannequinSaveLook { get; set; }

@@ -23,6 +23,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage AvailabilityStatus { get; set; }
         public HMessage AvatarEffect { get; set; }
         public HMessage AvatarEffects { get; set; }
+        public HMessage BadgePointLimits { get; set; }
         public HMessage BonusRareInfo { get; set; }
         public HMessage BotError { get; set; }
         public HMessage BotSettings { get; set; }
@@ -184,7 +185,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage InitCamera { get; set; }
         public HMessage InitDiffieHandshake { get; set; }
         public HMessage Interstitial { get; set; }
-        public HMessage InventoryAchievements { get; set; }
         public HMessage InventoryAddEffect { get; set; }
         public HMessage InventoryBadges { get; set; }
         public HMessage InventoryBots { get; set; }

@@ -15,6 +15,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage ApproveAllMembershipRequests { get; set; }
         public HMessage ApproveMembershipRequest { get; set; }
         public HMessage ApproveName { get; set; }
+        public HMessage AssignRights { get; set; }
         public HMessage AvatarExpression { get; set; }
         public HMessage BotSaveSettings { get; set; }
         public HMessage BotSettings { get; set; }
@@ -295,7 +296,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomSettingsSave { get; set; }
         public HMessage RoomStaffPick { get; set; }
         public HMessage RoomUserBan { get; set; }
-        public HMessage RoomUserGiveRights { get; set; }
         public HMessage RoomUserKick { get; set; }
         public HMessage RoomUserMute { get; set; }
         public HMessage RoomUsersClassification { get; set; }

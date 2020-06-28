@@ -343,6 +343,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomPetHorseFigure { get; set; }
         public HMessage RoomPetRespect { get; set; }
         public HMessage RoomQueueSet { get; set; }
+        public HMessage RoomQueueStatus { get; set; }
         public HMessage RoomRating { get; set; }
         public HMessage RoomReady { get; set; }
         public HMessage RoomRemoveRightsList { get; set; }

@@ -194,6 +194,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage InventoryPets { get; set; }
         public HMessage InventoryRefresh { get; set; }
         public HMessage IsFirstLoginOfDay { get; set; }
+        public HMessage ItemDataUpdate { get; set; }
         public HMessage ItemExtraData { get; set; }
         public HMessage ItemState { get; set; }
         public HMessage ItemUpdate { get; set; }
@@ -290,7 +291,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage Ping { get; set; }
         public HMessage PollQuestions { get; set; }
         public HMessage PollStart { get; set; }
-        public HMessage PostItData { get; set; }
         public HMessage PostItStickyPoleOpen { get; set; }
         public HMessage PresentItemOpened { get; set; }
         public HMessage PrivateRooms { get; set; }

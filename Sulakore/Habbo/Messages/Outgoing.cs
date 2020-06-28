@@ -42,6 +42,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage CompleteDiffieHandshake { get; set; }
         public HMessage CompostPlant { get; set; }
         public HMessage ConfirmChangeName { get; set; }
+        public HMessage ConvertGlobalRoomId { get; set; }
         public HMessage CraftingAddRecipe { get; set; }
         public HMessage CraftingCraftItem { get; set; }
         public HMessage CraftSecret { get; set; }

@@ -288,7 +288,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomFavorite { get; set; }
         public HMessage RoomMute { get; set; }
         public HMessage RoomNetworkOpenConnection { get; set; }
-        public HMessage RoomPickupItem { get; set; }
         public HMessage RoomPlaceBuildersClubItem { get; set; }
         public HMessage RoomRemoveAllRights { get; set; }
         public HMessage RoomRemoveRights { get; set; }

@@ -64,7 +64,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage CollapsedCategories { get; set; }
         public HMessage CompetitionEntrySubmitResult { get; set; }
         public HMessage CompleteDiffieHandshake { get; set; }
-        public HMessage ConvertedForwardToRoom { get; set; }
+        public HMessage ConvertedRoomId { get; set; }
         public HMessage CraftableProducts { get; set; }
         public HMessage CraftingComposerFour { get; set; }
         public HMessage CraftingRecipe { get; set; }

@@ -89,6 +89,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage FavoriteRoomChanged { get; set; }
         public HMessage FavoriteRoomsCount { get; set; }
         public HMessage FigureSetIds { get; set; }
+        public HMessage FlatAccessDenied { get; set; }
         public HMessage FlatAccessible { get; set; }
         public HMessage FlatCreated { get; set; }
         public HMessage FloodCounter { get; set; }
@@ -161,6 +162,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GuildMemberUpdate { get; set; }
         public HMessage GuildMembers { get; set; }
         public HMessage GuildRefreshMembersList { get; set; }
+        public HMessage HabboActivityPointNotification { get; set; }
         public HMessage HabboGroupBadges { get; set; }
         public HMessage HabboMall { get; set; }
         public HMessage HallOfFame { get; set; }
@@ -341,6 +343,8 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomPetExperience { get; set; }
         public HMessage RoomPetHorseFigure { get; set; }
         public HMessage RoomPetRespect { get; set; }
+        public HMessage RoomQueueSet { get; set; }
+        public HMessage RoomQueueStatus { get; set; }
         public HMessage RoomRating { get; set; }
         public HMessage RoomReady { get; set; }
         public HMessage RoomRemoveRightsList { get; set; }

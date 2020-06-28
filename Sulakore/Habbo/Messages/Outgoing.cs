@@ -33,6 +33,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage ChangeEmail { get; set; }
         public HMessage ChangeMotto { get; set; }
         public HMessage ChangePosture { get; set; }
+        public HMessage ChangeQueue { get; set; }
         public HMessage ChangeRelation { get; set; }
         public HMessage Chat { get; set; }
         public HMessage CheckPetName { get; set; }
@@ -41,6 +42,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage CompleteDiffieHandshake { get; set; }
         public HMessage CompostPlant { get; set; }
         public HMessage ConfirmChangeName { get; set; }
+        public HMessage ConvertGlobalRoomId { get; set; }
         public HMessage CraftingAddRecipe { get; set; }
         public HMessage CraftingCraftItem { get; set; }
         public HMessage CraftSecret { get; set; }
@@ -136,6 +138,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage HotelViewRequestCommunityGoal { get; set; }
         public HMessage HotelViewRequestConcurrentUsers { get; set; }
         public HMessage IgnoreUser { get; set; }
+        public HMessage IgnoreUserId { get; set; }
         public HMessage InfoRetrieve { get; set; }
         public HMessage InitCamera { get; set; }
         public HMessage InitDiffieHandshake { get; set; }
@@ -156,6 +159,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage MakeOffer { get; set; }
         public HMessage MannequinSaveLook { get; set; }
         public HMessage MannequinSaveName { get; set; }
+        public HMessage GetMarketplaceItemStats { get; set; }
         public HMessage ModToolAlert { get; set; }
         public HMessage ModToolBan { get; set; }
         public HMessage ModToolChangeRoomSettings { get; set; }
@@ -181,8 +185,10 @@ namespace Sulakore.Habbo.Messages
         public HMessage MoveObject { get; set; }
         public HMessage MovePet { get; set; }
         public HMessage MoveWallItem { get; set; }
+        public HMessage NavigatorAddSavedSearch { get; set; }
         public HMessage NavigatorCategoryListMode { get; set; }
         public HMessage NavigatorCollapseCategory { get; set; }
+        public HMessage NavigatorDeleteSavedSearch { get; set; }
         public HMessage NavigatorUncollapseCategory { get; set; }
         public HMessage NewNavigatorAction { get; set; }
         public HMessage NuxGetGifts { get; set; }

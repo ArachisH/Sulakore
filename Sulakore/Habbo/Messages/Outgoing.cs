@@ -36,6 +36,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage ChangeQueue { get; set; }
         public HMessage ChangeRelation { get; set; }
         public HMessage Chat { get; set; }
+        public HMessage ChatReviewGuideDecidesOnOffer { get; set; }
         public HMessage ChatReviewGuideVote { get; set; }
         public HMessage CheckPetName { get; set; }
         public HMessage ClientHello { get; set; }
@@ -115,7 +116,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetUserProfileById { get; set; }
         public HMessage GetUserProfileByName { get; set; }
         public HMessage GiveSupplementToPet { get; set; }
-        public HMessage GuardianAcceptRequest { get; set; }
         public HMessage GuardianNoUpdatesWanted { get; set; }
         public HMessage GuideAdvertisementRead { get; set; }
         public HMessage GuideSessionFeedback { get; set; }

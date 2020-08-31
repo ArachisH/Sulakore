@@ -263,7 +263,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestNewNavigatorRooms { get; set; }
         public HMessage RequestNewsList { get; set; }
         public HMessage RequestOwnGuilds { get; set; }
-        public HMessage RequestOwnItems { get; set; }
         public HMessage RequestPetBreeds { get; set; }
         public HMessage RequestPetInfo { get; set; }
         public HMessage RequestPopularRooms { get; set; }

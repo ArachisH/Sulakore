@@ -42,10 +42,10 @@ namespace Sulakore.Habbo.Messages
         public HMessage CancelMysteryBoxWait { get; set; }
         public HMessage CantScratchPetNotOldEnough { get; set; }
         public HMessage CarryObject { get; set; }
+        public HMessage CatalogIndex { get; set; }
         public HMessage CatalogMode { get; set; }
         public HMessage CatalogPage { get; set; }
         public HMessage CatalogPageExpiration { get; set; }
-        public HMessage CatalogPagesList { get; set; }
         public HMessage CatalogSearchResult { get; set; }
         public HMessage CatalogUpdated { get; set; }
         public HMessage CfhChatlog { get; set; }

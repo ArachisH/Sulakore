@@ -220,8 +220,8 @@ namespace Sulakore.Habbo.Messages
         public HMessage MarketplaceBuyOfferResult { get; set; }
         public HMessage MarketplaceCancelSale { get; set; }
         public HMessage MarketplaceConfiguration { get; set; }
-        public HMessage MarketplaceItemPosted { get; set; }
         public HMessage MarketplaceItemStats { get; set; }
+        public HMessage MarketplaceMakeOfferResult { get; set; }
         public HMessage MarketplaceOffers { get; set; }
         public HMessage MarketplaceOwnOffers { get; set; }
         public HMessage MarketplaceSellItem { get; set; }

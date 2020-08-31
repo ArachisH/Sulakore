@@ -62,6 +62,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage DropCarryItem { get; set; }
         public HMessage EditEvent { get; set; }
         public HMessage EnableEffect { get; set; }
+        public HMessage EnterOneWayDoor { get; set; }
         public HMessage EventLog { get; set; }
         public HMessage FindNewFriends { get; set; }
         public HMessage FloorPlanEditorRequestBlockedTiles { get; set; }
@@ -341,7 +342,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage TradeStart { get; set; }
         public HMessage TradeUnAccept { get; set; }
         public HMessage TriggerColorWheel { get; set; }
-        public HMessage TriggerOneWayGate { get; set; }
         public HMessage UnbanRoomUser { get; set; }
         public HMessage UnignoreUser { get; set; }
         public HMessage UniqueID { get; set; }

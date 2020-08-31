@@ -218,6 +218,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage Recycle { get; set; }
         public HMessage RedeemClothing { get; set; }
         public HMessage RedeemItem { get; set; }
+        public HMessage RedeemMarketplaceOfferCredits { get; set; }
         public HMessage RedeemVoucher { get; set; }
         public HMessage RejectMembershipRequest { get; set; }
         public HMessage ReleaseIssues { get; set; }
@@ -239,7 +240,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestCatalogMode { get; set; }
         public HMessage RequestCatalogPage { get; set; }
         public HMessage RequestCraftingRecipes { get; set; }
-        public HMessage RequestCredits { get; set; }
         public HMessage RequestDeleteRoom { get; set; }
         public HMessage RequestDiscount { get; set; }
         public HMessage RequestFriends { get; set; }

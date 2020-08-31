@@ -121,10 +121,10 @@ namespace Sulakore.Habbo.Messages
         public HMessage GuideSessionFeedback { get; set; }
         public HMessage GuideSessionGuideDecides { get; set; }
         public HMessage GuideSessionInviteRequester { get; set; }
+        public HMessage GuideSessionMessage { get; set; }
         public HMessage GuideSessionReport { get; set; }
         public HMessage GuideSessionRequesterCancels { get; set; }
         public HMessage GuideSessionResolved { get; set; }
-        public HMessage GuideUserMessage { get; set; }
         public HMessage GuideUserTyping { get; set; }
         public HMessage GuideVisitUser { get; set; }
         public HMessage GuildConfirmRemoveMember { get; set; }

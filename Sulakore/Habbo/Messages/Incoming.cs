@@ -175,12 +175,12 @@ namespace Sulakore.Habbo.Messages
         public HMessage HotelViewConcurrentUsers { get; set; }
         public HMessage HotelViewCustomTimer { get; set; }
         public HMessage HotelViewHideCommunityVoteButton { get; set; }
-        public HMessage HotelWillCloseInMinutes { get; set; }
         public HMessage HotelWillCloseInMinutesAndBackIn { get; set; }
         public HMessage IdentityAccounts { get; set; }
         public HMessage IgnoredUsers { get; set; }
         public HMessage InClientLink { get; set; }
         public HMessage InfoFeedEnabled { get; set; }
+        public HMessage InfoHotelClosing { get; set; }
         public HMessage InitCamera { get; set; }
         public HMessage InitDiffieHandshake { get; set; }
         public HMessage Interstitial { get; set; }

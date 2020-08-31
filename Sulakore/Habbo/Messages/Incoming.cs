@@ -10,7 +10,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage Achievements { get; set; }
         public HMessage ActivityPointNotification { get; set; }
         public HMessage ActivityPoints { get; set; }
-        public HMessage AddBot { get; set; }
         public HMessage AddPet { get; set; }
         public HMessage AuthenticationOK { get; set; }
         public HMessage AvailabilityStatus { get; set; }
@@ -20,6 +19,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage BadgePointLimits { get; set; }
         public HMessage BadgeReceived { get; set; }
         public HMessage BonusRareInfo { get; set; }
+        public HMessage BotAddedToInventory { get; set; }
         public HMessage BotError { get; set; }
         public HMessage BotSettings { get; set; }
         public HMessage BuildersClubExpired { get; set; }

@@ -74,7 +74,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage Game2GetAccountGameStatus { get; set; }
         public HMessage Game2LoadStageReady { get; set; }
         public HMessage GameCenter { get; set; }
-        public HMessage GameCenterRequestGameStatus { get; set; }
         public HMessage GetBadgePointLimits { get; set; }
         public HMessage GetBadges { get; set; }
         public HMessage GetBonusRareInfo { get; set; }
@@ -90,6 +89,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetExtendedProfileByName { get; set; }
         public HMessage GetFriendRequests { get; set; }
         public HMessage GetFurnitureAliases { get; set; }
+        public HMessage GetGameStatus { get; set; }
         public HMessage GetGuestRoomData { get; set; }
         public HMessage GetGuildEditInfo { get; set; }
         public HMessage GetGuildEditorData { get; set; }

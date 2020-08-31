@@ -128,6 +128,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetTalentTrack { get; set; }
         public HMessage GetTalentTrackLevel { get; set; }
         public HMessage GetTargetedOffer { get; set; }
+        public HMessage GetUnreadForumsCount { get; set; }
         public HMessage GetUserProfileById { get; set; }
         public HMessage GetUserProfileByName { get; set; }
         public HMessage GiveSupplementToPet { get; set; }
@@ -273,7 +274,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestOwnGuilds { get; set; }
         public HMessage RequestPetInfo { get; set; }
         public HMessage RequestPopularRooms { get; set; }
-        public HMessage RequestPromotedRooms { get; set; }
         public HMessage RequestPromotionRooms { get; set; }
         public HMessage RequestPublicRooms { get; set; }
         public HMessage RequestRecylerLogic { get; set; }

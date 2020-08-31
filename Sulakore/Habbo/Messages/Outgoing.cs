@@ -53,6 +53,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage CreateFlat { get; set; }
         public HMessage CreateGuild { get; set; }
         public HMessage CustomizeAvatarWithFurni { get; set; }
+        public HMessage CustomizePetWithFurni { get; set; }
         public HMessage Dance { get; set; }
         public HMessage DeactivateGuild { get; set; }
         public HMessage DeclineFriend { get; set; }
@@ -134,7 +135,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage GuideSessionRequesterCancels { get; set; }
         public HMessage GuideSessionResolved { get; set; }
         public HMessage GuildConfirmRemoveMember { get; set; }
-        public HMessage HorseUseItem { get; set; }
         public HMessage HotelView { get; set; }
         public HMessage HotelViewClaimBadge { get; set; }
         public HMessage HotelViewClaimBadgeReward { get; set; }

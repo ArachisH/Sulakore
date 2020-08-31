@@ -47,6 +47,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage CloseTrading { get; set; }
         public HMessage CompleteDiffieHandshake { get; set; }
         public HMessage CompostPlant { get; set; }
+        public HMessage ConfirmAcceptTrading { get; set; }
         public HMessage ConfirmChangeName { get; set; }
         public HMessage ConfirmDeclineTrading { get; set; }
         public HMessage ConvertGlobalRoomId { get; set; }
@@ -339,7 +340,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage TogglePetRidingPermission { get; set; }
         public HMessage TradeAccept { get; set; }
         public HMessage TradeCancelOfferItem { get; set; }
-        public HMessage TradeConfirm { get; set; }
         public HMessage TradeOfferMultipleItems { get; set; }
         public HMessage TradeUnAccept { get; set; }
         public HMessage TriggerColorWheel { get; set; }

@@ -38,6 +38,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage Chat { get; set; }
         public HMessage ChatReviewGuideDecidesOnOffer { get; set; }
         public HMessage ChatReviewGuideVote { get; set; }
+        public HMessage ChatReviewSessionCreate { get; set; }
         public HMessage CheckPetName { get; set; }
         public HMessage ClientHello { get; set; }
         public HMessage CloseIssues { get; set; }
@@ -232,7 +233,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RentSpace { get; set; }
         public HMessage RentSpaceCancel { get; set; }
         public HMessage Report { get; set; }
-        public HMessage ReportBully { get; set; }
         public HMessage RequestAchievements { get; set; }
         public HMessage RequestCanCreateRoom { get; set; }
         public HMessage RequestCatalogIndex { get; set; }

@@ -69,7 +69,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage CraftingResult { get; set; }
         public HMessage CreditBalance { get; set; }
         public HMessage CurrentTimingCode { get; set; }
-        public HMessage CustomNotification { get; set; }
+        public HMessage CustomUserNotification { get; set; }
         public HMessage DailyQuest { get; set; }
         public HMessage Dance { get; set; }
         public HMessage DebugConsole { get; set; }

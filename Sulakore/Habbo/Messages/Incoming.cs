@@ -69,6 +69,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage CraftingComposerFour { get; set; }
         public HMessage CraftingRecipe { get; set; }
         public HMessage CraftingResult { get; set; }
+        public HMessage CreditBalance { get; set; }
         public HMessage CurrentTimingCode { get; set; }
         public HMessage CustomNotification { get; set; }
         public HMessage DailyQuest { get; set; }
@@ -394,7 +395,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage UserBanned { get; set; }
         public HMessage UserCitizenship { get; set; }
         public HMessage UserClub { get; set; }
-        public HMessage UserCredits { get; set; }
         public HMessage UserInfo { get; set; }
         public HMessage UserObject { get; set; }
         public HMessage UserPoints { get; set; }

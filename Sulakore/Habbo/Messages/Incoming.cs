@@ -45,8 +45,8 @@ namespace Sulakore.Habbo.Messages
         public HMessage CatalogMode { get; set; }
         public HMessage CatalogPage { get; set; }
         public HMessage CatalogPageExpiration { get; set; }
+        public HMessage CatalogPublished { get; set; }
         public HMessage CatalogSearchResult { get; set; }
-        public HMessage CatalogUpdated { get; set; }
         public HMessage CfhChatlog { get; set; }
         public HMessage CfhSanction { get; set; }
         public HMessage CfhTopicsInit { get; set; }

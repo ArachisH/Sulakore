@@ -10,7 +10,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage Achievements { get; set; }
         public HMessage ActivityPointNotification { get; set; }
         public HMessage ActivityPoints { get; set; }
-        public HMessage AddPet { get; set; }
         public HMessage AuthenticationOK { get; set; }
         public HMessage AvailabilityStatus { get; set; }
         public HMessage AvailabilityTime { get; set; }
@@ -278,6 +277,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage OtherTradingDisabled { get; set; }
         public HMessage PeerUsersClassification { get; set; }
         public HMessage PerkAllowances { get; set; }
+        public HMessage PetAddedToInventory { get; set; }
         public HMessage PetBoughtNotification { get; set; }
         public HMessage PetBreedingCompleted { get; set; }
         public HMessage PetBreedingFailed { get; set; }

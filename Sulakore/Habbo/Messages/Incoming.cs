@@ -20,6 +20,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage BonusRareInfo { get; set; }
         public HMessage BotAddedToInventory { get; set; }
         public HMessage BotError { get; set; }
+        public HMessage BotRemovedFromInventory { get; set; }
         public HMessage BotSettings { get; set; }
         public HMessage BuildersClubExpired { get; set; }
         public HMessage BuildersClubFurniCount { get; set; }
@@ -311,7 +312,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RecyclerLogic { get; set; }
         public HMessage RelationshipStatusInfo { get; set; }
         public HMessage ReloadRecycler { get; set; }
-        public HMessage RemoveBot { get; set; }
         public HMessage RemoveFriend { get; set; }
         public HMessage RemoveGuildFromRoom { get; set; }
         public HMessage RemovePet { get; set; }

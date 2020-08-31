@@ -341,8 +341,8 @@ namespace Sulakore.Habbo.Messages
         public HMessage TradeAccept { get; set; }
         public HMessage TradeCancelOfferItem { get; set; }
         public HMessage TradeOfferMultipleItems { get; set; }
-        public HMessage TradeUnAccept { get; set; }
         public HMessage TriggerColorWheel { get; set; }
+        public HMessage UnacceptTrading { get; set; }
         public HMessage UnbanRoomUser { get; set; }
         public HMessage UnignoreUser { get; set; }
         public HMessage UniqueID { get; set; }

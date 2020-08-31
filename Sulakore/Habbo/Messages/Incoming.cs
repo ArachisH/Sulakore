@@ -195,6 +195,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage InventoryPets { get; set; }
         public HMessage InventoryRefresh { get; set; }
         public HMessage IsFirstLoginOfDay { get; set; }
+        public HMessage IssueCloseNotification { get; set; }
         public HMessage ItemAdd { get; set; }
         public HMessage ItemDataUpdate { get; set; }
         public HMessage ItemRemove { get; set; }
@@ -234,7 +235,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage ModToolComposerOne { get; set; }
         public HMessage ModToolComposerTwo { get; set; }
         public HMessage ModToolIssueChatlog { get; set; }
-        public HMessage ModToolIssueHandled { get; set; }
         public HMessage ModToolIssueHandlerDimensions { get; set; }
         public HMessage ModToolIssueInfo { get; set; }
         public HMessage ModToolIssueResponseAlert { get; set; }

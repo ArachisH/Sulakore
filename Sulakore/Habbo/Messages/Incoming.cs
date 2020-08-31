@@ -369,7 +369,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage SimplePollStart { get; set; }
         public HMessage Sleep { get; set; }
         public HMessage SlideObjectBundle { get; set; }
-        public HMessage StaffAlertAndOpenHabboWay { get; set; }
         public HMessage StaffAlertWithLink { get; set; }
         public HMessage StaffAlertWithLinkAndOpenHabboWay { get; set; }
         public HMessage SubmitCompetitionRoom { get; set; }
@@ -393,6 +392,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage UpdateStackHeightTileHeight { get; set; }
         public HMessage UpdateUserLook { get; set; }
         public HMessage UserBadges { get; set; }
+        public HMessage UserBanned { get; set; }
         public HMessage UserCitizenship { get; set; }
         public HMessage UserClub { get; set; }
         public HMessage UserCredits { get; set; }

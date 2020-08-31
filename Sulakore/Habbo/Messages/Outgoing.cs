@@ -20,6 +20,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage BotSaveSettings { get; set; }
         public HMessage BotSettings { get; set; }
         public HMessage BreedPets { get; set; }
+        public HMessage BuildersClubQueryFurniCount { get; set; }
         public HMessage BuyMarketplaceOffer { get; set; }
         public HMessage BuyMarketplaceTokens { get; set; }
         public HMessage BuyRoomPromotion { get; set; }
@@ -237,7 +238,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RentSpaceCancel { get; set; }
         public HMessage RequestAchievements { get; set; }
         public HMessage RequestCanCreateRoom { get; set; }
-        public HMessage RequestCatalogIndex { get; set; }
         public HMessage RequestCatalogMode { get; set; }
         public HMessage RequestCatalogPage { get; set; }
         public HMessage RequestCraftingRecipes { get; set; }

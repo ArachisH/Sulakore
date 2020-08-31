@@ -126,7 +126,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage GameCenterGame { get; set; }
         public HMessage GameCenterGameList { get; set; }
         public HMessage GenericError { get; set; }
-        public HMessage GenericErrorMessages { get; set; }
         public HMessage GetGuestRoomResult { get; set; }
         public HMessage GiftReceiverNotFound { get; set; }
         public HMessage GiftWrappingConfiguration { get; set; }

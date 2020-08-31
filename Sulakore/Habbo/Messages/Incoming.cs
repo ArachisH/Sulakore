@@ -264,7 +264,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage NewYearResolutionProgress { get; set; }
         public HMessage NewsWidgets { get; set; }
         public HMessage NoobnessLevel { get; set; }
-        public HMessage NotEnoughPointsType { get; set; }
+        public HMessage NotEnoughBalance { get; set; }
         public HMessage NotificationDialog { get; set; }
         public HMessage ObjectAdd { get; set; }
         public HMessage ObjectDataUpdate { get; set; }

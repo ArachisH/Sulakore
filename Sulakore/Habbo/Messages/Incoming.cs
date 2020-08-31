@@ -8,7 +8,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage AchievementScore { get; set; }
         public HMessage AchievementUnlocked { get; set; }
         public HMessage Achievements { get; set; }
-        public HMessage AchievementsConfiguration { get; set; }
         public HMessage ActivityPointNotification { get; set; }
         public HMessage ActivityPoints { get; set; }
         public HMessage AddBot { get; set; }

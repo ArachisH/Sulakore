@@ -100,7 +100,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetInterstitial { get; set; }
         public HMessage GetItemData { get; set; }
         public HMessage GetMarketplaceCanMakeOffer { get; set; }
-        public HMessage GetMarketplaceConfig { get; set; }
+        public HMessage GetMarketplaceConfiguration { get; set; }
         public HMessage GetMarketplaceItemStats { get; set; }
         public HMessage GetMarketplaceOffers { get; set; }
         public HMessage GetMarketplaceOwnOffers { get; set; }

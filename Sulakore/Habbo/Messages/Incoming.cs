@@ -15,6 +15,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage AvailabilityStatus { get; set; }
         public HMessage AvailabilityTime { get; set; }
         public HMessage AvatarEffect { get; set; }
+        public HMessage AvatarEffectActivated { get; set; }
         public HMessage AvatarEffectSelected { get; set; }
         public HMessage AvatarEffects { get; set; }
         public HMessage BadgePointLimits { get; set; }
@@ -80,7 +81,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage DisconnectReason { get; set; }
         public HMessage DoorbellAddUser { get; set; }
         public HMessage EffectsListAdd { get; set; }
-        public HMessage EffectsListEffectEnable { get; set; }
         public HMessage EffectsListRemove { get; set; }
         public HMessage EmailStatus { get; set; }
         public HMessage EpicPopupFrame { get; set; }

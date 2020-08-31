@@ -369,7 +369,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage SlideObjectBundle { get; set; }
         public HMessage SubmitCompetitionRoom { get; set; }
         public HMessage Tags { get; set; }
-        public HMessage TalentLevelUpdate { get; set; }
+        public HMessage TalentLevelUp { get; set; }
         public HMessage TalentTrack { get; set; }
         public HMessage TalentTrackEmailFailed { get; set; }
         public HMessage TargetedOffer { get; set; }

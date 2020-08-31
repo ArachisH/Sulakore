@@ -45,6 +45,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage ChatReviewSessionCreate { get; set; }
         public HMessage CheckPetName { get; set; }
         public HMessage ClientHello { get; set; }
+        public HMessage CloseIssueDefaultAction { get; set; }
         public HMessage CloseIssues { get; set; }
         public HMessage CloseTrading { get; set; }
         public HMessage CompleteDiffieHandshake { get; set; }

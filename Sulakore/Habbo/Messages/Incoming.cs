@@ -356,6 +356,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomUserUnbanned { get; set; }
         public HMessage RoomVisualizationSettings { get; set; }
         public HMessage SanctionStatus { get; set; }
+        public HMessage SeasonalCalendarDailyOffer { get; set; }
         public HMessage SellablePetPalettes { get; set; }
         public HMessage Shout { get; set; }
         public HMessage ShowMysteryBoxWait { get; set; }

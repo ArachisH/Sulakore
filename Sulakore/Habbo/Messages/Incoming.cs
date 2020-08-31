@@ -20,6 +20,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage BonusRareInfo { get; set; }
         public HMessage BotAddedToInventory { get; set; }
         public HMessage BotError { get; set; }
+        public HMessage BotInventory { get; set; }
         public HMessage BotRemovedFromInventory { get; set; }
         public HMessage BotSettings { get; set; }
         public HMessage BuildersClubExpired { get; set; }
@@ -186,7 +187,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage Interstitial { get; set; }
         public HMessage InventoryAddEffect { get; set; }
         public HMessage InventoryBadges { get; set; }
-        public HMessage InventoryBots { get; set; }
         public HMessage InventoryItems { get; set; }
         public HMessage InventoryPets { get; set; }
         public HMessage InventoryRefresh { get; set; }

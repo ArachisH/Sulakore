@@ -120,6 +120,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GenericAlert { get; set; }
         public HMessage GenericError { get; set; }
         public HMessage GenericErrorMessages { get; set; }
+        public HMessage GetGuestRoomResult { get; set; }
         public HMessage GiftReceiverNotFound { get; set; }
         public HMessage GiftWrappingConfiguration { get; set; }
         public HMessage GotMysteryBoxPrize { get; set; }
@@ -129,7 +130,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage GuardianVotingResult { get; set; }
         public HMessage GuardianVotingTimeEnded { get; set; }
         public HMessage GuardianVotingVotes { get; set; }
-        public HMessage GuestRoomData { get; set; }
         public HMessage GuideSessionAttached { get; set; }
         public HMessage GuideSessionDetached { get; set; }
         public HMessage GuideSessionEnded { get; set; }

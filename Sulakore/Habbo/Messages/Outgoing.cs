@@ -5,6 +5,7 @@ namespace Sulakore.Habbo.Messages
     public sealed class Outgoing : HMessages
     {
         public HMessage AcceptFriend { get; set; }
+        public HMessage AcceptTrading { get; set; }
         public HMessage ActivateEffect { get; set; }
         public HMessage AddAdminRightsToMember { get; set; }
         public HMessage AddItemToTrade { get; set; }
@@ -339,7 +340,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage ThrowDice { get; set; }
         public HMessage TogglePetBreedingPermission { get; set; }
         public HMessage TogglePetRidingPermission { get; set; }
-        public HMessage TradeAccept { get; set; }
         public HMessage TradeOfferMultipleItems { get; set; }
         public HMessage TriggerColorWheel { get; set; }
         public HMessage UnacceptTrading { get; set; }

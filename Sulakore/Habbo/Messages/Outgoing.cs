@@ -83,6 +83,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetClubGiftInfo { get; set; }
         public HMessage GetClubOffers { get; set; }
         public HMessage GetCraftingRecipesAvailable { get; set; }
+        public HMessage GetCreditsInfo { get; set; }
         public HMessage GetCurrentTimingCode { get; set; }
         public HMessage GetExtendedProfile { get; set; }
         public HMessage GetExtendedProfileByName { get; set; }
@@ -278,7 +279,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestRoomWordFilter { get; set; }
         public HMessage RequestTags { get; set; }
         public HMessage RequestUserClub { get; set; }
-        public HMessage RequestUserCredits { get; set; }
         public HMessage RequestUserTags { get; set; }
         public HMessage RequestUserWardrobe { get; set; }
         public HMessage ResetUnseenItemIds { get; set; }

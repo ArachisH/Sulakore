@@ -195,7 +195,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage ItemAdd { get; set; }
         public HMessage ItemDataUpdate { get; set; }
         public HMessage ItemRemove { get; set; }
-        public HMessage ItemState { get; set; }
         public HMessage ItemUpdate { get; set; }
         public HMessage Items { get; set; }
         public HMessage ItemsDataUpdate { get; set; }
@@ -272,6 +271,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage Objects { get; set; }
         public HMessage OfferRewardDelivered { get; set; }
         public HMessage OldPublicRooms { get; set; }
+        public HMessage OneWayDoorStatus { get; set; }
         public HMessage OpenConnection { get; set; }
         public HMessage OpenRoomCreationWindow { get; set; }
         public HMessage OtherTradingDisabled { get; set; }

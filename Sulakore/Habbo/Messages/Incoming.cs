@@ -44,6 +44,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage CarryObject { get; set; }
         public HMessage CatalogMode { get; set; }
         public HMessage CatalogPage { get; set; }
+        public HMessage CatalogPageExpiration { get; set; }
         public HMessage CatalogPagesList { get; set; }
         public HMessage CatalogSearchResult { get; set; }
         public HMessage CatalogUpdated { get; set; }
@@ -175,7 +176,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage HotelViewCommunityGoal { get; set; }
         public HMessage HotelViewConcurrentUsers { get; set; }
         public HMessage HotelViewCustomTimer { get; set; }
-        public HMessage HotelViewExpiringCatalogPageCommposer { get; set; }
         public HMessage HotelViewHideCommunityVoteButton { get; set; }
         public HMessage HotelViewNextLTDAvailable { get; set; }
         public HMessage HotelWillCloseInMinutes { get; set; }

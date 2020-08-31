@@ -251,7 +251,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage NavigatorEventCategories { get; set; }
         public HMessage NavigatorLiftedRooms { get; set; }
         public HMessage NavigatorMetaData { get; set; }
-        public HMessage NavigatorRoomEvent { get; set; }
         public HMessage NavigatorSavedSearches { get; set; }
         public HMessage NavigatorSearchResults { get; set; }
         public HMessage NavigatorSettings { get; set; }
@@ -327,6 +326,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomEditSettingsError { get; set; }
         public HMessage RoomEnterError { get; set; }
         public HMessage RoomEntryInfo { get; set; }
+        public HMessage RoomEvent { get; set; }
         public HMessage RoomEventMessage { get; set; }
         public HMessage RoomFilterWords { get; set; }
         public HMessage RoomFloorThicknessUpdated { get; set; }

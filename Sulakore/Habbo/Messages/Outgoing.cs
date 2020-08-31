@@ -246,6 +246,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestDeleteRoom { get; set; }
         public HMessage RequestFriends { get; set; }
         public HMessage RequestFurniInventory { get; set; }
+        public HMessage RequestFurniInventoryWhenNotInRoom { get; set; }
         public HMessage RequestGameConfigurations { get; set; }
         public HMessage RequestGuideAssistance { get; set; }
         public HMessage RequestGuideTool { get; set; }
@@ -328,7 +329,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage Shout { get; set; }
         public HMessage Sign { get; set; }
         public HMessage StartTyping { get; set; }
-        public HMessage TestInventory { get; set; }
         public HMessage ThrowDice { get; set; }
         public HMessage TogglePetBreedingPermission { get; set; }
         public HMessage TogglePetRidingPermission { get; set; }

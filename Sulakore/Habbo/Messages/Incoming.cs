@@ -55,7 +55,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage ChangeNameUpdate { get; set; }
         public HMessage Chat { get; set; }
         public HMessage CloseConnection { get; set; }
-        public HMessage CloseWebPage { get; set; }
         public HMessage ClubCenterData { get; set; }
         public HMessage ClubData { get; set; }
         public HMessage ClubGiftInfo { get; set; }
@@ -318,6 +317,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RentableItemBuyOutPrice { get; set; }
         public HMessage RentableSpaceInfo { get; set; }
         public HMessage ReportRoomForm { get; set; }
+        public HMessage RestoreClient { get; set; }
         public HMessage RoomAdError { get; set; }
         public HMessage RoomAdPurchaseInfo { get; set; }
         public HMessage RoomAddRightsList { get; set; }

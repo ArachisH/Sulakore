@@ -7,6 +7,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage AcceptFriend { get; set; }
         public HMessage ActivateEffect { get; set; }
         public HMessage AddAdminRightsToMember { get; set; }
+        public HMessage AddItemToTrade { get; set; }
         public HMessage AdventCalendarForceOpen { get; set; }
         public HMessage AdventCalendarOpenDay { get; set; }
         public HMessage AdvertisingSave { get; set; }
@@ -339,7 +340,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage TradeAccept { get; set; }
         public HMessage TradeCancelOfferItem { get; set; }
         public HMessage TradeConfirm { get; set; }
-        public HMessage TradeOfferItem { get; set; }
         public HMessage TradeOfferMultipleItems { get; set; }
         public HMessage TradeUnAccept { get; set; }
         public HMessage TriggerColorWheel { get; set; }

@@ -285,7 +285,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage PetInfo { get; set; }
         public HMessage PetInventory { get; set; }
         public HMessage PetLevelNotification { get; set; }
-        public HMessage PetLevelUpdated { get; set; }
+        public HMessage PetLevelUpdate { get; set; }
         public HMessage PetNameError { get; set; }
         public HMessage PetPackageNameValidation { get; set; }
         public HMessage PetPlacingError { get; set; }

@@ -202,6 +202,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage NuxScriptProceed { get; set; }
         public HMessage OpenFlatConnection { get; set; }
         public HMessage OpenRecycleBox { get; set; }
+        public HMessage OpenTrading { get; set; }
         public HMessage PassCarryItem { get; set; }
         public HMessage PassCarryItemToPet { get; set; }
         public HMessage PeerUsersClassification { get; set; }
@@ -339,7 +340,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage TradeConfirm { get; set; }
         public HMessage TradeOfferItem { get; set; }
         public HMessage TradeOfferMultipleItems { get; set; }
-        public HMessage TradeStart { get; set; }
         public HMessage TradeUnAccept { get; set; }
         public HMessage TriggerColorWheel { get; set; }
         public HMessage UnbanRoomUser { get; set; }

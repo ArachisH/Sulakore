@@ -12,12 +12,12 @@ namespace Sulakore.Habbo.Messages
         public HMessage ActivityPoints { get; set; }
         public HMessage AddBot { get; set; }
         public HMessage AddPet { get; set; }
-        public HMessage AddUserBadge { get; set; }
         public HMessage AuthenticationOK { get; set; }
         public HMessage AvailabilityStatus { get; set; }
         public HMessage AvatarEffect { get; set; }
         public HMessage AvatarEffects { get; set; }
         public HMessage BadgePointLimits { get; set; }
+        public HMessage BadgeReceived { get; set; }
         public HMessage BonusRareInfo { get; set; }
         public HMessage BotError { get; set; }
         public HMessage BotSettings { get; set; }

@@ -296,7 +296,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage PostItStickyPoleOpen { get; set; }
         public HMessage PresentItemOpened { get; set; }
         public HMessage PrivateRooms { get; set; }
-        public HMessage PromoteOwnRoomsList { get; set; }
         public HMessage PublicRooms { get; set; }
         public HMessage PurchaseError { get; set; }
         public HMessage PurchaseNotAllowed { get; set; }
@@ -319,6 +318,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage ReportRoomForm { get; set; }
         public HMessage RoomAccessDenied { get; set; }
         public HMessage RoomAdError { get; set; }
+        public HMessage RoomAdPurchaseInfo { get; set; }
         public HMessage RoomAddRightsList { get; set; }
         public HMessage RoomBannedUsers { get; set; }
         public HMessage RoomCategories { get; set; }

@@ -278,7 +278,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage PeerUsersClassification { get; set; }
         public HMessage PerkAllowances { get; set; }
         public HMessage PetAddedToInventory { get; set; }
-        public HMessage PetBoughtNotification { get; set; }
         public HMessage PetBreedingCompleted { get; set; }
         public HMessage PetBreedingFailed { get; set; }
         public HMessage PetBreedingResult { get; set; }
@@ -291,6 +290,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage PetLevelUpdated { get; set; }
         public HMessage PetNameError { get; set; }
         public HMessage PetPackageNameValidation { get; set; }
+        public HMessage PetReceived { get; set; }
         public HMessage PetRemovedFromInventory { get; set; }
         public HMessage PetStatusUpdate { get; set; }
         public HMessage PetTrainingPanel { get; set; }

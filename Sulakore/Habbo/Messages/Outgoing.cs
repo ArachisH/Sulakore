@@ -77,6 +77,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetBadgePointLimits { get; set; }
         public HMessage GetBadges { get; set; }
         public HMessage GetBonusRareInfo { get; set; }
+        public HMessage GetBotInventory { get; set; }
         public HMessage GetBundleDiscount { get; set; }
         public HMessage GetCatalogIndex { get; set; }
         public HMessage GetCfhStatus { get; set; }
@@ -252,7 +253,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestGuildManage { get; set; }
         public HMessage RequestHighestScoreRooms { get; set; }
         public HMessage RequestInitFriends { get; set; }
-        public HMessage RequestInventoryBots { get; set; }
         public HMessage RequestInventoryItems { get; set; }
         public HMessage RequestInventoryPets { get; set; }
         public HMessage RequestMeMenuSettings { get; set; }

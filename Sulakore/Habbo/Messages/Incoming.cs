@@ -111,10 +111,10 @@ namespace Sulakore.Habbo.Messages
         public HMessage FurniListAddOrUpdateParser { get; set; }
         public HMessage FurniListRemove { get; set; }
         public HMessage FurnitureAliases { get; set; }
+        public HMessage Game2AccountGameStatus { get; set; }
         public HMessage Game2WeeklyLeaderboard { get; set; }
         public HMessage Game2WeeklySmallLeaderboard { get; set; }
         public HMessage GameAchievementsList { get; set; }
-        public HMessage GameCenterAccountInfo { get; set; }
         public HMessage GameCenterFeaturedPlayers { get; set; }
         public HMessage GameCenterGame { get; set; }
         public HMessage GameCenterGameList { get; set; }

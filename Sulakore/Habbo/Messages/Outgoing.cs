@@ -276,7 +276,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestRoomRights { get; set; }
         public HMessage RequestRoomSettings { get; set; }
         public HMessage RequestRoomWordFilter { get; set; }
-        public HMessage RequestSellItem { get; set; }
         public HMessage RequestTags { get; set; }
         public HMessage RequestUserClub { get; set; }
         public HMessage RequestUserCredits { get; set; }

@@ -311,7 +311,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RemoveFriend { get; set; }
         public HMessage RemoveGuildFromRoom { get; set; }
         public HMessage RemovePet { get; set; }
-        public HMessage RemoveRoomEvent { get; set; }
         public HMessage RentableItemBuyOutPrice { get; set; }
         public HMessage RentableSpaceInfo { get; set; }
         public HMessage ReportRoomForm { get; set; }
@@ -327,6 +326,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomEnterError { get; set; }
         public HMessage RoomEntryInfo { get; set; }
         public HMessage RoomEvent { get; set; }
+        public HMessage RoomEventCancel { get; set; }
         public HMessage RoomFilterWords { get; set; }
         public HMessage RoomFloorThicknessUpdated { get; set; }
         public HMessage RoomInvite { get; set; }

@@ -162,6 +162,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GuildMembers { get; set; }
         public HMessage GuildRefreshMembersList { get; set; }
         public HMessage HabboActivityPointNotification { get; set; }
+        public HMessage HabboClubExtendOffer { get; set; }
         public HMessage HabboClubOffers { get; set; }
         public HMessage HabboGroupBadges { get; set; }
         public HMessage HallOfFame { get; set; }

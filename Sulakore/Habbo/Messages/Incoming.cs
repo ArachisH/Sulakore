@@ -41,7 +41,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage CanCreateRoom { get; set; }
         public HMessage CancelMysteryBoxWait { get; set; }
         public HMessage CantConnect { get; set; }
-        public HMessage CantScratchPetNotOldEnough { get; set; }
         public HMessage CarryObject { get; set; }
         public HMessage CatalogIndex { get; set; }
         public HMessage CatalogMode { get; set; }
@@ -292,6 +291,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage PetPlacingError { get; set; }
         public HMessage PetReceived { get; set; }
         public HMessage PetRemovedFromInventory { get; set; }
+        public HMessage PetRespectFailed { get; set; }
         public HMessage PetStatusUpdate { get; set; }
         public HMessage PetTrainingPanel { get; set; }
         public HMessage Ping { get; set; }

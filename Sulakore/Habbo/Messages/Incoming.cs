@@ -14,7 +14,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage AddBot { get; set; }
         public HMessage AddPet { get; set; }
         public HMessage AddUserBadge { get; set; }
-        public HMessage AlertLimitedSoldOut { get; set; }
         public HMessage AlertPurchaseUnavailable { get; set; }
         public HMessage AuthenticationOK { get; set; }
         public HMessage AvailabilityStatus { get; set; }
@@ -213,6 +212,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage JukeBoxTrackData { get; set; }
         public HMessage LatencyPingResponse { get; set; }
         public HMessage LeprechaunStarterBundle { get; set; }
+        public HMessage LimitedEditionSoldOut { get; set; }
         public HMessage LoveLockFurniFinished { get; set; }
         public HMessage LoveLockFurniFriendConfirmed { get; set; }
         public HMessage LoveLockFurniStart { get; set; }

@@ -75,7 +75,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage DebugConsole { get; set; }
         public HMessage DiceValue { get; set; }
         public HMessage DisconnectReason { get; set; }
-        public HMessage Discount { get; set; }
         public HMessage DoorbellAddUser { get; set; }
         public HMessage EffectsListAdd { get; set; }
         public HMessage EffectsListEffectEnable { get; set; }

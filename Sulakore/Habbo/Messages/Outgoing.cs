@@ -243,7 +243,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestCatalogPage { get; set; }
         public HMessage RequestCraftingRecipes { get; set; }
         public HMessage RequestDeleteRoom { get; set; }
-        public HMessage RequestDiscount { get; set; }
         public HMessage RequestFriends { get; set; }
         public HMessage RequestGameConfigurations { get; set; }
         public HMessage RequestGuideAssistance { get; set; }

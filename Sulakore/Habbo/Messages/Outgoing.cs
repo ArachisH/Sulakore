@@ -6,7 +6,6 @@ namespace Sulakore.Habbo.Messages
     {
         public HMessage AcceptFriend { get; set; }
         public HMessage AcceptTrading { get; set; }
-        public HMessage ActivateEffect { get; set; }
         public HMessage AddAdminRightsToMember { get; set; }
         public HMessage AddItemToTrade { get; set; }
         public HMessage AddItemsToTrade { get; set; }
@@ -19,6 +18,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage ApproveMembershipRequest { get; set; }
         public HMessage ApproveName { get; set; }
         public HMessage AssignRights { get; set; }
+        public HMessage AvatarEffectActivated { get; set; }
         public HMessage AvatarExpression { get; set; }
         public HMessage BotSaveSettings { get; set; }
         public HMessage BotSettings { get; set; }

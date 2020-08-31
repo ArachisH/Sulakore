@@ -4,6 +4,7 @@ namespace Sulakore.Habbo.Messages
 {
     public sealed class Incoming : HMessages
     {
+        public HMessage AcceptFriendResult { get; set; }
         public HMessage Achievement { get; set; }
         public HMessage AchievementScore { get; set; }
         public HMessage AchievementUnlocked { get; set; }
@@ -104,7 +105,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage FriendFindingRoom { get; set; }
         public HMessage FriendListUpdate { get; set; }
         public HMessage FriendRequest { get; set; }
-        public HMessage FriendRequestError { get; set; }
         public HMessage FriendRequests { get; set; }
         public HMessage FriendToolbarNotification { get; set; }
         public HMessage Friends { get; set; }

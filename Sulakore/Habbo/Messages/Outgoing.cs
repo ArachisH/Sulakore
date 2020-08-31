@@ -77,7 +77,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage FollowFriend { get; set; }
         public HMessage FootballGateSaveLook { get; set; }
         public HMessage FriendListUpdate { get; set; }
-        public HMessage FriendPrivateMessage { get; set; }
         public HMessage FriendRequest { get; set; }
         public HMessage Game2GetAccountGameStatus { get; set; }
         public HMessage Game2LoadStageReady { get; set; }
@@ -328,6 +327,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage SearchUser { get; set; }
         public HMessage SelectClubGift { get; set; }
         public HMessage SelectFavouriteHabboGroup { get; set; }
+        public HMessage SendMsg { get; set; }
         public HMessage SendRoomInvite { get; set; }
         public HMessage SetActivatedBadges { get; set; }
         public HMessage SetClothingChangeData { get; set; }

@@ -91,6 +91,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetFriendRequests { get; set; }
         public HMessage GetFurnitureAliases { get; set; }
         public HMessage GetGameStatus { get; set; }
+        public HMessage GetGiftWrappingConfiguration { get; set; }
         public HMessage GetGuestRoomData { get; set; }
         public HMessage GetGuildEditInfo { get; set; }
         public HMessage GetGuildEditorData { get; set; }
@@ -245,7 +246,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestDiscount { get; set; }
         public HMessage RequestFriends { get; set; }
         public HMessage RequestGameConfigurations { get; set; }
-        public HMessage RequestGiftConfiguration { get; set; }
         public HMessage RequestGuideAssistance { get; set; }
         public HMessage RequestGuideTool { get; set; }
         public HMessage RequestGuildBuyRooms { get; set; }

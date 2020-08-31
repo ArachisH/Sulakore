@@ -187,7 +187,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage InitCamera { get; set; }
         public HMessage InitDiffieHandshake { get; set; }
         public HMessage Interstitial { get; set; }
-        public HMessage InventoryAddEffect { get; set; }
         public HMessage InventoryBadges { get; set; }
         public HMessage IsFirstLoginOfDay { get; set; }
         public HMessage IsOfferGiftable { get; set; }

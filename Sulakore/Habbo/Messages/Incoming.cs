@@ -245,7 +245,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage ModToolUserRoomVisits { get; set; }
         public HMessage ModeratorCaution { get; set; }
         public HMessage ModeratorMessage { get; set; }
-        public HMessage MoodLightData { get; set; }
         public HMessage MutedWhisper { get; set; }
         public HMessage MysteryBoxKeys { get; set; }
         public HMessage NavigatorEventCategories { get; set; }
@@ -325,6 +324,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomCategories { get; set; }
         public HMessage RoomCategoryUpdateMessage { get; set; }
         public HMessage RoomChatSettings { get; set; }
+        public HMessage RoomDimmerPresets { get; set; }
         public HMessage RoomEditSettingsError { get; set; }
         public HMessage RoomEntryInfo { get; set; }
         public HMessage RoomEvent { get; set; }

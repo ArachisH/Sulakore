@@ -73,7 +73,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage FriendRequest { get; set; }
         public HMessage Game2GetAccountGameStatus { get; set; }
         public HMessage GameCenter { get; set; }
-        public HMessage GameCenterJoinGame { get; set; }
         public HMessage GameCenterLoadGame { get; set; }
         public HMessage GameCenterRequestGameStatus { get; set; }
         public HMessage GetBadgePointLimits { get; set; }
@@ -146,6 +145,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage InitCamera { get; set; }
         public HMessage InitDiffieHandshake { get; set; }
         public HMessage JoinHabboGroup { get; set; }
+        public HMessage JoinQueue { get; set; }
         public HMessage JukeBoxAddSoundTrack { get; set; }
         public HMessage JukeBoxEventOne { get; set; }
         public HMessage JukeBoxEventThree { get; set; }

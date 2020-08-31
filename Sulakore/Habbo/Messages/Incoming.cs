@@ -6,6 +6,7 @@ namespace Sulakore.Habbo.Messages
     {
         public HMessage AcceptFriendResult { get; set; }
         public HMessage Achievement { get; set; }
+        public HMessage AchievementResolutions { get; set; }
         public HMessage AchievementScore { get; set; }
         public HMessage AchievementUnlocked { get; set; }
         public HMessage Achievements { get; set; }
@@ -257,7 +258,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage NewNavigatorCategoryUserCount { get; set; }
         public HMessage NewNavigatorSettings { get; set; }
         public HMessage NewUserExperienceGiftOffer { get; set; }
-        public HMessage NewYearResolution { get; set; }
         public HMessage NewYearResolutionCompleted { get; set; }
         public HMessage NewYearResolutionProgress { get; set; }
         public HMessage NewsWidgets { get; set; }

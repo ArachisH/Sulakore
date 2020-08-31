@@ -20,7 +20,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage BotSaveSettings { get; set; }
         public HMessage BotSettings { get; set; }
         public HMessage BreedPets { get; set; }
-        public HMessage BuyItem { get; set; }
         public HMessage BuyMarketplaceOffer { get; set; }
         public HMessage BuyMarketplaceTokens { get; set; }
         public HMessage BuyRoomPromotion { get; set; }

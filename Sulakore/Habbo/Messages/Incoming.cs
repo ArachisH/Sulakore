@@ -125,7 +125,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage GameCenterFeaturedPlayers { get; set; }
         public HMessage GameCenterGame { get; set; }
         public HMessage GameCenterGameList { get; set; }
-        public HMessage GenericAlert { get; set; }
         public HMessage GenericError { get; set; }
         public HMessage GenericErrorMessages { get; set; }
         public HMessage GetGuestRoomResult { get; set; }
@@ -171,6 +170,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GuildMembers { get; set; }
         public HMessage GuildRefreshMembersList { get; set; }
         public HMessage HabboActivityPointNotification { get; set; }
+        public HMessage HabboBroadcast { get; set; }
         public HMessage HabboClubExtendOffer { get; set; }
         public HMessage HabboClubOffers { get; set; }
         public HMessage HabboGroupBadges { get; set; }

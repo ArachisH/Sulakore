@@ -175,7 +175,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage HotelViewConcurrentUsers { get; set; }
         public HMessage HotelViewCustomTimer { get; set; }
         public HMessage HotelViewHideCommunityVoteButton { get; set; }
-        public HMessage HotelWillCloseInMinutesAndBackIn { get; set; }
         public HMessage IdentityAccounts { get; set; }
         public HMessage IgnoredUsers { get; set; }
         public HMessage InClientLink { get; set; }
@@ -216,6 +215,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage LoveLockFurniFriendConfirmed { get; set; }
         public HMessage LoveLockFurniStart { get; set; }
         public HMessage MOTDNotification { get; set; }
+        public HMessage MaintenanceStatus { get; set; }
         public HMessage MarketplaceBuyOfferResult { get; set; }
         public HMessage MarketplaceCancelSale { get; set; }
         public HMessage MarketplaceConfiguration { get; set; }

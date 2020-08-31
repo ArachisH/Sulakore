@@ -71,10 +71,10 @@ namespace Sulakore.Habbo.Messages
         public HMessage FriendListUpdate { get; set; }
         public HMessage FriendPrivateMessage { get; set; }
         public HMessage FriendRequest { get; set; }
+        public HMessage Game2GetAccountGameStatus { get; set; }
         public HMessage GameCenter { get; set; }
         public HMessage GameCenterJoinGame { get; set; }
         public HMessage GameCenterLoadGame { get; set; }
-        public HMessage GameCenterRequestAccountStatus { get; set; }
         public HMessage GameCenterRequestGameStatus { get; set; }
         public HMessage GetBadgePointLimits { get; set; }
         public HMessage GetBadges { get; set; }

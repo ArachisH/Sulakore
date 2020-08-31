@@ -377,8 +377,8 @@ namespace Sulakore.Habbo.Messages
         public HMessage TradeAccepted { get; set; }
         public HMessage TradeCloseWindow { get; set; }
         public HMessage TradeComplete { get; set; }
+        public HMessage TradeOpenFailed { get; set; }
         public HMessage TradeStart { get; set; }
-        public HMessage TradeStartFail { get; set; }
         public HMessage TradeStopped { get; set; }
         public HMessage TradeUpdate { get; set; }
         public HMessage TradingWaitingConfirm { get; set; }

@@ -256,7 +256,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage NavigatorSettings { get; set; }
         public HMessage NewNavigatorCategoryUserCount { get; set; }
         public HMessage NewNavigatorSettings { get; set; }
-        public HMessage NewUserGift { get; set; }
+        public HMessage NewUserExperienceGiftOffer { get; set; }
         public HMessage NewYearResolution { get; set; }
         public HMessage NewYearResolutionCompleted { get; set; }
         public HMessage NewYearResolutionProgress { get; set; }

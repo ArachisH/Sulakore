@@ -92,7 +92,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetFurnitureAliases { get; set; }
         public HMessage GetGameStatus { get; set; }
         public HMessage GetGiftWrappingConfiguration { get; set; }
-        public HMessage GetGuestRoomData { get; set; }
+        public HMessage GetGuestRoom { get; set; }
         public HMessage GetGuildEditInfo { get; set; }
         public HMessage GetGuildEditorData { get; set; }
         public HMessage GetGuildMembers { get; set; }

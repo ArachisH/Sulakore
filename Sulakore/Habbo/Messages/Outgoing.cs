@@ -59,7 +59,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage DeselectFavouriteHabboGroup { get; set; }
         public HMessage DiceOff { get; set; }
         public HMessage DropCarryItem { get; set; }
-        public HMessage EditRoomPromotionMessage { get; set; }
+        public HMessage EditEvent { get; set; }
         public HMessage EnableEffect { get; set; }
         public HMessage EventLog { get; set; }
         public HMessage FindNewFriends { get; set; }

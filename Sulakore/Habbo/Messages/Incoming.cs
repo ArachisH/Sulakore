@@ -310,7 +310,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage QuizResults { get; set; }
         public HMessage RecyclerComplete { get; set; }
         public HMessage RecyclerLogic { get; set; }
-        public HMessage RedeemVoucherOK { get; set; }
         public HMessage RelationshipStatusInfo { get; set; }
         public HMessage ReloadRecycler { get; set; }
         public HMessage RemoveBot { get; set; }
@@ -411,6 +410,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage VerifyMobilePhoneWindow { get; set; }
         public HMessage VipTutorialsStart { get; set; }
         public HMessage VoucherRedeemError { get; set; }
+        public HMessage VoucherRedeemOk { get; set; }
         public HMessage WelcomeGift { get; set; }
         public HMessage WelcomeGiftError { get; set; }
         public HMessage Whisper { get; set; }

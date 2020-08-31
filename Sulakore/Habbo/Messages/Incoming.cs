@@ -385,7 +385,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage TradingWaitingConfirm { get; set; }
         public HMessage UniqueMachineID { get; set; }
         public HMessage UnseenItems { get; set; }
-        public HMessage UpdateFailed { get; set; }
         public HMessage UpdateStackHeightTileHeight { get; set; }
         public HMessage UpdateUserLook { get; set; }
         public HMessage UserBadges { get; set; }
@@ -418,6 +417,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage WiredRewardResult { get; set; }
         public HMessage WiredSaved { get; set; }
         public HMessage WiredTriggerData { get; set; }
+        public HMessage WiredValidationError { get; set; }
         public HMessage YouAreController { get; set; }
         public HMessage YouAreNotController { get; set; }
         public HMessage YouAreOwner { get; set; }

@@ -321,7 +321,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage SearchUser { get; set; }
         public HMessage SelectClubGift { get; set; }
         public HMessage SelectFavouriteHabboGroup { get; set; }
-        public HMessage SellItem { get; set; }
         public HMessage SendRoomInvite { get; set; }
         public HMessage SetActivatedBadges { get; set; }
         public HMessage SetClothingChangeData { get; set; }

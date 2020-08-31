@@ -58,6 +58,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage ClubCenterData { get; set; }
         public HMessage ClubData { get; set; }
         public HMessage ClubGiftInfo { get; set; }
+        public HMessage ClubGiftNotification { get; set; }
         public HMessage ClubGiftReceived { get; set; }
         public HMessage ClubOffers { get; set; }
         public HMessage CollapsedCategories { get; set; }
@@ -291,7 +292,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage PetPackageNameValidation { get; set; }
         public HMessage PetStatusUpdate { get; set; }
         public HMessage PetTrainingPanel { get; set; }
-        public HMessage PickMonthlyClubGiftNotification { get; set; }
         public HMessage Ping { get; set; }
         public HMessage PollQuestions { get; set; }
         public HMessage PollStart { get; set; }

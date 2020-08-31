@@ -108,6 +108,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage FriendRequests { get; set; }
         public HMessage FriendToolbarNotification { get; set; }
         public HMessage Friends { get; set; }
+        public HMessage FurniList { get; set; }
         public HMessage FurniListAddOrUpdateParser { get; set; }
         public HMessage FurniListRemove { get; set; }
         public HMessage FurnitureAliases { get; set; }
@@ -187,7 +188,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage Interstitial { get; set; }
         public HMessage InventoryAddEffect { get; set; }
         public HMessage InventoryBadges { get; set; }
-        public HMessage InventoryItems { get; set; }
         public HMessage InventoryRefresh { get; set; }
         public HMessage IsFirstLoginOfDay { get; set; }
         public HMessage IsOfferGiftable { get; set; }

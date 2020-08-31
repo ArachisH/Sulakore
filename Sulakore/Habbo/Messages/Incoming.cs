@@ -169,7 +169,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage HeightMapUpdate { get; set; }
         public HMessage HelperRequestDisabled { get; set; }
         public HMessage HotelClosedAndOpens { get; set; }
-        public HMessage HotelClosesAndWillOpenAt { get; set; }
         public HMessage HotelViewBadgeButtonConfig { get; set; }
         public HMessage HotelViewCommunityGoal { get; set; }
         public HMessage HotelViewConcurrentUsers { get; set; }
@@ -179,6 +178,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage IgnoredUsers { get; set; }
         public HMessage InClientLink { get; set; }
         public HMessage InfoFeedEnabled { get; set; }
+        public HMessage InfoHotelClosed { get; set; }
         public HMessage InfoHotelClosing { get; set; }
         public HMessage InitCamera { get; set; }
         public HMessage InitDiffieHandshake { get; set; }

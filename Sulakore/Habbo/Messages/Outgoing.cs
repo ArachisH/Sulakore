@@ -119,6 +119,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GuardianVote { get; set; }
         public HMessage GuideAdvertisementRead { get; set; }
         public HMessage GuideSessionFeedback { get; set; }
+        public HMessage GuideSessionGetRequesterRoom { get; set; }
         public HMessage GuideSessionGuideDecides { get; set; }
         public HMessage GuideSessionInviteRequester { get; set; }
         public HMessage GuideSessionIsTyping { get; set; }
@@ -126,7 +127,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage GuideSessionReport { get; set; }
         public HMessage GuideSessionRequesterCancels { get; set; }
         public HMessage GuideSessionResolved { get; set; }
-        public HMessage GuideVisitUser { get; set; }
         public HMessage GuildConfirmRemoveMember { get; set; }
         public HMessage HorseRideSettings { get; set; }
         public HMessage HorseUseItem { get; set; }

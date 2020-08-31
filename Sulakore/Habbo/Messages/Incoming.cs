@@ -415,7 +415,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage Whisper { get; set; }
         public HMessage WiredConditionData { get; set; }
         public HMessage WiredEffectData { get; set; }
-        public HMessage WiredRewardAlert { get; set; }
+        public HMessage WiredRewardResult { get; set; }
         public HMessage WiredSaved { get; set; }
         public HMessage WiredTriggerData { get; set; }
         public HMessage YouAreController { get; set; }

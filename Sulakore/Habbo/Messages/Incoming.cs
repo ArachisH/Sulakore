@@ -35,6 +35,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage BullyReportRequest { get; set; }
         public HMessage BullyReportedMessage { get; set; }
         public HMessage BundleDiscountRuleset { get; set; }
+        public HMessage CallForHelpPendingCalls { get; set; }
         public HMessage CameraCompetitionStatus { get; set; }
         public HMessage CameraPublishWaitMessage { get; set; }
         public HMessage CameraPurchaseSuccesful { get; set; }
@@ -315,7 +316,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RemoveGuildFromRoom { get; set; }
         public HMessage RentableItemBuyOutPrice { get; set; }
         public HMessage RentableSpaceInfo { get; set; }
-        public HMessage ReportRoomForm { get; set; }
         public HMessage RequestSpamWallPostIt { get; set; }
         public HMessage RestoreClient { get; set; }
         public HMessage RoomAdError { get; set; }

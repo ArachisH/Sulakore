@@ -243,7 +243,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage ModToolRoomChatlog { get; set; }
         public HMessage ModToolRoomInfo { get; set; }
         public HMessage ModToolSanctionData { get; set; }
-        public HMessage ModToolSanctionInfo { get; set; }
         public HMessage ModToolUserChatlog { get; set; }
         public HMessage ModToolUserInfo { get; set; }
         public HMessage ModToolUserRoomVisits { get; set; }
@@ -363,6 +362,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomUserTags { get; set; }
         public HMessage RoomUserUnbanned { get; set; }
         public HMessage RoomVisualizationSettings { get; set; }
+        public HMessage SanctionStatus { get; set; }
         public HMessage SellablePetPalettes { get; set; }
         public HMessage Shout { get; set; }
         public HMessage ShowMysteryBoxWait { get; set; }

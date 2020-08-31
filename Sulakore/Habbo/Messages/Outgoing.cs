@@ -118,12 +118,12 @@ namespace Sulakore.Habbo.Messages
         public HMessage GuardianNoUpdatesWanted { get; set; }
         public HMessage GuardianVote { get; set; }
         public HMessage GuideAdvertisementRead { get; set; }
-        public HMessage GuideCancelHelpRequest { get; set; }
         public HMessage GuideCloseHelpRequest { get; set; }
         public HMessage GuideHandleHelpRequest { get; set; }
         public HMessage GuideInviteUser { get; set; }
         public HMessage GuideRecommendHelper { get; set; }
         public HMessage GuideReportHelper { get; set; }
+        public HMessage GuideSessionRequesterCancels { get; set; }
         public HMessage GuideUserMessage { get; set; }
         public HMessage GuideUserTyping { get; set; }
         public HMessage GuideVisitUser { get; set; }

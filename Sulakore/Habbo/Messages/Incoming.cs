@@ -423,7 +423,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage YouArePlayingGame { get; set; }
         public HMessage YouAreSpectator { get; set; }
         public HMessage YouTradingDisabled { get; set; }
-        public HMessage YoutubeDisplayList { get; set; }
+        public HMessage YoutubeDisplayPlaylists { get; set; }
 
         public Incoming()
             : base(false)

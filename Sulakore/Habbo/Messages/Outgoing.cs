@@ -43,6 +43,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage CheckPetName { get; set; }
         public HMessage ClientHello { get; set; }
         public HMessage CloseIssues { get; set; }
+        public HMessage CloseTrading { get; set; }
         public HMessage CompleteDiffieHandshake { get; set; }
         public HMessage CompostPlant { get; set; }
         public HMessage ConfirmChangeName { get; set; }
@@ -335,7 +336,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage TogglePetRidingPermission { get; set; }
         public HMessage TradeAccept { get; set; }
         public HMessage TradeCancelOfferItem { get; set; }
-        public HMessage TradeClose { get; set; }
         public HMessage TradeConfirm { get; set; }
         public HMessage TradeOfferItem { get; set; }
         public HMessage TradeOfferMultipleItems { get; set; }

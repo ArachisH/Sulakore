@@ -237,6 +237,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RemoveBotFromFlat { get; set; }
         public HMessage RemoveFriend { get; set; }
         public HMessage RemoveItem { get; set; }
+        public HMessage RemoveItemFromTrade { get; set; }
         public HMessage RemovePetFromFlat { get; set; }
         public HMessage RemoveRights { get; set; }
         public HMessage RemoveSaddleFromPet { get; set; }
@@ -339,7 +340,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage TogglePetBreedingPermission { get; set; }
         public HMessage TogglePetRidingPermission { get; set; }
         public HMessage TradeAccept { get; set; }
-        public HMessage TradeCancelOfferItem { get; set; }
         public HMessage TradeOfferMultipleItems { get; set; }
         public HMessage TriggerColorWheel { get; set; }
         public HMessage UnacceptTrading { get; set; }

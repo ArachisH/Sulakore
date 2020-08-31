@@ -215,6 +215,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage LoveLockFurniFinished { get; set; }
         public HMessage LoveLockFurniFriendConfirmed { get; set; }
         public HMessage LoveLockFurniStart { get; set; }
+        public HMessage MOTDNotification { get; set; }
         public HMessage MarketplaceBuyError { get; set; }
         public HMessage MarketplaceBuyOfferResult { get; set; }
         public HMessage MarketplaceCancelSale { get; set; }
@@ -225,7 +226,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage MarketplaceOwnOffers { get; set; }
         public HMessage MarketplaceSellItem { get; set; }
         public HMessage MeMenuSettings { get; set; }
-        public HMessage MessagesForYou { get; set; }
         public HMessage MessengerError { get; set; }
         public HMessage MessengerInit { get; set; }
         public HMessage MinimailCount { get; set; }

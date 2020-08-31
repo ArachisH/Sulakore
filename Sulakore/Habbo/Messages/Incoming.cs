@@ -168,7 +168,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage HeightMap { get; set; }
         public HMessage HeightMapUpdate { get; set; }
         public HMessage HelperRequestDisabled { get; set; }
-        public HMessage HotelClosedAndOpens { get; set; }
         public HMessage HotelViewBadgeButtonConfig { get; set; }
         public HMessage HotelViewCommunityGoal { get; set; }
         public HMessage HotelViewConcurrentUsers { get; set; }
@@ -211,6 +210,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage LeprechaunStarterBundle { get; set; }
         public HMessage LimitedEditionSoldOut { get; set; }
         public HMessage LimitedOfferAppearingNext { get; set; }
+        public HMessage LoginFailedHotelClosed { get; set; }
         public HMessage LoveLockFurniFinished { get; set; }
         public HMessage LoveLockFurniFriendConfirmed { get; set; }
         public HMessage LoveLockFurniStart { get; set; }

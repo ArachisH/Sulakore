@@ -255,7 +255,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestInventoryBots { get; set; }
         public HMessage RequestInventoryItems { get; set; }
         public HMessage RequestInventoryPets { get; set; }
-        public HMessage RequestItemInfo { get; set; }
         public HMessage RequestMeMenuSettings { get; set; }
         public HMessage RequestMyRooms { get; set; }
         public HMessage RequestNavigatorSettings { get; set; }

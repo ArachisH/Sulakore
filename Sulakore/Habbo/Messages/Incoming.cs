@@ -46,7 +46,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage CatalogPage { get; set; }
         public HMessage CatalogPageExpiration { get; set; }
         public HMessage CatalogPublished { get; set; }
-        public HMessage CatalogSearchResult { get; set; }
         public HMessage CfhChatlog { get; set; }
         public HMessage CfhSanction { get; set; }
         public HMessage CfhTopicsInit { get; set; }
@@ -294,6 +293,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage PostItStickyPoleOpen { get; set; }
         public HMessage PresentItemOpened { get; set; }
         public HMessage PrivateRooms { get; set; }
+        public HMessage ProductOffer { get; set; }
         public HMessage PublicRooms { get; set; }
         public HMessage PurchaseError { get; set; }
         public HMessage PurchaseNotAllowed { get; set; }

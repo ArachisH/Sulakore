@@ -352,6 +352,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage UpdateGuildColors { get; set; }
         public HMessage UpdateGuildIdentity { get; set; }
         public HMessage UpdateGuildSettings { get; set; }
+        public HMessage UpdateThread { get; set; }
         public HMessage UseFurniture { get; set; }
         public HMessage UseWallItem { get; set; }
         public HMessage UserSaveLook { get; set; }

@@ -291,6 +291,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage PetLevelUpdated { get; set; }
         public HMessage PetNameError { get; set; }
         public HMessage PetPackageNameValidation { get; set; }
+        public HMessage PetRemovedFromInventory { get; set; }
         public HMessage PetStatusUpdate { get; set; }
         public HMessage PetTrainingPanel { get; set; }
         public HMessage Ping { get; set; }
@@ -314,7 +315,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage ReloadRecycler { get; set; }
         public HMessage RemoveFriend { get; set; }
         public HMessage RemoveGuildFromRoom { get; set; }
-        public HMessage RemovePet { get; set; }
         public HMessage RentableItemBuyOutPrice { get; set; }
         public HMessage RentableSpaceInfo { get; set; }
         public HMessage ReportRoomForm { get; set; }

@@ -124,6 +124,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetGuestRoomResult { get; set; }
         public HMessage GiftReceiverNotFound { get; set; }
         public HMessage GiftWrappingConfiguration { get; set; }
+        public HMessage GoToBreedingNestFailure { get; set; }
         public HMessage GotMysteryBoxPrize { get; set; }
         public HMessage GroupParts { get; set; }
         public HMessage GuardianNewReportReceived { get; set; }
@@ -281,7 +282,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage PetBreedingFailed { get; set; }
         public HMessage PetBreedingResult { get; set; }
         public HMessage PetBreedingStart { get; set; }
-        public HMessage PetBreedingStartFailed { get; set; }
         public HMessage PetInfo { get; set; }
         public HMessage PetInventory { get; set; }
         public HMessage PetLevelUp { get; set; }

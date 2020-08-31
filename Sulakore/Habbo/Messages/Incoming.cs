@@ -188,7 +188,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage InventoryAddEffect { get; set; }
         public HMessage InventoryBadges { get; set; }
         public HMessage InventoryItems { get; set; }
-        public HMessage InventoryPets { get; set; }
         public HMessage InventoryRefresh { get; set; }
         public HMessage IsFirstLoginOfDay { get; set; }
         public HMessage IsOfferGiftable { get; set; }
@@ -287,6 +286,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage PetBreedingStartFailed { get; set; }
         public HMessage PetError { get; set; }
         public HMessage PetInfo { get; set; }
+        public HMessage PetInventory { get; set; }
         public HMessage PetLevelUp { get; set; }
         public HMessage PetLevelUpdated { get; set; }
         public HMessage PetNameError { get; set; }

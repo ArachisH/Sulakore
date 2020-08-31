@@ -67,6 +67,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage CollapsedCategories { get; set; }
         public HMessage CompetitionEntrySubmitResult { get; set; }
         public HMessage CompleteDiffieHandshake { get; set; }
+        public HMessage ConcurrentUsersGoalProgress { get; set; }
         public HMessage ConvertedRoomId { get; set; }
         public HMessage CraftableProducts { get; set; }
         public HMessage CraftingComposerFour { get; set; }
@@ -175,7 +176,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage HelperRequestDisabled { get; set; }
         public HMessage HotelViewBadgeButtonConfig { get; set; }
         public HMessage HotelViewCommunityGoal { get; set; }
-        public HMessage HotelViewConcurrentUsers { get; set; }
         public HMessage HotelViewCustomTimer { get; set; }
         public HMessage HotelViewHideCommunityVoteButton { get; set; }
         public HMessage IdentityAccounts { get; set; }

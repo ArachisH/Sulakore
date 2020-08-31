@@ -14,7 +14,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage AddBot { get; set; }
         public HMessage AddPet { get; set; }
         public HMessage AddUserBadge { get; set; }
-        public HMessage AlertPurchaseUnavailable { get; set; }
         public HMessage AuthenticationOK { get; set; }
         public HMessage AvailabilityStatus { get; set; }
         public HMessage AvatarEffect { get; set; }
@@ -300,6 +299,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage PromoteOwnRoomsList { get; set; }
         public HMessage PublicRooms { get; set; }
         public HMessage PurchaseError { get; set; }
+        public HMessage PurchaseNotAllowed { get; set; }
         public HMessage PurchaseOK { get; set; }
         public HMessage QuestCompleted { get; set; }
         public HMessage QuestExpired { get; set; }

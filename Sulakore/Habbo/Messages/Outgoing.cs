@@ -245,6 +245,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestCraftingRecipes { get; set; }
         public HMessage RequestDeleteRoom { get; set; }
         public HMessage RequestFriends { get; set; }
+        public HMessage RequestFurniInventory { get; set; }
         public HMessage RequestGameConfigurations { get; set; }
         public HMessage RequestGuideAssistance { get; set; }
         public HMessage RequestGuideTool { get; set; }
@@ -253,7 +254,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestGuildManage { get; set; }
         public HMessage RequestHighestScoreRooms { get; set; }
         public HMessage RequestInitFriends { get; set; }
-        public HMessage RequestInventoryItems { get; set; }
         public HMessage RequestMeMenuSettings { get; set; }
         public HMessage RequestMyRooms { get; set; }
         public HMessage RequestNavigatorSettings { get; set; }

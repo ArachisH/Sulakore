@@ -164,7 +164,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage GuildRefreshMembersList { get; set; }
         public HMessage HabboActivityPointNotification { get; set; }
         public HMessage HabboGroupBadges { get; set; }
-        public HMessage HabboMall { get; set; }
         public HMessage HallOfFame { get; set; }
         public HMessage HeightMap { get; set; }
         public HMessage HeightMapUpdate { get; set; }
@@ -375,6 +374,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage TalentTrackEmailFailed { get; set; }
         public HMessage TalentTrackEmailVerified { get; set; }
         public HMessage TargetedOffer { get; set; }
+        public HMessage TargetedOfferNotFound { get; set; }
         public HMessage TradeAccepted { get; set; }
         public HMessage TradeCloseWindow { get; set; }
         public HMessage TradeComplete { get; set; }

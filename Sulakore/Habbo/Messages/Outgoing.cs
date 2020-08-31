@@ -108,6 +108,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetMarketplaceOffers { get; set; }
         public HMessage GetMarketplaceOwnOffers { get; set; }
         public HMessage GetPetCommands { get; set; }
+        public HMessage GetPetInventory { get; set; }
         public HMessage GetPollData { get; set; }
         public HMessage GetQuizQuestions { get; set; }
         public HMessage GetRelationshipStatusInfo { get; set; }
@@ -254,7 +255,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestHighestScoreRooms { get; set; }
         public HMessage RequestInitFriends { get; set; }
         public HMessage RequestInventoryItems { get; set; }
-        public HMessage RequestInventoryPets { get; set; }
         public HMessage RequestMeMenuSettings { get; set; }
         public HMessage RequestMyRooms { get; set; }
         public HMessage RequestNavigatorSettings { get; set; }

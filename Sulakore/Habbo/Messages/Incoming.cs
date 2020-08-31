@@ -39,6 +39,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage CanCreateEvent { get; set; }
         public HMessage CanCreateRoom { get; set; }
         public HMessage CancelMysteryBoxWait { get; set; }
+        public HMessage CantConnect { get; set; }
         public HMessage CantScratchPetNotOldEnough { get; set; }
         public HMessage CarryObject { get; set; }
         public HMessage CatalogIndex { get; set; }
@@ -325,7 +326,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomCategoryUpdateMessage { get; set; }
         public HMessage RoomChatSettings { get; set; }
         public HMessage RoomEditSettingsError { get; set; }
-        public HMessage RoomEnterError { get; set; }
         public HMessage RoomEntryInfo { get; set; }
         public HMessage RoomEvent { get; set; }
         public HMessage RoomEventCancel { get; set; }

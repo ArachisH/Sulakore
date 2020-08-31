@@ -190,6 +190,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage InventoryPets { get; set; }
         public HMessage InventoryRefresh { get; set; }
         public HMessage IsFirstLoginOfDay { get; set; }
+        public HMessage IsOfferGiftable { get; set; }
         public HMessage IssueCloseNotification { get; set; }
         public HMessage ItemAdd { get; set; }
         public HMessage ItemDataUpdate { get; set; }

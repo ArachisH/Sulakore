@@ -247,6 +247,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage ModToolUserChatlog { get; set; }
         public HMessage ModToolUserInfo { get; set; }
         public HMessage ModToolUserRoomVisits { get; set; }
+        public HMessage ModeratorCaution { get; set; }
         public HMessage ModeratorMessage { get; set; }
         public HMessage MoodLightData { get; set; }
         public HMessage MutedWhisper { get; set; }
@@ -370,7 +371,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage SimplePollStart { get; set; }
         public HMessage Sleep { get; set; }
         public HMessage SlideObjectBundle { get; set; }
-        public HMessage StaffAlertWithLinkAndOpenHabboWay { get; set; }
         public HMessage SubmitCompetitionRoom { get; set; }
         public HMessage Tags { get; set; }
         public HMessage TalentLevelUpdate { get; set; }

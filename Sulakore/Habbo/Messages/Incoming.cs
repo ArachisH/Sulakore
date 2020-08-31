@@ -14,6 +14,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage AddPet { get; set; }
         public HMessage AuthenticationOK { get; set; }
         public HMessage AvailabilityStatus { get; set; }
+        public HMessage AvailabilityTime { get; set; }
         public HMessage AvatarEffect { get; set; }
         public HMessage AvatarEffects { get; set; }
         public HMessage BadgePointLimits { get; set; }

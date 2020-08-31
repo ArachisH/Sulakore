@@ -296,7 +296,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage Ping { get; set; }
         public HMessage PollQuestions { get; set; }
         public HMessage PollStart { get; set; }
-        public HMessage PostItStickyPoleOpen { get; set; }
         public HMessage PresentItemOpened { get; set; }
         public HMessage PrivateRooms { get; set; }
         public HMessage ProductOffer { get; set; }
@@ -317,6 +316,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RentableItemBuyOutPrice { get; set; }
         public HMessage RentableSpaceInfo { get; set; }
         public HMessage ReportRoomForm { get; set; }
+        public HMessage RequestSpamWallPostIt { get; set; }
         public HMessage RestoreClient { get; set; }
         public HMessage RoomAdError { get; set; }
         public HMessage RoomAdPurchaseInfo { get; set; }

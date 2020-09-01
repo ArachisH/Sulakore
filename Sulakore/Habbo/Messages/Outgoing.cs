@@ -49,7 +49,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage CloseIssues { get; set; }
         public HMessage CloseTrading { get; set; }
         public HMessage CompleteDiffieHandshake { get; set; }
-        public HMessage CompostPlant { get; set; }
         public HMessage ConfirmAcceptTrading { get; set; }
         public HMessage ConfirmChangeName { get; set; }
         public HMessage ConfirmDeclineTrading { get; set; }
@@ -144,6 +143,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GuideSessionRequesterCancels { get; set; }
         public HMessage GuideSessionResolved { get; set; }
         public HMessage GuildConfirmRemoveMember { get; set; }
+        public HMessage HarvestPet { get; set; }
         public HMessage HotelView { get; set; }
         public HMessage HotelViewClaimBadge { get; set; }
         public HMessage HotelViewClaimBadgeReward { get; set; }

@@ -372,7 +372,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage TalentLevelUpdate { get; set; }
         public HMessage TalentTrack { get; set; }
         public HMessage TalentTrackEmailFailed { get; set; }
-        public HMessage TalentTrackEmailVerified { get; set; }
         public HMessage TargetedOffer { get; set; }
         public HMessage TargetedOfferNotFound { get; set; }
         public HMessage TradeAccepted { get; set; }

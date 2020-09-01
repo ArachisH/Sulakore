@@ -317,7 +317,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RentableItemBuyOutPrice { get; set; }
         public HMessage RentableSpaceInfo { get; set; }
         public HMessage ReportRoomForm { get; set; }
-        public HMessage RoomAccessDenied { get; set; }
         public HMessage RoomAdError { get; set; }
         public HMessage RoomAdPurchaseInfo { get; set; }
         public HMessage RoomAddRightsList { get; set; }

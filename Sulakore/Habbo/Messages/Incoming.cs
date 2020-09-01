@@ -391,7 +391,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage UserClub { get; set; }
         public HMessage UserInfo { get; set; }
         public HMessage UserObject { get; set; }
-        public HMessage UserPoints { get; set; }
         public HMessage UserProfile { get; set; }
         public HMessage UserRemove { get; set; }
         public HMessage UserRights { get; set; }

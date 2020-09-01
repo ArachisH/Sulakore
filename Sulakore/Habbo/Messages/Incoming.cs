@@ -346,7 +346,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomSettings { get; set; }
         public HMessage RoomSettingsSaved { get; set; }
         public HMessage RoomSettingsUpdated { get; set; }
-        public HMessage RoomUserChange { get; set; }
         public HMessage RoomUserData { get; set; }
         public HMessage RoomUserIgnored { get; set; }
         public HMessage RoomUserNameChanged { get; set; }
@@ -386,6 +385,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage UpdateUserLook { get; set; }
         public HMessage UserBadges { get; set; }
         public HMessage UserBanned { get; set; }
+        public HMessage UserChange { get; set; }
         public HMessage UserCitizenship { get; set; }
         public HMessage UserClub { get; set; }
         public HMessage UserInfo { get; set; }

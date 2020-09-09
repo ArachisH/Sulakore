@@ -327,7 +327,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomEnterError { get; set; }
         public HMessage RoomEntryInfo { get; set; }
         public HMessage RoomEvent { get; set; }
-        public HMessage RoomEventMessage { get; set; }
         public HMessage RoomFilterWords { get; set; }
         public HMessage RoomFloorThicknessUpdated { get; set; }
         public HMessage RoomInvite { get; set; }

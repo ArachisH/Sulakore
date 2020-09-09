@@ -172,7 +172,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage HotelClosedAndOpens { get; set; }
         public HMessage HotelClosesAndWillOpenAt { get; set; }
         public HMessage HotelViewBadgeButtonConfig { get; set; }
-        public HMessage HotelViewCatalogPageExpiring { get; set; }
         public HMessage HotelViewCommunityGoal { get; set; }
         public HMessage HotelViewConcurrentUsers { get; set; }
         public HMessage HotelViewCustomTimer { get; set; }

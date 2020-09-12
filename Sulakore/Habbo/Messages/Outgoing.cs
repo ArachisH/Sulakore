@@ -337,6 +337,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage SetItemData { get; set; }
         public HMessage SetObjectData { get; set; }
         public HMessage SetStackHelperHeight { get; set; }
+        public HMessage SetTargetedOfferState { get; set; }
         public HMessage Shout { get; set; }
         public HMessage Sign { get; set; }
         public HMessage StartTyping { get; set; }

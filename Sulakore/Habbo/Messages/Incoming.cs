@@ -304,6 +304,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage QuestCompleted { get; set; }
         public HMessage QuestExpired { get; set; }
         public HMessage Question { get; set; }
+        public HMessage QuestionAnswered { get; set; }
         public HMessage QuizData { get; set; }
         public HMessage QuizResults { get; set; }
         public HMessage RecyclerComplete { get; set; }
@@ -360,7 +361,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage SellablePetPalettes { get; set; }
         public HMessage Shout { get; set; }
         public HMessage ShowMysteryBoxWait { get; set; }
-        public HMessage SimplePollAnswer { get; set; }
         public HMessage SimplePollAnswers { get; set; }
         public HMessage Sleep { get; set; }
         public HMessage SlideObjectBundle { get; set; }

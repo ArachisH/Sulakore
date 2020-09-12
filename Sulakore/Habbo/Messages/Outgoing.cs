@@ -29,7 +29,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage BuyRoomPromotion { get; set; }
         public HMessage CallForHelp { get; set; }
         public HMessage CancelMarketplaceOffer { get; set; }
-        public HMessage CancelPoll { get; set; }
         public HMessage CancelTyping { get; set; }
         public HMessage CatalogBuyItem { get; set; }
         public HMessage CatalogBuyItemAsGift { get; set; }
@@ -222,6 +221,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage PlaceObject { get; set; }
         public HMessage PlacePet { get; set; }
         public HMessage PollAnswer { get; set; }
+        public HMessage PollReject { get; set; }
         public HMessage PollStart { get; set; }
         public HMessage Pong { get; set; }
         public HMessage PostItPlace { get; set; }

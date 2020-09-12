@@ -292,8 +292,8 @@ namespace Sulakore.Habbo.Messages
         public HMessage PetStatusUpdate { get; set; }
         public HMessage PetTrainingPanel { get; set; }
         public HMessage Ping { get; set; }
+        public HMessage PollOffer { get; set; }
         public HMessage PollQuestions { get; set; }
-        public HMessage PollStart { get; set; }
         public HMessage PresentItemOpened { get; set; }
         public HMessage PrivateRooms { get; set; }
         public HMessage ProductOffer { get; set; }

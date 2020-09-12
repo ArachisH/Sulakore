@@ -416,6 +416,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage WiredTriggerData { get; set; }
         public HMessage WiredValidationError { get; set; }
         public HMessage YouAreController { get; set; }
+        public HMessage YouAreNotController { get; set; }
         public HMessage YouAreOwner { get; set; }
         public HMessage YouArePlayingGame { get; set; }
         public HMessage YouAreSpectator { get; set; }

@@ -118,7 +118,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetMarketplaceOwnOffers { get; set; }
         public HMessage GetPetCommands { get; set; }
         public HMessage GetPetInventory { get; set; }
-        public HMessage GetPollData { get; set; }
         public HMessage GetQuizQuestions { get; set; }
         public HMessage GetRelationshipStatusInfo { get; set; }
         public HMessage GetRentOrBuyoutOffer { get; set; }
@@ -223,6 +222,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage PlaceObject { get; set; }
         public HMessage PlacePet { get; set; }
         public HMessage PollAnswer { get; set; }
+        public HMessage PollStart { get; set; }
         public HMessage Pong { get; set; }
         public HMessage PostItPlace { get; set; }
         public HMessage PostQuizAnswers { get; set; }

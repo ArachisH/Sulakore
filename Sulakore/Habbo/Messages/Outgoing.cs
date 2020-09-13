@@ -110,6 +110,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetIgnoredUsers { get; set; }
         public HMessage GetInterstitial { get; set; }
         public HMessage GetItemData { get; set; }
+        public HMessage GetJukeboxPlayList { get; set; }
         public HMessage GetMarketplaceCanMakeOffer { get; set; }
         public HMessage GetMarketplaceConfiguration { get; set; }
         public HMessage GetMarketplaceItemStats { get; set; }
@@ -160,7 +161,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage JoinQueue { get; set; }
         public HMessage JukeBoxAddSoundTrack { get; set; }
         public HMessage JukeBoxEventThree { get; set; }
-        public HMessage JukeBoxEventTwo { get; set; }
         public HMessage JukeBoxRequestPlayList { get; set; }
         public HMessage JukeBoxRequestTrackCode { get; set; }
         public HMessage JukeBoxRequestTrackData { get; set; }

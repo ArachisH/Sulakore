@@ -102,6 +102,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetGameStatus { get; set; }
         public HMessage GetGiftWrappingConfiguration { get; set; }
         public HMessage GetGuestRoom { get; set; }
+        public HMessage GetGuildEditInfo { get; set; }
         public HMessage GetGuildEditorData { get; set; }
         public HMessage GetGuildMembers { get; set; }
         public HMessage GetHabboGroupDetails { get; set; }
@@ -262,7 +263,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestGuideTool { get; set; }
         public HMessage RequestGuildBuyRooms { get; set; }
         public HMessage RequestGuildFurniWidget { get; set; }
-        public HMessage RequestGuildManage { get; set; }
         public HMessage RequestHighestScoreRooms { get; set; }
         public HMessage RequestInitFriends { get; set; }
         public HMessage RequestMeMenuSettings { get; set; }

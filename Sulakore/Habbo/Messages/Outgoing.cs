@@ -124,6 +124,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetRoomEntryData { get; set; }
         public HMessage GetSelectedBadges { get; set; }
         public HMessage GetSellablePetPalettes { get; set; }
+        public HMessage GetSoundMachinePlayList { get; set; }
         public HMessage GetSoundSettings { get; set; }
         public HMessage GetTalentTrack { get; set; }
         public HMessage GetTalentTrackLevel { get; set; }

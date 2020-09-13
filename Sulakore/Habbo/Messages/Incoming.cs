@@ -199,7 +199,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage ItemUpdate { get; set; }
         public HMessage Items { get; set; }
         public HMessage JukeBoxMySongs { get; set; }
-        public HMessage JukeBoxNowPlayingMessage { get; set; }
         public HMessage JukeBoxPlayList { get; set; }
         public HMessage JukeBoxPlayListAddSong { get; set; }
         public HMessage JukeBoxPlayListUpdated { get; set; }
@@ -261,6 +260,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage NoobnessLevel { get; set; }
         public HMessage NotEnoughBalance { get; set; }
         public HMessage NotificationDialog { get; set; }
+        public HMessage NowPlaying { get; set; }
         public HMessage ObjectAdd { get; set; }
         public HMessage ObjectDataUpdate { get; set; }
         public HMessage ObjectRemove { get; set; }

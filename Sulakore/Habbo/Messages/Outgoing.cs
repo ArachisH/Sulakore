@@ -127,6 +127,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetRoomEntryData { get; set; }
         public HMessage GetSelectedBadges { get; set; }
         public HMessage GetSellablePetPalettes { get; set; }
+        public HMessage GetSongInfo { get; set; }
         public HMessage GetSoundMachinePlayList { get; set; }
         public HMessage GetSoundSettings { get; set; }
         public HMessage GetTalentTrack { get; set; }
@@ -164,7 +165,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage JoinHabboGroup { get; set; }
         public HMessage JoinQueue { get; set; }
         public HMessage JukeBoxEventThree { get; set; }
-        public HMessage JukeBoxRequestTrackData { get; set; }
         public HMessage KickMember { get; set; }
         public HMessage LagWarningReport { get; set; }
         public HMessage LatencyPingReport { get; set; }

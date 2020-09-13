@@ -203,7 +203,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage JukeBoxPlayListAddSong { get; set; }
         public HMessage JukeBoxPlayListUpdated { get; set; }
         public HMessage JukeBoxPlaylistFull { get; set; }
-        public HMessage JukeBoxTrackCode { get; set; }
         public HMessage JukeBoxTrackData { get; set; }
         public HMessage LatencyPingResponse { get; set; }
         public HMessage LeprechaunStarterBundle { get; set; }
@@ -267,6 +266,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage Objects { get; set; }
         public HMessage ObjectsDataUpdate { get; set; }
         public HMessage OfferRewardDelivered { get; set; }
+        public HMessage OfficialSongId { get; set; }
         public HMessage OldPublicRooms { get; set; }
         public HMessage OneWayDoorStatus { get; set; }
         public HMessage OpenConnection { get; set; }

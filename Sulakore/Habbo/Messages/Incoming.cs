@@ -199,7 +199,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage ItemUpdate { get; set; }
         public HMessage Items { get; set; }
         public HMessage JukeBoxPlayList { get; set; }
-        public HMessage JukeBoxPlayListAddSong { get; set; }
         public HMessage JukeBoxPlayListUpdated { get; set; }
         public HMessage JukeBoxPlaylistFull { get; set; }
         public HMessage LatencyPingResponse { get; set; }
@@ -290,6 +289,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage PetStatusUpdate { get; set; }
         public HMessage PetTrainingPanel { get; set; }
         public HMessage Ping { get; set; }
+        public HMessage PlayListSongAdded { get; set; }
         public HMessage PollContents { get; set; }
         public HMessage PollError { get; set; }
         public HMessage PollOffer { get; set; }

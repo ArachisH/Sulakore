@@ -130,6 +130,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetUnreadForumsCount { get; set; }
         public HMessage GetUserProfileById { get; set; }
         public HMessage GetUserProfileByName { get; set; }
+        public HMessage GetUserSongDisks { get; set; }
         public HMessage GiveSupplementToPet { get; set; }
         public HMessage GuardianNoUpdatesWanted { get; set; }
         public HMessage GuideAdvertisementRead { get; set; }
@@ -158,7 +159,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage JoinHabboGroup { get; set; }
         public HMessage JoinQueue { get; set; }
         public HMessage JukeBoxAddSoundTrack { get; set; }
-        public HMessage JukeBoxEventOne { get; set; }
         public HMessage JukeBoxEventThree { get; set; }
         public HMessage JukeBoxEventTwo { get; set; }
         public HMessage JukeBoxRequestPlayList { get; set; }

@@ -244,6 +244,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RemoveFriend { get; set; }
         public HMessage RemoveItem { get; set; }
         public HMessage RemoveItemFromTrade { get; set; }
+        public HMessage RemoveJukeboxDisk { get; set; }
         public HMessage RemovePetFromFlat { get; set; }
         public HMessage RemoveRights { get; set; }
         public HMessage RemoveSaddleFromPet { get; set; }

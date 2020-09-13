@@ -9,6 +9,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage AddAdminRightsToMember { get; set; }
         public HMessage AddItemToTrade { get; set; }
         public HMessage AddItemsToTrade { get; set; }
+        public HMessage AddJukeboxDisk { get; set; }
         public HMessage AdventCalendarForceOpen { get; set; }
         public HMessage AdventCalendarOpenDay { get; set; }
         public HMessage AdvertisingSave { get; set; }
@@ -161,7 +162,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage InitDiffieHandshake { get; set; }
         public HMessage JoinHabboGroup { get; set; }
         public HMessage JoinQueue { get; set; }
-        public HMessage JukeBoxAddSoundTrack { get; set; }
         public HMessage JukeBoxEventThree { get; set; }
         public HMessage JukeBoxRequestTrackCode { get; set; }
         public HMessage JukeBoxRequestTrackData { get; set; }

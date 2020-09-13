@@ -313,7 +313,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage SaveIgnoreRoomInvites { get; set; }
         public HMessage SavePostItStickyPole { get; set; }
         public HMessage SavePreferOldChat { get; set; }
-        public HMessage SaveUserVolumes { get; set; }
         public HMessage SaveWardrobe { get; set; }
         public HMessage SaveWindowSettings { get; set; }
         public HMessage ScratchPet { get; set; }
@@ -335,6 +334,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage SetHomeRoom { get; set; }
         public HMessage SetItemData { get; set; }
         public HMessage SetObjectData { get; set; }
+        public HMessage SetSoundSettings { get; set; }
         public HMessage SetStackHelperHeight { get; set; }
         public HMessage SetTargetedOfferState { get; set; }
         public HMessage Shout { get; set; }

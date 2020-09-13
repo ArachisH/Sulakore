@@ -116,6 +116,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetMarketplaceItemStats { get; set; }
         public HMessage GetMarketplaceOffers { get; set; }
         public HMessage GetMarketplaceOwnOffers { get; set; }
+        public HMessage GetNowPlaying { get; set; }
         public HMessage GetPetCommands { get; set; }
         public HMessage GetPetInventory { get; set; }
         public HMessage GetQuizQuestions { get; set; }
@@ -162,7 +163,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage JoinQueue { get; set; }
         public HMessage JukeBoxAddSoundTrack { get; set; }
         public HMessage JukeBoxEventThree { get; set; }
-        public HMessage JukeBoxRequestPlayList { get; set; }
         public HMessage JukeBoxRequestTrackCode { get; set; }
         public HMessage JukeBoxRequestTrackData { get; set; }
         public HMessage KickMember { get; set; }

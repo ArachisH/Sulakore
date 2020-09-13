@@ -123,6 +123,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetRoomEntryData { get; set; }
         public HMessage GetSelectedBadges { get; set; }
         public HMessage GetSellablePetPalettes { get; set; }
+        public HMessage GetSoundSettings { get; set; }
         public HMessage GetTalentTrack { get; set; }
         public HMessage GetTalentTrackLevel { get; set; }
         public HMessage GetTargetedOffer { get; set; }
@@ -265,7 +266,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestGuildFurniWidget { get; set; }
         public HMessage RequestHighestScoreRooms { get; set; }
         public HMessage RequestInitFriends { get; set; }
-        public HMessage RequestMeMenuSettings { get; set; }
         public HMessage RequestMyRooms { get; set; }
         public HMessage RequestNavigatorSettings { get; set; }
         public HMessage RequestNewNavigatorData { get; set; }

@@ -118,6 +118,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetMarketplaceOffers { get; set; }
         public HMessage GetMarketplaceOwnOffers { get; set; }
         public HMessage GetNowPlaying { get; set; }
+        public HMessage GetOfficialRooms { get; set; }
         public HMessage GetOfficialSongId { get; set; }
         public HMessage GetPetCommands { get; set; }
         public HMessage GetPetInventory { get; set; }
@@ -276,7 +277,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestPetInfo { get; set; }
         public HMessage RequestPopularRooms { get; set; }
         public HMessage RequestPromotionRooms { get; set; }
-        public HMessage RequestPublicRooms { get; set; }
         public HMessage RequestRecylerLogic { get; set; }
         public HMessage RequestReportRoom { get; set; }
         public HMessage RequestReportUserBullying { get; set; }

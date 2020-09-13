@@ -203,7 +203,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage JukeBoxPlayListAddSong { get; set; }
         public HMessage JukeBoxPlayListUpdated { get; set; }
         public HMessage JukeBoxPlaylistFull { get; set; }
-        public HMessage JukeBoxTrackData { get; set; }
         public HMessage LatencyPingResponse { get; set; }
         public HMessage LeprechaunStarterBundle { get; set; }
         public HMessage LimitedEditionSoldOut { get; set; }
@@ -380,6 +379,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage TradeStopped { get; set; }
         public HMessage TradeUpdate { get; set; }
         public HMessage TradingWaitingConfirm { get; set; }
+        public HMessage TraxSongInfo { get; set; }
         public HMessage UniqueMachineID { get; set; }
         public HMessage UnseenItems { get; set; }
         public HMessage UpdateStackHeightTileHeight { get; set; }

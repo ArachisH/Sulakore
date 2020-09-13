@@ -198,9 +198,9 @@ namespace Sulakore.Habbo.Messages
         public HMessage ItemRemove { get; set; }
         public HMessage ItemUpdate { get; set; }
         public HMessage Items { get; set; }
-        public HMessage JukeBoxPlayList { get; set; }
         public HMessage JukeBoxPlayListUpdated { get; set; }
         public HMessage JukeBoxPlaylistFull { get; set; }
+        public HMessage JukeboxSongDisks { get; set; }
         public HMessage LatencyPingResponse { get; set; }
         public HMessage LeprechaunStarterBundle { get; set; }
         public HMessage LimitedEditionSoldOut { get; set; }

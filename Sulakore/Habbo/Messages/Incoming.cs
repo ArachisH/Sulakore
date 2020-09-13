@@ -296,7 +296,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage PresentItemOpened { get; set; }
         public HMessage PrivateRooms { get; set; }
         public HMessage ProductOffer { get; set; }
-        public HMessage PublicRooms { get; set; }
         public HMessage PurchaseError { get; set; }
         public HMessage PurchaseNotAllowed { get; set; }
         public HMessage PurchaseOK { get; set; }

@@ -262,8 +262,8 @@ namespace Sulakore.Habbo.Messages
         public HMessage Objects { get; set; }
         public HMessage ObjectsDataUpdate { get; set; }
         public HMessage OfferRewardDelivered { get; set; }
+        public HMessage OfficialRooms { get; set; }
         public HMessage OfficialSongId { get; set; }
-        public HMessage OldPublicRooms { get; set; }
         public HMessage OneWayDoorStatus { get; set; }
         public HMessage OpenConnection { get; set; }
         public HMessage OpenRoomCreationWindow { get; set; }

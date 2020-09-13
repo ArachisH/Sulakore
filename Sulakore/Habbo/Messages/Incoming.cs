@@ -198,7 +198,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage ItemRemove { get; set; }
         public HMessage ItemUpdate { get; set; }
         public HMessage Items { get; set; }
-        public HMessage JukeBoxMySongs { get; set; }
         public HMessage JukeBoxPlayList { get; set; }
         public HMessage JukeBoxPlayListAddSong { get; set; }
         public HMessage JukeBoxPlayListUpdated { get; set; }
@@ -395,6 +394,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage UserRemove { get; set; }
         public HMessage UserRights { get; set; }
         public HMessage UserSearchResult { get; set; }
+        public HMessage UserSongDisksInventory { get; set; }
         public HMessage UserTyping { get; set; }
         public HMessage UserUpdate { get; set; }
         public HMessage UserWardrobe { get; set; }

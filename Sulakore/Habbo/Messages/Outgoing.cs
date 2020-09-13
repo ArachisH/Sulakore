@@ -164,7 +164,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage InitDiffieHandshake { get; set; }
         public HMessage JoinHabboGroup { get; set; }
         public HMessage JoinQueue { get; set; }
-        public HMessage JukeBoxEventThree { get; set; }
         public HMessage KickMember { get; set; }
         public HMessage LagWarningReport { get; set; }
         public HMessage LatencyPingReport { get; set; }

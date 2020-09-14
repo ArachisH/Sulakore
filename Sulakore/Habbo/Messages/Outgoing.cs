@@ -199,6 +199,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage MoveObject { get; set; }
         public HMessage MovePet { get; set; }
         public HMessage MoveWallItem { get; set; }
+        public HMessage MyFavouriteRoomsSearch { get; set; }
         public HMessage MyFriendsRoomsSearch { get; set; }
         public HMessage MyGuildBasesSearch { get; set; }
         public HMessage NavigatorAddSavedSearch { get; set; }
@@ -321,7 +322,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage SaveWardrobe { get; set; }
         public HMessage SaveWindowSettings { get; set; }
         public HMessage ScratchPet { get; set; }
-        public HMessage SearchRoomsMyFavorite { get; set; }
         public HMessage SearchRoomsVisited { get; set; }
         public HMessage SearchRoomsWithRights { get; set; }
         public HMessage SearchUser { get; set; }

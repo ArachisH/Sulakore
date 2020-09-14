@@ -244,6 +244,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RedeemMarketplaceOfferCredits { get; set; }
         public HMessage RedeemVoucher { get; set; }
         public HMessage RejectMembershipRequest { get; set; }
+        public HMessage RejectQuest { get; set; }
         public HMessage ReleaseIssues { get; set; }
         public HMessage ReloadRecycler { get; set; }
         public HMessage RemoveAdminRightsFromMember { get; set; }

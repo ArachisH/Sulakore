@@ -203,6 +203,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage MyFriendsRoomsSearch { get; set; }
         public HMessage MyGuildBasesSearch { get; set; }
         public HMessage MyRoomHistorySearch { get; set; }
+        public HMessage MyRoomRightsSearch { get; set; }
         public HMessage NavigatorAddSavedSearch { get; set; }
         public HMessage NavigatorCategoryListMode { get; set; }
         public HMessage NavigatorCollapseCategory { get; set; }
@@ -323,7 +324,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage SaveWardrobe { get; set; }
         public HMessage SaveWindowSettings { get; set; }
         public HMessage ScratchPet { get; set; }
-        public HMessage SearchRoomsWithRights { get; set; }
         public HMessage SearchUser { get; set; }
         public HMessage SelectClubGift { get; set; }
         public HMessage SelectFavouriteHabboGroup { get; set; }

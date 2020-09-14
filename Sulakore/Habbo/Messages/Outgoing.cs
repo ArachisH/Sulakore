@@ -205,6 +205,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage NavigatorDeleteSavedSearch { get; set; }
         public HMessage NavigatorUncollapseCategory { get; set; }
         public HMessage NewNavigatorAction { get; set; }
+        public HMessage NewNavigatorSearch { get; set; }
         public HMessage NuxGetGifts { get; set; }
         public HMessage NuxScriptProceed { get; set; }
         public HMessage OpenFlatConnection { get; set; }
@@ -271,7 +272,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestMyRooms { get; set; }
         public HMessage RequestNavigatorSettings { get; set; }
         public HMessage RequestNewNavigatorData { get; set; }
-        public HMessage RequestNewNavigatorRooms { get; set; }
         public HMessage RequestNewsList { get; set; }
         public HMessage RequestOwnGuilds { get; set; }
         public HMessage RequestPetInfo { get; set; }

@@ -127,6 +127,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetRelationshipStatusInfo { get; set; }
         public HMessage GetRentOrBuyoutOffer { get; set; }
         public HMessage GetRoomEntryData { get; set; }
+        public HMessage GetRoomVisits { get; set; }
         public HMessage GetSelectedBadges { get; set; }
         public HMessage GetSellablePetPalettes { get; set; }
         public HMessage GetSongInfo { get; set; }
@@ -182,7 +183,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage ModToolRequestIssueChatlog { get; set; }
         public HMessage ModToolRequestRoomChatlog { get; set; }
         public HMessage ModToolRequestRoomUserChatlog { get; set; }
-        public HMessage ModToolRequestRoomVisits { get; set; }
         public HMessage ModToolRequestUserChatlog { get; set; }
         public HMessage ModToolRequestUserInfo { get; set; }
         public HMessage ModToolRoomAlert { get; set; }

@@ -143,7 +143,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetTalentTrackLevel { get; set; }
         public HMessage GetTargetedOffer { get; set; }
         public HMessage GetUnreadForumsCount { get; set; }
-        public HMessage GetUserProfileById { get; set; }
         public HMessage GetUserProfileByName { get; set; }
         public HMessage GetUserSongDisks { get; set; }
         public HMessage GiveSupplementToPet { get; set; }

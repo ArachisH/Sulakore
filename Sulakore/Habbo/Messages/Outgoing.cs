@@ -125,6 +125,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetOfficialSongId { get; set; }
         public HMessage GetPetCommands { get; set; }
         public HMessage GetPetInventory { get; set; }
+        public HMessage GetQuests { get; set; }
         public HMessage GetQuizQuestions { get; set; }
         public HMessage GetRelationshipStatusInfo { get; set; }
         public HMessage GetRentOrBuyoutOffer { get; set; }

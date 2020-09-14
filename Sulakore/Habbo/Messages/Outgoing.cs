@@ -304,6 +304,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomRequestBannedUsers { get; set; }
         public HMessage RoomSettingsSave { get; set; }
         public HMessage RoomStaffPick { get; set; }
+        public HMessage RoomTextSearch { get; set; }
         public HMessage RoomUserBan { get; set; }
         public HMessage RoomUserKick { get; set; }
         public HMessage RoomUserMute { get; set; }
@@ -317,7 +318,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage SaveWardrobe { get; set; }
         public HMessage SaveWindowSettings { get; set; }
         public HMessage ScratchPet { get; set; }
-        public HMessage SearchRooms { get; set; }
         public HMessage SearchRoomsFriendsNow { get; set; }
         public HMessage SearchRoomsFriendsOwn { get; set; }
         public HMessage SearchRoomsInGroup { get; set; }

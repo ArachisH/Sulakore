@@ -318,7 +318,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage SaveWindowSettings { get; set; }
         public HMessage ScratchPet { get; set; }
         public HMessage SearchRooms { get; set; }
-        public HMessage SearchRoomsByTag { get; set; }
         public HMessage SearchRoomsFriendsNow { get; set; }
         public HMessage SearchRoomsFriendsOwn { get; set; }
         public HMessage SearchRoomsInGroup { get; set; }

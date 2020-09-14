@@ -117,6 +117,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetMarketplaceItemStats { get; set; }
         public HMessage GetMarketplaceOffers { get; set; }
         public HMessage GetMarketplaceOwnOffers { get; set; }
+        public HMessage GetModeratorRoomInfo { get; set; }
         public HMessage GetNowPlaying { get; set; }
         public HMessage GetOfficialRooms { get; set; }
         public HMessage GetOfficialSongId { get; set; }
@@ -180,7 +181,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage ModToolKick { get; set; }
         public HMessage ModToolRequestIssueChatlog { get; set; }
         public HMessage ModToolRequestRoomChatlog { get; set; }
-        public HMessage ModToolRequestRoomInfo { get; set; }
         public HMessage ModToolRequestRoomUserChatlog { get; set; }
         public HMessage ModToolRequestRoomVisits { get; set; }
         public HMessage ModToolRequestUserChatlog { get; set; }

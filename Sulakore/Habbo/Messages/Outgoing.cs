@@ -79,6 +79,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage FootballGateSaveLook { get; set; }
         public HMessage FriendListUpdate { get; set; }
         public HMessage FriendRequest { get; set; }
+        public HMessage FriendRequestQuestComplete { get; set; }
         public HMessage Game2GetAccountGameStatus { get; set; }
         public HMessage Game2LoadStageReady { get; set; }
         public HMessage GameCenter { get; set; }

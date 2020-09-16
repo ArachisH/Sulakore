@@ -1217,8 +1217,7 @@ namespace Sulakore.Habbo.Web
             if (init == null) return false;
 
             ASCode code = init.Body.ParseCode();
-            code.Deobfuscate();
-
+            
             for (int i = 0; i < code.Count; i++)
             {
                 ASInstruction instruction = code[i];

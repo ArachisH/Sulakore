@@ -325,7 +325,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomCategoryUpdateMessage { get; set; }
         public HMessage RoomChatSettings { get; set; }
         public HMessage RoomDimmerPresets { get; set; }
-        public HMessage RoomEditSettingsError { get; set; }
         public HMessage RoomEntryInfo { get; set; }
         public HMessage RoomEvent { get; set; }
         public HMessage RoomEventCancel { get; set; }
@@ -346,6 +345,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomRemoveRightsList { get; set; }
         public HMessage RoomRightsList { get; set; }
         public HMessage RoomSettings { get; set; }
+        public HMessage RoomSettingsSaveError { get; set; }
         public HMessage RoomSettingsSaved { get; set; }
         public HMessage RoomUserIgnored { get; set; }
         public HMessage RoomUserNameChanged { get; set; }

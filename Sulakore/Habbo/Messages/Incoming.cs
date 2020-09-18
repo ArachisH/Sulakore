@@ -331,6 +331,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomEventCancel { get; set; }
         public HMessage RoomFilterWords { get; set; }
         public HMessage RoomFloorThicknessUpdated { get; set; }
+        public HMessage RoomInfoUpdated { get; set; }
         public HMessage RoomInvite { get; set; }
         public HMessage RoomInviteError { get; set; }
         public HMessage RoomMessagesPostedCount { get; set; }
@@ -346,7 +347,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomRightsList { get; set; }
         public HMessage RoomSettings { get; set; }
         public HMessage RoomSettingsSaved { get; set; }
-        public HMessage RoomSettingsUpdated { get; set; }
         public HMessage RoomUserIgnored { get; set; }
         public HMessage RoomUserNameChanged { get; set; }
         public HMessage RoomUserReceivedHandItem { get; set; }

@@ -304,6 +304,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage Question { get; set; }
         public HMessage QuestionAnswered { get; set; }
         public HMessage QuestionFinished { get; set; }
+        public HMessage Quests { get; set; }
         public HMessage QuizData { get; set; }
         public HMessage QuizResults { get; set; }
         public HMessage RecyclerComplete { get; set; }

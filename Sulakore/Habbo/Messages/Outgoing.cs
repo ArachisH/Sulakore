@@ -103,6 +103,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetCraftingRecipesAvailable { get; set; }
         public HMessage GetCreditsInfo { get; set; }
         public HMessage GetCurrentTimingCode { get; set; }
+        public HMessage GetDailyQuest { get; set; }
         public HMessage GetExtendedProfile { get; set; }
         public HMessage GetExtendedProfileByName { get; set; }
         public HMessage GetFriendRequests { get; set; }

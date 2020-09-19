@@ -239,6 +239,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage PerformanceLog { get; set; }
         public HMessage PetPackageName { get; set; }
         public HMessage PetSelected { get; set; }
+        public HMessage PhotoCompetition { get; set; }
         public HMessage PickIssues { get; set; }
         public HMessage PickNewUserGift { get; set; }
         public HMessage PickupObject { get; set; }

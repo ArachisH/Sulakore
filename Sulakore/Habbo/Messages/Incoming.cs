@@ -310,7 +310,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RecyclerLogic { get; set; }
         public HMessage RelationshipStatusInfo { get; set; }
         public HMessage ReloadRecycler { get; set; }
-        public HMessage RemoveFriend { get; set; }
         public HMessage RemoveGuildFromRoom { get; set; }
         public HMessage RentableItemBuyOutPrice { get; set; }
         public HMessage RentableSpaceInfo { get; set; }

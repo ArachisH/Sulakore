@@ -5,6 +5,7 @@ namespace Sulakore.Habbo.Messages
     public sealed class Outgoing : HMessages
     {
         public HMessage AcceptFriend { get; set; }
+        public HMessage AcceptQuest { get; set; }
         public HMessage AcceptTrading { get; set; }
         public HMessage ActivateQuest { get; set; }
         public HMessage AddAdminRightsToMember { get; set; }

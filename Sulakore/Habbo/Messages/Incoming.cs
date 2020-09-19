@@ -368,7 +368,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage TargetedOffer { get; set; }
         public HMessage TargetedOfferNotFound { get; set; }
         public HMessage TradeAccepted { get; set; }
-        public HMessage TradeComplete { get; set; }
         public HMessage TradeOpenFailed { get; set; }
         public HMessage TradeStart { get; set; }
         public HMessage TradeStopped { get; set; }

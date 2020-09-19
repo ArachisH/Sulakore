@@ -402,8 +402,8 @@ namespace Sulakore.Habbo.Messages
         public HMessage VipTutorialsStart { get; set; }
         public HMessage VoucherRedeemError { get; set; }
         public HMessage VoucherRedeemOk { get; set; }
-        public HMessage WelcomeGift { get; set; }
         public HMessage WelcomeGiftError { get; set; }
+        public HMessage WelcomeGiftStatus { get; set; }
         public HMessage Whisper { get; set; }
         public HMessage WiredConditionData { get; set; }
         public HMessage WiredEffectData { get; set; }

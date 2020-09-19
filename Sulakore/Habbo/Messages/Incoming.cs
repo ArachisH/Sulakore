@@ -68,6 +68,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage ClubGiftNotification { get; set; }
         public HMessage ClubGiftSelected { get; set; }
         public HMessage CollapsedCategories { get; set; }
+        public HMessage CommunityGoalHallOfFame { get; set; }
         public HMessage CompetitionEntrySubmitResult { get; set; }
         public HMessage CompleteDiffieHandshake { get; set; }
         public HMessage ConcurrentUsersGoalProgress { get; set; }
@@ -172,7 +173,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage HabboClubExtendOffer { get; set; }
         public HMessage HabboClubOffers { get; set; }
         public HMessage HabboGroupBadges { get; set; }
-        public HMessage HallOfFame { get; set; }
         public HMessage HeightMap { get; set; }
         public HMessage HeightMapUpdate { get; set; }
         public HMessage HelperRequestDisabled { get; set; }

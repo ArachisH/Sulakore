@@ -92,6 +92,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetBundleDiscount { get; set; }
         public HMessage GetCatalogIndex { get; set; }
         public HMessage GetCfhStatus { get; set; }
+        public HMessage GetClientFaqs { get; set; }
         public HMessage GetClubData { get; set; }
         public HMessage GetClubGiftInfo { get; set; }
         public HMessage GetClubOffers { get; set; }

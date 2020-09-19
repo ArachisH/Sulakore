@@ -183,6 +183,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage HotelViewCustomTimer { get; set; }
         public HMessage HotelViewHideCommunityVoteButton { get; set; }
         public HMessage IdentityAccounts { get; set; }
+        public HMessage IgnoreResult { get; set; }
         public HMessage IgnoredUsers { get; set; }
         public HMessage InClientLink { get; set; }
         public HMessage InfoFeedEnabled { get; set; }
@@ -346,7 +347,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomSettingsError { get; set; }
         public HMessage RoomSettingsSaveError { get; set; }
         public HMessage RoomSettingsSaved { get; set; }
-        public HMessage RoomUserIgnored { get; set; }
         public HMessage RoomUserNameChanged { get; set; }
         public HMessage RoomUserReceivedHandItem { get; set; }
         public HMessage RoomUserRemoveRights { get; set; }

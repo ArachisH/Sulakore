@@ -68,6 +68,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage DefaultSanction { get; set; }
         public HMessage DeselectFavouriteHabboGroup { get; set; }
         public HMessage DiceOff { get; set; }
+        public HMessage Disconnect { get; set; }
         public HMessage DropCarryItem { get; set; }
         public HMessage EditEvent { get; set; }
         public HMessage EnableEffect { get; set; }

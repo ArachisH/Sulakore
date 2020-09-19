@@ -192,6 +192,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage MakeOffer { get; set; }
         public HMessage MannequinSaveLook { get; set; }
         public HMessage MannequinSaveName { get; set; }
+        public HMessage ModAlert { get; set; }
         public HMessage ModToolAlert { get; set; }
         public HMessage ModToolChangeRoomSettings { get; set; }
         public HMessage ModToolKick { get; set; }
@@ -202,7 +203,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage ModToolRequestUserInfo { get; set; }
         public HMessage ModToolRoomAlert { get; set; }
         public HMessage ModToolSanction { get; set; }
-        public HMessage ModToolSanctionAlert { get; set; }
         public HMessage ModToolSanctionBan { get; set; }
         public HMessage ModToolSanctionMute { get; set; }
         public HMessage ModToolSanctionTradeLock { get; set; }

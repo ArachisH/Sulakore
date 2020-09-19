@@ -190,7 +190,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage ModToolKick { get; set; }
         public HMessage ModToolRequestIssueChatlog { get; set; }
         public HMessage ModToolRequestRoomChatlog { get; set; }
-        public HMessage ModToolRequestRoomUserChatlog { get; set; }
         public HMessage ModToolRequestUserChatlog { get; set; }
         public HMessage ModToolRequestUserInfo { get; set; }
         public HMessage ModToolRoomAlert { get; set; }

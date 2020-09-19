@@ -165,7 +165,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage HarvestPet { get; set; }
         public HMessage HotelView { get; set; }
         public HMessage HotelViewClaimBadge { get; set; }
-        public HMessage HotelViewClaimBadgeReward { get; set; }
         public HMessage IgnoreUser { get; set; }
         public HMessage IgnoreUserId { get; set; }
         public HMessage InfoRetrieve { get; set; }
@@ -246,6 +245,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RateFlat { get; set; }
         public HMessage Recycle { get; set; }
         public HMessage RedeemClothing { get; set; }
+        public HMessage RedeemCommunityGoalPrize { get; set; }
         public HMessage RedeemItem { get; set; }
         public HMessage RedeemMarketplaceOfferCredits { get; set; }
         public HMessage RedeemVoucher { get; set; }

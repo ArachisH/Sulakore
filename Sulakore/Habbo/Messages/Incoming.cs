@@ -299,6 +299,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage PurchaseError { get; set; }
         public HMessage PurchaseNotAllowed { get; set; }
         public HMessage PurchaseOK { get; set; }
+        public HMessage Quest { get; set; }
         public HMessage QuestCompleted { get; set; }
         public HMessage QuestExpired { get; set; }
         public HMessage Question { get; set; }

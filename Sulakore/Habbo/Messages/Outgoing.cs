@@ -6,6 +6,7 @@ namespace Sulakore.Habbo.Messages
     {
         public HMessage AcceptFriend { get; set; }
         public HMessage AcceptTrading { get; set; }
+        public HMessage ActivateQuest { get; set; }
         public HMessage AddAdminRightsToMember { get; set; }
         public HMessage AddItemToTrade { get; set; }
         public HMessage AddItemsToTrade { get; set; }

@@ -168,6 +168,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GuildManage { get; set; }
         public HMessage GuildMemberUpdate { get; set; }
         public HMessage GuildMembers { get; set; }
+        public HMessage GuildMemberships { get; set; }
         public HMessage GuildRefreshMembersList { get; set; }
         public HMessage HabboActivityPointNotification { get; set; }
         public HMessage HabboBroadcast { get; set; }

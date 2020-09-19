@@ -227,7 +227,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage ModTool { get; set; }
         public HMessage ModToolComposerOne { get; set; }
         public HMessage ModToolComposerTwo { get; set; }
-        public HMessage ModToolIssueChatlog { get; set; }
         public HMessage ModToolIssueHandlerDimensions { get; set; }
         public HMessage ModToolIssueInfo { get; set; }
         public HMessage ModToolIssueResponseAlert { get; set; }

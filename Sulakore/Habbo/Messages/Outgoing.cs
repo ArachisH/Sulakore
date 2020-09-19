@@ -145,6 +145,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetRentOrBuyoutOffer { get; set; }
         public HMessage GetRoomEntryData { get; set; }
         public HMessage GetRoomVisits { get; set; }
+        public HMessage GetSeasonalCalendarDailyOffer { get; set; }
         public HMessage GetSeasonalQuestsOnly { get; set; }
         public HMessage GetSelectedBadges { get; set; }
         public HMessage GetSellablePetPalettes { get; set; }

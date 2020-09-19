@@ -131,7 +131,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage GiftWrappingConfiguration { get; set; }
         public HMessage GoToBreedingNestFailure { get; set; }
         public HMessage GotMysteryBoxPrize { get; set; }
-        public HMessage GroupParts { get; set; }
         public HMessage GuardianNewReportReceived { get; set; }
         public HMessage GuardianVotingRequested { get; set; }
         public HMessage GuardianVotingResult { get; set; }
@@ -153,6 +152,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GuildBuyRooms { get; set; }
         public HMessage GuildConfirmRemoveMember { get; set; }
         public HMessage GuildEditFail { get; set; }
+        public HMessage GuildEditorData { get; set; }
         public HMessage GuildFavoriteRoomUserUpdate { get; set; }
         public HMessage GuildForumAddComment { get; set; }
         public HMessage GuildForumComments { get; set; }

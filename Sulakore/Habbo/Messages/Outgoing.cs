@@ -96,6 +96,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetClubData { get; set; }
         public HMessage GetClubGiftInfo { get; set; }
         public HMessage GetClubOffers { get; set; }
+        public HMessage GetCommunityGoalEarnedPrizes { get; set; }
         public HMessage GetCommunityGoalHallOfFame { get; set; }
         public HMessage GetCommunityGoalProgress { get; set; }
         public HMessage GetConcurrentUsersGoalProgress { get; set; }
@@ -165,7 +166,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage HotelView { get; set; }
         public HMessage HotelViewClaimBadge { get; set; }
         public HMessage HotelViewClaimBadgeReward { get; set; }
-        public HMessage HotelViewRequestBadgeReward { get; set; }
         public HMessage IgnoreUser { get; set; }
         public HMessage IgnoreUserId { get; set; }
         public HMessage InfoRetrieve { get; set; }

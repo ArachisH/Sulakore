@@ -96,6 +96,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetClubData { get; set; }
         public HMessage GetClubGiftInfo { get; set; }
         public HMessage GetClubOffers { get; set; }
+        public HMessage GetCommunityGoalHallOfFame { get; set; }
         public HMessage GetCommunityGoalProgress { get; set; }
         public HMessage GetConcurrentUsersGoalProgress { get; set; }
         public HMessage GetConcurrentUsersReward { get; set; }

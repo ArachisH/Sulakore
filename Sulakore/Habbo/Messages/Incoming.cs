@@ -194,6 +194,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage IsFirstLoginOfDay { get; set; }
         public HMessage IsOfferGiftable { get; set; }
         public HMessage IssueCloseNotification { get; set; }
+        public HMessage IssueDeleted { get; set; }
         public HMessage ItemAdd { get; set; }
         public HMessage ItemDataUpdate { get; set; }
         public HMessage ItemRemove { get; set; }
@@ -225,7 +226,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage MinimailCount { get; set; }
         public HMessage MinimailNewMessage { get; set; }
         public HMessage ModTool { get; set; }
-        public HMessage ModToolComposerOne { get; set; }
         public HMessage ModToolComposerTwo { get; set; }
         public HMessage ModToolIssueHandlerDimensions { get; set; }
         public HMessage ModToolIssueInfo { get; set; }

@@ -63,7 +63,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage Chat { get; set; }
         public HMessage CloseConnection { get; set; }
         public HMessage ClubCenterData { get; set; }
-        public HMessage ClubData { get; set; }
         public HMessage ClubGiftInfo { get; set; }
         public HMessage ClubGiftNotification { get; set; }
         public HMessage ClubGiftSelected { get; set; }

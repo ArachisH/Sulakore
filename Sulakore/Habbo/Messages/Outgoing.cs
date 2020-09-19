@@ -193,7 +193,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage MannequinSaveLook { get; set; }
         public HMessage MannequinSaveName { get; set; }
         public HMessage ModAlert { get; set; }
-        public HMessage ModToolAlert { get; set; }
+        public HMessage ModMessage { get; set; }
         public HMessage ModToolChangeRoomSettings { get; set; }
         public HMessage ModToolKick { get; set; }
         public HMessage ModToolPreferences { get; set; }

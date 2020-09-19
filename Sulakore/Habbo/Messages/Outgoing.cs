@@ -250,7 +250,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage PurchaseVipMembershipExtension { get; set; }
         public HMessage RateFlat { get; set; }
         public HMessage Recycle { get; set; }
-        public HMessage RedeemClothing { get; set; }
         public HMessage RedeemCommunityGoalPrize { get; set; }
         public HMessage RedeemItem { get; set; }
         public HMessage RedeemMarketplaceOfferCredits { get; set; }

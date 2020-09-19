@@ -269,7 +269,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage OpenConnection { get; set; }
         public HMessage OpenRoomCreationWindow { get; set; }
         public HMessage OtherTradingDisabled { get; set; }
-        public HMessage PeerUsersClassification { get; set; }
         public HMessage PerkAllowances { get; set; }
         public HMessage PetAddedToInventory { get; set; }
         public HMessage PetBreedingCompleted { get; set; }
@@ -385,6 +384,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage UserBanned { get; set; }
         public HMessage UserChange { get; set; }
         public HMessage UserCitizenship { get; set; }
+        public HMessage UserClassification { get; set; }
         public HMessage UserClub { get; set; }
         public HMessage UserInfo { get; set; }
         public HMessage UserObject { get; set; }

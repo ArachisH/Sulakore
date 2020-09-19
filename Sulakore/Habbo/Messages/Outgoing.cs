@@ -120,6 +120,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetHabboGuildBadges { get; set; }
         public HMessage GetIgnoredUsers { get; set; }
         public HMessage GetInterstitial { get; set; }
+        public HMessage GetIsOfferGiftable { get; set; }
         public HMessage GetItemData { get; set; }
         public HMessage GetJukeboxPlayList { get; set; }
         public HMessage GetMarketplaceCanMakeOffer { get; set; }

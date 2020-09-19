@@ -36,7 +36,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage CancelTyping { get; set; }
         public HMessage CatalogBuyItem { get; set; }
         public HMessage CatalogBuyItemAsGift { get; set; }
-        public HMessage CatalogSearchedItem { get; set; }
         public HMessage ChangeEmail { get; set; }
         public HMessage ChangeMotto { get; set; }
         public HMessage ChangePosture { get; set; }
@@ -135,6 +134,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetOfficialSongId { get; set; }
         public HMessage GetPetCommands { get; set; }
         public HMessage GetPetInventory { get; set; }
+        public HMessage GetProductOffer { get; set; }
         public HMessage GetQuests { get; set; }
         public HMessage GetQuizQuestions { get; set; }
         public HMessage GetRelationshipStatusInfo { get; set; }

@@ -243,6 +243,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage PostItPlace { get; set; }
         public HMessage PostQuizAnswers { get; set; }
         public HMessage PublishPhoto { get; set; }
+        public HMessage PurchaseBasicMembershipExtension { get; set; }
         public HMessage PurchasePhoto { get; set; }
         public HMessage PurchaseVipMembershipExtension { get; set; }
         public HMessage RateFlat { get; set; }

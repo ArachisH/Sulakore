@@ -342,6 +342,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomRemoveRightsList { get; set; }
         public HMessage RoomRightsList { get; set; }
         public HMessage RoomSettings { get; set; }
+        public HMessage RoomSettingsError { get; set; }
         public HMessage RoomSettingsSaveError { get; set; }
         public HMessage RoomSettingsSaved { get; set; }
         public HMessage RoomUserIgnored { get; set; }

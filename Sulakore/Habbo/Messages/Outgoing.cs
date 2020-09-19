@@ -122,6 +122,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetGuildEditInfo { get; set; }
         public HMessage GetGuildEditorData { get; set; }
         public HMessage GetGuildMembers { get; set; }
+        public HMessage GetGuildMemberships { get; set; }
         public HMessage GetHabboGroupDetails { get; set; }
         public HMessage GetHabboGuildBadges { get; set; }
         public HMessage GetIgnoredUsers { get; set; }
@@ -297,7 +298,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestNavigatorSettings { get; set; }
         public HMessage RequestNewNavigatorData { get; set; }
         public HMessage RequestNewsList { get; set; }
-        public HMessage RequestOwnGuilds { get; set; }
         public HMessage RequestPetInfo { get; set; }
         public HMessage RequestPopularRooms { get; set; }
         public HMessage RequestPromotionRooms { get; set; }

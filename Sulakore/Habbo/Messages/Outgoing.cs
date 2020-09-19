@@ -51,6 +51,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage CloseIssues { get; set; }
         public HMessage CloseTrading { get; set; }
         public HMessage CommunityGoalVote { get; set; }
+        public HMessage CompetitionRoomsSearch { get; set; }
         public HMessage CompleteDiffieHandshake { get; set; }
         public HMessage CompostPlant { get; set; }
         public HMessage ConfirmAcceptTrading { get; set; }

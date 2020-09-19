@@ -137,6 +137,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GuardianVotingResult { get; set; }
         public HMessage GuardianVotingTimeEnded { get; set; }
         public HMessage GuardianVotingVotes { get; set; }
+        public HMessage GuestRoomSearchResult { get; set; }
         public HMessage GuideSessionAttached { get; set; }
         public HMessage GuideSessionDetached { get; set; }
         public HMessage GuideSessionEnded { get; set; }
@@ -293,7 +294,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage PollError { get; set; }
         public HMessage PollOffer { get; set; }
         public HMessage PresentItemOpened { get; set; }
-        public HMessage PrivateRooms { get; set; }
         public HMessage ProductOffer { get; set; }
         public HMessage PurchaseError { get; set; }
         public HMessage PurchaseNotAllowed { get; set; }

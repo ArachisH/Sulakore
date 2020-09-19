@@ -226,7 +226,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage MinimailCount { get; set; }
         public HMessage MinimailNewMessage { get; set; }
         public HMessage ModTool { get; set; }
-        public HMessage ModToolComposerTwo { get; set; }
         public HMessage ModToolIssueHandlerDimensions { get; set; }
         public HMessage ModToolIssueInfo { get; set; }
         public HMessage ModToolIssueResponseAlert { get; set; }
@@ -237,6 +236,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage ModToolUserChatlog { get; set; }
         public HMessage ModToolUserInfo { get; set; }
         public HMessage ModToolUserRoomVisits { get; set; }
+        public HMessage ModeratorActionResult { get; set; }
         public HMessage ModeratorCaution { get; set; }
         public HMessage ModeratorMessage { get; set; }
         public HMessage MutedWhisper { get; set; }

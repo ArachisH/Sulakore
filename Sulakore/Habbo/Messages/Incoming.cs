@@ -68,6 +68,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage ClubGiftNotification { get; set; }
         public HMessage ClubGiftSelected { get; set; }
         public HMessage CollapsedCategories { get; set; }
+        public HMessage CommunityGoalEarnedPrizes { get; set; }
         public HMessage CommunityGoalHallOfFame { get; set; }
         public HMessage CompetitionEntrySubmitResult { get; set; }
         public HMessage CompleteDiffieHandshake { get; set; }

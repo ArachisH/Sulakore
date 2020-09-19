@@ -108,6 +108,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetDirectClubBuyAvailable { get; set; }
         public HMessage GetExtendedProfile { get; set; }
         public HMessage GetExtendedProfileByName { get; set; }
+        public HMessage GetFaqCategories { get; set; }
         public HMessage GetFriendRequests { get; set; }
         public HMessage GetFurnitureAliases { get; set; }
         public HMessage GetGameStatus { get; set; }

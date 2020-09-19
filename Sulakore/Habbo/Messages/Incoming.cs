@@ -107,7 +107,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage FollowFriendFailed { get; set; }
         public HMessage ForwardToRoom { get; set; }
         public HMessage FreezeLives { get; set; }
-        public HMessage FriendChatMessage { get; set; }
         public HMessage FriendFindingRoom { get; set; }
         public HMessage FriendListUpdate { get; set; }
         public HMessage FriendRequest { get; set; }
@@ -247,6 +246,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage NavigatorSavedSearches { get; set; }
         public HMessage NavigatorSearchResults { get; set; }
         public HMessage NavigatorSettings { get; set; }
+        public HMessage NewConsoleMessage { get; set; }
         public HMessage NewNavigatorCategoryUserCount { get; set; }
         public HMessage NewNavigatorSettings { get; set; }
         public HMessage NewUserExperienceGiftOffer { get; set; }

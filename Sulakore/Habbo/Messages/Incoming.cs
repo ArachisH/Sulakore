@@ -368,12 +368,12 @@ namespace Sulakore.Habbo.Messages
         public HMessage TargetedOffer { get; set; }
         public HMessage TargetedOfferNotFound { get; set; }
         public HMessage TradeAccepted { get; set; }
-        public HMessage TradeCloseWindow { get; set; }
         public HMessage TradeComplete { get; set; }
         public HMessage TradeOpenFailed { get; set; }
         public HMessage TradeStart { get; set; }
         public HMessage TradeStopped { get; set; }
         public HMessage TradeUpdate { get; set; }
+        public HMessage TradingCompleted { get; set; }
         public HMessage TradingWaitingConfirm { get; set; }
         public HMessage TraxSongInfo { get; set; }
         public HMessage UniqueMachineID { get; set; }

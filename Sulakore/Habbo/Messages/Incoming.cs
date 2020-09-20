@@ -162,7 +162,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage GuildForumThreads { get; set; }
         public HMessage GuildForumsUnreadMessagesCount { get; set; }
         public HMessage GuildFurniWidget { get; set; }
-        public HMessage GuildInfo { get; set; }
         public HMessage GuildJoinError { get; set; }
         public HMessage GuildList { get; set; }
         public HMessage GuildManage { get; set; }
@@ -175,6 +174,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage HabboClubExtendOffer { get; set; }
         public HMessage HabboClubOffers { get; set; }
         public HMessage HabboGroupBadges { get; set; }
+        public HMessage HabboGroupDetails { get; set; }
         public HMessage HeightMap { get; set; }
         public HMessage HeightMapUpdate { get; set; }
         public HMessage HelperRequestDisabled { get; set; }

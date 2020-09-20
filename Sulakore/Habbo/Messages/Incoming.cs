@@ -102,7 +102,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage FloodCounter { get; set; }
         public HMessage FloorHeightMap { get; set; }
         public HMessage FloorItemUpdate { get; set; }
-        public HMessage FloorPlanEditorBlockedTiles { get; set; }
         public HMessage FollowFriendFailed { get; set; }
         public HMessage ForwardToRoom { get; set; }
         public HMessage FreezeLives { get; set; }
@@ -334,6 +333,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomInviteError { get; set; }
         public HMessage RoomMessagesPostedCount { get; set; }
         public HMessage RoomMuted { get; set; }
+        public HMessage RoomOccupiedTiles { get; set; }
         public HMessage RoomPaint { get; set; }
         public HMessage RoomPetExperience { get; set; }
         public HMessage RoomPetHorseFigure { get; set; }

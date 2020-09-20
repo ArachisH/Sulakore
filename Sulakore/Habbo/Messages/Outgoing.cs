@@ -35,7 +35,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage CancelMarketplaceOffer { get; set; }
         public HMessage CancelQuest { get; set; }
         public HMessage CancelTyping { get; set; }
-        public HMessage CatalogBuyItemAsGift { get; set; }
         public HMessage ChangeEmail { get; set; }
         public HMessage ChangeMotto { get; set; }
         public HMessage ChangePosture { get; set; }
@@ -253,6 +252,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage PublishPhoto { get; set; }
         public HMessage PurchaseBasicMembershipExtension { get; set; }
         public HMessage PurchaseFromCatalog { get; set; }
+        public HMessage PurchaseFromCatalogAsGift { get; set; }
         public HMessage PurchasePhoto { get; set; }
         public HMessage PurchaseVipMembershipExtension { get; set; }
         public HMessage RateFlat { get; set; }

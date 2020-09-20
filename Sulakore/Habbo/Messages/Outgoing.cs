@@ -78,7 +78,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage EnterOneWayDoor { get; set; }
         public HMessage EventLog { get; set; }
         public HMessage FindNewFriends { get; set; }
-        public HMessage FloorPlanEditorRequestBlockedTiles { get; set; }
         public HMessage FloorPlanEditorRequestDoorSettings { get; set; }
         public HMessage FloorPlanEditorSave { get; set; }
         public HMessage FollowFriend { get; set; }
@@ -138,6 +137,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetModeratorRoomInfo { get; set; }
         public HMessage GetNextTargetedOffer { get; set; }
         public HMessage GetNowPlaying { get; set; }
+        public HMessage GetOccupiedTiles { get; set; }
         public HMessage GetOfficialRooms { get; set; }
         public HMessage GetOfficialSongId { get; set; }
         public HMessage GetPetCommands { get; set; }

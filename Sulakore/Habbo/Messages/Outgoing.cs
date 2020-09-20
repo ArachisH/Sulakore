@@ -78,7 +78,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage EnterOneWayDoor { get; set; }
         public HMessage EventLog { get; set; }
         public HMessage FindNewFriends { get; set; }
-        public HMessage FloorPlanEditorRequestDoorSettings { get; set; }
         public HMessage FloorPlanEditorSave { get; set; }
         public HMessage FollowFriend { get; set; }
         public HMessage FootballGateSaveLook { get; set; }
@@ -148,6 +147,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetRelationshipStatusInfo { get; set; }
         public HMessage GetRentOrBuyoutOffer { get; set; }
         public HMessage GetRoomEntryData { get; set; }
+        public HMessage GetRoomEntryTile { get; set; }
         public HMessage GetRoomVisits { get; set; }
         public HMessage GetSeasonalCalendarDailyOffer { get; set; }
         public HMessage GetSeasonalQuestsOnly { get; set; }

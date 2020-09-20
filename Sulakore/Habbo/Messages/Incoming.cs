@@ -103,7 +103,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage FloorHeightMap { get; set; }
         public HMessage FloorItemUpdate { get; set; }
         public HMessage FloorPlanEditorBlockedTiles { get; set; }
-        public HMessage FloorPlanEditorDoorSettings { get; set; }
         public HMessage FollowFriendFailed { get; set; }
         public HMessage ForwardToRoom { get; set; }
         public HMessage FreezeLives { get; set; }
@@ -326,6 +325,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomChatSettings { get; set; }
         public HMessage RoomDimmerPresets { get; set; }
         public HMessage RoomEntryInfo { get; set; }
+        public HMessage RoomEntryTile { get; set; }
         public HMessage RoomEvent { get; set; }
         public HMessage RoomEventCancel { get; set; }
         public HMessage RoomFilterWords { get; set; }

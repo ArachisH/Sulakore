@@ -229,7 +229,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage NuxScriptProceed { get; set; }
         public HMessage OpenFlatConnection { get; set; }
         public HMessage OpenQuestTracker { get; set; }
-        public HMessage OpenRecycleBox { get; set; }
         public HMessage OpenTrading { get; set; }
         public HMessage PassCarryItem { get; set; }
         public HMessage PassCarryItemToPet { get; set; }
@@ -249,6 +248,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage Pong { get; set; }
         public HMessage PostItPlace { get; set; }
         public HMessage PostQuizAnswers { get; set; }
+        public HMessage PresentOpen { get; set; }
         public HMessage PublishPhoto { get; set; }
         public HMessage PurchaseBasicMembershipExtension { get; set; }
         public HMessage PurchaseFromCatalog { get; set; }

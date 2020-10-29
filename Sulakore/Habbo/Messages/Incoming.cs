@@ -94,7 +94,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage ExtendClubMessage { get; set; }
         public HMessage ExtendedProfileChanged { get; set; }
         public HMessage FavoriteRoomChanged { get; set; }
-        public HMessage FavoriteRoomsCount { get; set; }
+        public HMessage FavouriteRooms { get; set; }
         public HMessage FigureSetIds { get; set; }
         public HMessage FlatAccessDenied { get; set; }
         public HMessage FlatAccessible { get; set; }

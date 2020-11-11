@@ -1,35 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-
-    <LocalFlazzy>..\Submodules\Flazzy\Flazzy\Flazzy.csproj</LocalFlazzy>
-    <ParentFlazzy>$(SolutionDir)\Submodules\Flazzy\Flazzy\Flazzy.csproj</ParentFlazzy>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <ShouldCreateLogs>False</ShouldCreateLogs>
-    <AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
-    <UpdateAssemblyVersion>True</UpdateAssemblyVersion>
-    <UpdateAssemblyFileVersion>True</UpdateAssemblyFileVersion>
-    <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
-    <AssemblyVersionSettings>None.IncrementOnDemandWithReset.None.None</AssemblyVersionSettings>
-    <AssemblyFileVersionSettings>None.IncrementOnDemandWithReset.None.None</AssemblyFileVersionSettings>
-  </PropertyGroup>
-
-  <Choose>
-    <When Condition="Exists($(ParentFlazzy))">
-      <ItemGroup>
-        <ProjectReference Include="$(ParentFlazzy)" />
-      </ItemGroup>
-    </When>
-    <Otherwise>
-      <ItemGroup>
-        <ProjectReference Include="$(LocalFlazzy)" />
-      </ItemGroup>
-    </Otherwise>
-  </Choose>
+  <ItemGroup>
+    <ProjectReference Include="..\Submodules\Flazzy\Flazzy\Flazzy.csproj" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Update="Hashes.ini">

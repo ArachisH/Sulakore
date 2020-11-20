@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Net;
 using System.Text;
-using System.Net.Sockets;
+using System.Buffers;
 using System.Threading;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
@@ -13,9 +14,9 @@ namespace Sulakore.Network
 {
     public class HNode : IDisposable
     {
-        private static readonly Dictionary<int, TcpListener> _listeners = new Dictionary<int, TcpListener>();
-
-        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
+        private bool _disposed;
+        private readonly SemaphoreSlim _semaphore;
+        private static readonly Dictionary<int, TcpListener> _listeners;
 
         public bool IsConnected => Client.Connected;
 
@@ -34,11 +35,17 @@ namespace Sulakore.Network
         public RC4 Decrypter { get; set; }
         public bool IsDecrypting { get; set; }
 
+        static HNode()
+        {
+            _listeners = new Dictionary<int, TcpListener>();
+        }
         public HNode()
             : this(new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
         { }
         public HNode(Socket client)
         {
+            _semaphore = new SemaphoreSlim(1, 1);
+
             if (client == null)
             {
                 throw new ArgumentNullException(nameof(client));
@@ -58,80 +65,18 @@ namespace Sulakore.Network
 
         private async Task<bool> ConnectAsync()
         {
-            bool connected = true;
+            bool connected = false;
             try
             {
                 IPEndPoint endPoint = SOCKS5EndPoint ?? EndPoint;
                 IAsyncResult result = Client.BeginConnect(endPoint, null, null);
                 await Task.Factory.FromAsync(result, Client.EndConnect).ConfigureAwait(false);
 
-                if (!Client.Connected) return connected = false;
-                if (SOCKS5EndPoint != null)
+                if (Client.Connected && SOCKS5EndPoint != null)
                 {
-                    await SendAsync(new byte[]
-                    {
-                        0x05, // Version 5
-                        0x02, // 2 Authentication Methods Present
-                        0x00, // No Authentication
-                        0x02  // Username + Password
-                    }).ConfigureAwait(false);
-
-                    byte[] response = await ReceiveAsync(2).ConfigureAwait(false);
-                    if (response?.Length != 2 || response[1] == 0xFF) return connected = false;
-
-                    int index = 0;
-                    byte[] payload = null;
-                    if (response[1] == 0x02) // Username + Password Required
-                    {
-                        index = 0;
-                        payload = new byte[byte.MaxValue];
-
-                        payload[index++] = 0x01;
-
-                        // Username
-                        payload[index++] = (byte)Username.Length;
-                        byte[] usernameData = Encoding.Default.GetBytes(Username);
-                        Buffer.BlockCopy(usernameData, 0, payload, index, usernameData.Length);
-                        index += usernameData.Length;
-
-                        // Password
-                        payload[index++] = (byte)Password.Length;
-                        byte[] passwordData = Encoding.Default.GetBytes(Password);
-                        Buffer.BlockCopy(passwordData, 0, payload, index, passwordData.Length);
-                        index += passwordData.Length;
-
-                        await SendAsync(payload, index).ConfigureAwait(false);
-                        response = await ReceiveAsync(2).ConfigureAwait(false);
-                        if (response?.Length != 2 || response[1] != 0x00) return connected = false;
-                    }
-
-                    index = 0;
-                    payload = new byte[255];
-                    payload[index++] = 0x05;
-                    payload[index++] = 0x01;
-                    payload[index++] = 0x00;
-
-                    payload[index++] = (byte)(EndPoint.AddressFamily ==
-                        AddressFamily.InterNetwork ? 0x01 : 0x04);
-
-                    // Destination Address
-                    byte[] addressBytes = EndPoint.Address.GetAddressBytes();
-                    Buffer.BlockCopy(addressBytes, 0, payload, index, addressBytes.Length);
-                    index += (ushort)addressBytes.Length;
-
-                    byte[] portData = BitConverter.GetBytes((ushort)EndPoint.Port);
-                    if (BitConverter.IsLittleEndian)
-                    {
-                        // Big-Endian Byte Order
-                        Array.Reverse(portData);
-                    }
-                    Buffer.BlockCopy(portData, 0, payload, index, portData.Length);
-                    index += portData.Length;
-
-                    await SendAsync(payload, index);
-                    response = await ReceiveAsync(byte.MaxValue);
-                    if (response?.Length < 2 || response[1] != 0x00) return connected = false;
+                    connected = await SecureWithSOCKS5ProxyAsync().ConfigureAwait(false);
                 }
+                else connected = Client.Connected;
             }
             catch { return connected = false; }
             finally
@@ -209,7 +154,7 @@ namespace Sulakore.Network
 
         public Task<byte[]> ReceiveAsync(int size)
         {
-            return ReceiveBufferAsync(size, SocketFlags.None);
+            return ReceiveAndTrimAsync(size, SocketFlags.None);
         }
         public Task<int> ReceiveAsync(byte[] buffer)
         {
@@ -249,7 +194,7 @@ namespace Sulakore.Network
 
         public Task<byte[]> PeekAsync(int size)
         {
-            return ReceiveBufferAsync(size, SocketFlags.Peek);
+            return ReceiveAndTrimAsync(size, SocketFlags.Peek);
         }
         public Task<int> PeekAsync(byte[] buffer)
         {
@@ -264,30 +209,99 @@ namespace Sulakore.Network
             return ReceiveAsync(buffer, offset, size, SocketFlags.Peek);
         }
 
-        protected async Task<byte[]> ReceiveBufferAsync(int size, SocketFlags socketFlags)
+        protected async Task<bool> SecureWithSOCKS5ProxyAsync()
         {
-            var buffer = new byte[size];
-            int read = await ReceiveAsync(buffer, 0, size, socketFlags).ConfigureAwait(false);
-            if (read == -1) return null;
+            await SendAsync(new byte[]
+            {
+                0x05, // Version 5
+                0x02, // 2 Authentication Methods Present
+                0x00, // No Authentication
+                0x02  // Username + Password
+            }).ConfigureAwait(false);
 
-            var trimmedBuffer = new byte[read];
-            Buffer.BlockCopy(buffer, 0, trimmedBuffer, 0, read);
+            byte[] response = await ReceiveAsync(2).ConfigureAwait(false);
+            if (response?.Length != 2 || response[1] == 0xFF) return false;
 
-            return trimmedBuffer;
+            int index;
+            byte[] payload;
+            if (response[1] == 0x02) // Username + Password Required
+            {
+                index = 0;
+                payload = new byte[byte.MaxValue];
+                payload[index++] = 0x01;
+
+                // Username
+                payload[index++] = (byte)Username.Length;
+                byte[] usernameData = Encoding.Default.GetBytes(Username);
+                Buffer.BlockCopy(usernameData, 0, payload, index, usernameData.Length);
+                index += usernameData.Length;
+
+                // Password
+                payload[index++] = (byte)Password.Length;
+                byte[] passwordData = Encoding.Default.GetBytes(Password);
+                Buffer.BlockCopy(passwordData, 0, payload, index, passwordData.Length);
+                index += passwordData.Length;
+
+                await SendAsync(payload, index).ConfigureAwait(false);
+                response = await ReceiveAsync(2).ConfigureAwait(false);
+                if (response?.Length != 2 || response[1] != 0x00) return false;
+            }
+
+            index = 0;
+            payload = new byte[255];
+            payload[index++] = 0x05;
+            payload[index++] = 0x01;
+            payload[index++] = 0x00;
+            payload[index++] = (byte)(EndPoint.AddressFamily == AddressFamily.InterNetwork ? 0x01 : 0x04);
+
+            // Destination Address
+            byte[] addressBytes = EndPoint.Address.GetAddressBytes();
+            Buffer.BlockCopy(addressBytes, 0, payload, index, addressBytes.Length);
+            index += (ushort)addressBytes.Length;
+
+            byte[] portData = BitConverter.GetBytes((ushort)EndPoint.Port);
+            if (BitConverter.IsLittleEndian)
+            {
+                // Big-Endian Byte Order
+                Array.Reverse(portData);
+            }
+            Buffer.BlockCopy(portData, 0, payload, index, portData.Length);
+            index += portData.Length;
+
+            await SendAsync(payload, index).ConfigureAwait(false);
+            response = await ReceiveAsync(byte.MaxValue).ConfigureAwait(false);
+            return response?.Length >= 2 && response[1] == 0x00;
         }
-        protected async Task<int> SendAsync(byte[] buffer, int offset, int size, SocketFlags socketFlags)
+        protected async Task<byte[]> ReceiveAndTrimAsync(int size, SocketFlags socketFlags)
+        {
+            byte[] buffer = ArrayPool<byte>.Shared.Rent(size);
+            int read = await ReceiveAsync(buffer, 0, size, socketFlags).ConfigureAwait(false);
+            if (read < 1)
+            {
+                ArrayPool<byte>.Shared.Return(buffer);
+                return Array.Empty<byte>();
+            }
+
+            var data = new byte[read];
+            Buffer.BlockCopy(buffer, 0, data, 0, read);
+
+            ArrayPool<byte>.Shared.Return(buffer);
+            return data;
+        }
+
+        protected virtual async Task<int> SendAsync(byte[] buffer, int offset, int size, SocketFlags socketFlags)
         {
             if (!IsConnected) return -1;
 
             int sent;
             await _semaphore.WaitAsync().ConfigureAwait(false);
             try
-            { 
+            {
                 if (IsEncrypting && Encrypter != null)
                 {
                     buffer = Encrypter.Parse(buffer);
                 }
-                
+
                 IAsyncResult result = Client.BeginSend(buffer, offset, size, socketFlags, null, null);
                 sent = await Task.Factory.FromAsync(result, Client.EndSend).ConfigureAwait(false);
             }
@@ -295,7 +309,7 @@ namespace Sulakore.Network
             finally { _semaphore.Release(); }
             return sent;
         }
-        protected async Task<int> ReceiveAsync(byte[] buffer, int offset, int size, SocketFlags socketFlags)
+        protected virtual async Task<int> ReceiveAsync(byte[] buffer, int offset, int size, SocketFlags socketFlags)
         {
             if (!IsConnected) return -1;
             if (buffer == null)
@@ -336,9 +350,11 @@ namespace Sulakore.Network
         public void Dispose()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
         protected virtual void Dispose(bool disposing)
         {
+            if (_disposed) return;
             if (disposing)
             {
                 if (IsConnected)
@@ -352,6 +368,7 @@ namespace Sulakore.Network
                 }
                 Client.Close();
             }
+            _disposed = true;
         }
 
         public static void StopListeners(int? port = null)
@@ -365,25 +382,31 @@ namespace Sulakore.Network
                 listener.Stop();
             }
         }
-        public static async Task<HNode> AcceptAsync(int port)
+        public static async Task<HNode> AcceptNodeAsync(int port)
+        {
+            return new HNode(await AcceptSocketAsync(port).ConfigureAwait(false));
+        }
+        public static async Task<Socket> AcceptSocketAsync(int port)
         {
             if (!_listeners.TryGetValue(port, out var listener))
             {
                 listener = new TcpListener(IPAddress.Any, port);
                 _listeners.Add(port, listener);
             }
-
             try
             {
                 listener.Start();
-                Socket client = await listener.AcceptSocketAsync().ConfigureAwait(false);
-                return new HNode(client);
+                return await listener.AcceptSocketAsync().ConfigureAwait(false);
             }
             finally
             {
                 listener.Stop();
                 _listeners.Remove(port);
             }
+        }
+        public static async Task<HWebNode> AcceptWebNodeAsync(int port)
+        {
+            return new HWebNode(await AcceptSocketAsync(port).ConfigureAwait(false));
         }
 
         public static Task<HNode> ConnectNewAsync(string host, int port)

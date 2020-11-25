@@ -109,8 +109,8 @@ namespace Sulakore.Habbo.Messages
         public HMessage FriendToolbarNotification { get; set; }
         public HMessage Friends { get; set; }
         public HMessage FurniListAddOrUpdateParser { get; set; }
-        public HMessage FurnitureAliases { get; set; }
         public HMessage FurniListRemove { get; set; }
+        public HMessage FurnitureAliases { get; set; }
         public HMessage Game2WeeklyLeaderboard { get; set; }
         public HMessage Game2WeeklySmallLeaderboard { get; set; }
         public HMessage GameAchievementsList { get; set; }

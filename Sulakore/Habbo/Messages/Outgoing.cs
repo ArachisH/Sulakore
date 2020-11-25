@@ -43,9 +43,9 @@ namespace Sulakore.Habbo.Messages
         public HMessage CompostPlant { get; set; }
         public HMessage ConfirmChangeName { get; set; }
         public HMessage ConvertGlobalRoomId { get; set; }
+        public HMessage CraftSecret { get; set; }
         public HMessage CraftingAddRecipe { get; set; }
         public HMessage CraftingCraftItem { get; set; }
-        public HMessage CraftSecret { get; set; }
         public HMessage CreateFlat { get; set; }
         public HMessage CreateGuild { get; set; }
         public HMessage CustomizeAvatarWithFurni { get; set; }
@@ -93,8 +93,8 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetHabboGroupDetails { get; set; }
         public HMessage GetHabboGuildBadges { get; set; }
         public HMessage GetIgnoredUsers { get; set; }
-        public HMessage GetItemData { get; set; }
         public HMessage GetInterstitial { get; set; }
+        public HMessage GetItemData { get; set; }
         public HMessage GetMarketplaceCanMakeOffer { get; set; }
         public HMessage GetMarketplaceConfig { get; set; }
         public HMessage GetMarketplaceItemStats { get; set; }

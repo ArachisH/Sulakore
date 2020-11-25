@@ -376,6 +376,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage TradingClose { get; set; }
         public HMessage TradingCompleted { get; set; }
         public HMessage TradingWaitingConfirm { get; set; }
+        public HMessage TradingYouAreNotAllowed { get; set; }
         public HMessage TraxSongInfo { get; set; }
         public HMessage UniqueMachineID { get; set; }
         public HMessage UnseenItems { get; set; }
@@ -417,7 +418,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage YouAreOwner { get; set; }
         public HMessage YouArePlayingGame { get; set; }
         public HMessage YouAreSpectator { get; set; }
-        public HMessage YouTradingDisabled { get; set; }
         public HMessage YoutubeDisplayPlaylists { get; set; }
 
         public Incoming()

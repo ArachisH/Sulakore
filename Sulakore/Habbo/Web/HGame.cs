@@ -1231,11 +1231,11 @@ namespace Sulakore.Habbo.Web
                         code.InsertRange(i + 1, new ASInstruction[]
                         {
                             new GetLocal0Ins(),
-                            code[i - 2].Clone(),
+                            new GetLocal1Ins(),
                             new SetPropertyIns(abc, hostTrait.QNameIndex),
 
                             new GetLocal0Ins(),
-                            code[i - 1].Clone(),
+                            new GetLocal2Ins(),
                             new SetPropertyIns(abc, portTrait.QNameIndex)
                         });
                         init.Body.Code = code.ToArray();

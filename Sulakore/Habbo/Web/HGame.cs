@@ -799,8 +799,13 @@ namespace Sulakore.Habbo.Web
                 var callPropVoid = (CallPropVoidIns)instruction;
                 if (callPropVoid.PropertyName.Name == "connect" && callPropVoid.ArgCount == 2)
                 {
-                    code[i - 2] = new PushStringIns(abc, host);
-                    code[i - 1] = new PushIntIns(abc, port);
+                    code.InsertRange(i, new ASInstruction[]
+                    {
+                        new PopIns(),
+                        new PopIns(),
+                        new PushStringIns(abc, host),
+                        new PushIntIns(abc, port)
+                    });
                     break;
                 }
             }
@@ -840,8 +845,8 @@ namespace Sulakore.Habbo.Web
                     code.RemoveRange(i - 7, 6);
                     code.InsertRange(i - 7, new ASInstruction[]
                     {
-                            new PushStringIns(abc, modulus),
-                            new PushStringIns(abc, exponent),
+                        new PushStringIns(abc, modulus),
+                        new PushStringIns(abc, exponent),
                     });
 
                     method.Body.Code = code.ToArray();

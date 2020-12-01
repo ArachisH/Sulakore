@@ -26,11 +26,10 @@ namespace Sulakore.Crypto
             }
         }
 
-        public byte[] Parse(byte[] data)
+        public void Parse(Span<byte> data)
         {
             lock (_parseLock)
             {
-                var parsed = new byte[data.Length];
                 for (int k = 0; k < data.Length; k++)
                 {
                     _i++;
@@ -42,9 +41,8 @@ namespace Sulakore.Crypto
                     int rightXOR = _table[_i] + _table[_j];
                     rightXOR = _table[rightXOR % _table.Length];
 
-                    parsed[k] = (byte)(data[k] ^ rightXOR);
+                    data[k] = (byte)(data[k] ^ rightXOR);
                 }
-                return parsed;
             }
         }
         public void RefParse(byte[] data)

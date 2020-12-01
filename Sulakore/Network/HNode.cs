@@ -299,7 +299,7 @@ namespace Sulakore.Network
             {
                 if (IsEncrypting && Encrypter != null)
                 {
-                    buffer = Encrypter.Parse(buffer);
+                    Encrypter.Parse(buffer);
                 }
 
                 IAsyncResult result = Client.BeginSend(buffer, offset, size, socketFlags, null, null);

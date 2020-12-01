@@ -264,12 +264,25 @@ namespace Sulakore.Network
         }
         protected virtual async ValueTask<int> UnwrapWebSocketFramesAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
         {
+            static void DecodeFrameHeader(Span<byte> headerRegion, 
+                out bool isFinalFrame, out bool isMasking, out ulong payloadSize)
+            {
+                isFinalFrame = (headerRegion[0] & 0x80) == 0x80;
+                isMasking = (headerRegion[1] & 0x80) == 0x80;
+                payloadSize = (ulong)headerRegion[1] & 0x7F;
+            }
+            static void UnmaskBuffer(Span<byte> buffer, Span<byte> maskRegion)
+            {
+                for (int i = 0; i < buffer.Length; i++)
+                {
+                    buffer[i] ^= maskRegion[i % 4];
+                }
+            }
+
             using IMemoryOwner<byte> headerRegionOwner = MemoryPool<byte>.Shared.Rent(14);
             int headerRead = await Socket.ReceiveAsync(headerRegionOwner.Memory, SocketFlags.None, cancellationToken).ConfigureAwait(false);
 
-            bool isFinalFrame = (headerRegionOwner.Memory.Span[0] & 0x80) == 0x80;
-            bool isMasking = (headerRegionOwner.Memory.Span[1] & 0x80) == 0x80;
-            var payloadSize = (ulong)headerRegionOwner.Memory.Span[1] & 0x7F;
+            DecodeFrameHeader(headerRegionOwner.Memory.Span, out bool isFinalFrame, out bool isMasking, out ulong payloadSize);
 
             if (payloadSize == 126)
             {
@@ -287,14 +300,11 @@ namespace Sulakore.Network
                 headerRead += await Socket.ReceiveAsync(headerRegionOwner.Memory.Slice(headerRead, 4), SocketFlags.None, cancellationToken).ConfigureAwait(false);
             }
 
+
             int payloadRead = await ReceivePayloadAsync(buffer, cancellationToken).ConfigureAwait(false);
             if (isMasking)
             {
-                Memory<byte> maskRegion = headerRegionOwner.Memory.Slice(headerRead - 4, 4);
-                for (int i = 0; i < buffer.Length; i++)
-                {
-                    buffer.Span[i] ^= maskRegion.Span[i % 4];
-                }
+                UnmaskBuffer(buffer.Span, headerRegionOwner.Memory.Span.Slice(headerRead - 4, 4));
             }
 
             if (isFinalFrame)

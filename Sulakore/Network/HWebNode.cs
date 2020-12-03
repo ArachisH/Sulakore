@@ -9,6 +9,7 @@ using System.Buffers.Binary;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 
 using Sulakore.Network.Protocol;
@@ -18,8 +19,8 @@ namespace Sulakore.Network
     // TODO: This class will replace HNode, implement HMessage reading/writing.
     public class HWebNode : NetworkStream
     {
-        private readonly SemaphoreSlim _sendSemaphore;
-        private readonly Queue<IMemoryOwner<byte>> _rentedMaskOwners;
+        private readonly SemaphoreSlim _sendSemaphore, _receiveSemaphore;
+        private readonly Queue<IMemoryOwner<byte>> _rentedMaskOwners, _rentedPayloadOwners;
 
         private bool _disposed;
         private SslStream _securePayloadLayer;
@@ -39,7 +40,9 @@ namespace Sulakore.Network
             : base(socket, false)
         {
             _sendSemaphore = new SemaphoreSlim(1, 1);
+            _receiveSemaphore = new SemaphoreSlim(2, 2);
             _rentedMaskOwners = new Queue<IMemoryOwner<byte>>();
+            _rentedPayloadOwners = new Queue<IMemoryOwner<byte>>();
 
             socket.NoDelay = true;
             socket.LingerState = new LingerOption(false, 0);
@@ -75,40 +78,34 @@ namespace Sulakore.Network
         }
         public async Task<bool> UpgradeWebSocketAsync()
         {
-            static string HashWebSocketKey(Span<byte> requestHeaderRegion)
+            static string HashWebSocketKey(Span<byte> requestHeader)
             {
                 const int KEY_SIZE = 24;
+                const int MERGED_KEY_LENGTH = 60;
                 const string RFC6455_GUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
 
-                Span<byte> mergedKey = stackalloc byte[KEY_SIZE + RFC6455_GUID.Length];
-                //below line allocates that Sec-Websocket-Key byte array everytime, we can get rid of that if we want to
-                int keyIndex = requestHeaderRegion.IndexOf(Encoding.ASCII.GetBytes("Sec-WebSocket-Key")) + 19; //cos all of those characters are ASCII = they all take one byte => we can trust on that 19
+                int keyIndex = requestHeader.IndexOf(Encoding.ASCII.GetBytes("Sec-WebSocket-Key")) + 19;
+                requestHeader.Slice(keyIndex, KEY_SIZE).CopyTo(requestHeader);
+                Encoding.ASCII.GetBytes(RFC6455_GUID, requestHeader.Slice(KEY_SIZE));
 
-                requestHeaderRegion.Slice(keyIndex, KEY_SIZE).CopyTo(mergedKey); //YOLO, same here because all characters in Base64 also belong into ASCII. hmm
-                Encoding.ASCII.GetBytes(RFC6455_GUID, mergedKey.Slice(KEY_SIZE));
-
-                // The SHA1 algorithm always produces a 160-bit hash, or 20 bytes.
-                Span<byte> hashBuffer = stackalloc byte[20];
-                SHA1.HashData(mergedKey, hashBuffer);
-
-                return Convert.ToBase64String(hashBuffer);
+                int hashSize = SHA1.HashData(requestHeader.Slice(0, MERGED_KEY_LENGTH), requestHeader.Slice(MERGED_KEY_LENGTH));
+                return Convert.ToBase64String(requestHeader.Slice(MERGED_KEY_LENGTH, hashSize));
             }
 
             if (IsUpgraded || !await DetermineFormatsAsync()) return IsUpgraded;
-
             using IMemoryOwner<byte> requestHeaderOwner = RentTrimmedRegion(1024, out Memory<byte> requestHeaderRegion);
+
             await ReceiveAsync(requestHeaderRegion).ConfigureAwait(false);
+            string hashedMergedKey = HashWebSocketKey(requestHeaderRegion.Span);
 
-            string hashedKey = HashWebSocketKey(requestHeaderRegion.Span);
+            var responseHeaderBuilder = new StringBuilder();
+            responseHeaderBuilder.AppendLine("HTTP/1.1 101 Switching Protocols");
+            responseHeaderBuilder.AppendLine("Connection: Upgrade");
+            responseHeaderBuilder.AppendLine("Upgrade: websocket");
+            responseHeaderBuilder.AppendLine($"Sec-WebSocket-Accept: {hashedMergedKey}");
+            responseHeaderBuilder.AppendLine();
 
-            var responseHeaderLinesBuilder = new StringBuilder();
-            responseHeaderLinesBuilder.AppendLine("HTTP/1.1 101 Switching Protocols");
-            responseHeaderLinesBuilder.AppendLine("Connection: Upgrade");
-            responseHeaderLinesBuilder.AppendLine("Upgrade: websocket");
-            responseHeaderLinesBuilder.AppendLine($"Sec-WebSocket-Accept: {hashedKey}");
-            responseHeaderLinesBuilder.AppendLine();
-
-            byte[] responseData = Encoding.UTF8.GetBytes(responseHeaderLinesBuilder.ToString());
+            byte[] responseData = Encoding.UTF8.GetBytes(responseHeaderBuilder.ToString());
             await SendAsync(responseData).ConfigureAwait(false);
 
             return IsUpgraded = true;
@@ -147,12 +144,26 @@ namespace Sulakore.Network
         {
             return SendAsync(Encoding.UTF8.GetBytes(message));
         }
+        public ValueTask<int> SendAsync(HPacket packet)
+        {
+            return SendAsync(packet.ToBytes());
+        }
+
+        public Task<HPacket> ReceiveAsync()
+        {
+            if (ReceiveFormat == null)
+            {
+                throw new NullReferenceException($"Cannot receive structued data while {nameof(ReceiveFormat)} is null.");
+            }
+            return ReceiveFormat.ReceivePacketAsync(this);
+        }
 
         public virtual async ValueTask<int> ReceiveAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
         {
             int received = 0;
             if (!IsConnected) return -1;
             if (buffer.Length == 0) return 0;
+            await _receiveSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
             try
             {
                 if (!IsUpgraded || _rentedMaskOwners.Count > 0)
@@ -160,7 +171,9 @@ namespace Sulakore.Network
                     received = await SocketReceiveAsync(buffer, cancellationToken).ConfigureAwait(false);
                     if (_rentedMaskOwners.TryDequeue(out IMemoryOwner<byte> maskOwner))
                     {
-                        int frameHeaderExtra = DecodeFrameHeader(maskOwner.Memory.Span, out _, out _);
+                        // TODO: Check if the received amount of data is equal to the frame's payload size, otherwise keep reading if we have enough room.
+                        int frameHeaderExtra = DecodeFrameHeader(maskOwner.Memory.Span, out _, out ulong payloadSize);
+                        MemoryMarshal.Write(maskOwner.Memory.Span.Slice(2 + frameHeaderExtra), ref received); // Notify the owner how much of the encrypted/masked payload was read.
                         UnmaskPayload(buffer.Span.Slice(0, received), maskOwner.Memory.Span.Slice(2 + frameHeaderExtra - 4, 4));
                     }
                 }
@@ -168,6 +181,7 @@ namespace Sulakore.Network
                 // TODO: Decrypt
             }
             catch { return -1; }
+            finally { _receiveSemaphore.Release(); }
             return received;
         }
         public virtual async ValueTask<int> SendAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
@@ -209,40 +223,99 @@ namespace Sulakore.Network
         }
         protected virtual async ValueTask<int> UnwrapWebSocketFramesAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
         {
-            using IMemoryOwner<byte> frameHeaderOwner = RentTrimmedRegion(14, out Memory<byte> frameHeaderRegion);
-            int frameHeaderRead = await SocketReceiveAsync(frameHeaderRegion.Slice(0, 2), cancellationToken).ConfigureAwait(false);
-
-            int frameHeaderExtra = DecodeFrameHeader(frameHeaderRegion.Span, out bool isMasked, out ulong payloadSize);
-            if (frameHeaderExtra > 0)
+            static void WriteExtendedPayloadHeader(Span<byte> extendedPayload, int consumed, int payloadSize)
             {
-                frameHeaderRead += await SocketReceiveAsync(frameHeaderRegion.Slice(2, frameHeaderExtra), cancellationToken).ConfigureAwait(false);
+                MemoryMarshal.Write(extendedPayload, ref consumed);
+                MemoryMarshal.Write(extendedPayload.Slice(4), ref payloadSize);
             }
+            static bool ConsumePayload(Span<byte> extendedPayload, Span<byte> buffer, out int consumed)
+            {
+                int totalConsumed = MemoryMarshal.Read<int>(extendedPayload);
+                int payloadSize = MemoryMarshal.Read<int>(extendedPayload.Slice(4));
 
-            if (payloadSize == 126)
-            {
-                payloadSize = BinaryPrimitives.ReadUInt16BigEndian(frameHeaderRegion.Span.Slice(2));
-            }
-            else if (payloadSize == 127)
-            {
-                payloadSize = BinaryPrimitives.ReadUInt64BigEndian(frameHeaderRegion.Span.Slice(2));
-            }
-            // TODO: We need payloadSize to verify that all of the payload data belonging to this frame has been read.
+                // How much of the payload in bytes is left for consumption.
+                int payloadLeft = (payloadSize - totalConsumed);
 
-            bool isMaskQueued = false;
-            if (isMasked && IsAuthenticated) // The payload will first need to be unmasked, and then be passed through our SslStream instance to get decrypted.
-            {
-                isMaskQueued = true; // Determines in the finally block whether we can dispose the frameHeaderOwner object, or let it continue to live until it's eventually handled/unmasked down the line.
-                _rentedMaskOwners.Enqueue(frameHeaderOwner);
+                // Copy as much of the remaining payload to the buffer as possible.
+                consumed = Math.Min(payloadLeft, buffer.Length);
+                bool isEntirePayloadConsumed = consumed == payloadLeft;
+
+                extendedPayload.Slice(8 + totalConsumed, consumed).CopyTo(buffer);
+                totalConsumed += consumed;
+
+                MemoryMarshal.Write(extendedPayload, ref totalConsumed);
+                return isEntirePayloadConsumed;
             }
 
-            // TODO: Once SslStream has begun decryption on the unmasked payload, it will not return the same payload size as given by the frame header.
-            // We must find a way to verify that ALL payload data belonging to the frame has been read.
-            int payloadRead = await ReceivePayloadAsync(buffer, cancellationToken).ConfigureAwait(false);
-            if (isMasked && !isMaskQueued)
+            bool isMasked = false;
+            ulong payloadSize = 0;
+            int frameHeaderSize = 0;
+            Memory<byte> headerRegion = null;
+            IMemoryOwner<byte> headerOwner = null;
+            if (_rentedPayloadOwners.Count == 0)
             {
-                UnmaskPayload(buffer.Span, frameHeaderRegion.Span.Slice(frameHeaderRead - 4, 4));
+                // Rent a portion of memory that can accomdate the maximum size of a frame header: (header:2, payloadSize:2/8, mask:4)
+                headerOwner = RentTrimmedRegion(2 + sizeof(ulong) + 4, out headerRegion);
+                frameHeaderSize = await SocketReceiveAsync(headerRegion.Slice(0, 2), cancellationToken).ConfigureAwait(false);
+
+                int frameHeaderExtra = DecodeFrameHeader(headerRegion.Span, out isMasked, out payloadSize);
+                if (frameHeaderExtra > 0)
+                {
+                    frameHeaderSize += await SocketReceiveAsync(headerRegion.Slice(2, frameHeaderExtra), cancellationToken).ConfigureAwait(false);
+                    DecodeFrameHeader(headerRegion.Span, out isMasked, out payloadSize); // Decode the header again, since we might now be able to retrieve the actual payload size of the frame.
+                }
+
+                // The payload will first need to be unmasked, and then be passed through our SslStream instance to get decrypted.
+                if (isMasked && IsAuthenticated)
+                {
+                    _rentedMaskOwners.Enqueue(headerOwner);
+                }
             }
-            return payloadRead;
+
+            int consumed = 0;
+            bool wasPayloadOwnerPeeked = false;
+            bool isEntirePayloadConsumed = true;
+            IMemoryOwner<byte> payloadOwner = null;
+            try
+            {
+                Memory<byte> payloadRegion = null;
+                Memory<byte> extendedPayloadRegion = null;
+                if (!(wasPayloadOwnerPeeked = _rentedPayloadOwners.TryPeek(out payloadOwner)))
+                {
+                    // If we enter this block, then that means 'headerOwner' is NOT null.
+                    // We use the first 8 bytes to hold two Int32 values that represents the size in bytes of the payload already consumed, and the size in bytes left to be consumed.
+                    payloadOwner = RentTrimmedRegion(8 + (int)payloadSize, out extendedPayloadRegion);
+                    payloadRegion = extendedPayloadRegion.Slice(8);
+
+                    int payloadRead = await ReceivePayloadAsync(payloadRegion, cancellationToken).ConfigureAwait(false); // At this point, we trust that payloadRead IS EQUAL to payloadSize.
+                    WriteExtendedPayloadHeader(extendedPayloadRegion.Span, 0, payloadRead);
+
+                    if (isMasked && !IsAuthenticated)
+                    {
+                        UnmaskPayload(payloadRegion.Span, headerRegion.Span.Slice(frameHeaderSize - 4, 4));
+                    }
+                }
+                else extendedPayloadRegion = payloadOwner.Memory;
+
+                isEntirePayloadConsumed = ConsumePayload(extendedPayloadRegion.Span, buffer.Span, out consumed);
+                if (!isEntirePayloadConsumed && !wasPayloadOwnerPeeked)
+                {
+                    _rentedPayloadOwners.Enqueue(payloadOwner);
+                }
+            }
+            finally
+            {
+                headerOwner?.Dispose();
+                if (isEntirePayloadConsumed)
+                {
+                    if (wasPayloadOwnerPeeked)
+                    {
+                        _rentedPayloadOwners.Dequeue();
+                    }
+                    payloadOwner.Dispose();
+                }
+            }
+            return consumed;
         }
         protected virtual async ValueTask<int> WrapWebSocketFramesAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
         {
@@ -336,15 +409,31 @@ namespace Sulakore.Network
         }
         private static int DecodeFrameHeader(Span<byte> header, out bool isMasked, out ulong payloadSize)
         {
-            payloadSize = (ulong)header[1] & 0x7F;
+            payloadSize = (ulong)(header[1] & 0x7F);
             isMasked = (header[1] & 0x80) == 0x80;
 
-            int frameHeaderExtra = payloadSize switch
+            int frameHeaderExtra = 0;
+            switch (payloadSize)
             {
-                126 => sizeof(ushort),
-                127 => sizeof(ulong),
-                _ => 0,
-            };
+                case 126:
+                {
+                    frameHeaderExtra = sizeof(ushort);
+                    if (header.Length >= 4)
+                    {
+                        payloadSize = BinaryPrimitives.ReadUInt16BigEndian(header.Slice(2));
+                    }
+                    break;
+                }
+                case 127:
+                {
+                    frameHeaderExtra = sizeof(ulong);
+                    if (header.Length >= 10)
+                    {
+                        payloadSize = BinaryPrimitives.ReadUInt64BigEndian(header.Slice(2));
+                    }
+                    break;
+                }
+            }
             return frameHeaderExtra + (isMasked ? 4 : 0);
         }
 

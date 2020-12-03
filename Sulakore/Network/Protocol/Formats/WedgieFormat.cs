@@ -244,6 +244,7 @@ namespace Sulakore.Network.Protocol
             }
             return CreatePacket(data);
         }
+        public override async Task<HPacket> ReceivePacketAsync(HWebNode node) => throw new NotImplementedException();
         protected override byte[] ConstructTails(ushort id, IList<byte> body)
         {
             int bodyStart = IsOutgoing ? 5 : 2;

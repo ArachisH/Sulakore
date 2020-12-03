@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Text;
+using System.Buffers;
+using System.Buffers.Binary;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
@@ -131,6 +133,23 @@ namespace Sulakore.Network.Protocol
 
             return CreatePacket(data);
         }
+        public override async Task<HPacket> ReceivePacketAsync(HWebNode node)
+        {
+            using IMemoryOwner<byte> lengthOwner = MemoryPool<byte>.Shared.Rent(4);
+            int lengthReceived = await node.ReceiveAsync(lengthOwner.Memory.Slice(0, 4)).ConfigureAwait(false);
+            if (lengthReceived != 4)
+            {
+                await node.DisposeAsync().ConfigureAwait(false);
+            }
+
+            int length = BinaryPrimitives.ReadInt32BigEndian(lengthOwner.Memory.Span);
+            using IMemoryOwner<byte> bodyOwner = MemoryPool<byte>.Shared.Rent(length);
+            int bodyReceived = await node.ReceiveAsync(bodyOwner.Memory.Slice(0, length));
+
+            var packetData = new byte[sizeof(int) + length];
+            bodyOwner.Memory.Slice(0, 4 + length).CopyTo(packetData);
+            return CreatePacket(packetData);
+        }
         protected override byte[] ConstructTails(ushort id, IList<byte> body)
         {
             var data = new byte[6 + body.Count];
@@ -140,7 +159,7 @@ namespace Sulakore.Network.Protocol
             body.CopyTo(data, 6);
             return data;
         }
-        
+
         public override HPacket CreatePacket()
         {
             return new EvaWirePacket();

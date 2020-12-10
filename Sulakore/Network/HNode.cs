@@ -96,6 +96,7 @@ namespace Sulakore.Network
             int initialBytesRead = await SocketPeekAsync(initialBytesRegion).ConfigureAwait(false);
             ParseInitialBytes(initialBytesRegion.Span.Slice(0, initialBytesRead), out bool isWebSocket, out ushort possibleId);
 
+            bool wasDetermined = true;
             IsWebSocket = isWebSocket;
             if (IsWebSocket || possibleId == 4000)
             {
@@ -107,7 +108,9 @@ namespace Sulakore.Network
                 SendFormat = HFormat.WedgieIn;
                 ReceiveFormat = HFormat.WedgieOut;
             }
-            return IsWebSocket;
+            else wasDetermined = false;
+
+            return IsWebSocket || wasDetermined;
         }
         public async Task<bool> UpgradeWebSocketAsClientAsync()
         {

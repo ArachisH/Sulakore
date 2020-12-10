@@ -14,8 +14,8 @@ namespace Sulakore.Network
         private readonly string _ogString;
         private readonly object _continueLock;
         private readonly DataInterceptedEventArgs _args;
-        private readonly Func<DataInterceptedEventArgs, Task<int>> _relayer;
         private readonly Func<DataInterceptedEventArgs, Task> _continuation;
+        private readonly Func<DataInterceptedEventArgs, ValueTask<int>> _relayer;
 
         public int Step { get; }
         public bool IsOutgoing { get; }
@@ -109,7 +109,7 @@ namespace Sulakore.Network
             _continueLock = new object();
             _continuation = continuation;
         }
-        public DataInterceptedEventArgs(HPacket packet, int step, bool isOutgoing, Func<DataInterceptedEventArgs, Task> continuation, Func<DataInterceptedEventArgs, Task<int>> relayer)
+        public DataInterceptedEventArgs(HPacket packet, int step, bool isOutgoing, Func<DataInterceptedEventArgs, Task> continuation, Func<DataInterceptedEventArgs, ValueTask<int>> relayer)
             : this(packet, step, isOutgoing, continuation)
         {
             _relayer = relayer;
@@ -128,7 +128,7 @@ namespace Sulakore.Network
                     if (relay)
                     {
                         WasRelayed = true;
-                        _relayer?.Invoke(this);
+                        _ = (_relayer?.Invoke(this));
                     }
 
                     HasContinued = true;

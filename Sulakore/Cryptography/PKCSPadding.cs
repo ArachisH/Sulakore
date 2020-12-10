@@ -1,4 +1,4 @@
-﻿namespace Sulakore.Crypto
+﻿namespace Sulakore.Cryptography
 {
     public enum PKCSPadding
     {

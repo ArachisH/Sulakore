@@ -4,7 +4,7 @@ using System.Numerics;
 using System.Globalization;
 using System.Security.Cryptography;
 
-namespace Sulakore.Crypto
+namespace Sulakore.Cryptography
 {
     public class HKeyExchange : IDisposable
     {

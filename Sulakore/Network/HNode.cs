@@ -14,6 +14,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 
 using Sulakore.Network.Protocol;
+using Sulakore.Cryptography.Ciphers;
 
 namespace Sulakore.Network
 {
@@ -33,6 +34,9 @@ namespace Sulakore.Network
         private byte[] _mask = null;
         private SslStream _secureSocketLayer;
         private SslStream _securePayloadLayer;
+
+        public IStreamCipher Encrypter { get; set; }
+        public IStreamCipher Decrypter { get; set; }
 
         public HFormat SendFormat { get; set; }
         public HFormat ReceiveFormat { get; set; }

@@ -113,30 +113,14 @@ namespace Sulakore.Network.Protocol
 
         public override async Task<HPacket> ReceivePacketAsync(HNode node)
         {
-            byte[] lengthBlock = await node.AttemptReceiveAsync(4, 3).ConfigureAwait(false);
-            if (lengthBlock == null)
-            {
-                node.Disconnect();
-                return null;
-            }
-
-            byte[] body = await node.AttemptReceiveAsync(ReadInt32(lengthBlock, 0), 3).ConfigureAwait(false);
-            if (body == null)
-            {
-                node.Disconnect();
-                return null;
-            }
-
-            var data = new byte[4 + body.Length];
-            Buffer.BlockCopy(lengthBlock, 0, data, 0, 4);
-            Buffer.BlockCopy(body, 0, data, 4, body.Length);
-
-            return CreatePacket(data);
-        }
-        public override async Task<HPacket> ReceivePacketAsync(HWebNode node)
-        {
             using IMemoryOwner<byte> lengthOwner = MemoryPool<byte>.Shared.Rent(4);
-            int lengthReceived = await node.ReceiveAsync(lengthOwner.Memory.Slice(0, 4)).ConfigureAwait(false);
+            int lengthReceived = 0;
+            do
+            {
+                lengthReceived = await node.ReceiveAsync(lengthOwner.Memory.Slice(0, 4)).ConfigureAwait(false);
+            }
+            while (lengthReceived == 0);
+
             if (lengthReceived != 4)
             {
                 await node.DisposeAsync().ConfigureAwait(false);
@@ -144,10 +128,19 @@ namespace Sulakore.Network.Protocol
 
             int length = BinaryPrimitives.ReadInt32BigEndian(lengthOwner.Memory.Span);
             using IMemoryOwner<byte> bodyOwner = MemoryPool<byte>.Shared.Rent(length);
-            int bodyReceived = await node.ReceiveAsync(bodyOwner.Memory.Slice(0, length));
+            Memory<byte> body = bodyOwner.Memory.Slice(0, length);
+
+            int received = 0;
+            do
+            {
+                received += await node.ReceiveAsync(bodyOwner.Memory.Slice(received, length - received));
+            }
+            while (received != length);
 
             var packetData = new byte[sizeof(int) + length];
-            bodyOwner.Memory.Slice(0, 4 + length).CopyTo(packetData);
+            BinaryPrimitives.WriteInt32BigEndian(packetData, length);
+            Buffer.BlockCopy(bodyOwner.Memory.ToArray(), 0, packetData, 4, length);
+
             return CreatePacket(packetData);
         }
         protected override byte[] ConstructTails(ushort id, IList<byte> body)

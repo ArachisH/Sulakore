@@ -113,13 +113,13 @@ namespace Sulakore.Modules
             if (!IsStandalone || (Assembly.GetAssembly(_container.GetType()) != Assembly.GetEntryAssembly())) return;
             while (true)
             {
-                HNode installerNode = HNode.ConnectNewAsync(moduleServer ?? DefaultModuleServer).Result;
+                HNode installerNode = HNode.ConnectAsync(moduleServer ?? DefaultModuleServer).Result;
                 if (installerNode != null)
                 {
                     var infoPacketOut = new EvaWirePacket(0);
                     WriteModuleInfo(infoPacketOut);
 
-                    installerNode.SendPacketAsync(infoPacketOut).GetAwaiter().GetResult();
+                    installerNode.SendAsync(infoPacketOut).GetAwaiter().GetResult();
                     Installer = _container.Installer = new DummyInstaller(_container, installerNode);
                     break;
                 }
@@ -349,7 +349,7 @@ namespace Sulakore.Modules
 
                 if (!args.WasRelayed)
                 {
-                    _installerNode.SendPacketAsync(CreateHandledDataPacket(args, false));
+                    _installerNode.SendAsync(CreateHandledDataPacket(args, false));
                 }
             }
             private void HandleOnConnected(HPacket packet)
@@ -367,7 +367,7 @@ namespace Sulakore.Modules
             {
                 try
                 {
-                    HPacket packet = await _installerNode.ReceivePacketAsync().ConfigureAwait(false);
+                    HPacket packet = await _installerNode.ReceiveAsync().ConfigureAwait(false);
                     if (packet == null) Environment.Exit(0);
 
                     Task handleInstallerDataTask = HandleInstallerDataAsync();
@@ -381,31 +381,31 @@ namespace Sulakore.Modules
             private async Task ContinueAsync(DataInterceptedEventArgs args)
             {
                 HPacket handledDataPacket = CreateHandledDataPacket(args, true);
-                await _installerNode.SendPacketAsync(handledDataPacket).ConfigureAwait(false);
+                await _installerNode.SendAsync(handledDataPacket).ConfigureAwait(false);
             }
 
-            public Task<int> SendToClientAsync(byte[] data)
+            public ValueTask<int> SendToClientAsync(byte[] data)
             {
-                return _installerNode.SendPacketAsync(2, false, data.Length, data);
+                return _installerNode.SendAsync(2, false, data.Length, data);
             }
-            public Task<int> SendToClientAsync(HPacket packet)
+            public ValueTask<int> SendToClientAsync(HPacket packet)
             {
                 return SendToClientAsync(packet.ToBytes());
             }
-            public Task<int> SendToClientAsync(ushort id, params object[] values)
+            public ValueTask<int> SendToClientAsync(ushort id, params object[] values)
             {
                 return SendToClientAsync(EvaWirePacket.Construct(id, values));
             }
 
-            public Task<int> SendToServerAsync(byte[] data)
+            public ValueTask<int> SendToServerAsync(byte[] data)
             {
-                return _installerNode.SendPacketAsync(2, true, data.Length, data);
+                return _installerNode.SendAsync(2, true, data.Length, data);
             }
-            public Task<int> SendToServerAsync(HPacket packet)
+            public ValueTask<int> SendToServerAsync(HPacket packet)
             {
                 return SendToServerAsync(packet.ToBytes());
             }
-            public Task<int> SendToServerAsync(ushort id, params object[] values)
+            public ValueTask<int> SendToServerAsync(ushort id, params object[] values)
             {
                 return SendToServerAsync(EvaWirePacket.Construct(id, values));
             }

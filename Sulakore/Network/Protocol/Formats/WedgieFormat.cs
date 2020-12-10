@@ -172,79 +172,6 @@ namespace Sulakore.Network.Protocol
             return double.NaN;
         }
 
-        public override async Task<HPacket> ReceivePacketAsync(HNode node)
-        {
-            byte[] data = null;
-            if (IsOutgoing)
-            {
-                byte[] lengthBlock = await node.ReceiveAsync(3).ConfigureAwait(false);
-                if (lengthBlock?.Length != 3)
-                {
-                    node.Disconnect();
-                    return null;
-                }
-
-                int totalBytesRead = 0;
-                int nullBytesReadCount = 0;
-                var body = new byte[ReadUInt16(lengthBlock, 1)];
-                do
-                {
-                    int bytesLeft = body.Length - totalBytesRead;
-                    int bytesRead = await node.ReceiveAsync(body, totalBytesRead, bytesLeft).ConfigureAwait(false);
-
-                    if (!node.IsConnected || (bytesRead <= 0 && ++nullBytesReadCount >= 2))
-                    {
-                        node.Disconnect();
-                        return null;
-                    }
-
-                    nullBytesReadCount = 0;
-                    totalBytesRead += bytesRead;
-                }
-                while (totalBytesRead != body.Length);
-
-                data = new byte[3 + body.Length];
-                Buffer.BlockCopy(lengthBlock, 0, data, 0, 3);
-                Buffer.BlockCopy(body, 0, data, 3, body.Length);
-            }
-            else
-            {
-                if (!_dataCrumbs.TryGetValue(node, out List<byte> dataCrumb))
-                {
-                    dataCrumb = new List<byte>();
-                    _dataCrumbs.Add(node, dataCrumb);
-                }
-
-                int nullBytesReadCount = 0;
-                data = AttemptStitchBuffer(dataCrumb);
-                if (data == null)
-                {
-                    byte[] idBlock = await node.PeekAsync(2).ConfigureAwait(false);
-                    if (idBlock?.Length != 2)
-                    {
-                        node.Disconnect();
-                        return null;
-                    }
-
-                    do
-                    {
-                        byte[] block = await node.ReceiveAsync(256).ConfigureAwait(false);
-                        if (!node.IsConnected || (block.Length <= 0 && ++nullBytesReadCount >= 2))
-                        {
-                            node.Disconnect();
-                            return null;
-                        }
-
-                        nullBytesReadCount = 0;
-                        dataCrumb.AddRange(block);
-                        data = AttemptStitchBuffer(dataCrumb);
-                    }
-                    while (data == null);
-                }
-            }
-            return CreatePacket(data);
-        }
-        public override async Task<HPacket> ReceivePacketAsync(HWebNode node) => throw new NotImplementedException();
         protected override byte[] ConstructTails(ushort id, IList<byte> body)
         {
             int bodyStart = IsOutgoing ? 5 : 2;
@@ -263,6 +190,7 @@ namespace Sulakore.Network.Protocol
             body.CopyTo(data, bodyStart);
             return data;
         }
+        public override async Task<HPacket> ReceivePacketAsync(HNode node) => throw new NotSupportedException();
 
         public override HPacket CreatePacket()
         {

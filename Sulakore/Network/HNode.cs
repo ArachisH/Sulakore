@@ -571,6 +571,9 @@ namespace Sulakore.Network
                     Socket.Shutdown(SocketShutdown.Both);
                     await Task.Factory.FromAsync(Socket.BeginDisconnect(false, null, null), Socket.EndDisconnect).ConfigureAwait(false);
                     Socket.Close(0);
+
+                    Encrypter?.Dispose();
+                    Decrypter?.Dispose();
                 }
                 catch { }
             }
@@ -588,6 +591,9 @@ namespace Sulakore.Network
                     Socket.Shutdown(SocketShutdown.Both);
                     Socket.Disconnect(false);
                     Socket.Close(0);
+
+                    Encrypter?.Dispose();
+                    Decrypter?.Dispose();
                 }
                 catch { }
             }

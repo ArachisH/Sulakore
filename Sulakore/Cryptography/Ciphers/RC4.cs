@@ -5,7 +5,8 @@ namespace Sulakore.Cryptography.Ciphers
     public class RC4 : IStreamCipher
     {
         private int _i, _j;
-        private readonly int[] _table;
+        private int[] _table;
+        private bool _disposed;
 
         public RC4(byte[] key)
         {
@@ -42,6 +43,21 @@ namespace Sulakore.Cryptography.Ciphers
 
                 parsed[k] = (byte)(data[k] ^ rightXOR);
             }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+            if (disposing)
+            {
+                _table = null;
+            }
+            _disposed = true;
         }
     }
 }

@@ -256,6 +256,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage NuxGetGifts { get; set; }
         public HMessage NuxScriptProceed { get; set; }
         public HMessage OpenFlatConnection { get; set; }
+        public HMessage OpenMysteryTrophy { get; set; }
         public HMessage OpenQuestTracker { get; set; }
         public HMessage OpenTrading { get; set; }
         public HMessage PassCarryItem { get; set; }

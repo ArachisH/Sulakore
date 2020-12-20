@@ -177,6 +177,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetTalentTrack { get; set; }
         public HMessage GetTalentTrackLevel { get; set; }
         public HMessage GetTargetedOffer { get; set; }
+        public HMessage GetThread { get; set; }
         public HMessage GetUnreadForumsCount { get; set; }
         public HMessage GetUserSongDisks { get; set; }
         public HMessage GiveSupplementToPet { get; set; }

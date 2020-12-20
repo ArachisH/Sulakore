@@ -391,6 +391,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage UniqueMachineID { get; set; }
         public HMessage UnseenItems { get; set; }
         public HMessage UpdateStackHeightTileHeight { get; set; }
+        public HMessage UpdateThread { get; set; }
         public HMessage UpdateUserLook { get; set; }
         public HMessage UseObject { get; set; }
         public HMessage UserBadges { get; set; }

@@ -260,6 +260,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage NewNavigatorSearch { get; set; }
         public HMessage NuxGetGifts { get; set; }
         public HMessage NuxScriptProceed { get; set; }
+        public HMessage Open { get; set; }
         public HMessage OpenFlatConnection { get; set; }
         public HMessage OpenMysteryTrophy { get; set; }
         public HMessage OpenQuestTracker { get; set; }

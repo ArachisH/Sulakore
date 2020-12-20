@@ -219,6 +219,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage MOTDNotification { get; set; }
         public HMessage MaintenanceStatus { get; set; }
         public HMessage MarketplaceBuyOfferResult { get; set; }
+        public HMessage MarketplaceCanMakeOfferResult { get; set; }
         public HMessage MarketplaceCancelSale { get; set; }
         public HMessage MarketplaceConfiguration { get; set; }
         public HMessage MarketplaceItemStats { get; set; }

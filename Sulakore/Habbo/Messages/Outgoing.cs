@@ -360,6 +360,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage SetSoundSettings { get; set; }
         public HMessage SetStackHelperHeight { get; set; }
         public HMessage SetTargetedOfferState { get; set; }
+        public HMessage SetUIFlags { get; set; }
         public HMessage Shout { get; set; }
         public HMessage Sign { get; set; }
         public HMessage StartCampaign { get; set; }

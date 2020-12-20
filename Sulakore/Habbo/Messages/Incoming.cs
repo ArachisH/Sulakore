@@ -380,6 +380,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage TradeUpdate { get; set; }
         public HMessage TradingClose { get; set; }
         public HMessage TradingCompleted { get; set; }
+        public HMessage TradingNotOpen { get; set; }
         public HMessage TradingWaitingConfirm { get; set; }
         public HMessage TradingYouAreNotAllowed { get; set; }
         public HMessage TraxSongInfo { get; set; }

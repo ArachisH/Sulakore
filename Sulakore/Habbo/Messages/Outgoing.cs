@@ -308,6 +308,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestReportUserBullying { get; set; }
         public HMessage RequestResolution { get; set; }
         public HMessage RequestRoomCategories { get; set; }
+        public HMessage RequestRoomPropertySet { get; set; }
         public HMessage RequestRoomRights { get; set; }
         public HMessage RequestRoomSettings { get; set; }
         public HMessage RequestRoomWordFilter { get; set; }

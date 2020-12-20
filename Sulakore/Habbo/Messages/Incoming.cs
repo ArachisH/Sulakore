@@ -436,6 +436,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage YouAreSpectator { get; set; }
         public HMessage YoutubeControlVideo { get; set; }
         public HMessage YoutubeDisplayPlaylists { get; set; }
+        public HMessage YoutubeDisplayVideo { get; set; }
 
         public Incoming()
             : base(false)

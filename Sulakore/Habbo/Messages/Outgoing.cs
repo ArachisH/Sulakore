@@ -274,6 +274,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage PurchaseFromCatalog { get; set; }
         public HMessage PurchaseFromCatalogAsGift { get; set; }
         public HMessage PurchasePhoto { get; set; }
+        public HMessage PurchaseTargetedOffer { get; set; }
         public HMessage PurchaseVipMembershipExtension { get; set; }
         public HMessage RateFlat { get; set; }
         public HMessage Recycle { get; set; }

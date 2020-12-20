@@ -353,6 +353,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomSettingsError { get; set; }
         public HMessage RoomSettingsSaveError { get; set; }
         public HMessage RoomSettingsSaved { get; set; }
+        public HMessage RoomThumbnailUpdateResult { get; set; }
         public HMessage RoomUserNameChanged { get; set; }
         public HMessage RoomUserReceivedHandItem { get; set; }
         public HMessage RoomUserRemoveRights { get; set; }

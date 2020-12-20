@@ -411,6 +411,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage TryPhoneNumber { get; set; }
         public HMessage UnacceptTrading { get; set; }
         public HMessage UnbanRoomUser { get; set; }
+        public HMessage UnblockGroupMember { get; set; }
         public HMessage UnignoreUser { get; set; }
         public HMessage UniqueID { get; set; }
         public HMessage UpdateForumReadMarker { get; set; }

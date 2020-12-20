@@ -324,6 +324,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RemoveGuildFromRoom { get; set; }
         public HMessage RentableItemBuyOutPrice { get; set; }
         public HMessage RentableSpaceInfo { get; set; }
+        public HMessage RentableSpaceRentFailed { get; set; }
         public HMessage RequestSpamWallPostIt { get; set; }
         public HMessage RestoreClient { get; set; }
         public HMessage RoomAdError { get; set; }

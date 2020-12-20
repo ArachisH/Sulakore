@@ -174,6 +174,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GuideSessionReport { get; set; }
         public HMessage GuideSessionRequesterCancels { get; set; }
         public HMessage GuideSessionResolved { get; set; }
+        public HMessage GuildBaseSearch { get; set; }
         public HMessage GuildConfirmRemoveMember { get; set; }
         public HMessage HarvestPet { get; set; }
         public HMessage HotelView { get; set; }

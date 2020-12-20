@@ -32,6 +32,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage BotInventory { get; set; }
         public HMessage BotRemovedFromInventory { get; set; }
         public HMessage BotSettings { get; set; }
+        public HMessage BotSkillListUpdate { get; set; }
         public HMessage BuildersClubExpired { get; set; }
         public HMessage BuildersClubFurniCount { get; set; }
         public HMessage BuildersClubSubscriptionStatus { get; set; }

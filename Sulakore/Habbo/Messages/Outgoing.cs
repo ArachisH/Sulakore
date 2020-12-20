@@ -16,6 +16,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage AdventCalendarOpenDay { get; set; }
         public HMessage AdvertisingSave { get; set; }
         public HMessage AmbassadorAlertCommand { get; set; }
+        public HMessage AmbassadorUnmute { get; set; }
         public HMessage AmbassadorVisitCommand { get; set; }
         public HMessage ApplySnapshot { get; set; }
         public HMessage ApproveAllMembershipRequests { get; set; }

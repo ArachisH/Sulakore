@@ -393,6 +393,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage TraxSongInfo { get; set; }
         public HMessage UniqueMachineID { get; set; }
         public HMessage UnseenItems { get; set; }
+        public HMessage UpdateMessage { get; set; }
         public HMessage UpdateStackHeightTileHeight { get; set; }
         public HMessage UpdateThread { get; set; }
         public HMessage UpdateUserLook { get; set; }

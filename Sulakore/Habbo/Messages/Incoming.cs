@@ -275,7 +275,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage PetAddedToInventory { get; set; }
         public HMessage PetBreedingCompleted { get; set; }
         public HMessage PetBreedingFailed { get; set; }
-        public HMessage PetBreedingResult { get; set; }
+        public HMessage ConfirmBreedingRequest { get; set; }
         public HMessage PetBreedingStart { get; set; }
         public HMessage PetInfo { get; set; }
         public HMessage PetInventory { get; set; }

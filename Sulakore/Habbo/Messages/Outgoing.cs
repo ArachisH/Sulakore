@@ -138,6 +138,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetIsUserPartOfCompetition { get; set; }
         public HMessage GetItemData { get; set; }
         public HMessage GetJukeboxPlayList { get; set; }
+        public HMessage GetLimitedOfferAppearingNext { get; set; }
         public HMessage GetMarketplaceCanMakeOffer { get; set; }
         public HMessage GetMarketplaceConfiguration { get; set; }
         public HMessage GetMarketplaceItemStats { get; set; }

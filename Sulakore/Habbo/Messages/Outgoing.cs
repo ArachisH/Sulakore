@@ -81,6 +81,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage EnableEffect { get; set; }
         public HMessage EnterOneWayDoor { get; set; }
         public HMessage EventLog { get; set; }
+        public HMessage ExtendRentOrBuyoutFurni { get; set; }
         public HMessage FindNewFriends { get; set; }
         public HMessage FloorPlanEditorSave { get; set; }
         public HMessage FollowFriend { get; set; }

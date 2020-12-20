@@ -34,6 +34,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage BuyRoomPromotion { get; set; }
         public HMessage CallForHelp { get; set; }
         public HMessage CallForHelpFromForumMessage { get; set; }
+        public HMessage CallForHelpFromForumThread { get; set; }
         public HMessage CallForHelpFromIM { get; set; }
         public HMessage CallForHelpFromPhoto { get; set; }
         public HMessage CallForHelpFromSelfie { get; set; }

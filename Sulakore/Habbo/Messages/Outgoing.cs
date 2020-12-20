@@ -311,6 +311,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RenderRoomThumbnail { get; set; }
         public HMessage RentSpace { get; set; }
         public HMessage RentSpaceCancel { get; set; }
+        public HMessage RentableSpaceStatus { get; set; }
         public HMessage RequestAchievements { get; set; }
         public HMessage RequestCanCreateRoom { get; set; }
         public HMessage RequestCatalogMode { get; set; }

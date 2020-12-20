@@ -33,6 +33,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage CallForHelp { get; set; }
         public HMessage CallForHelpFromIM { get; set; }
         public HMessage CancelMarketplaceOffer { get; set; }
+        public HMessage CancelPetBreeding { get; set; }
         public HMessage CancelQuest { get; set; }
         public HMessage CancelTyping { get; set; }
         public HMessage ChangeEmail { get; set; }

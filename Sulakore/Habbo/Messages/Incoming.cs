@@ -36,7 +36,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage BuildersClubExpired { get; set; }
         public HMessage BuildersClubFurniCount { get; set; }
         public HMessage BuildersClubSubscriptionStatus { get; set; }
-        public HMessage BullyReportClosed { get; set; }
         public HMessage BundleDiscountRuleset { get; set; }
         public HMessage CallForHelpPendingCalls { get; set; }
         public HMessage CallForHelpPendingCallsDeleted { get; set; }
@@ -153,6 +152,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GuideSessionRequesterRoom { get; set; }
         public HMessage GuideSessionStarted { get; set; }
         public HMessage GuideTicketCreationResult { get; set; }
+        public HMessage GuideTicketResolution { get; set; }
         public HMessage GuideTools { get; set; }
         public HMessage GuildAcceptMemberError { get; set; }
         public HMessage GuildBought { get; set; }

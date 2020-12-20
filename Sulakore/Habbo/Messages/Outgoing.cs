@@ -365,6 +365,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RoomAdEventTabAdClicked { get; set; }
         public HMessage RoomAdEventTabViewed { get; set; }
         public HMessage RoomAdPurchaseInitiated { get; set; }
+        public HMessage RoomAdSearch { get; set; }
         public HMessage RoomBackground { get; set; }
         public HMessage RoomCompetitionInit { get; set; }
         public HMessage RoomFavorite { get; set; }

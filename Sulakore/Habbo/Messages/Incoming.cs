@@ -391,6 +391,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage UnseenItems { get; set; }
         public HMessage UpdateStackHeightTileHeight { get; set; }
         public HMessage UpdateUserLook { get; set; }
+        public HMessage UseObject { get; set; }
         public HMessage UserBadges { get; set; }
         public HMessage UserBanned { get; set; }
         public HMessage UserChange { get; set; }

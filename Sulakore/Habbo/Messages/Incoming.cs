@@ -185,6 +185,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage HeightMap { get; set; }
         public HMessage HeightMapUpdate { get; set; }
         public HMessage HelperRequestDisabled { get; set; }
+        public HMessage HotelMergeNameChange { get; set; }
         public HMessage HotelViewBadgeButtonConfig { get; set; }
         public HMessage HotelViewCommunityGoal { get; set; }
         public HMessage HotelViewCustomTimer { get; set; }

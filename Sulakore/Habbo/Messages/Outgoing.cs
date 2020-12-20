@@ -387,6 +387,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage UseFurniture { get; set; }
         public HMessage UseWallItem { get; set; }
         public HMessage UserSaveLook { get; set; }
+        public HMessage VerifyCode { get; set; }
         public HMessage VersionCheck { get; set; }
         public HMessage Whisper { get; set; }
         public HMessage WiredConditionSaveData { get; set; }

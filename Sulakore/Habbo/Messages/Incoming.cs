@@ -111,9 +111,9 @@ namespace Sulakore.Habbo.Messages
         public HMessage FreezeLives { get; set; }
         public HMessage FriendFindingRoom { get; set; }
         public HMessage FriendListUpdate { get; set; }
+        public HMessage FriendNotification { get; set; }
         public HMessage FriendRequest { get; set; }
         public HMessage FriendRequests { get; set; }
-        public HMessage FriendToolbarNotification { get; set; }
         public HMessage Friends { get; set; }
         public HMessage FurniList { get; set; }
         public HMessage FurniListAddOrUpdate { get; set; }

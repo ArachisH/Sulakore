@@ -345,6 +345,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage SavePreferOldChat { get; set; }
         public HMessage SaveWardrobe { get; set; }
         public HMessage SaveWindowSettings { get; set; }
+        public HMessage ScrGetKickbackInfo { get; set; }
         public HMessage ScratchPet { get; set; }
         public HMessage SearchUser { get; set; }
         public HMessage SelectClubGift { get; set; }

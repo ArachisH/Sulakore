@@ -300,6 +300,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage PollContents { get; set; }
         public HMessage PollError { get; set; }
         public HMessage PollOffer { get; set; }
+        public HMessage PostItPlaced { get; set; }
         public HMessage PresentItemOpened { get; set; }
         public HMessage ProductOffer { get; set; }
         public HMessage PurchaseError { get; set; }

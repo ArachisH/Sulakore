@@ -327,6 +327,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestUserTags { get; set; }
         public HMessage RequestUserWardrobe { get; set; }
         public HMessage ResetPhoneNumberState { get; set; }
+        public HMessage ResetResolutionAchievement { get; set; }
         public HMessage ResetUnseenItemIds { get; set; }
         public HMessage ResetUnseenItems { get; set; }
         public HMessage RespectUser { get; set; }

@@ -5,6 +5,7 @@ namespace Sulakore.Habbo.Messages
     public sealed class Incoming : HMessages
     {
         public HMessage AcceptFriendResult { get; set; }
+        public HMessage AccountSafetyLockStatusChange { get; set; }
         public HMessage Achievement { get; set; }
         public HMessage AchievementResolutionCompleted { get; set; }
         public HMessage AchievementResolutionProgress { get; set; }

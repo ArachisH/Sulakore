@@ -31,6 +31,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage BuyMarketplaceTokens { get; set; }
         public HMessage BuyRoomPromotion { get; set; }
         public HMessage CallForHelp { get; set; }
+        public HMessage CallForHelpFromForumMessage { get; set; }
         public HMessage CallForHelpFromIM { get; set; }
         public HMessage CancelEvent { get; set; }
         public HMessage CancelMarketplaceOffer { get; set; }

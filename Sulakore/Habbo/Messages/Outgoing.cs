@@ -94,6 +94,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage FollowFriend { get; set; }
         public HMessage FootballGateSaveLook { get; set; }
         public HMessage ForwardToACompetitionRoom { get; set; }
+        public HMessage ForwardToARandomPromotedRoom { get; set; }
         public HMessage ForwardToASubmittableRoom { get; set; }
         public HMessage ForwardToRandomCompetitionRoom { get; set; }
         public HMessage FriendFurniConfirmLock { get; set; }

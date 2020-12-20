@@ -366,6 +366,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage Sign { get; set; }
         public HMessage StartCampaign { get; set; }
         public HMessage StartTyping { get; set; }
+        public HMessage SubmitRoomToCompetition { get; set; }
         public HMessage ThrowDice { get; set; }
         public HMessage TogglePetBreedingPermission { get; set; }
         public HMessage TogglePetRidingPermission { get; set; }

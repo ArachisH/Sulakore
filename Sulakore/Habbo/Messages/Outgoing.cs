@@ -50,6 +50,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage ChangeRelation { get; set; }
         public HMessage Chat { get; set; }
         public HMessage ChatReviewGuideDecidesOnOffer { get; set; }
+        public HMessage ChatReviewGuideDetached { get; set; }
         public HMessage ChatReviewGuideVote { get; set; }
         public HMessage ChatReviewSessionCreate { get; set; }
         public HMessage CheckUserName { get; set; }
@@ -193,7 +194,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetUnreadForumsCount { get; set; }
         public HMessage GetUserSongDisks { get; set; }
         public HMessage GiveSupplementToPet { get; set; }
-        public HMessage GuardianNoUpdatesWanted { get; set; }
         public HMessage GuideAdvertisementRead { get; set; }
         public HMessage GuideSessionFeedback { get; set; }
         public HMessage GuideSessionGetRequesterRoom { get; set; }

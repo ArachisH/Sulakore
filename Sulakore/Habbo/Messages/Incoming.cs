@@ -27,6 +27,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage BonusRareInfo { get; set; }
         public HMessage BotAddedToInventory { get; set; }
         public HMessage BotError { get; set; }
+        public HMessage BotForceOpenContextMenu { get; set; }
         public HMessage BotInventory { get; set; }
         public HMessage BotRemovedFromInventory { get; set; }
         public HMessage BotSettings { get; set; }

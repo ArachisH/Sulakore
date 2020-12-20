@@ -17,6 +17,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage AdvertisingSave { get; set; }
         public HMessage AmbassadorAlertCommand { get; set; }
         public HMessage AmbassadorVisitCommand { get; set; }
+        public HMessage ApplySnapshot { get; set; }
         public HMessage ApproveAllMembershipRequests { get; set; }
         public HMessage ApproveMembershipRequest { get; set; }
         public HMessage ApproveName { get; set; }

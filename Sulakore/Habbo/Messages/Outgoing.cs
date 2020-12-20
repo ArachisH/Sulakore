@@ -55,6 +55,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage ConfirmAcceptTrading { get; set; }
         public HMessage ConfirmChangeName { get; set; }
         public HMessage ConfirmDeclineTrading { get; set; }
+        public HMessage ConfirmPetBreeding { get; set; }
         public HMessage ConvertGlobalRoomId { get; set; }
         public HMessage CraftSecret { get; set; }
         public HMessage CraftingAddRecipe { get; set; }

@@ -135,6 +135,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GoToBreedingNestFailure { get; set; }
         public HMessage GotMysteryBoxPrize { get; set; }
         public HMessage GroupDetailsChanged { get; set; }
+        public HMessage GroupMembershipRequested { get; set; }
         public HMessage GuardianNewReportReceived { get; set; }
         public HMessage GuardianVotingRequested { get; set; }
         public HMessage GuardianVotingResult { get; set; }

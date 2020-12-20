@@ -214,6 +214,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage InfoRetrieve { get; set; }
         public HMessage InitCamera { get; set; }
         public HMessage InitDiffieHandshake { get; set; }
+        public HMessage InterstitialShown { get; set; }
         public HMessage JoinHabboGroup { get; set; }
         public HMessage JoinQueue { get; set; }
         public HMessage KickMember { get; set; }

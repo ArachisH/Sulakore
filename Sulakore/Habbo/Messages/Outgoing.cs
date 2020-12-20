@@ -101,6 +101,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetBundleDiscount { get; set; }
         public HMessage GetCatalogIndex { get; set; }
         public HMessage GetCatalogPageExpiration { get; set; }
+        public HMessage GetCatalogPageWithEarliestExpiry { get; set; }
         public HMessage GetCfhStatus { get; set; }
         public HMessage GetClientFaqs { get; set; }
         public HMessage GetClubGiftInfo { get; set; }

@@ -139,6 +139,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetHabboGuildBadges { get; set; }
         public HMessage GetIgnoredUsers { get; set; }
         public HMessage GetInterstitial { get; set; }
+        public HMessage GetIsBadgeRequestFulfilled { get; set; }
         public HMessage GetIsOfferGiftable { get; set; }
         public HMessage GetIsUserPartOfCompetition { get; set; }
         public HMessage GetItemData { get; set; }

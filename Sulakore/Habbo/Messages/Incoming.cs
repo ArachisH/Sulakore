@@ -61,6 +61,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage CfhTopicsInit { get; set; }
         public HMessage ChangeNameUpdate { get; set; }
         public HMessage Chat { get; set; }
+        public HMessage CheckUserNameResult { get; set; }
         public HMessage CloseConnection { get; set; }
         public HMessage ClubCenterData { get; set; }
         public HMessage ClubGiftInfo { get; set; }

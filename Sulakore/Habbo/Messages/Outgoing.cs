@@ -270,6 +270,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage PollStart { get; set; }
         public HMessage Pong { get; set; }
         public HMessage PostItPlace { get; set; }
+        public HMessage PostMessage { get; set; }
         public HMessage PostQuizAnswers { get; set; }
         public HMessage PresentOpen { get; set; }
         public HMessage PublishPhoto { get; set; }

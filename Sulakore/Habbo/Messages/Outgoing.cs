@@ -146,6 +146,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetMarketplaceItemStats { get; set; }
         public HMessage GetMarketplaceOffers { get; set; }
         public HMessage GetMarketplaceOwnOffers { get; set; }
+        public HMessage GetMessages { get; set; }
         public HMessage GetModeratorRoomInfo { get; set; }
         public HMessage GetNextTargetedOffer { get; set; }
         public HMessage GetNowPlaying { get; set; }

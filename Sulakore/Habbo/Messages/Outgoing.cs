@@ -225,6 +225,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage ModToolSanctionBan { get; set; }
         public HMessage ModToolSanctionMute { get; set; }
         public HMessage ModToolSanctionTradeLock { get; set; }
+        public HMessage ModerateMessage { get; set; }
         public HMessage MoodLightSaveSettings { get; set; }
         public HMessage MoodLightSettings { get; set; }
         public HMessage MoodLightTurnOn { get; set; }

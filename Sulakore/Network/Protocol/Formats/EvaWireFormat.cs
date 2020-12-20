@@ -111,7 +111,7 @@ namespace Sulakore.Network.Protocol
             return BitConverter.ToDouble(chunk, 0);
         }
 
-        public override async Task<HPacket> ReceivePacketAsync(HNode node)
+        public override async ValueTask<HPacket> ReceivePacketAsync(HNode node)
         {
             using IMemoryOwner<byte> lengthOwner = MemoryPool<byte>.Shared.Rent(4);
             int lengthReceived = 0;
@@ -121,10 +121,7 @@ namespace Sulakore.Network.Protocol
             }
             while (lengthReceived == 0);
 
-            if (lengthReceived != 4)
-            {
-                await node.DisposeAsync().ConfigureAwait(false);
-            }
+            if (lengthReceived != 4) node.Dispose();
 
             int length = BinaryPrimitives.ReadInt32BigEndian(lengthOwner.Memory.Span);
             using IMemoryOwner<byte> bodyOwner = MemoryPool<byte>.Shared.Rent(length);

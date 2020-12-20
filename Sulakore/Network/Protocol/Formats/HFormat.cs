@@ -132,7 +132,7 @@ namespace Sulakore.Network.Protocol
             }
         }
 
-        public abstract Task<HPacket> ReceivePacketAsync(HNode node);
+        public abstract ValueTask<HPacket> ReceivePacketAsync(HNode node);
         protected abstract byte[] ConstructTails(ushort id, IList<byte> body);
 
         public abstract HPacket CreatePacket();

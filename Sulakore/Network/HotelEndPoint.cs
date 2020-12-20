@@ -20,8 +20,8 @@ namespace Sulakore.Network
 
         public HHotel Hotel { get; private set; }
 
-        public HotelEndPoint(IPEndPoint endpoint)
-            : base(endpoint.Address, endpoint.Port)
+        public HotelEndPoint(IPEndPoint endPoint)
+            : base(endPoint.Address, endPoint.Port)
         { }
         public HotelEndPoint(long address, int port)
             : base(address, port)
@@ -71,17 +71,13 @@ namespace Sulakore.Network
             }
             return HHotel.Unknown;
         }
-        public static string GetRegion(HHotel hotel)
+        public static string GetRegion(HHotel hotel) => hotel switch
         {
-            return hotel switch
-            {
-                HHotel.Com => "us",
-                HHotel.ComBr => "br",
-                HHotel.ComTr => "tr",
-
-                _ => hotel.ToString().ToLower(),
-            };
-        }
+            HHotel.Com => "us",
+            HHotel.ComBr => "br",
+            HHotel.ComTr => "tr",
+            _ => hotel.ToString().ToLower(),
+        };
         public static HotelEndPoint GetEndPoint(HHotel hotel)
         {
             int port = hotel == HHotel.Com ? 38101 : 30000;
@@ -94,16 +90,16 @@ namespace Sulakore.Network
             IPAddress[] ips = Dns.GetHostAddresses(host);
             return new HotelEndPoint(ips[0], port, host);
         }
-        public static bool TryParse(string host, int port, out HotelEndPoint endpoint)
+        public static bool TryParse(string host, int port, out HotelEndPoint endPoint)
         {
             try
             {
-                endpoint = Parse(host, port);
+                endPoint = Parse(host, port);
                 return true;
             }
             catch
             {
-                endpoint = null;
+                endPoint = null;
                 return false;
             }
         }

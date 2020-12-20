@@ -190,7 +190,7 @@ namespace Sulakore.Network.Protocol
             body.CopyTo(data, bodyStart);
             return data;
         }
-        public override async Task<HPacket> ReceivePacketAsync(HNode node) => throw new NotSupportedException();
+        public override ValueTask<HPacket> ReceivePacketAsync(HNode node) => throw new NotSupportedException();
 
         public override HPacket CreatePacket()
         {

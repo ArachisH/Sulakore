@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Text;
 using System.Buffers;
@@ -8,9 +9,7 @@ using System.Buffers.Text;
 using System.Net.Security;
 using System.Buffers.Binary;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using System.Security.Cryptography;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 
 using Sulakore.Network.Protocol;
@@ -18,22 +17,23 @@ using Sulakore.Cryptography.Ciphers;
 
 namespace Sulakore.Network
 {
-    // TODO: Cleanup
-    public class HNode : NetworkStream
+    public class HNode : IDisposable
     {
         private static readonly Random _rng;
+        private static readonly byte[] _emptyMask;
         private static readonly byte[] _okBytes, _startTLSBytes;
         private static readonly byte[] _upgradeWebSocketResponseBytes;
         private static readonly byte[] _rfc6455GuidBytes, _secWebSocketKeyBytes;
 
-        private readonly Queue<Memory<byte>> _frameHeaders;
+        private readonly Socket _socket;
         private readonly SemaphoreSlim _sendSemaphore, _receiveSemaphore;
-        private readonly Queue<IMemoryOwner<byte>> _rentedHeaderOwners, _rentedPayloadOwners;
 
         private bool _disposed;
         private byte[] _mask = null;
-        private SslStream _secureSocketLayer;
-        private SslStream _securePayloadLayer;
+        /// <summary>
+        /// Represents a possibly mutli-layered secured stream capable of reading/writing in the WebSocket protocol.
+        /// </summary>
+        private Stream _socketStream;
 
         public IStreamCipher Encrypter { get; set; }
         public IStreamCipher Decrypter { get; set; }
@@ -45,34 +45,59 @@ namespace Sulakore.Network
         public bool IsClient { get; private set; }
         public bool IsUpgraded { get; private set; }
         public bool IsWebSocket { get; private set; }
-        public bool IsConnected => !_disposed && Socket.Connected;
-        public bool IsAuthenticated => _secureSocketLayer?.IsAuthenticated ?? _securePayloadLayer?.IsAuthenticated ?? false;
-        public bool IsDoubleLayeredSSL => (_secureSocketLayer?.IsAuthenticated ?? false) && (_securePayloadLayer?.IsAuthenticated ?? false);
+        public bool IsConnected => !_disposed && _socket.Connected;
 
         static HNode()
         {
             _rng = new Random();
+            _emptyMask = new byte[4];
             _okBytes = Encoding.UTF8.GetBytes("OK");
             _startTLSBytes = Encoding.UTF8.GetBytes("StartTLS");
             _secWebSocketKeyBytes = Encoding.UTF8.GetBytes("Sec-WebSocket-Key: ");
             _rfc6455GuidBytes = Encoding.UTF8.GetBytes("258EAFA5-E914-47DA-95CA-C5AB0DC85B11");
             _upgradeWebSocketResponseBytes = Encoding.UTF8.GetBytes("HTTP/1.1 101 Switching Protocols\r\nConnection: Upgrade\r\nUpgrade: websocket\r\nSec-WebSocket-Accept: ");
         }
+        public HNode()
+            : this(new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+        { }
         public HNode(Socket socket)
-            : base(socket, false)
+            : this(socket, new HotelEndPoint((IPEndPoint)socket.RemoteEndPoint))
+        { }
+        private HNode(Socket socket, HotelEndPoint remoteEndPoint)
         {
-            _sendSemaphore = new SemaphoreSlim(2, 2);
-            _frameHeaders = new Queue<Memory<byte>>();
-            _receiveSemaphore = new SemaphoreSlim(2, 2);
-            _rentedHeaderOwners = new Queue<IMemoryOwner<byte>>();
-            _rentedPayloadOwners = new Queue<IMemoryOwner<byte>>();
+            _socketStream = new BufferedNetworkStream(socket);
+
+            _socket = socket;
+            _sendSemaphore = new SemaphoreSlim(1, 1);
+            _receiveSemaphore = new SemaphoreSlim(1, 1);
 
             socket.NoDelay = true;
             socket.LingerState = new LingerOption(false, 0);
-            if (socket.RemoteEndPoint is IPEndPoint ipEndPoint)
+
+            SendFormat = HFormat.EvaWire;
+            ReceiveFormat = HFormat.EvaWire;
+            RemoteEndPoint = remoteEndPoint;
+        }
+
+        public ValueTask<HPacket> ReceiveAsync()
+        {
+            if (ReceiveFormat == null)
             {
-                RemoteEndPoint = new HotelEndPoint(ipEndPoint);
+                throw new NullReferenceException($"Cannot receive structued data while {nameof(ReceiveFormat)} is null.");
             }
+            return ReceiveFormat.ReceivePacketAsync(this);
+        }
+        public ValueTask<int> SendAsync(HPacket packet)
+        {
+            return SendAsync(packet.ToBytes());
+        }
+        public ValueTask<int> SendAsync(ushort id, params object[] values)
+        {
+            if (SendFormat == null)
+            {
+                throw new NullReferenceException($"Cannot send structued data while {nameof(SendFormat)} is null.");
+            }
+            return SendAsync(SendFormat.Construct(id, values));
         }
 
         public bool ReflectFormats(HNode other)
@@ -91,9 +116,9 @@ namespace Sulakore.Network
             }
 
             // Connection type can only be determined in the beginning. ("GET"/WebSocket/EvaWire, '4000'/Raw/EvaWire, '206'/Raw/Wedgie)
-            using IMemoryOwner<byte> initialBytesOwner = RentTrimmedRegion(6, out Memory<byte> initialBytesRegion);
+            using IMemoryOwner<byte> initialBytesOwner = Rent(6, out Memory<byte> initialBytesRegion);
 
-            int initialBytesRead = await SocketPeekAsync(initialBytesRegion).ConfigureAwait(false);
+            int initialBytesRead = await _socket.ReceiveAsync(initialBytesRegion, SocketFlags.Peek).ConfigureAwait(false);
             ParseInitialBytes(initialBytesRegion.Span.Slice(0, initialBytesRead), out bool isWebSocket, out ushort possibleId);
 
             bool wasDetermined = true;
@@ -135,29 +160,34 @@ namespace Sulakore.Network
 
             IsClient = true;
             // Initialize the top-most secure tunnel where ALL data will be read/written from/to.
-            _secureSocketLayer = new SslStream(new NetworkStream(Socket, false), false, ValidateRemoteCertificate);
-            await _secureSocketLayer.AuthenticateAsClientAsync(RemoteEndPoint.Host, null, false).ConfigureAwait(false);
-            if (!_secureSocketLayer.IsAuthenticated) return false;
+
+            var secureSocketStream = new SslStream(_socketStream, false, ValidateRemoteCertificate);
+            _socketStream = secureSocketStream; // Take ownership of the main input/output stream, and override the field with an SslStream instance that wraps around it.
+
+            await secureSocketStream.AuthenticateAsClientAsync(RemoteEndPoint.Host, null, false).ConfigureAwait(false);
+            if (!secureSocketStream.IsAuthenticated) return false;
 
             string webRequest = $"GET /websocket HTTP/1.1\r\nHost: {RemoteEndPoint}\r\n{requestHeaders}\r\nSec-WebSocket-Key: {GenerateWebSocketKey()}\r\n\r\n";
-            await SendAsync(webRequest).ConfigureAwait(false);
+            await SendAsync(Encoding.UTF8.GetBytes(webRequest)).ConfigureAwait(false);
 
-            using IMemoryOwner<byte> receiveOwner = RentTrimmedRegion(256, out Memory<byte> receiveRegion);
+            using IMemoryOwner<byte> receiveOwner = Rent(256, out Memory<byte> receiveRegion);
             int received = await ReceiveAsync(receiveRegion).ConfigureAwait(false);
 
             // Create the mask that will be used for the WebSocket payloads.
-            _mask = new byte[4];
+            _mask = _emptyMask;
             //_rng.NextBytes(_mask);
-            IsUpgraded = true; // Once upgraded, all data will be converted to/from WebSocket frames.
 
-            await SendAsync("StartTLS").ConfigureAwait(false);
+            IsUpgraded = true;
+            _socketStream = new WebSocketStream(_socketStream, _mask, false); // Anything now being sent or received through the stream will be parsed using the WebSocket protocol.
+
+            await SendAsync(_startTLSBytes).ConfigureAwait(false);
             received = await ReceiveAsync(receiveRegion).ConfigureAwait(false);
             if (!IsTLSAccepted(receiveRegion.Span.Slice(0, received))) return false;
 
             // Initialize the second secure tunnel layer where ONLY the WebSocket payload data will be read/written from/to.
-            _securePayloadLayer = new SslStream(this, true, ValidateRemoteCertificate);
-            await _securePayloadLayer.AuthenticateAsClientAsync(RemoteEndPoint.Host, null, false).ConfigureAwait(false);
-
+            secureSocketStream = new SslStream(_socketStream, false, ValidateRemoteCertificate);
+            _socketStream = secureSocketStream; // This stream layer will decrypt/encrypt the payload using the WebSocket protocol.
+            await secureSocketStream.AuthenticateAsClientAsync(RemoteEndPoint.Host, null, false).ConfigureAwait(false);
             return IsUpgraded;
         }
         public async Task<bool> UpgradeWebSocketAsServerAsync(X509Certificate certificate)
@@ -186,537 +216,95 @@ namespace Sulakore.Network
             }
 
             if (IsUpgraded || !await DetermineFormatsAsync()) return IsUpgraded;
-            using IMemoryOwner<byte> receivedOwner = RentTrimmedRegion(1024, out Memory<byte> receivedRegion);
+            using IMemoryOwner<byte> receivedOwner = Rent(1024, out Memory<byte> receivedRegion);
             int received = await ReceiveAsync(receivedRegion).ConfigureAwait(false);
 
-            using IMemoryOwner<byte> responseOwner = RentTrimmedRegion(256, out Memory<byte> responseRegion);
+            using IMemoryOwner<byte> responseOwner = Rent(256, out Memory<byte> responseRegion);
             FillWebResponse(receivedRegion.Span.Slice(0, received), responseRegion.Span, out int responseWritten);
             await SendAsync(responseRegion.Slice(0, responseWritten)).ConfigureAwait(false);
 
             // Begin receiving/sending data as WebSocket frames.
             IsUpgraded = true;
+            _socketStream = new WebSocketStream(_socketStream);
 
             received = await ReceiveAsync(receivedRegion).ConfigureAwait(false);
             if (IsTLSRequested(receivedRegion.Span.Slice(0, received)))
             {
                 await SendAsync(_okBytes).ConfigureAwait(false);
 
-                _securePayloadLayer = new SslStream(this, true, ValidateRemoteCertificate);
-                await _securePayloadLayer.AuthenticateAsServerAsync(certificate).ConfigureAwait(false);
+                var secureSocketStream = new SslStream(_socketStream, false, ValidateRemoteCertificate);
+                _socketStream = secureSocketStream;
+                await secureSocketStream.AuthenticateAsServerAsync(certificate).ConfigureAwait(false);
             }
             else throw new Exception("The client did not send 'StartTLS'.");
             return IsUpgraded;
         }
 
-        public Task<HPacket> ReceiveAsync()
+        public virtual ValueTask<int> SendAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) => TransportAsync(buffer, false, cancellationToken);
+        public virtual ValueTask<int> ReceiveAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) => TransportAsync(buffer, true, cancellationToken);
+        protected virtual async ValueTask<int> TransportAsync(Memory<byte> buffer, bool isReceiving, CancellationToken cancellationToken = default)
         {
-            if (ReceiveFormat == null)
-            {
-                throw new NullReferenceException($"Cannot receive structued data while {nameof(ReceiveFormat)} is null.");
-            }
-            return ReceiveFormat.ReceivePacketAsync(this);
-        }
-        public ValueTask<int> SendAsync(ushort id, params object[] values)
-        {
-            if (SendFormat == null)
-            {
-                throw new NullReferenceException($"Cannot send structued data while {nameof(SendFormat)} is null.");
-            }
-            return SendAsync(SendFormat.Construct(id, values));
-        }
-
-        public ValueTask<int> SendAsync(string message)
-        {
-            return SendAsync(Encoding.UTF8.GetBytes(message));
-        }
-        public ValueTask<int> SendAsync(HPacket packet)
-        {
-            return SendAsync(packet.ToBytes());
-        }
-
-        public virtual async ValueTask<int> ReceiveAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
-        {
-            int received = 0;
             if (!IsConnected) return -1;
             if (buffer.Length == 0) return 0;
-            await _receiveSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
-            try
-            {
-                if (!IsUpgraded || _rentedHeaderOwners.Count > 0)
-                {
-                    int limit = buffer.Length;
-                    if (_rentedHeaderOwners.TryPeek(out IMemoryOwner<byte> headerOwner))
-                    {
-                        int frameHeaderExtra = DecodeFrameHeader(headerOwner.Memory.Span, out bool isMasked, out ulong payloadSize, out int opcode);
-                        limit = (int)payloadSize;
-                    }
 
-                    received = await SocketReceiveAsync(buffer.Slice(0, limit), cancellationToken).ConfigureAwait(false);
-                    if (_rentedHeaderOwners.TryDequeue(out headerOwner))
-                    {
-                        int frameHeaderExtra = DecodeFrameHeader(headerOwner.Memory.Span, out bool isMasked, out ulong payloadSize, out int opcode);
-                        MemoryMarshal.Write(headerOwner.Memory.Span.Slice(14), ref received); // Notify the owner how much of the encrypted/masked payload was read.
-                        if (isMasked)
-                        {
-                            UnmaskPayload(buffer.Span.Slice(0, received), headerOwner.Memory.Span.Slice(2 + (frameHeaderExtra - 4), 4));
-                        }
-                    }
-                }
-                else if (_rentedHeaderOwners.Count == 0)
-                {
-                    received = await UnwrapWebSocketFramesAsync(buffer, cancellationToken).ConfigureAwait(false);
-                }
-                // TODO: Decrypt
-            }
-            catch { return -1; }
-            finally { _receiveSemaphore.Release(); }
-            return received;
-        }
-        public virtual async ValueTask<int> SendAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
-        {
-            int sent = 0;
-            if (!IsConnected) return -1;
-            if (buffer.Length <= 0) return 0;
-            await _sendSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+            int transported;
+            SemaphoreSlim transportSemaphore = isReceiving ? _receiveSemaphore : _sendSemaphore;
+            await transportSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                // TODO: Encrypt
-                if (IsUpgraded && _frameHeaders.Count == 0)
+                if (isReceiving)
                 {
-                    sent = await WrapWebSocketFramesAsync(buffer, cancellationToken).ConfigureAwait(false);
+                    transported = await _socketStream.ReadAsync(buffer, cancellationToken).ConfigureAwait(false);
+                    Decrypter?.Process(buffer.Slice(0, transported).Span);
                 }
                 else
                 {
-                    ReadOnlyMemory<byte> payload = buffer;
-                    if (_frameHeaders.TryDequeue(out Memory<byte> extendedFrameHeaderRegion))//&& IsClient) // Only deque and ENTER when acting as client, otherwise just deque it.
+                    Encrypter?.Process(buffer.Span);
+                    if (_mask != null && _mask != _emptyMask) // This payload is meant to be masked as specified by the WebSocket protocol.
                     {
-                        if (IsClient)
-                        {
-                            int encodedFrameHeaderSize = EncodeFrameHeader(extendedFrameHeaderRegion.Span.Slice(4), buffer.Length, IsClient);
-                            sent += await SocketSendAsync(extendedFrameHeaderRegion.Slice(4, encodedFrameHeaderSize), cancellationToken).ConfigureAwait(false);
-                            sent += await SocketSendAsync(_mask, cancellationToken).ConfigureAwait(false);
-                            MaskPayload(buffer.Span, _mask, out payload);
-                        }
-                        else
-                        {
-                            const int MAX_FRAME_PAYLOAD_SIZE = 125;
 
-                            int dataSent = 0;
-                            Memory<byte> frameHeaderRegion = extendedFrameHeaderRegion.Slice(4);
-                            for (int i = 0, payloadLeft = buffer.Length; payloadLeft > 0; payloadLeft -= MAX_FRAME_PAYLOAD_SIZE, i++)
-                            {
-                                bool isFinalFrame = payloadLeft <= MAX_FRAME_PAYLOAD_SIZE;
-                                int payloadStart = MAX_FRAME_PAYLOAD_SIZE * i;
-                                int payloadSize = isFinalFrame ? payloadLeft : MAX_FRAME_PAYLOAD_SIZE;
-
-                                int header = isFinalFrame || IsClient ? 1 : 0;
-                                header = (header << 1) + 0; // RSV1 - IsDataCompressed
-                                header = (header << 1) + 0; // RSV2
-                                header = (header << 1) + 0; // RSV3
-                                header = (header << 4) + (i == 0 || IsClient ? 2 : 0); // If this is the first frame, mark it as a BINARY, otherwise CONTINUATION.
-                                header = (header << 1) + (IsClient ? 1 : 0); // Mask should always be present when sending data to the server.
-
-                                int frameHeaderSize = 2;
-                                header = (header << 7) + payloadSize;
-                                payloadSize = isFinalFrame ? payloadLeft : MAX_FRAME_PAYLOAD_SIZE;
-
-                                ReadOnlyMemory<byte> encryptedPayloadFragment = buffer.Slice(payloadStart, payloadSize);
-                                BinaryPrimitives.WriteUInt16BigEndian(frameHeaderRegion.Span, (ushort)header);
-                                dataSent += await SocketSendAsync(frameHeaderRegion.Slice(0, frameHeaderSize), cancellationToken).ConfigureAwait(false);
-                                dataSent += await SocketSendAsync(encryptedPayloadFragment, cancellationToken).ConfigureAwait(false);
-                            }
-                            return dataSent;
-                        }
                     }
-                    sent += await SocketSendAsync(payload, cancellationToken).ConfigureAwait(false);
+
+                    await _socketStream.WriteAsync(buffer, cancellationToken).ConfigureAwait(false);
+                    await _socketStream.FlushAsync(cancellationToken).ConfigureAwait(false); // Ensure the buffered write stream sends all the data.
+                    transported = buffer.Length;
                 }
             }
             catch { return -1; }
-            finally { _sendSemaphore.Release(); }
-            return sent;
+            finally { transportSemaphore.Release(); }
+            return transported;
         }
 
-        protected virtual ValueTask<int> ReceivePayloadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
+        public void Dispose()
         {
-            if (_securePayloadLayer?.IsAuthenticated ?? false)
-            {
-                return _securePayloadLayer.ReadAsync(buffer, cancellationToken);
-            }
-            else return SocketReceiveAsync(buffer, cancellationToken);
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
-        protected virtual async ValueTask<int> SendPayloadAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
+        protected virtual void Dispose(bool disposing)
         {
-            if (_securePayloadLayer?.IsAuthenticated ?? false)
+            if (disposing && !_disposed)
             {
-                await _securePayloadLayer.WriteAsync(buffer, cancellationToken).ConfigureAwait(false);
-                return buffer.Length;
-            }
-            return await SocketSendAsync(buffer, cancellationToken).ConfigureAwait(false);
-        }
-        protected virtual async ValueTask<int> UnwrapWebSocketFramesAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
-        {
-            static void WriteExtendedPayloadHeader(Span<byte> extendedPayload, int consumed, int payloadSize)
-            {
-                MemoryMarshal.Write(extendedPayload, ref consumed);
-                MemoryMarshal.Write(extendedPayload.Slice(4), ref payloadSize);
-            }
-            static bool ConsumePayload(Span<byte> extendedPayload, Span<byte> buffer, out int consumed)
-            {
-                int totalConsumed = MemoryMarshal.Read<int>(extendedPayload);
-                int payloadSize = MemoryMarshal.Read<int>(extendedPayload.Slice(4));
-
-                // How much of the payload in bytes is left for consumption.
-                int payloadLeft = (payloadSize - totalConsumed);
-
-                // Copy as much of the remaining payload to the buffer as possible.
-                consumed = Math.Min(payloadLeft, buffer.Length);
-                bool isEntirePayloadConsumed = consumed == payloadLeft;
-
-                extendedPayload.Slice(8 + totalConsumed, consumed).CopyTo(buffer);
-                totalConsumed += consumed;
-
-                MemoryMarshal.Write(extendedPayload, ref totalConsumed);
-                return isEntirePayloadConsumed;
-            }
-
-            int opcode = 0;
-            bool isMasked = false;
-            ulong payloadSize = 0;
-            int frameHeaderSize = 0;
-            Memory<byte> headerRegion = null;
-            IMemoryOwner<byte> headerOwner = null;
-            if (_rentedPayloadOwners.Count == 0)
-            {
-                headerOwner = RentTrimmedRegion(18, out headerRegion);
-                frameHeaderSize = await SocketReceiveAsync(headerRegion.Slice(0, 2), cancellationToken).ConfigureAwait(false);
-                frameHeaderSize += DecodeFrameHeader(headerRegion.Span.Slice(0, 2), out isMasked, out payloadSize, out opcode);
-                if (frameHeaderSize > 2)
-                {
-                    await SocketReceiveAsync(headerRegion.Slice(2, frameHeaderSize - 2), cancellationToken).ConfigureAwait(false);
-                    DecodeFrameHeader(headerRegion.Span, out isMasked, out payloadSize, out opcode); // Decode the header again, since we might now be able to retrieve the actual payload size of the frame.
-                }
-                if (payloadSize == 0) return 0;
-
-                // The payload will first need to be unmasked, and then be passed through our SslStream instance to get decrypted.
-                if (IsDoubleLayeredSSL || isMasked && IsAuthenticated)
-                {
-                    _rentedHeaderOwners.Enqueue(headerOwner);
-                }
-            }
-
-            int consumed = 0;
-            bool wasPayloadOwnerPeeked = false;
-            bool isEntirePayloadConsumed = true;
-            IMemoryOwner<byte> payloadOwner = null;
-            try
-            {
-                Memory<byte> payloadRegion = null;
-                Memory<byte> extendedPayloadRegion = null;
-                if (!(wasPayloadOwnerPeeked = _rentedPayloadOwners.TryPeek(out payloadOwner)))
-                {
-                    // If we enter this block, then that means 'headerOwner' is NOT null.
-                    // We use the first 8 bytes to hold two Int32 values that represents the size in bytes of the payload already consumed, and the size in bytes left to be consumed.
-                    payloadOwner = RentTrimmedRegion(8 + (int)payloadSize, out extendedPayloadRegion);
-                    payloadRegion = extendedPayloadRegion.Slice(8);
-
-                    int payloadRead = await ReceivePayloadAsync(payloadRegion, cancellationToken).ConfigureAwait(false); // At this point, we trust that payloadRead IS EQUAL to payloadSize.
-                    if (headerOwner != null && (IsDoubleLayeredSSL || isMasked && IsAuthenticated))
-                    {
-                        int encrytedPayloadRead = MemoryMarshal.Read<int>(headerOwner.Memory.Span.Slice(14));
-                    }
-
-                    WriteExtendedPayloadHeader(extendedPayloadRegion.Span, 0, payloadRead);
-                    if (isMasked && !IsAuthenticated)
-                    {
-                        UnmaskPayload(payloadRegion.Span, headerRegion.Span.Slice(frameHeaderSize - 4, 4));
-                    }
-                }
-                else extendedPayloadRegion = payloadOwner.Memory;
-
-                isEntirePayloadConsumed = ConsumePayload(extendedPayloadRegion.Span, buffer.Span, out consumed);
-                if (!isEntirePayloadConsumed && !wasPayloadOwnerPeeked)
-                {
-                    _rentedPayloadOwners.Enqueue(payloadOwner);
-                }
-            }
-            finally
-            {
-                headerOwner?.Dispose();
-                if (isEntirePayloadConsumed)
-                {
-                    if (wasPayloadOwnerPeeked)
-                    {
-                        _rentedPayloadOwners.Dequeue();
-                    }
-                    payloadOwner.Dispose();
-                }
-            }
-            return consumed;
-        }
-        protected virtual async ValueTask<int> WrapWebSocketFramesAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
-        {
-            const int MAX_FRAME_PAYLOAD_SIZE = 125;
-
-            using IMemoryOwner<byte> frameHeaderOwner = RentTrimmedRegion(18, out Memory<byte> extendedFrameHeaderRegion);
-            Memory<byte> frameHeaderRegion = extendedFrameHeaderRegion.Slice(4); // Reserved for returning the amount of encrypted bytes sent.
-
-            if (IsAuthenticated && !IsClient)
-            {
-                _frameHeaders.Enqueue(extendedFrameHeaderRegion);
-                return await SendPayloadAsync(buffer, cancellationToken).ConfigureAwait(false); // Just send it all.
-            }
-
-            if (IsClient && IsDoubleLayeredSSL)
-            {
-                // This WebSocket frame header should be built using the encrypted payload size.
-                _frameHeaders.Enqueue(extendedFrameHeaderRegion);
-                //MaskPayload(buffer.Span, _mask, out ReadOnlyMemory<byte> masked);
-                return await SendPayloadAsync(buffer, cancellationToken).ConfigureAwait(false);
-            }
-
-            int dataSent = 0;
-            for (int i = 0, payloadLeft = buffer.Length; payloadLeft > 0; payloadLeft -= MAX_FRAME_PAYLOAD_SIZE, i++)
-            {
-                bool isFinalFrame = payloadLeft <= MAX_FRAME_PAYLOAD_SIZE;
-                int payloadStart = MAX_FRAME_PAYLOAD_SIZE * i;
-                int payloadSize = isFinalFrame ? payloadLeft : MAX_FRAME_PAYLOAD_SIZE;
-
-                int header = isFinalFrame || IsClient ? 1 : 0;
-                header = (header << 1) + 0; // RSV1 - IsDataCompressed
-                header = (header << 1) + 0; // RSV2
-                header = (header << 1) + 0; // RSV3
-                header = (header << 4) + (i == 0 || IsClient ? 2 : 0); // If this is the first frame, mark it as a BINARY, otherwise CONTINUATION.
-                header = (header << 1) + (IsClient ? 1 : 0); // Mask should always be present when sending data to the server.
-
-                int frameHeaderSize = 2;
-                if (IsClient && buffer.Length > 125)
-                {
-                    if (buffer.Length <= ushort.MaxValue)
-                    {
-                        payloadSize = 126;
-                        frameHeaderSize += 2;
-                        BinaryPrimitives.WriteUInt16BigEndian(frameHeaderRegion.Span.Slice(2), (ushort)buffer.Length);
-                    }
-                    else
-                    {
-                        payloadSize = 127;
-                        frameHeaderSize += 8;
-                        BinaryPrimitives.WriteUInt64BigEndian(frameHeaderRegion.Span.Slice(2), (ulong)buffer.Length);
-                    }
-                }
-                header = (header << 7) + payloadSize;
-                payloadSize = isFinalFrame ? payloadLeft : MAX_FRAME_PAYLOAD_SIZE;
-
-                BinaryPrimitives.WriteUInt16BigEndian(frameHeaderRegion.Span, (ushort)header);
-                if (!IsAuthenticated || IsClient)
-                {
-                    dataSent += await SocketSendAsync(frameHeaderRegion.Slice(0, frameHeaderSize), cancellationToken).ConfigureAwait(false);
-                }
-                ReadOnlyMemory<byte> payload = buffer.Slice(payloadStart, payloadSize);
-                if (_mask != null)
-                {
-                    dataSent += await SocketSendAsync(_mask, cancellationToken).ConfigureAwait(false);
-                    MaskPayload(buffer.Span, _mask, out payload);
-                }
-
-                dataSent += await SendPayloadAsync(payload, cancellationToken).ConfigureAwait(false);
-                if (IsClient) break;
-            }
-            return dataSent;
-        }
-
-        // These methods shorten some lines/expressions of code where the Socket.Receive/Send calls require a SocketFlags parameter.
-        private ValueTask<int> SocketPeekAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
-        {
-            if (_secureSocketLayer?.IsAuthenticated ?? false)
-            {
-                throw new NotSupportedException();
-            }
-            return Socket.ReceiveAsync(buffer, SocketFlags.Peek, cancellationToken);
-        }
-        private ValueTask<int> SocketReceiveAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
-        {
-            if (_secureSocketLayer?.IsAuthenticated ?? false)
-            {
-                return _secureSocketLayer.ReadAsync(buffer, cancellationToken);
-            }
-            return Socket.ReceiveAsync(buffer, SocketFlags.None, cancellationToken);
-        }
-        private async ValueTask<int> SocketSendAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
-        {
-            if (_secureSocketLayer?.IsAuthenticated ?? false)
-            {
-                await _secureSocketLayer.WriteAsync(buffer, cancellationToken).ConfigureAwait(false);
-                return buffer.Length;
-            }
-            return await Socket.SendAsync(buffer, SocketFlags.None, cancellationToken).ConfigureAwait(false);
-        }
-
-        public override async ValueTask DisposeAsync()
-        {
-            await base.DisposeAsync().ConfigureAwait(false);
-            if (!_disposed)
-            {
-                _disposed = true;
                 try
                 {
-                    if (_secureSocketLayer != null)
-                    {
-                        await _secureSocketLayer.DisposeAsync().ConfigureAwait(false);
-                    }
-                    if (_securePayloadLayer != null)
-                    {
-                        await _securePayloadLayer.DisposeAsync().ConfigureAwait(false);
-                    }
-                    Socket.Shutdown(SocketShutdown.Both);
-                    await Task.Factory.FromAsync(Socket.BeginDisconnect(false, null, null), Socket.EndDisconnect).ConfigureAwait(false);
-                    Socket.Close(0);
-
+                    _socketStream.Dispose();
                     Encrypter?.Dispose();
                     Decrypter?.Dispose();
+                    _disposed = true;
                 }
-                catch { }
+                catch { /* The socket doesn't like being shutdown/closed and will throw a fit everytime. */ }
             }
-        }
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            if (!_disposed && disposing)
-            {
-                _disposed = true;
-                try
-                {
-                    _secureSocketLayer?.Dispose();
-                    _securePayloadLayer?.Dispose();
-                    Socket.Shutdown(SocketShutdown.Both);
-                    Socket.Disconnect(false);
-                    Socket.Close(0);
-
-                    Encrypter?.Dispose();
-                    Decrypter?.Dispose();
-                }
-                catch { }
-            }
+            _socketStream = null;
+            Encrypter = Decrypter = null;
         }
 
-        private static int DecodeFrameHeader(Span<byte> header, out bool isMasked, out ulong payloadSize, out int opcode)
+        [System.Diagnostics.DebuggerStepThrough]
+        private static IMemoryOwner<byte> Rent(int size, out Memory<byte> trimmedRegion)
         {
-            opcode = header[0] & 0b00001111;
-            payloadSize = (ulong)(header[1] & 0x7F);
-            isMasked = (header[1] & 0x80) == 0x80;
-
-            int frameHeaderExtra = 0;
-            switch (payloadSize)
-            {
-                case 126:
-                {
-                    frameHeaderExtra = sizeof(ushort);
-                    if (header.Length >= 4)
-                    {
-                        payloadSize = BinaryPrimitives.ReadUInt16BigEndian(header.Slice(2));
-                    }
-                    break;
-                }
-                case 127:
-                {
-                    frameHeaderExtra = sizeof(ulong);
-                    if (header.Length >= 10)
-                    {
-                        payloadSize = BinaryPrimitives.ReadUInt64BigEndian(header.Slice(2));
-                    }
-                    break;
-                }
-            }
-            return frameHeaderExtra + (isMasked ? 4 : 0);
-        }
-        private static int EncodeFrameHeader(Span<byte> header, int payloadLength, bool isSendingAsClient, bool isFirstFragment = true, bool isFinalFragment = false)
-        {
-            int headerContainer = isFinalFragment || isSendingAsClient ? 1 : 0;
-            headerContainer = (headerContainer << 1) + 0; // RSV1 - IsDataCompressed
-            headerContainer = (headerContainer << 1) + 0; // RSV2 - Always 0
-            headerContainer = (headerContainer << 1) + 0; // RSV3 - Always 0
-            headerContainer = (headerContainer << 4) + (isFirstFragment || isSendingAsClient ? 2 : 0); // The first fragment should signify whether the frame is a binary, or end-user is currently processing a continuation fragment.
-            headerContainer = (headerContainer << 1) + (isSendingAsClient ? 1 : 0); // Mask will always be present when sending data to the server.
-
-            int frameHeaderBytesWritten = 2;
-            if (isSendingAsClient && payloadLength > 125)
-            {
-                if (payloadLength <= ushort.MaxValue)
-                {
-                    frameHeaderBytesWritten += 2;
-                    headerContainer = (headerContainer << 7) + 126;
-                    BinaryPrimitives.WriteUInt16BigEndian(header.Slice(2), (ushort)payloadLength);
-                }
-                else
-                {
-                    frameHeaderBytesWritten += 8;
-                    headerContainer = (headerContainer << 7) + 127;
-                    BinaryPrimitives.WriteUInt64BigEndian(header.Slice(2), (ulong)payloadLength);
-                }
-            }
-            else headerContainer = (headerContainer << 7) + payloadLength;
-
-            BinaryPrimitives.WriteUInt16BigEndian(header, (ushort)headerContainer);
-            return frameHeaderBytesWritten;
-        }
-
-        private static void UnmaskPayload(Span<byte> buffer, Span<byte> mask)
-        {
-            for (int i = 0; i < buffer.Length; i++)
-            {
-                buffer[i] ^= mask[i % 4];
-            }
-        }
-        private static void MaskPayload(ReadOnlySpan<byte> payload, ReadOnlySpan<byte> mask, out ReadOnlyMemory<byte> maskedRegion)
-        {
-            var masked = new byte[payload.Length];
-            for (int i = 0; i < masked.Length; i++)
-            {
-                masked[i] = (byte)(payload[i] ^ mask[i % 4]);
-            }
-            maskedRegion = new ReadOnlyMemory<byte>(masked);
-        }
-
-        private static IMemoryOwner<T> RentTrimmedRegion<T>(int size, out Memory<T> trimmedRegion)
-        {
-            var trimmedOwner = MemoryPool<T>.Shared.Rent(size);
+            var trimmedOwner = MemoryPool<byte>.Shared.Rent(size);
             trimmedRegion = trimmedOwner.Memory.Slice(0, size);
             return trimmedOwner;
         }
         private static bool ValidateRemoteCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) => true;
-
-        #region NetworkStream Overrides
-        public override int Read(byte[] buffer, int offset, int size)
-        {
-            return ReadAsync(buffer, offset, size, CancellationToken.None).GetAwaiter().GetResult();
-        }
-        public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
-        {
-            return ReceiveAsync(buffer, cancellationToken);
-        }
-        public override async Task<int> ReadAsync(byte[] buffer, int offset, int size, CancellationToken cancellationToken)
-        {
-            return await ReceiveAsync(buffer.AsMemory(offset, size), cancellationToken).ConfigureAwait(false);
-        }
-
-        public override void Write(byte[] buffer, int offset, int size)
-        {
-            WriteAsync(buffer, offset, size, CancellationToken.None).GetAwaiter().GetResult();
-        }
-        public override async Task WriteAsync(byte[] buffer, int offset, int size, CancellationToken cancellationToken)
-        {
-            await SendAsync(buffer.AsMemory(offset, size), cancellationToken).ConfigureAwait(false);
-        }
-        public override async ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
-        {
-            await SendAsync(buffer, cancellationToken).ConfigureAwait(false);
-        }
-
-        public override int EndRead(IAsyncResult asyncResult) => throw new NotSupportedException();
-        public override void EndWrite(IAsyncResult asyncResult) => throw new NotSupportedException();
-        public override IAsyncResult BeginRead(byte[] buffer, int offset, int size, AsyncCallback callback, object state) => throw new NotSupportedException();
-        public override IAsyncResult BeginWrite(byte[] buffer, int offset, int size, AsyncCallback callback, object state) => throw new NotSupportedException();
-        #endregion
 
         public static async Task<HNode> AcceptAsync(int port)
         {
@@ -730,12 +318,12 @@ namespace Sulakore.Network
 
             return new HNode(socket);
         }
-        public static async Task<HNode> ConnectAsync(IPEndPoint endpoint)
+        public static async Task<HNode> ConnectAsync(HotelEndPoint endPoint)
         {
             var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             try
             {
-                await Task.Factory.FromAsync(socket.BeginConnect(endpoint, null, null), socket.EndConnect).ConfigureAwait(false);
+                await Task.Factory.FromAsync(socket.BeginConnect(endPoint, null, null), socket.EndConnect).ConfigureAwait(false);
             }
             catch { /* Ignore all exceptions. */ }
 
@@ -745,18 +333,274 @@ namespace Sulakore.Network
                 socket.Close();
                 return null;
             }
-            else
-            {
-                var node = new HNode(socket);
-                if (endpoint is HotelEndPoint hotelEndPoint)
-                {
-                    node.RemoteEndPoint = hotelEndPoint;
-                }
-                return node;
-            }
+            else return new HNode(socket, endPoint);
         }
         public static Task<HNode> ConnectAsync(string host, int port) => ConnectAsync(HotelEndPoint.Parse(host, port));
         public static Task<HNode> ConnectAsync(IPAddress address, int port) => ConnectAsync(new HotelEndPoint(address, port));
         public static Task<HNode> ConnectAsync(IPAddress[] addresses, int port) => ConnectAsync(new HotelEndPoint(addresses[0], port));
+        public static Task<HNode> ConnectAsync(IPEndPoint endPoint) => ConnectAsync(endPoint as HotelEndPoint ?? new HotelEndPoint(endPoint));
+
+        private sealed class WebSocketStream : Stream
+        {
+            private const int MAX_WEBSOCKET_TOCLIENT_PAYLOAD_SIZE = 125;
+
+            private static readonly byte[] _emptyMask = new byte[4];
+
+            private readonly byte[] _mask;
+            private readonly bool _isClient;
+            private readonly bool _leaveOpen;
+            private readonly Stream _innerStream;
+
+            private bool _disposed;
+
+            public WebSocketStream(Stream innerStream)
+                : this(innerStream, null, false)
+            { }
+            public WebSocketStream(Stream innerStream, byte[] mask, bool leaveOpen)
+            {
+                _mask = mask;
+                _leaveOpen = leaveOpen;
+                _isClient = mask != null;
+                _innerStream = innerStream;
+            }
+
+            public override async ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
+            {
+                static void UnmaskPayload(Span<byte> payload, Span<byte> mask)
+                {
+                    for (int i = 0; i < payload.Length; i++)
+                    {
+                        payload[i] ^= mask[i % 4];
+                    }
+                }
+
+                bool isMasked;
+                int op, received, payloadLength;
+                using IMemoryOwner<byte> headerOwner = Rent(14, out Memory<byte> headerRegion);
+                do
+                {
+                    received = await _innerStream.ReadAsync(headerRegion.Slice(0, 2), cancellationToken).ConfigureAwait(false);
+                    if (received != 2) return -1; // The size of the WebSocket frame header should at minimum be two bytes.
+                    DecodeWebSocketHeader(headerRegion.Span, out isMasked, out payloadLength, out op);
+                }
+                while (payloadLength == 0 || op != 2); // Continue to receive fragments until a binary frame with a payload size more than zero is found.
+
+                switch (payloadLength)
+                {
+                    case 126:
+                    {
+                        received += await _innerStream.ReadAsync(headerRegion.Slice(received, sizeof(ushort)), cancellationToken).ConfigureAwait(false);
+                        payloadLength = BinaryPrimitives.ReadUInt16BigEndian(headerRegion.Slice(2, sizeof(ushort)).Span);
+                        break;
+                    }
+                    case 127:
+                    {
+                        received += await _innerStream.ReadAsync(headerRegion.Slice(received, sizeof(ulong)), cancellationToken).ConfigureAwait(false);
+                        payloadLength = (int)BinaryPrimitives.ReadUInt64BigEndian(headerRegion.Slice(2, sizeof(ulong)).Span); // I hope payloads aren't actually this big.
+                        break;
+                    }
+                }
+
+                Memory<byte> maskRegion = null;
+                if (isMasked)
+                {
+                    maskRegion = headerRegion.Slice(received, 4);
+                    await _innerStream.ReadAsync(maskRegion, cancellationToken).ConfigureAwait(false);
+                }
+
+                received = 0;
+                Memory<byte> payloadRegion = buffer.Slice(0, Math.Min(payloadLength, buffer.Length));
+                do
+                {
+                    // Attempt to copy the entire WebSocket payload into the buffer, otherwise, if there is not enough room, specify how much data has been left with the '_leftoverPayloadBytes' field.
+                    received += await _innerStream.ReadAsync(payloadRegion.Slice(received, payloadRegion.Length - received), cancellationToken);
+                }
+                while (received != payloadRegion.Length);
+
+                if (isMasked)
+                {
+                    UnmaskPayload(payloadRegion.Slice(0, received).Span, maskRegion.Span);
+                }
+                return received;
+            }
+            public override async ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
+            {
+                static IMemoryOwner<byte> MaskPayload(ReadOnlySpan<byte> payload, ReadOnlySpan<byte> mask)
+                {
+                    if (mask == _emptyMask) return null;
+                    IMemoryOwner<byte> maskedOwner = Rent(payload.Length, out Memory<byte> maskedRegion);
+
+                    Span<byte> masked = maskedRegion.Span;
+                    for (int i = 0; i < payload.Length; i++)
+                    {
+                        masked[i] = (byte)(payload[i] ^ mask[i % 4]);
+                    }
+                    return maskedOwner;
+                }
+
+                using IMemoryOwner<byte> headerOwner = Rent(14, out Memory<byte> headerRegion);
+                for (int i = 0, payloadLeft = buffer.Length; payloadLeft > 0; payloadLeft -= MAX_WEBSOCKET_TOCLIENT_PAYLOAD_SIZE, i++)
+                {
+                    int headerLength = EncodeWebSocketHeader(headerRegion.Span, payloadLeft, i == 0, _isClient, out bool isFinalFragment);
+                    int payloadLength = isFinalFragment ? payloadLeft : MAX_WEBSOCKET_TOCLIENT_PAYLOAD_SIZE;
+
+                    IMemoryOwner<byte> maskedOwner = null;
+                    ReadOnlyMemory<byte> payloadFragment = buffer.Slice(i * MAX_WEBSOCKET_TOCLIENT_PAYLOAD_SIZE, payloadLength);
+
+                    await _innerStream.WriteAsync(headerRegion.Slice(0, headerLength), cancellationToken).ConfigureAwait(false);
+                    if (_mask != null)
+                    {
+                        await _innerStream.WriteAsync(_mask, cancellationToken).ConfigureAwait(false);
+                        maskedOwner = MaskPayload(payloadFragment.Span, _mask);
+                    }
+
+                    if (maskedOwner != null) // MaskPayload could return null, which means that we used the '_emptyMask' instance, WHICH also means no masking was done on the payload.
+                    {
+                        await _innerStream.WriteAsync(maskedOwner.Memory.Slice(0, payloadFragment.Length), cancellationToken).ConfigureAwait(false);
+                        maskedOwner.Dispose();
+                    }
+                    else await _innerStream.WriteAsync(payloadFragment, cancellationToken).ConfigureAwait(false);
+
+                    if (_isClient) break;
+                }
+            }
+
+            #region Stream Implementation
+            public override long Position
+            {
+                get => throw new NotSupportedException();
+                set => throw new NotSupportedException();
+            }
+            public override bool CanRead => true;
+            public override bool CanSeek => false;
+            public override bool CanWrite => true;
+            public override long Length => throw new NotSupportedException();
+
+            public override void Flush()
+            {
+                _innerStream.Flush();
+            }
+            public override Task FlushAsync(CancellationToken cancellationToken)
+            {
+                return _innerStream.FlushAsync(cancellationToken);
+            }
+
+            public override int Read(byte[] buffer, int offset, int count)
+            {
+                throw new NotImplementedException();
+            }
+            public override void Write(byte[] buffer, int offset, int count)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override void SetLength(long value) => throw new NotSupportedException();
+            public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
+
+            protected override void Dispose(bool disposing)
+            {
+                base.Dispose(disposing);
+                if (disposing && !_disposed && !_leaveOpen)
+                {
+                    _innerStream.Dispose();
+                    _disposed = true;
+                }
+            }
+            #endregion
+
+            static void DecodeWebSocketHeader(Span<byte> header, out bool isMasked, out int payloadLength, out int op)
+            {
+                op = header[0] & 0b00001111;
+                payloadLength = header[1] & 0x7F;
+                isMasked = (header[1] & 0x80) == 0x80;
+            }
+            private static int EncodeWebSocketHeader(Span<byte> header, int payloadLeft, bool isFirstFragment, bool isClient, out bool isFinalFragment)
+            {
+                isFinalFragment = isClient || payloadLeft <= MAX_WEBSOCKET_TOCLIENT_PAYLOAD_SIZE;
+
+                int headerBits = isFinalFragment ? 1 : 0;
+                headerBits = (headerBits << 1) + 0; // RSV1 - IsDataCompressed
+                headerBits = (headerBits << 1) + 0; // RSV2
+                headerBits = (headerBits << 1) + 0; // RSV3
+                headerBits = (headerBits << 4) + (isFirstFragment ? 2 : 0); // Mark as binary, otherwise continuation
+                headerBits = (headerBits << 1) + (isClient ? 1 : 0); // Payload should be masked when acting as the client, otherwise specify that no mask is present(0).
+
+                int headerLength = 2;
+                int payloadLength = isFinalFragment ? payloadLeft : MAX_WEBSOCKET_TOCLIENT_PAYLOAD_SIZE;
+                if (isClient && payloadLeft > 125) // Fragmenting the payload is not necessary when sending data to the server.
+                {
+                    if (payloadLeft <= ushort.MaxValue)
+                    {
+                        payloadLength = 126;
+                        headerLength += sizeof(ushort);
+                        BinaryPrimitives.WriteUInt16BigEndian(header.Slice(2), (ushort)payloadLeft);
+                    }
+                    else
+                    {
+                        payloadLength = 127;
+                        headerLength += sizeof(ulong);
+                        BinaryPrimitives.WriteUInt64BigEndian(header.Slice(2), (ulong)payloadLeft);
+                    }
+                }
+
+                headerBits = (headerBits << 7) + payloadLength;
+                BinaryPrimitives.WriteUInt16BigEndian(header, (ushort)headerBits);
+
+                return headerLength;
+            }
+        }
+        private sealed class BufferedNetworkStream : Stream
+        {
+            private readonly NetworkStream _networkStream;
+            private readonly BufferedStream _readBuffer, _writeBuffer;
+
+            private bool _disposed;
+
+            public BufferedNetworkStream(Socket socket)
+                : this(socket, true)
+            { }
+            public BufferedNetworkStream(Socket socket, bool ownsSocket)
+            {
+                _networkStream = new NetworkStream(socket, ownsSocket);
+                _readBuffer = new BufferedStream(_networkStream);
+                _writeBuffer = new BufferedStream(_networkStream); // TODO: Investigate what is the largest amount of data being sent/received, and use that value here.
+            }
+
+            public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) => _readBuffer.ReadAsync(buffer, cancellationToken);
+            public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default) => _writeBuffer.WriteAsync(buffer, cancellationToken);
+
+            #region Stream Implementation
+            public override long Position
+            {
+                get => throw new NotSupportedException();
+                set => throw new NotSupportedException();
+            }
+            public override bool CanRead => true;
+            public override bool CanSeek => false;
+            public override bool CanWrite => true;
+            public override long Length => throw new NotSupportedException();
+
+            public override void Flush() => _writeBuffer.Flush();
+            public override Task FlushAsync(CancellationToken cancellationToken) => _writeBuffer.FlushAsync(cancellationToken);
+
+            public override int Read(byte[] buffer, int offset, int count) => throw new NotSupportedException();
+            public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
+
+            public override void SetLength(long value) => throw new NotSupportedException();
+            public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
+
+            protected override void Dispose(bool disposing)
+            {
+                base.Dispose(disposing);
+                if (disposing && _disposed)
+                {
+                    _networkStream.Dispose();
+                    _readBuffer.Dispose();
+                    _writeBuffer.Dispose();
+                    _disposed = true;
+                }
+            }
+            #endregion
+        }
     }
 }

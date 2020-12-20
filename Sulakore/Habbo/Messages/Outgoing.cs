@@ -116,6 +116,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetFriendRequests { get; set; }
         public HMessage GetFurnitureAliases { get; set; }
         public HMessage GetGameStatus { get; set; }
+        public HMessage GetGift { get; set; }
         public HMessage GetGiftWrappingConfiguration { get; set; }
         public HMessage GetGuestRoom { get; set; }
         public HMessage GetGuildEditInfo { get; set; }

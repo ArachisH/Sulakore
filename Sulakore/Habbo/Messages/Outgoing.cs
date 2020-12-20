@@ -388,6 +388,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage SetItemData { get; set; }
         public HMessage SetObjectData { get; set; }
         public HMessage SetPhoneNumberVerificationStatus { get; set; }
+        public HMessage SetRandomState { get; set; }
         public HMessage SetSoundSettings { get; set; }
         public HMessage SetStackHelperHeight { get; set; }
         public HMessage SetTargetedOfferState { get; set; }

@@ -227,6 +227,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage MyFavouriteRoomsSearch { get; set; }
         public HMessage MyFriendsRoomsSearch { get; set; }
         public HMessage MyGuildBasesSearch { get; set; }
+        public HMessage MyRecommendedRooms { get; set; }
         public HMessage MyRoomHistorySearch { get; set; }
         public HMessage MyRoomRightsSearch { get; set; }
         public HMessage NavigatorAddSavedSearch { get; set; }

@@ -353,6 +353,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage SendMsg { get; set; }
         public HMessage SendRoomInvite { get; set; }
         public HMessage SetActivatedBadges { get; set; }
+        public HMessage SetChatStylePreference { get; set; }
         public HMessage SetClothingChangeData { get; set; }
         public HMessage SetHomeRoom { get; set; }
         public HMessage SetItemData { get; set; }

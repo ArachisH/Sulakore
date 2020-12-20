@@ -158,6 +158,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetRelationshipStatusInfo { get; set; }
         public HMessage GetRentOrBuyoutOffer { get; set; }
         public HMessage GetResolutionAchievements { get; set; }
+        public HMessage GetRoomAdPurchaseInfo { get; set; }
         public HMessage GetRoomEntryData { get; set; }
         public HMessage GetRoomEntryTile { get; set; }
         public HMessage GetRoomVisits { get; set; }

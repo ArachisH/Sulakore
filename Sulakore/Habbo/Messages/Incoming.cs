@@ -74,6 +74,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage CompetitionRoomsData { get; set; }
         public HMessage CompleteDiffieHandshake { get; set; }
         public HMessage ConcurrentUsersGoalProgress { get; set; }
+        public HMessage ConfirmBreedingRequest { get; set; }
         public HMessage ConvertedRoomId { get; set; }
         public HMessage CraftableProducts { get; set; }
         public HMessage CraftingComposerFour { get; set; }
@@ -275,7 +276,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage PetAddedToInventory { get; set; }
         public HMessage PetBreedingCompleted { get; set; }
         public HMessage PetBreedingFailed { get; set; }
-        public HMessage ConfirmBreedingRequest { get; set; }
+        public HMessage PetBreedingResult { get; set; }
         public HMessage PetBreedingStart { get; set; }
         public HMessage PetInfo { get; set; }
         public HMessage PetInventory { get; set; }

@@ -119,6 +119,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetCurrentTimingCode { get; set; }
         public HMessage GetDailyQuest { get; set; }
         public HMessage GetDirectClubBuyAvailable { get; set; }
+        public HMessage GetEmailStatus { get; set; }
         public HMessage GetExtendedProfile { get; set; }
         public HMessage GetExtendedProfileByName { get; set; }
         public HMessage GetFaqCategories { get; set; }

@@ -41,6 +41,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage BullyReportedMessage { get; set; }
         public HMessage BundleDiscountRuleset { get; set; }
         public HMessage CallForHelpPendingCalls { get; set; }
+        public HMessage CallForHelpPendingCallsDeleted { get; set; }
         public HMessage CameraCompetitionStatus { get; set; }
         public HMessage CameraPublishWaitMessage { get; set; }
         public HMessage CameraPurchaseSuccesful { get; set; }

@@ -376,6 +376,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage UnignoreUser { get; set; }
         public HMessage UniqueID { get; set; }
         public HMessage UpdateForumReadMarker { get; set; }
+        public HMessage UpdateForumSettings { get; set; }
         public HMessage UpdateGuildBadge { get; set; }
         public HMessage UpdateGuildColors { get; set; }
         public HMessage UpdateGuildIdentity { get; set; }

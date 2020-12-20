@@ -361,6 +361,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage ResetUnseenItemIds { get; set; }
         public HMessage ResetUnseenItems { get; set; }
         public HMessage RespectUser { get; set; }
+        public HMessage RoomAdEventTabAdClicked { get; set; }
         public HMessage RoomAdEventTabViewed { get; set; }
         public HMessage RoomAdPurchaseInitiated { get; set; }
         public HMessage RoomBackground { get; set; }

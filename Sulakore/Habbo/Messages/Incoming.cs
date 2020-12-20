@@ -192,6 +192,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage InfoHotelClosing { get; set; }
         public HMessage InitCamera { get; set; }
         public HMessage InitDiffieHandshake { get; set; }
+        public HMessage InstantMessageError { get; set; }
         public HMessage Interstitial { get; set; }
         public HMessage InventoryBadges { get; set; }
         public HMessage IsFirstLoginOfDay { get; set; }

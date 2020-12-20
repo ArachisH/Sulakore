@@ -152,6 +152,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetQuizQuestions { get; set; }
         public HMessage GetRelationshipStatusInfo { get; set; }
         public HMessage GetRentOrBuyoutOffer { get; set; }
+        public HMessage GetResolutionAchievements { get; set; }
         public HMessage GetRoomEntryData { get; set; }
         public HMessage GetRoomEntryTile { get; set; }
         public HMessage GetRoomVisits { get; set; }
@@ -316,7 +317,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage RequestRecylerLogic { get; set; }
         public HMessage RequestReportRoom { get; set; }
         public HMessage RequestReportUserBullying { get; set; }
-        public HMessage RequestResolution { get; set; }
         public HMessage RequestRoomCategories { get; set; }
         public HMessage RequestRoomPropertySet { get; set; }
         public HMessage RequestRoomRights { get; set; }

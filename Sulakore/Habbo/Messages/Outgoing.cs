@@ -374,6 +374,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage TogglePetBreedingPermission { get; set; }
         public HMessage TogglePetRidingPermission { get; set; }
         public HMessage TriggerColorWheel { get; set; }
+        public HMessage TryPhoneNumber { get; set; }
         public HMessage UnacceptTrading { get; set; }
         public HMessage UnbanRoomUser { get; set; }
         public HMessage UnignoreUser { get; set; }

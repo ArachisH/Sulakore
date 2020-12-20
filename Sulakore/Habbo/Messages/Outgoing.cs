@@ -437,6 +437,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage UpdateGuildIdentity { get; set; }
         public HMessage UpdateGuildSettings { get; set; }
         public HMessage UpdateRoomCategoryAndTradeSettings { get; set; }
+        public HMessage UpdateRoomThumbnail { get; set; }
         public HMessage UpdateThread { get; set; }
         public HMessage UseFurniture { get; set; }
         public HMessage UseWallItem { get; set; }

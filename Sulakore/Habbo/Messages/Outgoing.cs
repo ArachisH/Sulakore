@@ -231,6 +231,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage MyRecommendedRooms { get; set; }
         public HMessage MyRoomHistorySearch { get; set; }
         public HMessage MyRoomRightsSearch { get; set; }
+        public HMessage MysteryBoxWaitingCanceled { get; set; }
         public HMessage NavigatorAddSavedSearch { get; set; }
         public HMessage NavigatorCategoryListMode { get; set; }
         public HMessage NavigatorCollapseCategory { get; set; }

@@ -199,6 +199,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage MakeOffer { get; set; }
         public HMessage MannequinSaveLook { get; set; }
         public HMessage MannequinSaveName { get; set; }
+        public HMessage MarkCatalogNewAdditionsPageOpened { get; set; }
         public HMessage ModAlert { get; set; }
         public HMessage ModMessage { get; set; }
         public HMessage ModToolChangeRoomSettings { get; set; }

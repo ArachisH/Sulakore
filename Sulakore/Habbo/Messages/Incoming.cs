@@ -99,6 +99,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage FaqCategories { get; set; }
         public HMessage FaqCategory { get; set; }
         public HMessage FaqClientFaqs { get; set; }
+        public HMessage FaqSearchResults { get; set; }
         public HMessage FaqText { get; set; }
         public HMessage FavoriteRoomChanged { get; set; }
         public HMessage FavouriteRooms { get; set; }

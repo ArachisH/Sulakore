@@ -394,6 +394,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage SaveWindowSettings { get; set; }
         public HMessage ScrGetKickbackInfo { get; set; }
         public HMessage ScratchPet { get; set; }
+        public HMessage SearchFaqs { get; set; }
         public HMessage SearchUser { get; set; }
         public HMessage SelectClubGift { get; set; }
         public HMessage SelectFavouriteHabboGroup { get; set; }

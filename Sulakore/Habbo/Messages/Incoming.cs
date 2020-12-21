@@ -30,6 +30,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage BotError { get; set; }
         public HMessage BotForceOpenContextMenu { get; set; }
         public HMessage BotInventory { get; set; }
+        public HMessage BotReceived { get; set; }
         public HMessage BotRemovedFromInventory { get; set; }
         public HMessage BotSettings { get; set; }
         public HMessage BotSkillListUpdate { get; set; }

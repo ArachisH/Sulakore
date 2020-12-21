@@ -44,6 +44,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage CameraPublishWaitMessage { get; set; }
         public HMessage CameraPurchaseSuccesful { get; set; }
         public HMessage CameraRoomThumbnailSaved { get; set; }
+        public HMessage CameraSnapshot { get; set; }
         public HMessage CameraStorageUrl { get; set; }
         public HMessage CampaignCalendarData { get; set; }
         public HMessage CampaignCalendarDoorOpened { get; set; }

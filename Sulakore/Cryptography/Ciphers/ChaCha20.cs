@@ -12,7 +12,7 @@ namespace Sulakore.Cryptography.Ciphers
         private bool _disposed;
         private byte[] _table;
 
-        public ChaCha20(ReadOnlySpan<byte> key, ReadOnlySpan<byte> nonce, uint blockCount = 1)
+        public ChaCha20(ReadOnlySpan<byte> key, ReadOnlySpan<byte> nonce, uint blockCount = 0)
         {
             if (key.Length != 32) throw new ArgumentException("The provided key is not 256-bits.");
             if (nonce.Length != 12) throw new ArgumentException("The provided nonce is not 96-bits.");

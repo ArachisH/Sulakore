@@ -33,7 +33,7 @@ namespace Sulakore.Network
         /// <summary>
         /// Represents a possibly mutli-layered secured stream capable of reading/writing in the WebSocket protocol.
         /// </summary>
-        private Stream _socketStream;
+        private Stream _socketStream, _webSocketStream;
 
         public IStreamCipher Encrypter { get; set; }
         public IStreamCipher Decrypter { get; set; }
@@ -45,6 +45,7 @@ namespace Sulakore.Network
         public bool IsClient { get; private set; }
         public bool IsUpgraded { get; private set; }
         public bool IsWebSocket { get; private set; }
+        public int IgnoreWebSocketSecureTunnel { get; set; }
         public bool IsConnected => !_disposed && _socket.Connected;
 
         static HNode()
@@ -178,7 +179,7 @@ namespace Sulakore.Network
             //_rng.NextBytes(_mask);
 
             IsUpgraded = true;
-            _socketStream = new WebSocketStream(_socketStream, _mask, false); // Anything now being sent or received through the stream will be parsed using the WebSocket protocol.
+            _socketStream = _webSocketStream = new WebSocketStream(_socketStream, _mask, false); // Anything now being sent or received through the stream will be parsed using the WebSocket protocol.
 
             await SendAsync(_startTLSBytes).ConfigureAwait(false);
             received = await ReceiveAsync(receiveRegion).ConfigureAwait(false);
@@ -225,7 +226,7 @@ namespace Sulakore.Network
 
             // Begin receiving/sending data as WebSocket frames.
             IsUpgraded = true;
-            _socketStream = new WebSocketStream(_socketStream);
+            _socketStream = _webSocketStream = new WebSocketStream(_socketStream);
 
             received = await ReceiveAsync(receivedRegion).ConfigureAwait(false);
             if (IsTLSRequested(receivedRegion.Span.Slice(0, received)))
@@ -252,9 +253,15 @@ namespace Sulakore.Network
             await transportSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
             try
             {
+                Stream tunnel = _socketStream;
+                if (IgnoreWebSocketSecureTunnel > 0 && IsUpgraded)
+                {
+                    tunnel = _webSocketStream;
+                    IgnoreWebSocketSecureTunnel--;
+                }
                 if (isReceiving)
                 {
-                    transported = await _socketStream.ReadAsync(buffer, cancellationToken).ConfigureAwait(false);
+                    transported = await tunnel.ReadAsync(buffer, cancellationToken).ConfigureAwait(false);
                     Decrypter?.Process(buffer.Slice(0, transported).Span);
                 }
                 else
@@ -265,8 +272,8 @@ namespace Sulakore.Network
 
                     }
 
-                    await _socketStream.WriteAsync(buffer, cancellationToken).ConfigureAwait(false);
-                    await _socketStream.FlushAsync(cancellationToken).ConfigureAwait(false); // Ensure the buffered write stream sends all the data.
+                    await tunnel.WriteAsync(buffer, cancellationToken).ConfigureAwait(false);
+                    await tunnel.FlushAsync(cancellationToken).ConfigureAwait(false); // Ensure the buffered write stream sends all the data.
                     transported = buffer.Length;
                 }
             }
@@ -508,6 +515,7 @@ namespace Sulakore.Network
             }
             #endregion
 
+            [System.Diagnostics.DebuggerStepThrough]
             static void DecodeWebSocketHeader(Span<byte> header, out bool isMasked, out int payloadLength, out int op)
             {
                 op = header[0] & 0b00001111;

@@ -388,6 +388,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage ShowMysteryBoxWait { get; set; }
         public HMessage Sleep { get; set; }
         public HMessage SlideObjectBundle { get; set; }
+        public HMessage SpecialRoomEvent { get; set; }
         public HMessage SubmitCompetitionRoom { get; set; }
         public HMessage Tags { get; set; }
         public HMessage TalentLevelUp { get; set; }

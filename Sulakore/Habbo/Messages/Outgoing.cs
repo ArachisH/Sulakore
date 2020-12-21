@@ -253,6 +253,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage MovePet { get; set; }
         public HMessage MoveWallItem { get; set; }
         public HMessage MyFavouriteRoomsSearch { get; set; }
+        public HMessage MyFrequentRoomHistorySearch { get; set; }
         public HMessage MyFriendsRoomsSearch { get; set; }
         public HMessage MyGuildBasesSearch { get; set; }
         public HMessage MyRecommendedRooms { get; set; }

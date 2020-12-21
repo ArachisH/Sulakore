@@ -73,6 +73,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage CommunityGoalHallOfFame { get; set; }
         public HMessage CompetitionEntrySubmitResult { get; set; }
         public HMessage CompetitionRoomsData { get; set; }
+        public HMessage CompetitionVotingInfo { get; set; }
         public HMessage CompleteDiffieHandshake { get; set; }
         public HMessage ConcurrentUsersGoalProgress { get; set; }
         public HMessage ConfirmBreedingRequest { get; set; }

@@ -90,6 +90,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage DirectSMSClubBuyAvailable { get; set; }
         public HMessage DisconnectReason { get; set; }
         public HMessage DoorbellAddUser { get; set; }
+        public HMessage ElementPointer { get; set; }
         public HMessage EmailStatus { get; set; }
         public HMessage EpicPopupFrame { get; set; }
         public HMessage ErrorReport { get; set; }

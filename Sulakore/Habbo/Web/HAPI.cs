@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 using Sulakore.Network;
@@ -61,7 +62,7 @@ namespace Sulakore.Habbo.Web
         public static async Task<HProfile> GetProfileAsync(string name, HHotel hotel)
         {
             HUser user = await GetUserAsync(name, hotel).ConfigureAwait(false);
-            if (user.IsProfileVisible == true)
+            if (user.ProfileVisible == true)
             {
                 return await GetProfileAsync(user.UniqueId).ConfigureAwait(false);
             }
@@ -95,8 +96,8 @@ namespace Sulakore.Habbo.Web
                         double totalBytesRead = 0;
                         while (totalBytesRead != content.Headers.ContentLength)
                         {
-                            int bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length);
-                            await fileStream.WriteAsync(buffer, 0, bytesRead).ConfigureAwait(false);
+                            int bytesRead = await contentStream.ReadAsync(buffer.AsMemory(0, buffer.Length));
+                            await fileStream.WriteAsync(buffer.AsMemory(0, bytesRead)).ConfigureAwait(false);
 
                             totalBytesRead += bytesRead;
                             double maximum = content.Headers.ContentLength ?? totalBytesRead;
@@ -121,7 +122,7 @@ namespace Sulakore.Habbo.Web
 
         public static async Task<T> ReadContentAsync<T>(Uri baseUri, string path, Func<HttpContent, Task<T>> contentConverter = null)
         {
-            using var request = new HttpRequestMessage(HttpMethod.Get, baseUri.GetLeftPart(UriPartial.Authority) + path);
+            using HttpRequestMessage request = new(HttpMethod.Get, baseUri.GetLeftPart(UriPartial.Authority) + path);
             using HttpResponseMessage response = await _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
 
             ServicePointManager.FindServicePoint(request.RequestUri).ConnectionLeaseTimeout = 30 * 1000;
@@ -140,7 +141,7 @@ namespace Sulakore.Habbo.Web
                 return (T)(object)await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
 
             if (response.Content.Headers.ContentType.MediaType == "application/json")
-                return await JsonSerializer.DeserializeAsync<T>(await response.Content.ReadAsStreamAsync().ConfigureAwait(false), SerializerOptions).ConfigureAwait(false);
+                return await response.Content.ReadFromJsonAsync<T>(SerializerOptions).ConfigureAwait(false);
 
             return default;
         }

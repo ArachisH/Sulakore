@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace Sulakore.Habbo.Web
 {
@@ -14,14 +13,12 @@ namespace Sulakore.Habbo.Web
 
         public DateTime CreationTime { get; set; }
 
-        [JsonPropertyName("habboGroupId")]
-        public string GroupId { get; set; }
+        public string HabboGroupId { get; set; }
 
         public IEnumerable<string> Tags { get; set; }
         public int MaximumVisitors { get; set; }
 
-        [JsonPropertyName("showOwnerName")]
-        public bool IsShowingOwnerName { get; set; }
+        public bool ShowOwnerName { get; set; }
 
         public string OwnerName { get; set; }
         public string OwnerUniqueId { get; set; }

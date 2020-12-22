@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using System.Text.Json.Serialization;
 
@@ -14,9 +15,13 @@ namespace Sulakore.Habbo.Web
 
         [JsonPropertyName("buildersClubMember")]
         public bool? IsBuildersClubMember { get; set; }
-        
+
         [JsonPropertyName("habboClubMember")]
         public bool? IsHabboClubMember { get; set; }
+
+        public DateTime? LastWebAccess { get; set; }
+        public DateTime? CreationTime { get; set; }
+        public DateTime? MemberSince { get; set; }
 
         public long SessionLogId { get; set; }
         public long LoginLogId { get; set; }

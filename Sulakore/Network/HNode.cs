@@ -45,7 +45,7 @@ namespace Sulakore.Network
         public bool IsClient { get; private set; }
         public bool IsUpgraded { get; private set; }
         public bool IsWebSocket { get; private set; }
-        public int IgnoreWebSocketSecureTunnel { get; set; }
+        public int BypassReceiveSecureTunnel { get; set; }
         public bool IsConnected => !_disposed && _socket.Connected;
 
         static HNode()
@@ -253,16 +253,20 @@ namespace Sulakore.Network
             await transportSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                Stream tunnel = _socketStream;
-                if (IgnoreWebSocketSecureTunnel > 0 && IsUpgraded)
-                {
-                    tunnel = _webSocketStream;
-                    IgnoreWebSocketSecureTunnel--;
-                }
                 if (isReceiving)
                 {
+                    Stream tunnel = _socketStream;
+                    if (BypassReceiveSecureTunnel > 0 && _webSocketStream != null)
+                    {
+                        tunnel = _webSocketStream;
+                        BypassReceiveSecureTunnel--;
+                    }
+
                     transported = await tunnel.ReadAsync(buffer, cancellationToken).ConfigureAwait(false);
-                    Decrypter?.Process(buffer.Slice(0, transported).Span);
+                    if (!IsWebSocket) // Formatter should handle decryption directly when receiving as WebSocket.
+                    {
+                        Decrypter?.Process(buffer.Slice(0, transported).Span);
+                    }
                 }
                 else
                 {
@@ -272,8 +276,8 @@ namespace Sulakore.Network
 
                     }
 
-                    await tunnel.WriteAsync(buffer, cancellationToken).ConfigureAwait(false);
-                    await tunnel.FlushAsync(cancellationToken).ConfigureAwait(false); // Ensure the buffered write stream sends all the data.
+                    await _socketStream.WriteAsync(buffer, cancellationToken).ConfigureAwait(false);
+                    await _socketStream.FlushAsync(cancellationToken).ConfigureAwait(false); // Ensure the buffered write stream sends all the data.
                     transported = buffer.Length;
                 }
             }

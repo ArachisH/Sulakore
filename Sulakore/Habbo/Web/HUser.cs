@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using System.Text.Json.Serialization;
-
 namespace Sulakore.Habbo.Web
 {
     [System.Diagnostics.DebuggerDisplay("Name: {Name}")]
@@ -12,12 +10,10 @@ namespace Sulakore.Habbo.Web
         public string Name { get; set; }
         public string FigureString { get; set; }
         public string Motto { get; set; }
+        public bool Online { get; set; }
 
-        [JsonPropertyName("buildersClubMember")]
-        public bool? IsBuildersClubMember { get; set; }
-
-        [JsonPropertyName("habboClubMember")]
-        public bool? IsHabboClubMember { get; set; }
+        public bool? BuildersClubMember { get; set; }
+        public bool? HabboClubMember { get; set; }
 
         public DateTime? LastWebAccess { get; set; }
         public DateTime? CreationTime { get; set; }
@@ -29,16 +25,10 @@ namespace Sulakore.Habbo.Web
         public string Email { get; set; }
         public long IdentityId { get; set; }
 
-        [JsonPropertyName("emailVerified")]
-        public bool? IsEmailVerified { get; set; }
-
-        [JsonPropertyName("identityVerified")]
-        public bool? IsIdentityVerified { get; set; }
-
+        public bool EmailVerified { get; set; }
+        public bool? IdentityVerified { get; set; }
         public string IdentityType { get; set; }
-
-        [JsonPropertyName("trusted")]
-        public bool? IsTrusted { get; set; }
+        public bool? Trusted { get; set; }
 
         public IEnumerable<string> Force { get; set; }
         public int AccountId { get; set; }
@@ -46,12 +36,16 @@ namespace Sulakore.Habbo.Web
         public IEnumerable<string> Traits { get; set; }
         public string Partner { get; set; }
 
-        [JsonPropertyName("profileVisible")]
-        public bool? IsProfileVisible { get; set; }
+        public bool? ProfileVisible { get; set; }
 
         public IEnumerable<HBadge> SelectedBadges { get; set; }
 
-        [JsonPropertyName("banned")]
-        public bool? IsBanned { get; set; }
+        public bool? Banned { get; set; }
+
+        public int? CurrentLevel { get; set; }
+        public int? CurrentLevelCompletePercent { get; set; }
+        public int? TotalExperience { get; set; }
+        
+        public int? StarGemCount { get; set; }
     }
 }

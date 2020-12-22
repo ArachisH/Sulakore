@@ -1,12 +1,10 @@
-﻿using System;
-using System.Diagnostics;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using System.Text.Json.Serialization;
 
 namespace Sulakore.Habbo.Web
 {
-    [DebuggerDisplay("Name: {Name}")]
+    [System.Diagnostics.DebuggerDisplay("Name: {Name}")]
     public class HUser
     {
         public string UniqueId { get; set; }
@@ -19,10 +17,6 @@ namespace Sulakore.Habbo.Web
         
         [JsonPropertyName("habboClubMember")]
         public bool? IsHabboClubMember { get; set; }
-
-        public DateTime? LastWebAccess { get; set; }
-        public DateTime? CreationTime { get; set; }
-        public DateTime? MemberSince { get; set; }
 
         public long SessionLogId { get; set; }
         public long LoginLogId { get; set; }

@@ -1,12 +1,11 @@
-﻿using System.Diagnostics;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 using Sulakore.Network;
 
 namespace Sulakore.Habbo.Web
 {
-    [DebuggerDisplay("Host: {InfoHost}, Port(s): {InfoPort}")]
+    [System.Diagnostics.DebuggerDisplay("Host: {InfoHost}, Port(s): {InfoPort}")]
     public class HGameData
     {
         private readonly Dictionary<string, string> _variables;
@@ -24,6 +23,7 @@ namespace Sulakore.Habbo.Web
             }
         }
 
+        public HUser User { get; init; }
         public HHotel Hotel { get; private set; }
 
         public string this[string variable]
@@ -40,6 +40,11 @@ namespace Sulakore.Habbo.Web
         public HGameData()
         {
             _variables = new Dictionary<string, string>();
+        }
+        public HGameData(HUser user)
+            : this()
+        {
+            User = user;
         }
         public HGameData(string source)
             : this()

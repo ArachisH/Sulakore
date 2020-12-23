@@ -7,9 +7,9 @@ namespace Sulakore.Cryptography.Ciphers
         void Process(Span<byte> data);
         void Process(ReadOnlySpan<byte> data, Span<byte> parsed);
 
-        protected static void Swap(int a, int b, Span<int> table)
+        protected static void Swap<T>(int a, int b, Span<T> table)
         {
-            int temp = table[a];
+            T temp = table[a];
             table[a] = table[b];
             table[b] = temp;
         }

@@ -20,7 +20,7 @@ namespace Sulakore.Cryptography.Ciphers
                 x += _table[j];
                 x += key[j % key.Length];
                 x %= _table.Length;
-                IStreamCipher.Swap(j, x, _table);
+                IStreamCipher.Swap<int>(j, x, _table);
             }
         }
 
@@ -37,7 +37,7 @@ namespace Sulakore.Cryptography.Ciphers
                 _j += _table[_i];
                 _j %= _table.Length;
 
-                IStreamCipher.Swap(_i, _j, _table);
+                IStreamCipher.Swap<int>(_i, _j, _table);
                 int rightXOR = _table[_i] + _table[_j];
                 rightXOR = _table[rightXOR % _table.Length];
 

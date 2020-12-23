@@ -270,7 +270,12 @@ namespace Sulakore.Network
                 }
                 else
                 {
-                    Encrypter?.Process(buffer.Span);
+                    if (IsWebSocket && Encrypter != null)
+                    {
+                        Encrypter?.Process(buffer.Span.Slice(5, 1));
+                        Encrypter?.Process(buffer.Span.Slice(4, 1));
+                    }
+                    else Encrypter?.Process(buffer.Span);
                     if (_mask != null && _mask != _emptyMask) // This payload is meant to be masked as specified by the WebSocket protocol.
                     {
 

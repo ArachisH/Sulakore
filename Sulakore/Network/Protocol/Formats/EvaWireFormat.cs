@@ -142,9 +142,10 @@ namespace Sulakore.Network.Protocol
             BinaryPrimitives.WriteInt32BigEndian(packetData, length);
             Buffer.BlockCopy(bodyOwner.Memory.ToArray(), 0, packetData, 4, length);
 
-            if (node.IsWebSocket)
+            if (node.IsWebSocket && node.Decrypter != null)
             {
-                node.Decrypter?.Process(packetData);
+                node.Decrypter.Process(packetData.AsSpan().Slice(5, 1));
+                node.Decrypter.Process(packetData.AsSpan().Slice(4, 1));
             }
             return CreatePacket(packetData);
         }

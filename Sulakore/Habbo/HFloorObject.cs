@@ -23,7 +23,7 @@ namespace Sulakore.Habbo
         public HUsagePolicy UsagePolicy { get; set; }
 
         public int OwnerId { get; set; }
-        public string OwnerName { get; set; }
+        public string? OwnerName { get; set; }
 
         public string? StaticClass { get; set; }
 

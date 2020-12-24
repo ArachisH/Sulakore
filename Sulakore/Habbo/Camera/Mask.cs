@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 
+#nullable enable
 namespace Sulakore.Habbo.Camera
 {
     public class Mask

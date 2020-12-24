@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
+#nullable enable
 namespace Sulakore.Habbo.Camera
 {
     public class Plane

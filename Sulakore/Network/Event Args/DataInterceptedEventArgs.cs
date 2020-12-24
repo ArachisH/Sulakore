@@ -20,6 +20,7 @@ namespace Sulakore.Network
         public int Step { get; }
         public bool IsOutgoing { get; }
         public DateTime Timestamp { get; }
+        public Task WaitUntil { get; set; }
 
         public bool IsOriginal => Packet.ToString().Equals(_ogString);
         public bool IsContinuable => _continuation != null && !HasContinued;
@@ -115,25 +116,27 @@ namespace Sulakore.Network
             _relayer = relayer;
         }
 
+        public void Relay()
+        {
+            if (_relayer == null) return;
+            lock (_continueLock)
+            {
+                WasRelayed = true;
+                _relayer(this);
+            }
+        }
         public void Continue()
         {
             Continue(false);
         }
         public void Continue(bool relay)
         {
-            if (IsContinuable)
+            if (!IsContinuable) return;
+            lock (_continueLock)
             {
-                lock (_continueLock)
-                {
-                    if (relay)
-                    {
-                        WasRelayed = true;
-                        _ = (_relayer?.Invoke(this));
-                    }
-
-                    HasContinued = true;
-                    _continuation(this);
-                }
+                if (relay) Relay();
+                HasContinued = true;
+                _continuation(this);
             }
         }
 

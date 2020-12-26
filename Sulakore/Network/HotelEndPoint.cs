@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Threading.Tasks;
 
 using Sulakore.Habbo;
 
@@ -7,18 +8,8 @@ namespace Sulakore.Network
 {
     public class HotelEndPoint : IPEndPoint
     {
-        private string _host;
-        public string Host
-        {
-            get => _host;
-            set
-            {
-                _host = value;
-                Hotel = GetHotel(value);
-            }
-        }
-
-        public HHotel Hotel { get; private set; }
+        public string Host { get; init; }
+        public HHotel Hotel { get; init; }
 
         public HotelEndPoint(IPEndPoint endPoint)
             : base(endPoint.Address, endPoint.Port)
@@ -53,7 +44,7 @@ namespace Sulakore.Network
                         int hostIndex = value.LastIndexOf("habbo");
                         if (hostIndex != -1)
                         {
-                            value = value.Substring(hostIndex + 5);
+                            value = value[(hostIndex + 5)..];
                         }
 
                         int comDotIndex = value.IndexOf("com.");
@@ -62,8 +53,11 @@ namespace Sulakore.Network
                             value = value.Remove(comDotIndex + 3, 1);
                         }
 
-                        if (value[0] == '.') value = value.Substring(1);
-                        value = value.Substring(0, value.StartsWith("com") ? 5 : 2);
+                        if (value[0] == '.') value = value[1..];
+                        if (value.Length != 3)
+                        {
+                            value = value.Substring(0, value.StartsWith("com") ? 5 : 2);
+                        }
                     }
                     if (Enum.TryParse(value, true, out HHotel hotel) && Enum.IsDefined(typeof(HHotel), hotel)) return hotel;
                     break;
@@ -78,30 +72,18 @@ namespace Sulakore.Network
             HHotel.ComTr => "tr",
             _ => hotel.ToString().ToLower(),
         };
-        public static HotelEndPoint GetEndPoint(HHotel hotel)
-        {
-            int port = hotel == HHotel.Com ? 38101 : 30000;
-            string host = $"game-{GetRegion(hotel)}.habbo.com";
-            return Parse(host, port);
-        }
+
+        public static HotelEndPoint Create(string host) => Create(GetHotel(host));
+        public static HotelEndPoint Create(HHotel hotel) => hotel != HHotel.Unknown ? Parse($"game-{GetRegion(hotel)}.habbo.com", 30001) : null;
 
         public static HotelEndPoint Parse(string host, int port)
         {
-            IPAddress[] ips = Dns.GetHostAddresses(host);
-            return new HotelEndPoint(ips[0], port, host);
+            return ParseAsync(host, port).Result;
         }
-        public static bool TryParse(string host, int port, out HotelEndPoint endPoint)
+        public static async Task<HotelEndPoint> ParseAsync(string host, int port)
         {
-            try
-            {
-                endPoint = Parse(host, port);
-                return true;
-            }
-            catch
-            {
-                endPoint = null;
-                return false;
-            }
+            IPAddress[] ips = await Dns.GetHostAddressesAsync(host).ConfigureAwait(false);
+            return new HotelEndPoint(ips[0], port, host) { Host = host, Hotel = GetHotel(host) };
         }
 
         public override string ToString()

@@ -92,7 +92,6 @@ namespace Sulakore.Habbo.Messages
         public HMessage ExtendRentOrBuyoutFurni { get; set; }
         public HMessage ExtendRentOrBuyoutStripItem { get; set; }
         public HMessage FindNewFriends { get; set; }
-        public HMessage FloorPlanEditorSave { get; set; }
         public HMessage FollowFriend { get; set; }
         public HMessage FootballGateSaveLook { get; set; }
         public HMessage ForwardToACompetitionRoom { get; set; }
@@ -132,6 +131,8 @@ namespace Sulakore.Habbo.Messages
         public HMessage GetExtendedProfile { get; set; }
         public HMessage GetExtendedProfileByName { get; set; }
         public HMessage GetFaqCategories { get; set; }
+        public HMessage GetFaqCategory { get; set; }
+        public HMessage GetFaqText { get; set; }
         public HMessage GetForumStats { get; set; }
         public HMessage GetForumsList { get; set; }
         public HMessage GetFriendRequests { get; set; }
@@ -431,6 +432,7 @@ namespace Sulakore.Habbo.Messages
         public HMessage UnblockGroupMember { get; set; }
         public HMessage UnignoreUser { get; set; }
         public HMessage UniqueID { get; set; }
+        public HMessage UpdateFloorProperties { get; set; }
         public HMessage UpdateForumReadMarker { get; set; }
         public HMessage UpdateForumSettings { get; set; }
         public HMessage UpdateGuildBadge { get; set; }

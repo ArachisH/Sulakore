@@ -6,7 +6,7 @@ using Sulakore.Network.Protocol;
 namespace Sulakore.Habbo
 {
 #nullable enable
-    public class HFloorObject : HData
+    public class HFloorObject
     {
         public int Id { get; set; }
         public int TypeId { get; set; }
@@ -16,8 +16,7 @@ namespace Sulakore.Habbo
         public double Height { get; set; }
         public int Extra { get; set; }
 
-        public int Category { get; set; }
-        public object[] Stuff { get; set; }
+        public HStuffData StuffData { get; set; }
 
         public int SecondsToExpiration { get; set; }
         public HUsagePolicy UsagePolicy { get; set; }
@@ -41,8 +40,7 @@ namespace Sulakore.Habbo
             Height = double.Parse(packet.ReadUTF8(), CultureInfo.InvariantCulture);
             Extra = packet.ReadInt32();
 
-            Category = packet.ReadInt32();
-            Stuff = ReadData(packet, Category);
+            StuffData = HStuffData.Parse(packet);
 
             SecondsToExpiration = packet.ReadInt32();
             UsagePolicy = (HUsagePolicy)packet.ReadInt32();

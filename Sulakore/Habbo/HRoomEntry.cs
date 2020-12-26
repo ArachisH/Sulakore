@@ -3,7 +3,7 @@
 namespace Sulakore.Habbo
 {
 #nullable enable
-    public class HRoomEntry : HData
+    public class HRoomEntry
     {
         public int Id { get; set; }
         public string Name { get; set; }

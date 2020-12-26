@@ -3,16 +3,15 @@
 namespace Sulakore.Habbo
 {
 #nullable enable
-    public class HItem : HData
+    public class HItem
     {
-        public int Id { get; set; }
+        public int RoomItemId { get; set; }
         public HProductType Type { get; set; }
+        public int Id { get; set; }
         public int TypeId { get; set; }
-
         public HFurniCategory Category { get; set; }
 
-        public int StuffDataFormat { get; set; } //TODO: This is temporary name, StuffData logic is under rewrite :)
-        public object[] Stuff { get; set; }
+        public HStuffData StuffData { get; set; }
 
         public bool IsRecyclable { get; set; }
         public bool IsTradable { get; set; }
@@ -30,16 +29,13 @@ namespace Sulakore.Habbo
 
         public HItem(HPacket packet)
         {
-            packet.ReadInt32();
-
+            RoomItemId = packet.ReadInt32();
             Type = (HProductType)packet.ReadUTF8()[0];
-
             Id = packet.ReadInt32();
             TypeId = packet.ReadInt32();
             Category = (HFurniCategory)packet.ReadInt32();
 
-            StuffDataFormat = packet.ReadInt32();
-            Stuff = ReadData(packet, StuffDataFormat);
+            StuffData = HStuffData.Parse(packet);
 
             IsRecyclable =  packet.ReadBoolean();
             IsTradable = packet.ReadBoolean();

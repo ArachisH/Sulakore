@@ -14,17 +14,17 @@ namespace Sulakore.Habbo
 
         public static readonly HPoint Empty;
 
-        public static implicit operator HPoint((int x, int y) point) => new HPoint(point.x, point.y);
-        public static implicit operator HPoint((int x, int y, double z) point) => new HPoint(point.x, point.y, point.z);
-
-        public static implicit operator (int x, int y) (HPoint point) => (point.X, point.Y);
-        public static implicit operator (int x, int y, double z) (HPoint point) => (point.X, point.Y, point.Z);
+        public static bool operator !=(HPoint left, HPoint right) => !(left == right);
+        public static bool operator ==(HPoint left, HPoint right) => left.Equals(right);
 
         public static implicit operator Point(HPoint point) => new Point(point.X, point.Y);
         public static implicit operator HPoint(Point point) => new HPoint(point.X, point.Y);
 
-        public static bool operator !=(HPoint left, HPoint right) => !(left == right);
-        public static bool operator ==(HPoint left, HPoint right) => left.Equals(right);
+        public static implicit operator (int x, int y)(HPoint point) => (point.X, point.Y);
+        public static implicit operator (int x, int y, double z)(HPoint point) => (point.X, point.Y, point.Z);
+
+        public static implicit operator HPoint((int x, int y) point) => new HPoint(point.x, point.y);
+        public static implicit operator HPoint((int x, int y, double z) point) => new HPoint(point.x, point.y, point.z);
 
         public HPoint(int x, int y)
             : this(x, y, 0)
@@ -42,32 +42,19 @@ namespace Sulakore.Habbo
         public readonly override int GetHashCode() => HashCode.Combine(X, Y);
         public readonly override string ToString() => $"{{X={X},Y={Y},Z={Z}}}";
 
-        public readonly override bool Equals(object obj)
-        {
-            if (obj is HPoint point)
-            {
-                return Equals(point);
-            }
-            return false;
-        }
         public readonly bool Equals(HPoint point) => X == point.X && Y == point.Y;
+        public readonly override bool Equals(object obj) => obj is HPoint point && Equals(point);
 
         public static char ToLevel(double z)
         {
-            if (z >= 0 && z <= 9)
-                return (char)(z + 48);
-
-            if (z >= 10 && z <= 29)
-                return (char)(z + 87);
+            if (z >= 0 && z <= 9) return (char)(z + 48);
+            if (z >= 10 && z <= 29) return (char)(z + 87);
             return 'x';
         }
         public static double ToZ(char level)
         {
-            if (level >= '0' && level <= '9')
-                return level - 48;
-
-            if (level >= 'a' && level <= 't')
-                return level - 87;
+            if (level >= '0' && level <= '9') return level - 48;
+            if (level >= 'a' && level <= 't') return level - 87;
             return 0;
         }
     }

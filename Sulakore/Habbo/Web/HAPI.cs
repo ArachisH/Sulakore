@@ -17,7 +17,7 @@ namespace Sulakore.Habbo.Web
         private static readonly HttpClientHandler _handler;
 
         public static JsonSerializerOptions SerializerOptions { get; }
-        
+
         public const string CHROME_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36";
 
         static HAPI()
@@ -67,57 +67,6 @@ namespace Sulakore.Habbo.Web
                 return await GetProfileAsync(user.UniqueId).ConfigureAwait(false);
             }
             return new HProfile { User = user };
-        }
-
-        public static Task<HGame> GetGameAsync(string revision)
-        {
-            return ReadContentAsync(HHotel.Com.ToUri("images"), $"/gordon/{revision}/Habbo.swf", async content =>
-            {
-                var game = new HGame(await content.ReadAsStreamAsync().ConfigureAwait(false));
-                game.Disassemble();
-                return game;
-            });
-        }
-        public static Task DownloadGameAsync(string revision, string fileName, Action<double> progress = null)
-        {
-            return ReadContentAsync(HHotel.Com.ToUri("images"), $"/gordon/{revision}/Habbo.swf", async content =>
-            {
-                var buffer = new byte[81920];
-                using (Stream contentStream = await content.ReadAsStreamAsync().ConfigureAwait(false))
-                using (var fileStream = File.Create(fileName))
-                {
-                    if (content.Headers.ContentLength == null)
-                    {
-                        await contentStream.CopyToAsync(fileStream).ConfigureAwait(false);
-                        progress?.Invoke(100);
-                    }
-                    else
-                    {
-                        double totalBytesRead = 0;
-                        while (totalBytesRead != content.Headers.ContentLength)
-                        {
-                            int bytesRead = await contentStream.ReadAsync(buffer.AsMemory(0, buffer.Length));
-                            await fileStream.WriteAsync(buffer.AsMemory(0, bytesRead)).ConfigureAwait(false);
-
-                            totalBytesRead += bytesRead;
-                            double maximum = content.Headers.ContentLength ?? totalBytesRead;
-                            progress?.Invoke(totalBytesRead / maximum * 100);
-                        }
-                    }
-                }
-                return fileName;
-            });
-        }
-
-        public static async Task<HGame> GetLatestGameAsync(HHotel hotel)
-        {
-            string latestRevision = await GetLatestRevisionAsync(hotel).ConfigureAwait(false);
-            return await GetGameAsync(latestRevision).ConfigureAwait(false);
-        }
-        public static async Task DownloadLatestGameAsync(HHotel hotel, string fileName, Action<double> progress = null)
-        {
-            string latestRevision = await GetLatestRevisionAsync(hotel).ConfigureAwait(false);
-            await DownloadGameAsync(latestRevision, fileName, progress).ConfigureAwait(false);
         }
 
         public static async Task<T> ReadContentAsync<T>(Uri baseUri, string path, Func<HttpContent, Task<T>> contentConverter = null)

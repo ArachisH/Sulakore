@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using Sulakore.Habbo;
 using Sulakore.Network;
 using Sulakore.Habbo.Web;
+using Sulakore.Habbo.Packages;
 using Sulakore.Habbo.Messages;
 using Sulakore.Network.Protocol;
 
@@ -37,8 +38,7 @@ namespace Sulakore.Modules
         public Incoming In => Installer.In;
         public Outgoing Out => Installer.Out;
 
-        public HGame Game => Installer.Game;
-        public HGameData GameData => Installer.GameData;
+        public IHGame Game => Installer.Game;
         public IHConnection Connection => Installer.Connection;
 
         private readonly IDictionary<int, HEntity> _entities;
@@ -289,8 +289,7 @@ namespace Sulakore.Modules
             public Incoming In { get; }
             public Outgoing Out { get; }
 
-            public HGame Game { get; set; }
-            public HGameData GameData { get; }
+            public IHGame Game { get; set; }
             public IHConnection Connection => this;
 
             public DummyInstaller(IModule module, HNode installerNode)
@@ -305,7 +304,6 @@ namespace Sulakore.Modules
 
                 In = new Incoming();
                 Out = new Outgoing();
-                GameData = new HGameData();
                 Task handleInstallerDataTask = HandleInstallerDataAsync();
             }
 
@@ -354,8 +352,6 @@ namespace Sulakore.Modules
             }
             private void HandleOnConnected(HPacket packet)
             {
-                GameData.Source = packet.ReadUTF8();
-
                 int messagesJsonDataLength = packet.ReadInt32();
                 byte[] messagesJsonData = packet.ReadBytes(messagesJsonDataLength);
                 // TODO: Deserialize into the In, and Out properties

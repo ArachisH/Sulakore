@@ -9,8 +9,7 @@ namespace Sulakore.Modules
         Incoming In { get; }
         Outgoing Out { get; }
 
-        HGame Game { get; }
-        HGameData GameData { get; }
+        IHGame Game { get; }
         IHConnection Connection { get; }
     }
 }

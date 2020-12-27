@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 using Sulakore.Habbo.Camera;
 
-namespace Sulakore.Habbo
+namespace Sulakore.Habbo.Camera
 {
     public class HPhoto
     {

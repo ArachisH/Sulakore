@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using Sulakore.Habbo;
 using Sulakore.Network;
+using Sulakore.Habbo.Packages;
 using Sulakore.Network.Protocol;
 
 namespace Sulakore.Modules

@@ -28,10 +28,6 @@ namespace Sulakore.Habbo
             return (HDirection)(((int)facing + 1) & 7);
         }
 
-        public static Uri ToUri(this HHotel hotel, string subdomain = "www")
-        {
-            return new Uri($"https://{subdomain}.habbo.{hotel.ToDomain()}");
-        }
         public static string ToDomain(this HHotel hotel)
         {
             if (hotel == HHotel.Unknown)
@@ -40,6 +36,10 @@ namespace Sulakore.Habbo
             }
             string value = hotel.ToString().ToLower();
             return value.Length != 5 ? value : value.Insert(3, ".");
+        }
+        public static Uri ToUri(this HHotel hotel, string subdomain = "www")
+        {
+            return new Uri($"https://{subdomain}.habbo.{hotel.ToDomain()}");
         }
 
         public static IEnumerable<MemberInfo> GetAllMembers(this Type type)

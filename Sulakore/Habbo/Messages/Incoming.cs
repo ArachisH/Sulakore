@@ -2,7 +2,7 @@
 
 namespace Sulakore.Habbo.Messages
 {
-    public sealed class Incoming : HMessages
+    public sealed class Incoming : Identifiers
     {
         public HMessage AcceptFriendResult { get; set; }
         public HMessage AccountSafetyLockStatusChange { get; set; }

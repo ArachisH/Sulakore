@@ -2,7 +2,7 @@
 
 namespace Sulakore.Habbo.Messages
 {
-    public sealed class Outgoing : HMessages
+    public sealed class Outgoing : Identifiers
     {
         public HMessage AcceptFriend { get; set; }
         public HMessage AcceptQuest { get; set; }

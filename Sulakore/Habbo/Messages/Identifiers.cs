@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Sulakore.Habbo.Messages
 {
-    public abstract class HMessages : IEnumerable<HMessage>
+    public abstract class Identifiers : IEnumerable<HMessage>
     {
         private readonly Dictionary<ushort, HMessage> _byId;
         private readonly Dictionary<string, HMessage> _byName, _byHash;
@@ -15,10 +15,10 @@ namespace Sulakore.Habbo.Messages
         public HMessage this[ushort id] => GetMessage(id);
         public HMessage this[string identifier] => GetMessage(identifier);
 
-        public HMessages(bool isOutgoing)
+        public Identifiers(bool isOutgoing)
             : this(isOutgoing, 0)
         { }
-        public HMessages(bool isOutgoing, int capacity)
+        public Identifiers(bool isOutgoing, int capacity)
         {
             _byId = new Dictionary<ushort, HMessage>(capacity);
             _byName = new Dictionary<string, HMessage>(capacity);
@@ -26,7 +26,7 @@ namespace Sulakore.Habbo.Messages
 
             IsOutgoing = isOutgoing;
         }
-        public HMessages(bool isOutgoing, IList<HMessage> messages)
+        public Identifiers(bool isOutgoing, IList<HMessage> messages)
             : this(isOutgoing, messages.Count)
         {
             foreach (HMessage message in messages)

@@ -144,7 +144,7 @@ namespace Sulakore.Modules
             }
         }
 
-        public HMessages GetMessages(bool isOutgoing) => isOutgoing ? (HMessages)Out : In;
+        public Identifiers GetMessages(bool isOutgoing) => isOutgoing ? (Identifiers)Out : In;
         public HMessage GetMessage(ushort id, bool isOutgoing) => GetMessages(isOutgoing).GetMessage(id);
         public HMessage GetMessage(string identifier, bool isOutgoing) => GetMessages(isOutgoing).GetMessage(identifier);
 

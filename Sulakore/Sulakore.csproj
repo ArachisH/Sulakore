@@ -5,11 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Submodules\Flazzy\Flazzy\Flazzy.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Hashes.ini">
+    <None Update="UnityMessages.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="FlashMessages.ini">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

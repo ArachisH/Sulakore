@@ -12,7 +12,6 @@ namespace Sulakore.Generators
     [Generator]
     public class MessagesGenerator : ISourceGenerator
     {
-        // TODO: idk, fix these errors I guess
         public record Message(bool IsUnity, bool IsOutgoing, string Name, string FlashName, string Hash, short Id);
 
         public void Execute(GeneratorExecutionContext context)
@@ -112,4 +111,9 @@ namespace Sulakore.Habbo.Messages
             return declarationSource;
         }
     }
+}
+
+namespace System.Runtime.CompilerServices
+{
+    public class IsExternalInit { }
 }

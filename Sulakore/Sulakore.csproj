@@ -9,15 +9,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<AdditionalFiles Include="UnityMessages.ini"/>
-		<AdditionalFiles Include="FlashMessages.ini"/>
+		<AdditionalFiles Include="Messages.ini" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="UnityMessages.ini">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="FlashMessages.ini">
+		<None Update="Messages.ini">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

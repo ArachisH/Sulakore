@@ -35,8 +35,8 @@ namespace Sulakore.Modules
             set => _installer = value;
         }
 
-        public Incoming In => Installer.In;
-        public Outgoing Out => Installer.Out;
+        public dynamic In => Installer.In;
+        public dynamic Out => Installer.Out;
 
         public IHGame Game => Installer.Game;
         public IHConnection Connection => Installer.Connection;
@@ -286,8 +286,8 @@ namespace Sulakore.Modules
             HNode IHConnection.Local => throw new NotSupportedException();
             HNode IHConnection.Remote => throw new NotSupportedException();
 
-            public Incoming In { get; }
-            public Outgoing Out { get; }
+            public dynamic In { get; }
+            public dynamic Out { get; }
 
             public IHGame Game { get; set; }
             public IHConnection Connection => this;
@@ -302,8 +302,8 @@ namespace Sulakore.Modules
                     [2] = HandleOnConnected
                 };
 
-                In = new Incoming();
-                Out = new Outgoing();
+                In = null;//dynamic new Incoming();
+                Out = null;//dynamic new Outgoing();
                 Task handleInstallerDataTask = HandleInstallerDataAsync();
             }
 

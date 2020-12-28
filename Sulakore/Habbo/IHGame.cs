@@ -4,8 +4,8 @@ namespace Sulakore.Habbo.Web
 {
     public interface IHGame
     {
-        Incoming In { get; }
-        Outgoing Out { get; }
+        dynamic In { get; }
+        dynamic Out { get; }
 
         bool IsUnity { get; }
         bool IsPostShuffle { get; }

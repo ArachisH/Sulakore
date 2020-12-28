@@ -6,8 +6,8 @@ namespace Sulakore.Modules
 {
     public interface IInstaller
     {
-        Incoming In { get; }
-        Outgoing Out { get; }
+        dynamic In { get; }
+        dynamic Out { get; }
 
         IHGame Game { get; }
         IHConnection Connection { get; }

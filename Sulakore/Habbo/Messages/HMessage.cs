@@ -6,11 +6,12 @@ namespace Sulakore.Habbo.Messages
     [DebuggerDisplay("{Id,nq}")]
     public class HMessage : IEquatable<HMessage>
     {
-        public ushort Id { get; set; }
-        public bool IsOutgoing { get; set; }
+        public string Hash { get; }
+        public string Name { get; }
+        public bool IsUnity { get; }
+        public bool IsOutgoing { get; }
 
-        public string Hash { get; set; }
-        public string Name { get; set; }
+        public ushort Id { get; set; }
         public string Structure { get; set; }
 
         public static implicit operator ushort(HMessage message) => message?.Id ?? ushort.MaxValue;
@@ -32,7 +33,10 @@ namespace Sulakore.Habbo.Messages
             IsOutgoing = isOutgoing;
         }
 
-        public override string ToString() => Id.ToString();
-        public bool Equals(HMessage other) => Id == other.Id;
+        public override string ToString() => Name;
+        public override int GetHashCode() => HashCode.Combine(IsUnity, IsOutgoing, Id);
+
+        public override bool Equals(object obj) => obj is HMessage message && Equals(message);
+        public bool Equals(HMessage other) => IsUnity == other.IsUnity && IsOutgoing == other.IsOutgoing && Id == other.Id;
     }
 }

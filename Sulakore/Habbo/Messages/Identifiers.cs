@@ -58,8 +58,6 @@ namespace Sulakore.Habbo.Messages
         }
         public void AddOrUpdate(HMessage message)
         {
-            message.IsOutgoing = IsOutgoing;
-
             _byId.TryAdd(message.Id, message);
             if (!string.IsNullOrWhiteSpace(message.Name))
             {

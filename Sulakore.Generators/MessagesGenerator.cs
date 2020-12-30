@@ -64,7 +64,7 @@ namespace Sulakore.Generators
 
             foreach (Message message in messages)
             {
-                indentedText.WriteLine($"{message.Name} = Initialize(game?.Resolve(\"{message.Name}\") ?? {message.Id}, \"{message.Name}\");");
+                indentedText.WriteLine($"{message.Name} = Initialize(game?.Resolve(\"{message.Name}\", {isOutgoingString}) ?? {message.Id}, \"{message.Name}\");");
             }
 
             indentedText.Indent--;

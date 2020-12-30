@@ -12,6 +12,6 @@
         string Revision { get; }
 
         void InjectKeyShouter();
-        short Resolve(string name);
+        short Resolve(string name, bool isOutgoing);
     }
 }

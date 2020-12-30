@@ -1,4 +1,4 @@
-﻿using Sulakore.Habbo.Messages;
+﻿using Sulakore.Habbo;
 
 namespace Sulakore.Habbo.Web
 {

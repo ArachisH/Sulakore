@@ -46,7 +46,7 @@ namespace Sulakore.Generators
             indentedText.WriteLine("using Sulakore.Habbo.Web;");
             indentedText.WriteLine();
 
-            indentedText.WriteLine("namespace Sulakore.Habbo.Messages");
+            indentedText.WriteLine("namespace Sulakore.Habbo");
             indentedText.WriteLine("{");
             indentedText.Indent++;
 

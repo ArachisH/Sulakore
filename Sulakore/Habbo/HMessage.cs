@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Sulakore.Habbo.Messages
+namespace Sulakore.Habbo
 {
     [DebuggerDisplay("{Id,nq}")]
     public class HMessage : IEquatable<HMessage>

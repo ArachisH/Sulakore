@@ -12,7 +12,6 @@ using Sulakore.Habbo;
 using Sulakore.Network;
 using Sulakore.Habbo.Web;
 using Sulakore.Habbo.Packages;
-using Sulakore.Habbo.Messages;
 using Sulakore.Network.Protocol;
 
 namespace Sulakore.Modules

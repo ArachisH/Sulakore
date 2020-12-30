@@ -12,9 +12,9 @@ namespace Sulakore.Habbo.Messages
 
         public static implicit operator ushort(HMessage message) => message?.Id ?? ushort.MaxValue;
 
-        public HMessage(string name, bool isOutgoing, ushort id)
+        public HMessage(short id, string name, bool isOutgoing)
         {
-            Id = id;
+            Id = (ushort)id; // TODO: Use short everywhere
             Name = name;
             IsOutgoing = isOutgoing;
         }

@@ -43,8 +43,6 @@ namespace Sulakore.Generators
             using var text = new StringWriter();
             using var indentedText = new IndentedTextWriter(text);
 
-            indentedText.WriteLine("using System.Collections.Generic;");
-            indentedText.WriteLine();
             indentedText.WriteLine("using Sulakore.Habbo.Web;");
             indentedText.WriteLine();
 
@@ -56,9 +54,6 @@ namespace Sulakore.Generators
             indentedText.WriteLine("{");
             indentedText.Indent++;
 
-            indentedText.WriteLine($"public override int Count => {messages.Count};");
-            indentedText.WriteLine($"public override bool IsOutgoing => {isOutgoingString};");
-            indentedText.WriteLine();
             foreach (Message message in messages)
             {
                 indentedText.WriteLine($"public HMessage {message.Name} {{ get; }}");
@@ -66,13 +61,13 @@ namespace Sulakore.Generators
 
             indentedText.WriteLine();
             indentedText.WriteLine($"public {className}() : this(null) {{ }}");
-            indentedText.WriteLine($"public {className}(IHGame game) : base(game)");
+            indentedText.WriteLine($"public {className}(IHGame game) : base({messages.Count}, {isOutgoingString})");
             indentedText.WriteLine("{");
             indentedText.Indent++;
 
             foreach (Message message in messages)
             {
-                indentedText.WriteLine($"{message.Name} = Initialize(\"{message.Name}\", {message.Id});");
+                indentedText.WriteLine($"{message.Name} = Initialize(game?.Resolve(\"{message.Name}\") ?? {message.Id}, \"{message.Name}\");");
             }
 
             indentedText.Indent--;

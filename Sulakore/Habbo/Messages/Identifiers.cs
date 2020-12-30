@@ -1,36 +1,44 @@
-﻿using System;
-
-using Sulakore.Habbo.Web;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace Sulakore.Habbo.Messages
 {
-    public abstract class Identifiers
+    public abstract class Identifiers : IReadOnlyList<HMessage>
     {
-        private readonly IHGame _game;
+        private readonly HMessage[] _messages;
+        private readonly Dictionary<short, HMessage> _byId;
+        private readonly Dictionary<string, HMessage> _byName;
 
-        public abstract int Count { get; }
-        public abstract bool IsOutgoing { get; }
+        public bool IsOutgoing { get; }
 
-        public bool IsUnity => _game?.IsUnity ?? true;
+        public HMessage this[short id] => _byId[id];
+        public HMessage this[string name] => _byName[name];
 
-        public Identifiers()
-            : this(null)
-        { }
-        public Identifiers(IHGame game)
+        public Identifiers(int count, bool isOutgoing)
         {
-            _game = game;
+            IsOutgoing = isOutgoing;
+
+            _messages = new HMessage[count];
+            _byId = new Dictionary<short, HMessage>(count);
+            _byName = new Dictionary<string, HMessage>(count);
         }
 
-        public HMessage GetMessage(ushort id) => throw new NotImplementedException();
-        public HMessage GetMessage(string name) => throw new NotImplementedException();
-
-        protected HMessage Initialize(string name, short id)
+        protected HMessage Initialize(short id, string name)
         {
-            if (!IsUnity)
-            {
-                id = _game.Resolve(name);
-            }
-            return new HMessage(name, IsOutgoing, (ushort)id);
+            var message = new HMessage(id, name, IsOutgoing);
+
+            _byId.Add(id, message);
+            _byName.Add(name, message);
+            _messages[_byId.Count - 1] = message;
+            return message;
         }
+
+        #region IReadOnlyList<HMessage> Implementation
+        public int Count => _messages.Length;
+        HMessage IReadOnlyList<HMessage>.this[int index] => _messages[index];
+
+        IEnumerator IEnumerable.GetEnumerator() => _messages.GetEnumerator();
+        public IEnumerator<HMessage> GetEnumerator() => ((IEnumerable<HMessage>)_messages).GetEnumerator();
+        #endregion
     }
 }

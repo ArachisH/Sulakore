@@ -20,6 +20,10 @@
         /// <summary>
         /// Represents a room that is invisible in the navigator.
         /// </summary>
-        Invisible = 3
+        Invisible = 3,
+        NoobsOnly = 4,
+        Maintenance = 5,
+        Frozen = 6,
+        Friends = 7
     }
 }

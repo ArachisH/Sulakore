@@ -10,7 +10,6 @@ using System.Collections.ObjectModel;
 
 using Sulakore.Habbo;
 using Sulakore.Network;
-using Sulakore.Habbo.Web;
 using Sulakore.Habbo.Packages;
 using Sulakore.Network.Protocol;
 

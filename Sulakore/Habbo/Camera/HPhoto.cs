@@ -4,8 +4,6 @@ using System.Text.Json;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-using Sulakore.Habbo.Camera;
-
 namespace Sulakore.Habbo.Camera
 {
     public class HPhoto

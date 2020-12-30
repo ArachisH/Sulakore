@@ -1,6 +1,4 @@
-﻿using Sulakore.Habbo;
-
-namespace Sulakore.Habbo.Web
+﻿namespace Sulakore.Habbo
 {
     public interface IHGame
     {

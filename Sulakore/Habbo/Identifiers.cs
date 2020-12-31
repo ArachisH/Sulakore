@@ -23,6 +23,9 @@ namespace Sulakore.Habbo
             _byName = new Dictionary<string, HMessage>(count);
         }
 
+        public bool TryGetMessage(short id, out HMessage message) => _byId.TryGetValue(id, out message);
+        public bool TryGetMessage(string name, out HMessage message) => _byName.TryGetValue(name, out message);
+
         protected HMessage Initialize(short id, string name)
         {
             // TODO: Use ushort everywhere.

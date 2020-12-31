@@ -12,6 +12,5 @@
         string Revision { get; }
 
         short Resolve(string name, bool isOutgoing);
-        HMessage GetMessage(short id, bool isOutgoing);
     }
 }

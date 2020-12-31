@@ -5,7 +5,7 @@ namespace Sulakore.Modules
 {
     public interface IInstaller
     {
-        IHGame Game { get; }
+        IGame Game { get; }
         IHConnection Connection { get; }
     }
 }

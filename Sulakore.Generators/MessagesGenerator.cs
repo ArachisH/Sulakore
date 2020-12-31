@@ -58,7 +58,7 @@ namespace Sulakore.Generators
 
             indentedText.WriteLine();
             indentedText.WriteLine($"public {className}() : this(null) {{ }}");
-            indentedText.WriteLine($"public {className}(IHGame game) : base({messages.Count}, {isOutgoingString})");
+            indentedText.WriteLine($"public {className}(IGame game) : base({messages.Count}, {isOutgoingString})");
             indentedText.WriteLine("{");
             indentedText.Indent++;
 

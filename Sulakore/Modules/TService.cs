@@ -36,7 +36,7 @@ namespace Sulakore.Modules
         public Incoming In => Installer.Game.In;
         public Outgoing Out => Installer.Game.Out;
 
-        public IHGame Game => Installer.Game;
+        public IGame Game => Installer.Game;
         public IHConnection Connection => Installer.Connection;
 
         private readonly IDictionary<int, HEntity> _entities;
@@ -287,7 +287,7 @@ namespace Sulakore.Modules
             public Incoming In { get; private set; }
             public Outgoing Out { get; private set; }
 
-            public IHGame Game { get; set; }
+            public IGame Game { get; set; }
             public IHConnection Connection => this;
 
             public DummyInstaller(IModule module, HNode installerNode)

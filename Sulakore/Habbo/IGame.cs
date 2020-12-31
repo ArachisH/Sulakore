@@ -1,6 +1,6 @@
 ﻿namespace Sulakore.Habbo
 {
-    public interface IHGame
+    public interface IGame<T> where T : HMessage
     {
         Incoming In { get; }
         Outgoing Out { get; }
@@ -11,7 +11,8 @@
         string Path { get; }
         string Revision { get; }
 
-        void InjectKeyShouter();
+        T GetMessage(short id, bool isOutgoing);
         short Resolve(string name, bool isOutgoing);
     }
+    public interface IGame : IGame<HMessage> { }
 }

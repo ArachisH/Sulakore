@@ -44,8 +44,8 @@ namespace Sulakore.Habbo.Packages
 
             StreamPublishingAllowed = packet.ReadBoolean();
 
-            if (DateTime.TryParse(packet.ReadUTF8(), out DateTime _lastAccess)) //only save if parsing was successful to not save a default DateTime value
-                LastAccess = _lastAccess;
+            if (DateTime.TryParse(packet.ReadUTF8(), out DateTime lastAccess)) //only save if parsing was successful to not save a default DateTime value
+                LastAccess = lastAccess;
 
             NameChangeAllowed = packet.ReadBoolean();
             AccountSafetyLocked = packet.ReadBoolean();

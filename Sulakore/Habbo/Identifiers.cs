@@ -28,12 +28,14 @@ namespace Sulakore.Habbo
 
         protected HMessage Initialize(short id, string name)
         {
-            // TODO: Use ushort everywhere.
+            // TODO: Use short everywhere.
             var message = new HMessage((ushort)id, name, IsOutgoing);
-
-            _byId.Add(id, message);
+            if (id != -1)
+            {
+                _byId.Add(id, message);
+            }
             _byName.Add(name, message);
-            _messages[_byId.Count - 1] = message;
+            _messages[_byName.Count - 1] = message;
             return message;
         }
 

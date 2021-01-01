@@ -21,7 +21,7 @@ namespace Sulakore.Habbo.Packages
         public int ScratchesLeft { get; set; }
 
         public bool StreamPublishingAllowed { get; set; }
-        public DateTime LastAccess { get; set; }
+        public DateTime? LastAccess { get; set; }
 
         public bool NameChangeAllowed { get; set; }
         public bool AccountSafetyLocked { get; set; }
@@ -43,7 +43,9 @@ namespace Sulakore.Habbo.Packages
             ScratchesLeft = packet.ReadInt32();
 
             StreamPublishingAllowed = packet.ReadBoolean();
-            LastAccess = DateTime.Parse(packet.ReadUTF8());
+
+            if (DateTime.TryParse(packet.ReadUTF8(), out DateTime _lastAccess)) //only save if parsing was successful to not save a default DateTime value
+                LastAccess = _lastAccess;
 
             NameChangeAllowed = packet.ReadBoolean();
             AccountSafetyLocked = packet.ReadBoolean();

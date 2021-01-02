@@ -26,7 +26,7 @@ namespace Sulakore.Network
         private static readonly byte[] _rfc6455GuidBytes, _secWebSocketKeyBytes;
 
         private readonly Socket _socket;
-        private readonly SemaphoreSlim _sendSemaphore, _receiveSemaphore;
+        private readonly SemaphoreSlim _sendSemaphore, _receiveSemaphore, _packetReceiveSemaphore;
 
         private bool _disposed;
         private byte[] _mask = null;
@@ -71,6 +71,7 @@ namespace Sulakore.Network
             _socket = socket;
             _sendSemaphore = new SemaphoreSlim(1, 1);
             _receiveSemaphore = new SemaphoreSlim(1, 1);
+            _packetReceiveSemaphore = new SemaphoreSlim(1, 1);
 
             socket.NoDelay = true;
             socket.LingerState = new LingerOption(false, 0);
@@ -80,13 +81,20 @@ namespace Sulakore.Network
             RemoteEndPoint = remoteEndPoint;
         }
 
-        public ValueTask<HPacket> ReceiveAsync()
+        public async ValueTask<HPacket> ReceiveAsync()
         {
             if (ReceiveFormat == null)
             {
                 throw new NullReferenceException($"Cannot receive structued data while {nameof(ReceiveFormat)} is null.");
             }
-            return ReceiveFormat.ReceivePacketAsync(this);
+            HPacket packet = null;
+            await _packetReceiveSemaphore.WaitAsync().ConfigureAwait(false);
+            try
+            {
+                packet = await ReceiveFormat.ReceivePacketAsync(this).ConfigureAwait(false);
+            }
+            finally { _packetReceiveSemaphore.Release(); }
+            return packet;
         }
         public ValueTask<int> SendAsync(HPacket packet)
         {

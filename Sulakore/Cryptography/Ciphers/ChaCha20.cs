@@ -91,10 +91,6 @@ namespace Sulakore.Cryptography.Ciphers
             state[b] = RotateLeft(CarrylessXor(state[b], (state[c] = CarrylessAdd(state[c], state[d]))), 12);
             state[d] = RotateLeft(CarrylessXor(state[d], (state[a] = CarrylessAdd(state[a], state[b]))), 8);
             state[b] = RotateLeft(CarrylessXor(state[b], (state[c] = CarrylessAdd(state[c], state[d]))), 7);
-            //state[d] = RotateLeft(state[d] ^ (state[a] += state[b]), 16);
-            //state[b] = RotateLeft(state[b] ^ (state[c] += state[d]), 12);
-            //state[d] = RotateLeft(state[d] ^ (state[a] += state[b]), 8);
-            //state[b] = RotateLeft(state[b] ^ (state[c] += state[d]), 7);
         }
 
         private static uint CarrylessXor(uint left, uint right) => unchecked(left ^ right);

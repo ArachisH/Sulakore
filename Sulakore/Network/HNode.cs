@@ -253,10 +253,21 @@ namespace Sulakore.Network
         public virtual ValueTask<int> ReceiveAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) => TransportAsync(buffer, true, cancellationToken);
         protected virtual async ValueTask<int> TransportAsync(Memory<byte> buffer, bool isReceiving, CancellationToken cancellationToken = default)
         {
+            static void EncryptReversedId(IStreamCipher cipher, ReadOnlySpan<byte> unprocessed, Span<byte> encrypted)
+            {
+                unprocessed.CopyTo(encrypted);
+                Span<byte> id = encrypted.Slice(4, 2);
+                id.Reverse();
+
+                cipher.Process(id);
+                id.Reverse();
+            }
+
             if (!IsConnected) return -1;
             if (buffer.Length == 0) return 0;
 
             int transported;
+            IMemoryOwner<byte> encryptedOwner = null;
             SemaphoreSlim transportSemaphore = isReceiving ? _receiveSemaphore : _sendSemaphore;
             await transportSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
             try
@@ -278,15 +289,15 @@ namespace Sulakore.Network
                 }
                 else
                 {
-                    if (IsWebSocket && Encrypter != null)
+                    if (Encrypter != null)
                     {
-                        Encrypter?.Process(buffer.Span.Slice(5, 1));
-                        Encrypter?.Process(buffer.Span.Slice(4, 1));
-                    }
-                    else Encrypter?.Process(buffer.Span);
-                    if (_mask != null && _mask != _emptyMask) // This payload is meant to be masked as specified by the WebSocket protocol.
-                    {
-
+                        encryptedOwner = Rent(buffer.Length, out Memory<byte> encryptedRegion);
+                        if (IsWebSocket)
+                        {
+                            EncryptReversedId(Encrypter, buffer.Span, encryptedRegion.Span);
+                        }
+                        else Encrypter.Process(buffer.Span, encryptedRegion.Span);
+                        buffer = encryptedRegion;
                     }
 
                     await _socketStream.WriteAsync(buffer, cancellationToken).ConfigureAwait(false);
@@ -295,7 +306,11 @@ namespace Sulakore.Network
                 }
             }
             catch { return -1; }
-            finally { transportSemaphore.Release(); }
+            finally
+            {
+                encryptedOwner?.Dispose();
+                transportSemaphore.Release();
+            }
             return transported;
         }
 

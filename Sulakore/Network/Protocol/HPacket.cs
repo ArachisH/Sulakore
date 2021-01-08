@@ -341,7 +341,7 @@ namespace Sulakore.Network.Protocol
         }
         protected virtual string AsString()
         {
-            string result = Encoding.Default.GetString(ToBytes());
+            string result = Encoding.Latin1.GetString(ToBytes());
             for (int i = 0; i <= 13; i++)
             {
                 result = result.Replace(((char)i).ToString(),
@@ -370,7 +370,7 @@ namespace Sulakore.Network.Protocol
                     signature = signature.Replace("[" + i + "]",
                         ((char)i).ToString());
                 }
-                return Encoding.Default.GetBytes(signature);
+                return Encoding.Latin1.GetBytes(signature);
             }
             else
             {

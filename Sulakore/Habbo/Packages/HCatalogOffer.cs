@@ -22,10 +22,10 @@ namespace Sulakore.Habbo.Packages
 
         public string PreviewImage { get; set; }
 
-        public HCatalogOffer(HPacket packet)
+        public HCatalogOffer(HReadOnlyPacket packet)
         {
             Id = packet.ReadInt32();
-            DisplayName = packet.ReadUTF8();
+            DisplayName = packet.ReadString();
             IsRentable = packet.ReadBoolean();
 
             CreditCost = packet.ReadInt32();
@@ -43,7 +43,7 @@ namespace Sulakore.Habbo.Packages
             AllowBundle = packet.ReadBoolean();
             IsPet = packet.ReadBoolean();
 
-            PreviewImage = packet.ReadUTF8();
+            PreviewImage = packet.ReadString();
         }
     }
 }

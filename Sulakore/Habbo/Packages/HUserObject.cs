@@ -26,27 +26,27 @@ namespace Sulakore.Habbo.Packages
         public bool NameChangeAllowed { get; set; }
         public bool AccountSafetyLocked { get; set; }
 
-        public HUserObject(HPacket packet)
+        public HUserObject(HReadOnlyPacket packet)
         {
             Id = packet.ReadInt32();
-            Name = packet.ReadUTF8();
+            Name = packet.ReadString();
 
-            Figure = packet.ReadUTF8();
+            Figure = packet.ReadString();
             Gender = (HGender)packet.ReadUTF8()[0];
 
-            CustomData = packet.ReadUTF8();
-            RealName = packet.ReadUTF8();
+            CustomData = packet.ReadString();
+            RealName = packet.ReadString();
             DirectMail = packet.ReadBoolean();
-            
+
             RespectTotal = packet.ReadInt32();
             RespectLeft = packet.ReadInt32();
             ScratchesLeft = packet.ReadInt32();
-
             StreamPublishingAllowed = packet.ReadBoolean();
 
-            if (DateTime.TryParse(packet.ReadUTF8(), out DateTime lastAccess)) //only save if parsing was successful to not save a default DateTime value
+            if (DateTime.TryParse(packet.ReadUTF16(), out DateTime lastAccess)) //only save if parsing was successful to not save a default DateTime value
+            {
                 LastAccess = lastAccess;
-
+            }
             NameChangeAllowed = packet.ReadBoolean();
             AccountSafetyLocked = packet.ReadBoolean();
         }

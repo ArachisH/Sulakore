@@ -11,10 +11,10 @@ namespace Sulakore.Habbo.Packages.StuffData
         public HCrackableStuffData()
             : base(HStuffDataFormat.Crackable)
         { }
-        public HCrackableStuffData(HPacket packet)
+        public HCrackableStuffData(HReadOnlyPacket packet)
             : this()
         {
-            State = packet.ReadUTF8();
+            State = packet.ReadString();
             Hits = packet.ReadInt32();
             Target = packet.ReadInt32();
         }

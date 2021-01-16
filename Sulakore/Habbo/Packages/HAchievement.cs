@@ -7,17 +7,17 @@ namespace Sulakore.Habbo.Packages
         public string Name { get; set; }
         public HAchievementLevel[] Levels { get; set; }
 
-        public HAchievement(HPacket packet)
+        public HAchievement(HReadOnlyPacket packet)
         {
-            Name = packet.ReadUTF8();
+            Name = packet.ReadString();
             Levels = new HAchievementLevel[packet.ReadInt32()];
             for (int i = 0; i < Levels.Length; i++)
             {
-                Levels[i] = new HAchievementLevel(Name, packet);
+                Levels[i] = new HAchievementLevel(packet, Name);
             }
         }
 
-        public static HAchievement[] Parse(HPacket packet)
+        public static HAchievement[] Parse(HReadOnlyPacket packet)
         {
             var achievements = new HAchievement[packet.ReadInt32()];
             for (int i = 0; i < achievements.Length; i++)

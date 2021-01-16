@@ -11,7 +11,7 @@ namespace Sulakore.Habbo.Packages.StuffData
         public HMapStuffData()
             : base(HStuffDataFormat.Map)
         { }
-        public HMapStuffData(HPacket packet)
+        public HMapStuffData(HReadOnlyPacket packet)
             : this()
         {
             int length = packet.ReadInt32();
@@ -19,7 +19,7 @@ namespace Sulakore.Habbo.Packages.StuffData
 
             for (int i = 0; i < length; i++)
             {
-                Data[packet.ReadUTF8()] = packet.ReadUTF8();
+                Data[packet.ReadString()] = packet.ReadString();
             }
         }
     }

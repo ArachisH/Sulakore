@@ -23,13 +23,13 @@ namespace Sulakore.Habbo.Packages
         public int SinceLastAccessInSeconds { get; set; }
         public bool OpenProfileView { get; set; }
 
-        public HUserProfile(HPacket packet)
+        public HUserProfile(HReadOnlyPacket packet)
         {
             Id = packet.ReadInt32();
-            Username = packet.ReadUTF8();
-            Motto = packet.ReadUTF8();
-            Figure = packet.ReadUTF8();
-            CreationDate = DateTime.Parse(packet.ReadUTF8());
+            Username = packet.ReadString();
+            Motto = packet.ReadString();
+            Figure = packet.ReadString();
+            CreationDate = DateTime.Parse(packet.ReadUTF16());
             AchievementScore = packet.ReadInt32();
             FriendCount = packet.ReadInt32();
 

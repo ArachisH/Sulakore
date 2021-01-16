@@ -11,12 +11,12 @@ namespace Sulakore.Habbo.Packages
 
         public HPollQuestion[] Questions { get; set; }
 
-        public HPoll(HPacket packet)
+        public HPoll(HReadOnlyPacket packet)
         {
             Id = packet.ReadInt32();
 
-            StartMessage = packet.ReadUTF8();
-            EndMessage = packet.ReadUTF8();
+            StartMessage = packet.ReadString();
+            EndMessage = packet.ReadString();
             
             Questions = new HPollQuestion[packet.ReadInt32()];
             for (int i = 0; i < Questions.Length; i++)

@@ -14,14 +14,14 @@ namespace Sulakore.Habbo.Packages
         public int[] OfferIds { get; set; }
         public HCatalogNode[] Children { get; set; }
 
-        public HCatalogNode(HPacket packet)
+        public HCatalogNode(HReadOnlyPacket packet)
         {
             Visible = packet.ReadBoolean();
             
             Icon = packet.ReadInt32();
             PageId = packet.ReadInt32();
-            PageName = packet.ReadUTF8();
-            Localization = packet.ReadUTF8();
+            PageName = packet.ReadString();
+            Localization = packet.ReadString();
 
             OfferIds = new int[packet.ReadInt32()];
             for (int i = 0; i < OfferIds.Length; i++)
@@ -36,11 +36,11 @@ namespace Sulakore.Habbo.Packages
             }
         }
 
-        public static HCatalogNode Parse(HPacket packet)
+        public static HCatalogNode Parse(HReadOnlyPacket packet)
         {
             var root = new HCatalogNode(packet);
             bool newAdditionsAvailable = packet.ReadBoolean();
-            string catalogType = packet.ReadUTF8();
+            string catalogType = packet.ReadString();
             
             return root;
         }

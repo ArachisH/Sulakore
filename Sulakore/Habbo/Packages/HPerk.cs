@@ -15,13 +15,13 @@ namespace Sulakore.Habbo.Packages
             IsAllowed = isAllowed;
         }
 
-        public static HPerk[] Parse(HPacket packet)
+        public static HPerk[] Parse(HReadOnlyPacket packet)
         {
             var perkAllowances = new HPerk[packet.ReadInt32()];
             for (int i = 0; i < perkAllowances.Length; i++)
             {
-                perkAllowances[i] = new HPerk(packet.ReadUTF8(),
-                    packet.ReadUTF8(), packet.ReadBoolean());
+                perkAllowances[i] = new HPerk(packet.ReadString(),
+                    packet.ReadString(), packet.ReadBoolean());
             }
             return perkAllowances;
         }

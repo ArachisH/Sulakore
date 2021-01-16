@@ -20,18 +20,17 @@ namespace Sulakore.Habbo.Packages
         public HDirection HeadFacing { get; set; }
         public HDirection BodyFacing { get; set; }
 
-        public HEntityUpdate(HPacket packet)
+        public HEntityUpdate(HReadOnlyPacket packet)
         {
             Index = packet.ReadInt32();
 
             Tile = new HPoint(packet.ReadInt32(), packet.ReadInt32(),
-                double.Parse(packet.ReadUTF8(), CultureInfo.InvariantCulture));
+                double.Parse(packet.ReadUTF16(), provider: CultureInfo.InvariantCulture));
 
             HeadFacing = (HDirection)packet.ReadInt32();
             BodyFacing = (HDirection)packet.ReadInt32();
 
-            string action = packet.ReadUTF8();
-            string[] actionData = action.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] actionData = packet.ReadString().Split('/', StringSplitOptions.RemoveEmptyEntries); // TODO: Utilize ReadUTF16().Split once released.
             foreach (string actionInfo in actionData)
             {
                 string[] actionValues = actionInfo.Split(' ');
@@ -79,7 +78,7 @@ namespace Sulakore.Habbo.Packages
             }
         }
 
-        public static HEntityUpdate[] Parse(HPacket packet)
+        public static HEntityUpdate[] Parse(HReadOnlyPacket packet)
         {
             var updates = new HEntityUpdate[packet.ReadInt32()];
             for (int i = 0; i < updates.Length; i++)

@@ -13,10 +13,10 @@ namespace Sulakore.Habbo.Packages
 
         public HRoomEntry[] Rooms { get; set; }
 
-        public HNavigatorSearchResult(HPacket packet)
+        public HNavigatorSearchResult(HReadOnlyPacket packet)
         {
-            SearchCode = packet.ReadUTF8();
-            Text = packet.ReadUTF8();
+            SearchCode = packet.ReadString();
+            Text = packet.ReadString();
 
             ActionAllowed = packet.ReadInt32();
             ForceClosed = packet.ReadBoolean();
@@ -29,10 +29,10 @@ namespace Sulakore.Habbo.Packages
             }
         }
 
-        public static HNavigatorSearchResult[] Parse(HPacket packet)
+        public static HNavigatorSearchResult[] Parse(HReadOnlyPacket packet)
         {
-            string searchCode = packet.ReadUTF8();
-            string filter = packet.ReadUTF8();
+            string searchCode = packet.ReadString();
+            string filter = packet.ReadString();
 
             var results = new HNavigatorSearchResult[packet.ReadInt32()];
             for (int i = 0; i < results.Length; i++)

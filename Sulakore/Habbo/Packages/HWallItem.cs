@@ -27,12 +27,12 @@ namespace Sulakore.Habbo.Packages
         public int OwnerId { get; set; }
         public string? OwnerName { get; set; }
 
-        public HWallItem(HPacket packet)
+        public HWallItem(HReadOnlyPacket packet)
         {
-            Id = int.Parse(packet.ReadUTF8());
+            Id = int.Parse(packet.ReadUTF16(), provider: CultureInfo.InvariantCulture);
             TypeId = packet.ReadInt32();
-            Location = packet.ReadUTF8();
-            Data = packet.ReadUTF8();
+            Location = packet.ReadString();
+            Data = packet.ReadString();
             SecondsToExpiration = packet.ReadInt32();
             UsagePolicy = (HUsagePolicy)packet.ReadInt32();
             OwnerId = packet.ReadInt32();
@@ -81,13 +81,13 @@ namespace Sulakore.Habbo.Packages
             }
         }
 
-        public static HWallItem[] Parse(HPacket packet)
+        public static HWallItem[] Parse(HReadOnlyPacket packet)
         {
             int ownersCount = packet.ReadInt32();
             var owners = new Dictionary<int, string>(ownersCount);
             for (int i = 0; i < ownersCount; i++)
             {
-                owners.Add(packet.ReadInt32(), packet.ReadUTF8());
+                owners.Add(packet.ReadInt32(), packet.ReadString());
             }
 
             var wallItems = new HWallItem[packet.ReadInt32()];

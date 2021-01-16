@@ -13,10 +13,10 @@ namespace Sulakore.Habbo.Packages.StuffData
         public HHighScoreStuffData()
             : base(HStuffDataFormat.HighScore)
         { }
-        public HHighScoreStuffData(HPacket packet)
+        public HHighScoreStuffData(HReadOnlyPacket packet)
             : this()
         {
-            State = packet.ReadUTF8();
+            State = packet.ReadString();
             ScoreType = (HScoreType)packet.ReadInt32();
             ClearType = (HScoreClearType)packet.ReadInt32();
 

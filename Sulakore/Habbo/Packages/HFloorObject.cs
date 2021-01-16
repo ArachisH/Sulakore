@@ -27,7 +27,7 @@ namespace Sulakore.Habbo.Packages
 
         public string? StaticClass { get; set; }
 
-        public HFloorObject(HPacket packet)
+        public HFloorObject(HReadOnlyPacket packet)
         {
             Id = packet.ReadInt32();
             TypeId = packet.ReadInt32();
@@ -35,10 +35,10 @@ namespace Sulakore.Habbo.Packages
             var tile = new HPoint(packet.ReadInt32(), packet.ReadInt32());
             Facing = (HDirection)packet.ReadInt32();
 
-            tile.Z = double.Parse(packet.ReadUTF8(), CultureInfo.InvariantCulture);
+            tile.Z = double.Parse(packet.ReadUTF16(), provider: CultureInfo.InvariantCulture);
             Tile = tile;
 
-            Height = double.Parse(packet.ReadUTF8(), CultureInfo.InvariantCulture);
+            Height = double.Parse(packet.ReadUTF16(), provider: CultureInfo.InvariantCulture);
             Extra = packet.ReadInt32();
 
             StuffData = HStuffData.Parse(packet);
@@ -49,17 +49,17 @@ namespace Sulakore.Habbo.Packages
             OwnerId = packet.ReadInt32();
             if (TypeId < 0)
             {
-                StaticClass = packet.ReadUTF8();
+                StaticClass = packet.ReadString();
             }
         }
 
-        public static HFloorObject[] Parse(HPacket packet)
+        public static HFloorObject[] Parse(HReadOnlyPacket packet)
         {
             int ownersCount = packet.ReadInt32();
             var owners = new Dictionary<int, string>(ownersCount);
             for (int i = 0; i < ownersCount; i++)
             {
-                owners.Add(packet.ReadInt32(), packet.ReadUTF8());
+                owners.Add(packet.ReadInt32(), packet.ReadString());
             }
 
             var floorObjects = new HFloorObject[packet.ReadInt32()];

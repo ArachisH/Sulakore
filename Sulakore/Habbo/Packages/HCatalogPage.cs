@@ -18,22 +18,22 @@ namespace Sulakore.Habbo.Packages
 
         public bool IsFrontPage { get; set; }
 
-        public HCatalogPage(HPacket packet)
+        public HCatalogPage(HReadOnlyPacket packet)
         {
             Id = packet.ReadInt32();
-            CatalogType = packet.ReadUTF8();
-            LayoutCode = packet.ReadUTF8();
+            CatalogType = packet.ReadString();
+            LayoutCode = packet.ReadString();
 
             Images = new string[packet.ReadInt32()];
             for (int i = 0; i < Images.Length; i++)
             {
-                Images[i] = packet.ReadUTF8();
+                Images[i] = packet.ReadString();
             }
 
             Texts = new string[packet.ReadInt32()];
             for (int i = 0; i < Texts.Length; i++)
             {
-                Texts[i] = packet.ReadUTF8();
+                Texts[i] = packet.ReadString();
             }
 
             Offers = new HCatalogOffer[packet.ReadInt32()];
@@ -45,7 +45,7 @@ namespace Sulakore.Habbo.Packages
             OfferId = packet.ReadInt32();
             AcceptSeasonCurrencyAsCredits = packet.ReadBoolean();
             
-            IsFrontPage = packet.ReadableBytes > 0;
+            IsFrontPage = packet.Available > 0;
         }
     }
 }

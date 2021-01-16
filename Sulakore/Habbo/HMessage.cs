@@ -3,8 +3,8 @@
 namespace Sulakore.Habbo
 {
     [DebuggerDisplay("{Id,nq}")]
-    public record HMessage(ushort Id, string Name, bool IsOutgoing)
+    public record HMessage(short Id, string Name, bool IsOutgoing)
     {
-        public static implicit operator ushort(HMessage message) => message?.Id ?? ushort.MaxValue;
+        public static implicit operator short(HMessage message) => message?.Id ?? -1;
     }
 }

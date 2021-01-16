@@ -7,13 +7,13 @@ namespace Sulakore.Habbo.Packages.StuffData
         public int Score { get; set; }
         public string[] Users { get; set; }
 
-        public HHighScoreData(HPacket packet)
+        public HHighScoreData(HReadOnlyPacket packet)
         {
             Score = packet.ReadInt32();
             Users = new string[packet.ReadInt32()];
             for (int i = 0; i < Users.Length; i++)
             {
-                Users[i] = packet.ReadUTF8();
+                Users[i] = packet.ReadString();
             }
         }
     }

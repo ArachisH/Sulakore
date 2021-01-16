@@ -20,18 +20,18 @@ namespace Sulakore.Habbo.Packages
         public bool IsPocketHabboUser { get; set; }
         public HRelationship RelationshipStatus { get; set; }
 
-        public HFriendData(HPacket packet)
+        public HFriendData(HReadOnlyPacket packet)
         {
             Id = packet.ReadInt32();
-            Username = packet.ReadUTF8();
+            Username = packet.ReadString();
             Gender = packet.ReadInt32() == 1 ? HGender.Male : HGender.Female;
 
             IsOnline = packet.ReadBoolean();
             CanFollow = packet.ReadBoolean();
-            Figure = packet.ReadUTF8();
+            Figure = packet.ReadString();
             CategoryId = packet.ReadInt32();
-            Motto = packet.ReadUTF8();
-            RealName = packet.ReadUTF8();
+            Motto = packet.ReadString();
+            RealName = packet.ReadString();
             packet.ReadUTF8();
 
             IsPersisted = packet.ReadBoolean();
@@ -40,7 +40,7 @@ namespace Sulakore.Habbo.Packages
             RelationshipStatus = (HRelationship)packet.ReadUInt16();
         }
 
-        public static HFriendData[] Parse(HPacket packet)
+        public static HFriendData[] Parse(HReadOnlyPacket packet)
         {
             int removedFriends = packet.ReadInt32();
             int addedFriends = packet.ReadInt32();

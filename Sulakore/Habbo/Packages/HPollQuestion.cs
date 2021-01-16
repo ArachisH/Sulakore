@@ -13,12 +13,12 @@ namespace Sulakore.Habbo.Packages
 
         public HPollChoice[] Choices { get; set; }
 
-        public HPollQuestion(HPacket packet)
+        public HPollQuestion(HReadOnlyPacket packet)
         {
             Id = packet.ReadInt32();
             packet.ReadInt32();
             Type = (HPollType)packet.ReadInt32();
-            Text = packet.ReadUTF8();
+            Text = packet.ReadString();
             Category = packet.ReadInt32();
             AnswerType = packet.ReadInt32();
 

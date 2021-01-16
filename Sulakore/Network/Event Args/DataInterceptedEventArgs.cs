@@ -10,8 +10,6 @@ namespace Sulakore.Network
     /// </summary>
     public class DataInterceptedEventArgs : EventArgs
     {
-        private readonly byte[] _ogData;
-        private readonly string _ogString;
         private readonly object _continueLock;
         private readonly DataInterceptedEventArgs _args;
         private readonly Func<DataInterceptedEventArgs, Task> _continuation;
@@ -22,7 +20,6 @@ namespace Sulakore.Network
         public DateTime Timestamp { get; }
         public Task WaitUntil { get; set; }
 
-        public bool IsOriginal => Packet.ToString().Equals(_ogString);
         public bool IsContinuable => _continuation != null && !HasContinued;
 
         private bool _isBlocked;
@@ -84,8 +81,6 @@ namespace Sulakore.Network
         public DataInterceptedEventArgs(DataInterceptedEventArgs args)
         {
             _args = args;
-            _ogData = args._ogData;
-            _ogString = args._ogString;
             _relayer = args._relayer;
             _continuation = args._continuation;
             _continueLock = args._continueLock;
@@ -96,9 +91,6 @@ namespace Sulakore.Network
         }
         public DataInterceptedEventArgs(HPacket packet, int step, bool isOutgoing)
         {
-            _ogData = packet.ToBytes();
-            _ogString = packet.ToString();
-
             Step = step;
             Packet = packet;
             IsOutgoing = isOutgoing;
@@ -137,19 +129,6 @@ namespace Sulakore.Network
                 if (relay) Relay();
                 HasContinued = true;
                 _continuation(this);
-            }
-        }
-
-        public byte[] GetOriginalData() => _ogData;
-
-        /// <summary>
-        /// Restores the intercepted data to its initial form, before it was replaced/modified.
-        /// </summary>
-        public void Restore()
-        {
-            if (!IsOriginal)
-            {
-                Packet = Packet.Format.CreatePacket(_ogData);
             }
         }
     }

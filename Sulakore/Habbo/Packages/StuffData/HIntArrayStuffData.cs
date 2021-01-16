@@ -9,7 +9,7 @@ namespace Sulakore.Habbo.Packages.StuffData
         public HIntArrayStuffData()
             : base(HStuffDataFormat.IntArray)
         { }
-        public HIntArrayStuffData(HPacket packet)
+        public HIntArrayStuffData(HReadOnlyPacket packet)
             : this()
         {
             Data = new int[packet.ReadInt32()];

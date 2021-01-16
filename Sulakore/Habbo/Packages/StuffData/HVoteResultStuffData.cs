@@ -10,10 +10,10 @@ namespace Sulakore.Habbo.Packages.StuffData
         public HVoteResultStuffData()
             : base(HStuffDataFormat.VoteResult)
         { }
-        public HVoteResultStuffData(HPacket packet)
+        public HVoteResultStuffData(HReadOnlyPacket packet)
             : this()
         {
-            State = packet.ReadUTF8();
+            State = packet.ReadString();
             Result = packet.ReadInt32();
         }
     }

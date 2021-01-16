@@ -42,10 +42,10 @@ namespace Sulakore.Habbo.Packages
         public int RemainingGrowingSeconds { get; set; }
         public bool HasBreedingPermission { get; set; }
 
-        public HPetInformation(HPacket packet)
+        public HPetInformation(HReadOnlyPacket packet)
         {
             Id = packet.ReadInt32();
-            Name = packet.ReadUTF8();
+            Name = packet.ReadString();
 
             Level = packet.ReadInt32();
             MaxLevel = packet.ReadInt32();
@@ -62,7 +62,7 @@ namespace Sulakore.Habbo.Packages
             Scratches = packet.ReadInt32();
             OwnerId = packet.ReadInt32();
             Age = packet.ReadInt32();
-            OwnerName = packet.ReadUTF8();
+            OwnerName = packet.ReadString();
 
             BreedId = packet.ReadInt32();
 

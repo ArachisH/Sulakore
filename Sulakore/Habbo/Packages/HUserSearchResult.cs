@@ -16,11 +16,11 @@ namespace Sulakore.Habbo.Packages
 
         public string RealName { get; set; }
 
-        public HUserSearchResult(HPacket packet)
+        public HUserSearchResult(HReadOnlyPacket packet)
         {
             Id = packet.ReadInt32();
-            Name = packet.ReadUTF8();
-            Motto = packet.ReadUTF8();
+            Name = packet.ReadString();
+            Motto = packet.ReadString();
 
             IsOnline = packet.ReadBoolean();
             CanFollow = packet.ReadBoolean();
@@ -28,12 +28,12 @@ namespace Sulakore.Habbo.Packages
             packet.ReadUTF8();
 
             Gender = packet.ReadInt32() == 1 ? HGender.Male : HGender.Female; //TODO: HExtension, ffs sulake
-            Figure = packet.ReadUTF8();
+            Figure = packet.ReadString();
             
-            RealName = packet.ReadUTF8();
+            RealName = packet.ReadString();
         }
 
-        public static (HUserSearchResult[] friends, HUserSearchResult[] others) Parse(HPacket packet)
+        public static (HUserSearchResult[] friends, HUserSearchResult[] others) Parse(HReadOnlyPacket packet)
         {
             var friends = new HUserSearchResult[packet.ReadInt32()];
             for (int i = 0; i < friends.Length; i++)

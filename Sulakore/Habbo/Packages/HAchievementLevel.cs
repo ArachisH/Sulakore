@@ -9,7 +9,7 @@ namespace Sulakore.Habbo.Packages
         public int Level { get; set; }
         public int PointLimit { get; set; }
 
-        public HAchievementLevel(string name, HPacket packet)
+        public HAchievementLevel(HReadOnlyPacket packet, string name)
         {
             Level = packet.ReadInt32();
             PointLimit = packet.ReadInt32();

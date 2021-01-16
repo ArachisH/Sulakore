@@ -21,7 +21,7 @@ namespace Sulakore.Habbo.Packages.StuffData
             Format = format;
         }
 
-        public static HStuffData Parse(HPacket packet)
+        public static HStuffData Parse(HReadOnlyPacket packet)
         {
             int value = packet.ReadInt32();
             HStuffData? stuffData = (HStuffDataFormat)(value & 0xFF) switch

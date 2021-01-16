@@ -28,7 +28,7 @@ namespace Sulakore.Habbo.Packages
         public string? SlotId { get; set; }
         public int? Extra { get; set; }
 
-        public HItem(HPacket packet)
+        public HItem(HReadOnlyPacket packet)
         {
             RoomItemId = packet.ReadInt32();
             Type = (HProductType)packet.ReadUTF8()[0];
@@ -51,12 +51,12 @@ namespace Sulakore.Habbo.Packages
 
             if (Type == HProductType.Stuff)
             {
-                SlotId = packet.ReadUTF8();
+                SlotId = packet.ReadString();
                 Extra = packet.ReadInt32();
             }
         }
 
-        public static HItem[] Parse(HPacket packet)
+        public static HItem[] Parse(HReadOnlyPacket packet)
         {
             packet.ReadInt32();
             packet.ReadInt32();

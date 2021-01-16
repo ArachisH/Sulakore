@@ -12,14 +12,14 @@ namespace Sulakore.Modules
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public abstract class DataCaptureAttribute : Attribute, IEquatable<DataCaptureAttribute>
     {
-        public ushort? Id { get; }
+        public short? Id { get; }
         public string Identifier { get; }
         public abstract bool IsOutgoing { get; }
 
         internal object Target { get; set; }
         internal MethodInfo Method { get; set; }
 
-        public DataCaptureAttribute(ushort id)
+        public DataCaptureAttribute(short id)
         {
             Id = id;
         }
@@ -32,7 +32,6 @@ namespace Sulakore.Modules
         {
             object[] parameters = CreateValues(args);
             object result = Method?.Invoke(Target, parameters);
-
             switch (result)
             {
                 case bool isBlocked:
@@ -43,11 +42,6 @@ namespace Sulakore.Modules
                 case HPacket packet:
                 {
                     args.Packet = packet;
-                    break;
-                }
-                case object[] chunks:
-                {
-                    args.Packet = args.Packet.Format.CreatePacket(args.Packet.Id, chunks);
                     break;
                 }
             }

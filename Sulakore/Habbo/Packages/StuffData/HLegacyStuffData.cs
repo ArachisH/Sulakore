@@ -9,10 +9,10 @@ namespace Sulakore.Habbo.Packages.StuffData
         public HLegacyStuffData()
             : base(HStuffDataFormat.Legacy)
         { }
-        public HLegacyStuffData(HPacket packet)
+        public HLegacyStuffData(HReadOnlyPacket packet)
             : this()
         {
-            Data = packet.ReadUTF8();
+            Data = packet.ReadString();
         }
     }
 }

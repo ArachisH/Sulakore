@@ -8,10 +8,10 @@ namespace Sulakore.Habbo.Packages
         public string Text { get; set; }
         public int Type { get; set; }
 
-        public HPollChoice(HPacket packet)
+        public HPollChoice(HReadOnlyPacket packet)
         {
-            Value = packet.ReadUTF8();
-            Text = packet.ReadUTF8();
+            Value = packet.ReadString();
+            Text = packet.ReadString();
             Type = packet.ReadInt32();
         }
     }

@@ -9,13 +9,13 @@ namespace Sulakore.Habbo.Packages.StuffData
         public HStringArrayStuffData()
             : base(HStuffDataFormat.StringArray)
         { }
-        public HStringArrayStuffData(HPacket packet)
+        public HStringArrayStuffData(HReadOnlyPacket packet)
             : this()
         {
             Data = new string[packet.ReadInt32()];
             for (int i = 0; i < Data.Length; i++)
             {
-                Data[i] = packet.ReadUTF8();
+                Data[i] = packet.ReadString();
             }
         }
     }

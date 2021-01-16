@@ -15,21 +15,21 @@ namespace Sulakore.Habbo.Packages
         public int? LimitedTotal { get; set; }
         public int? LimitedRemaining { get; set; }
 
-        public HCatalogProduct(HPacket packet)
+        public HCatalogProduct(HReadOnlyPacket packet)
         {
             Type = (HProductType)packet.ReadUTF8()[0];
             switch (Type)
             {
                 case HProductType.Badge:
                 {
-                    ExtraData = packet.ReadUTF8();
+                    ExtraData = packet.ReadString();
                     ProductCount = 1;
                     break;
                 }
                 default:
                 {
                     ClassId = packet.ReadInt32();
-                    ExtraData = packet.ReadUTF8();
+                    ExtraData = packet.ReadString();
                     ProductCount = packet.ReadInt32();
                     if (IsLimited = packet.ReadBoolean())
                     {

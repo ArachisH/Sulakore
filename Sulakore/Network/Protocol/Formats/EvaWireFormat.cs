@@ -3,164 +3,102 @@ using System.Text;
 using System.Buffers;
 using System.Buffers.Binary;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace Sulakore.Network.Protocol
 {
-    public class EvaWireFormat : HFormat
+    public sealed class EvaWireFormat : IFormat
     {
-        public override int IdPosition => 4;
-        public override string Name => "EVAWIRE";
+        public Span<byte> SliceBody(Span<byte> source) => source.Slice(6);
+        public int ReadLength(ReadOnlySpan<byte> source) => ReadInt32(source, out _);
+        public short ReadId(ReadOnlySpan<byte> source) => ReadInt16(source.Slice(4), out _);
+        public void WriteId(Span<byte> destination, short value) => WriteInt16(destination.Slice(4), value);
 
-        public EvaWireFormat()
-            : base(false)
-        { }
-
-        public override ushort GetId(IList<byte> data)
+        public void WriteUTF8(Span<byte> destination, ReadOnlySpan<char> value)
         {
-            return ReadUInt16(data, 4);
+            WriteInt16(destination, (short)value.Length);
+            Encoding.UTF8.GetBytes(value, destination.Slice(sizeof(short)));
         }
-        public override byte[] GetBody(IList<byte> data)
+        public void WriteBoolean(Span<byte> destination, bool value) => destination[0] = value ? 1 : 0;
+        public void WriteInt32(Span<byte> destination, int value) => BinaryPrimitives.WriteInt32BigEndian(destination, value);
+        public void WriteInt16(Span<byte> destination, short value) => BinaryPrimitives.WriteInt16BigEndian(destination, value);
+        public void WriteFloat(Span<byte> destination, float value) => BinaryPrimitives.WriteSingleBigEndian(destination, value);
+        public void WriteUInt16(Span<byte> destination, ushort value) => BinaryPrimitives.WriteUInt16BigEndian(destination, value);
+        public void WriteDouble(Span<byte> destination, double value) => BinaryPrimitives.WriteDoubleBigEndian(destination, value);
+
+        public int ReadInt32(ReadOnlySpan<byte> source, out int size)
         {
-            var body = new byte[data.Count - 6];
-            for (int i = 0; i < body.Length; i++)
+            size = sizeof(int);
+            return BinaryPrimitives.ReadInt32BigEndian(source);
+        }
+        public short ReadInt16(ReadOnlySpan<byte> source, out int size)
+        {
+            size = sizeof(short);
+            return BinaryPrimitives.ReadInt16BigEndian(source);
+        }
+        public float ReadFloat(ReadOnlySpan<byte> source, out int size)
+        {
+            size = sizeof(float);
+            return BinaryPrimitives.ReadSingleBigEndian(source);
+        }
+        public bool ReadBoolean(ReadOnlySpan<byte> source, out int size)
+        {
+            size = sizeof(bool);
+            return source[0] != 0;
+        }
+        public ushort ReadUInt16(ReadOnlySpan<byte> source, out int size)
+        {
+            size = sizeof(ushort);
+            return BinaryPrimitives.ReadUInt16BigEndian(source);
+        }
+        public double ReadDouble(ReadOnlySpan<byte> source, out int size)
+        {
+            size = sizeof(double);
+            return BinaryPrimitives.ReadDoubleBigEndian(source);
+        }
+        public ReadOnlySpan<byte> ReadUTF8(ReadOnlySpan<byte> source, out int size)
+        {
+            short length = ReadInt16(source, out size);
+
+            size += length;
+            return source.Slice(sizeof(short), length);
+        }
+
+        public void Encrypt(HNode node, Span<byte> data)
+        {}
+        public void Decrypt(HNode node, Span<byte> data)
+        {
+            if (node.Decrypter == null) return;
+            if (node.IsWebSocket)
             {
-                body[i] = data[i + 6];
+                Span<byte> idBytes = data.Slice(4, 2);
+                idBytes.Reverse();
+
+                node.Decrypter.Process(idBytes);
+                idBytes.Reverse();
             }
-            return body;
+            else node.Decrypter.Process(data);
         }
 
-        public override int GetSize(int value) => 4;
-        public override int GetSize(bool value) => 1;
-        public override int GetSize(string value) => 2 + Encoding.UTF8.GetByteCount(value);
-        public override int GetSize(ushort value) => 2;
-        public override int GetSize(double value) => 6;
-
-        public override byte[] GetBytes(int value)
+        public ValueTask<int> SendPacketAsync(HNode node, HReadOnlyPacket packet)
         {
-            var data = new byte[4];
-            data[0] = (byte)(value >> 24);
-            data[1] = (byte)(value >> 16);
-            data[2] = (byte)(value >> 8);
-            data[3] = (byte)value;
-            return data;
+            throw new NotImplementedException();
         }
-        public override byte[] GetBytes(bool value)
-        {
-            return new byte[] { (byte)(value ? 1 : 0) };
-        }
-        public override byte[] GetBytes(string value)
-        {
-            byte[] stringData = Encoding.UTF8.GetBytes(value);
-            byte[] lengthData = GetBytes((ushort)stringData.Length);
-
-            var data = new byte[lengthData.Length + stringData.Length];
-            Buffer.BlockCopy(lengthData, 0, data, 0, lengthData.Length);
-            Buffer.BlockCopy(stringData, 0, data, lengthData.Length, stringData.Length);
-            return data;
-        }
-        public override byte[] GetBytes(ushort value)
-        {
-            var data = new byte[2];
-            data[0] = (byte)(value >> 8);
-            data[1] = (byte)value;
-            return data;
-        }
-        public override byte[] GetBytes(double value)
-        {
-            byte[] data = BitConverter.GetBytes(value);
-            Array.Reverse(data);
-            return data;
-        }
-
-        public override int ReadInt32(IList<byte> data, int index)
-        {
-            int result = data[index++] << 24;
-            result += data[index++] << 16;
-            result += data[index++] << 8;
-            return result + data[index];
-        }
-        public override string ReadUTF8(IList<byte> data, int index)
-        {
-            ushort length = ReadUInt16(data, index);
-            index += 2;
-
-            var chunk = new byte[length];
-            for (int i = index, j = 0; j < length; i++, j++)
-            {
-                chunk[j] = data[i];
-            }
-            return Encoding.UTF8.GetString(chunk, 0, length);
-        }
-        public override bool ReadBoolean(IList<byte> data, int index)
-        {
-            return data[index] == 1;
-        }
-        public override ushort ReadUInt16(IList<byte> data, int index)
-        {
-            int result = data[index++] << 8;
-            return (ushort)(result + data[index]);
-        }
-        public override double ReadDouble(IList<byte> data, int index)
-        {
-            var chunk = new byte[data.Count - index];
-            for (int i = chunk.Length - 1, j = index + chunk.Length; i >= 0; i--, j--)
-            {
-                chunk[i] = data[i];
-            }
-            return BitConverter.ToDouble(chunk, 0);
-        }
-
-        protected override byte[] ConstructTails(ushort id, IList<byte> body)
-        {
-            var data = new byte[6 + body.Count];
-            PlaceBytes(body.Count + 2, data, 0);
-            PlaceBytes(id, data, 4);
-
-            body.CopyTo(data, 6);
-            return data;
-        }
-        public override async ValueTask<HPacket> ReceivePacketAsync(HNode node)
+        public async ValueTask<IMemoryOwner<byte>> ReceivePacketAsync(HNode node)
         {
             using IMemoryOwner<byte> lengthOwner = MemoryPool<byte>.Shared.Rent(4);
 
-            int lengthReceived = 0;
-            do lengthReceived = await node.ReceiveAsync(lengthOwner.Memory.Slice(0, 4)).ConfigureAwait(false);
-            while (lengthReceived == 0);
-
+            int lengthReceived = await node.ReceiveAsync(lengthOwner.Memory.Slice(0, 4)).ConfigureAwait(false);
             if (lengthReceived != 4) node.Dispose();
-            int length = BinaryPrimitives.ReadInt32BigEndian(lengthOwner.Memory.Span);
 
-            using IMemoryOwner<byte> bodyOwner = MemoryPool<byte>.Shared.Rent(length);
-            Memory<byte> body = bodyOwner.Memory.Slice(0, length);
+            int length = BinaryPrimitives.ReadInt32BigEndian(lengthOwner.Memory.Span);
+            IMemoryOwner<byte> packetOwner = MemoryPool<byte>.Shared.Rent(4 + length);
 
             int received = 0;
-            do received += await node.ReceiveAsync(bodyOwner.Memory.Slice(received, length - received));
+            do received += await node.ReceiveAsync(packetOwner.Memory.Slice(4 + received, length - received)).ConfigureAwait(false);
             while (received != length);
 
-            var packetData = new byte[sizeof(int) + length];
-            BinaryPrimitives.WriteInt32BigEndian(packetData, length);
-            Buffer.BlockCopy(bodyOwner.Memory.ToArray(), 0, packetData, 4, length);
-
-            if (node.IsWebSocket && node.Decrypter != null)
-            {
-                node.Decrypter.Process(packetData.AsSpan().Slice(5, 1));
-                node.Decrypter.Process(packetData.AsSpan().Slice(4, 1));
-            }
-            return CreatePacket(packetData);
-        }
-
-        public override HPacket CreatePacket()
-        {
-            return new EvaWirePacket();
-        }
-        public override HPacket CreatePacket(IList<byte> data)
-        {
-            return new EvaWirePacket(data);
-        }
-        public override HPacket CreatePacket(ushort id, params object[] values)
-        {
-            return new EvaWirePacket(id, values);
+            Decrypt(node, packetOwner.Memory.Slice(0, 4 + length).Span);
+            return packetOwner;
         }
     }
 }

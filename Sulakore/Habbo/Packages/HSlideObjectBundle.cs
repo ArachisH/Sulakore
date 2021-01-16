@@ -22,7 +22,7 @@ namespace Sulakore.Habbo.Packages
         /// </summary>
         public HSlideObject? Entity { get; set; }
 
-        public HSlideObjectBundle(HPacket packet)
+        public HSlideObjectBundle(HReadOnlyPacket packet)
         {
             HPoint location = new HPoint(packet.ReadInt32(), packet.ReadInt32());
             HPoint target = new HPoint(packet.ReadInt32(), packet.ReadInt32());
@@ -31,21 +31,20 @@ namespace Sulakore.Habbo.Packages
             for (int i = 0; i < Objects.Length; i++)
             {
                 int objectId = packet.ReadInt32();
-                location.Z = double.Parse(packet.ReadUTF8(), CultureInfo.InvariantCulture);
-                target.Z = double.Parse(packet.ReadUTF8(), CultureInfo.InvariantCulture);
+                location.Z = double.Parse(packet.ReadUTF16(), provider: CultureInfo.InvariantCulture);
+                target.Z = double.Parse(packet.ReadUTF16(), provider: CultureInfo.InvariantCulture);
 
                 Objects[i] = new HSlideObject(objectId, location, target);
             }
 
             Id = packet.ReadInt32();
-
-            if (packet.ReadableBytes > 0)
+            if (packet.Available > 0)
             {
                 HMoveType type = (HMoveType)packet.ReadInt32();
 
                 int entityIndex = packet.ReadInt32();
-                location.Z = double.Parse(packet.ReadUTF8(), CultureInfo.InvariantCulture);
-                target.Z = double.Parse(packet.ReadUTF8(), CultureInfo.InvariantCulture);
+                location.Z = double.Parse(packet.ReadUTF16(), provider: CultureInfo.InvariantCulture);
+                target.Z = double.Parse(packet.ReadUTF16(), provider: CultureInfo.InvariantCulture);
 
                 Entity = new HSlideObject(entityIndex, location, target, type);
             }

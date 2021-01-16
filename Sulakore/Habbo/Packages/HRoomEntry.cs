@@ -37,19 +37,19 @@ namespace Sulakore.Habbo.Packages
         public bool AllowPets { get; set; }
         public bool ShowEntryAd { get; set; }
 
-        public HRoomEntry(HPacket packet)
+        public HRoomEntry(HReadOnlyPacket packet)
         {
             Id = packet.ReadInt32();
-            Name = packet.ReadUTF8();
+            Name = packet.ReadString();
 
             OwnerId = packet.ReadInt32();
-            OwnerName = packet.ReadUTF8();
+            OwnerName = packet.ReadString();
 
             DoorMode = (HDoorMode)packet.ReadInt32();
             UserCount = packet.ReadInt32();
             MaxUserCount = packet.ReadInt32();
 
-            Description = packet.ReadUTF8();
+            Description = packet.ReadString();
             TradeMode = (HTradeMode)packet.ReadInt32();
             Ranking = packet.ReadInt32();
             Stars = packet.ReadInt32();
@@ -58,25 +58,25 @@ namespace Sulakore.Habbo.Packages
             Tags = new string[packet.ReadInt32()];
             for (int i = 0; i < Tags.Length; i++)
             {
-                Tags[i] = packet.ReadUTF8();
+                Tags[i] = packet.ReadString();
             }
 
             HRoomFlags roomFlags = (HRoomFlags)packet.ReadInt32();
 
             if (roomFlags.HasFlag(HRoomFlags.HasCustomThumbnail))
             {
-                ThumbnailUrl = packet.ReadUTF8();
+                ThumbnailUrl = packet.ReadString();
             }
             if (roomFlags.HasFlag(HRoomFlags.HasGroup))
             {
                 GroupId = packet.ReadInt32();
-                GroupName = packet.ReadUTF8();
-                GroupBadgeCode = packet.ReadUTF8();
+                GroupName = packet.ReadString();
+                GroupBadgeCode = packet.ReadString();
             }
             if (roomFlags.HasFlag(HRoomFlags.HasAdvertisement))
             {
-                AdName = packet.ReadUTF8();
-                AdDescription = packet.ReadUTF8();
+                AdName = packet.ReadString();
+                AdDescription = packet.ReadString();
                 AdExpiresInMinutes = packet.ReadInt32();
             }
 

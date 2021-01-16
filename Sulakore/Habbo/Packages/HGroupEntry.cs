@@ -14,13 +14,13 @@ namespace Sulakore.Habbo.Packages
         public int OwnerId { get; set; }
         public bool HasForum { get; set; }
 
-        public HGroupEntry(HPacket packet)
+        public HGroupEntry(HReadOnlyPacket packet)
         {
             Id = packet.ReadInt32();
-            Name = packet.ReadUTF8();
-            BadgeCode = packet.ReadUTF8();
-            PrimaryColor = packet.ReadUTF8();
-            SecondaryColor = packet.ReadUTF8();
+            Name = packet.ReadString();
+            BadgeCode = packet.ReadString();
+            PrimaryColor = packet.ReadString();
+            SecondaryColor = packet.ReadString();
 
             Favorite = packet.ReadBoolean();
             OwnerId = packet.ReadInt32();

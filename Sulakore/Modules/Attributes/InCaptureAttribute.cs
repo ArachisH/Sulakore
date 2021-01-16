@@ -4,7 +4,7 @@
     {
         public override bool IsOutgoing => false;
 
-        public InDataCaptureAttribute(ushort id)
+        public InDataCaptureAttribute(short id)
             : base(id)
         { }
         public InDataCaptureAttribute(string hash)

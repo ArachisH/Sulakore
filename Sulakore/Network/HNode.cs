@@ -38,8 +38,8 @@ namespace Sulakore.Network
         public IStreamCipher Encrypter { get; set; }
         public IStreamCipher Decrypter { get; set; }
 
-        public HFormat SendFormat { get; set; }
-        public HFormat ReceiveFormat { get; set; }
+        public IFormat SendFormat { get; set; }
+        public IFormat ReceiveFormat { get; set; }
         public HotelEndPoint RemoteEndPoint { get; private set; }
 
         public bool IsClient { get; private set; }
@@ -76,26 +76,30 @@ namespace Sulakore.Network
             socket.NoDelay = true;
             socket.LingerState = new LingerOption(false, 0);
 
-            SendFormat = HFormat.EvaWire;
-            ReceiveFormat = HFormat.EvaWire;
+            SendFormat = IFormat.EvaWire;
+            ReceiveFormat = IFormat.EvaWire;
             RemoteEndPoint = remoteEndPoint;
         }
 
-        public async ValueTask<HPacket> ReceiveAsync()
+        /// <summary>
+        /// Returns a rented piece of memory that contains a packet.
+        /// </summary>
+        public async ValueTask<IMemoryOwner<byte>> ReceiveAsync()
         {
             if (ReceiveFormat == null)
             {
                 throw new NullReferenceException($"Cannot receive structued data while {nameof(ReceiveFormat)} is null.");
             }
-            HPacket packet = null;
+            IMemoryOwner<byte> packetOwner = null;
             await _packetReceiveSemaphore.WaitAsync().ConfigureAwait(false);
             try
             {
-                packet = await ReceiveFormat.ReceivePacketAsync(this).ConfigureAwait(false);
+                packetOwner = await ReceiveFormat.ReceivePacketAsync(this).ConfigureAwait(false);
             }
             finally { _packetReceiveSemaphore.Release(); }
-            return packet;
+            return packetOwner;
         }
+
         public ValueTask<int> SendAsync(HPacket packet)
         {
             return SendAsync(packet.ToBytes());
@@ -106,7 +110,8 @@ namespace Sulakore.Network
             {
                 throw new NullReferenceException($"Cannot send structued data while {nameof(SendFormat)} is null.");
             }
-            return SendAsync(SendFormat.Construct(id, values));
+            return default;
+            //return SendAsync(SendFormat.Construct(id, values));
         }
 
         public bool ReflectFormats(HNode other)
@@ -134,13 +139,13 @@ namespace Sulakore.Network
             IsWebSocket = isWebSocket;
             if (IsWebSocket || possibleId == 4000)
             {
-                SendFormat = HFormat.EvaWire;
-                ReceiveFormat = HFormat.EvaWire;
+                SendFormat = IFormat.EvaWire;
+                ReceiveFormat = IFormat.EvaWire;
             }
             else if (possibleId == 206)
             {
-                SendFormat = HFormat.WedgieIn;
-                ReceiveFormat = HFormat.WedgieOut;
+                SendFormat = IFormat.WedgieIn;
+                ReceiveFormat = IFormat.WedgieOut;
             }
             else wasDetermined = false;
 
@@ -224,7 +229,7 @@ namespace Sulakore.Network
                 responseWritten += 4; // \r\n\r\n
             }
 
-            if (IsUpgraded || !await DetermineFormatsAsync()) return IsUpgraded;
+            if (IsUpgraded || !await DetermineFormatsAsync().ConfigureAwait(false)) return IsUpgraded;
             using IMemoryOwner<byte> receivedOwner = Rent(1024, out Memory<byte> receivedRegion);
             int received = await ReceiveAsync(receivedRegion).ConfigureAwait(false);
 
@@ -280,12 +285,7 @@ namespace Sulakore.Network
                         tunnel = _webSocketStream;
                         BypassReceiveSecureTunnel--;
                     }
-
                     transported = await tunnel.ReadAsync(buffer, cancellationToken).ConfigureAwait(false);
-                    if (!IsWebSocket) // Formatter should handle decryption directly when receiving as WebSocket.
-                    {
-                        Decrypter?.Process(buffer.Slice(0, transported).Span);
-                    }
                 }
                 else
                 {
@@ -405,14 +405,6 @@ namespace Sulakore.Network
 
             public override async ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
             {
-                static void UnmaskPayload(Span<byte> payload, Span<byte> mask)
-                {
-                    for (int i = 0; i < payload.Length; i++)
-                    {
-                        payload[i] ^= mask[i % 4];
-                    }
-                }
-
                 bool isMasked;
                 int op, received, payloadLength;
                 using IMemoryOwner<byte> headerOwner = Rent(14, out Memory<byte> headerRegion);
@@ -420,7 +412,7 @@ namespace Sulakore.Network
                 {
                     received = await _innerStream.ReadAsync(headerRegion.Slice(0, 2), cancellationToken).ConfigureAwait(false);
                     if (received != 2) return -1; // The size of the WebSocket frame header should at minimum be two bytes.
-                    DecodeWebSocketHeader(headerRegion.Span, out isMasked, out payloadLength, out op);
+                    HeaderDecode(headerRegion.Span, out isMasked, out payloadLength, out op);
                 }
                 while (payloadLength == 0 || op != 2); // Continue to receive fragments until a binary frame with a payload size more than zero is found.
 
@@ -452,35 +444,22 @@ namespace Sulakore.Network
                 do
                 {
                     // Attempt to copy the entire WebSocket payload into the buffer, otherwise, if there is not enough room, specify how much data has been left with the '_leftoverPayloadBytes' field.
-                    received += await _innerStream.ReadAsync(payloadRegion.Slice(received, payloadRegion.Length - received), cancellationToken);
+                    received += await _innerStream.ReadAsync(payloadRegion.Slice(received, payloadRegion.Length - received), cancellationToken).ConfigureAwait(false);
                 }
                 while (received != payloadRegion.Length);
 
                 if (isMasked)
                 {
-                    UnmaskPayload(payloadRegion.Slice(0, received).Span, maskRegion.Span);
+                    PayloadUnmask(payloadRegion.Slice(0, received).Span, maskRegion.Span);
                 }
                 return received;
             }
             public override async ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
             {
-                static IMemoryOwner<byte> MaskPayload(ReadOnlySpan<byte> payload, ReadOnlySpan<byte> mask)
-                {
-                    if (mask == _emptyMask) return null;
-                    IMemoryOwner<byte> maskedOwner = Rent(payload.Length, out Memory<byte> maskedRegion);
-
-                    Span<byte> masked = maskedRegion.Span;
-                    for (int i = 0; i < payload.Length; i++)
-                    {
-                        masked[i] = (byte)(payload[i] ^ mask[i % 4]);
-                    }
-                    return maskedOwner;
-                }
-
                 using IMemoryOwner<byte> headerOwner = Rent(14, out Memory<byte> headerRegion);
                 for (int i = 0, payloadLeft = buffer.Length; payloadLeft > 0; payloadLeft -= MAX_WEBSOCKET_TOCLIENT_PAYLOAD_SIZE, i++)
                 {
-                    int headerLength = EncodeWebSocketHeader(headerRegion.Span, payloadLeft, i == 0, _isClient, out bool isFinalFragment);
+                    int headerLength = HeaderEncode(headerRegion.Span, payloadLeft, i == 0, _isClient, out bool isFinalFragment);
                     int payloadLength = isFinalFragment ? payloadLeft : MAX_WEBSOCKET_TOCLIENT_PAYLOAD_SIZE;
 
                     IMemoryOwner<byte> maskedOwner = null;
@@ -490,7 +469,7 @@ namespace Sulakore.Network
                     if (_mask != null)
                     {
                         await _innerStream.WriteAsync(_mask, cancellationToken).ConfigureAwait(false);
-                        maskedOwner = MaskPayload(payloadFragment.Span, _mask);
+                        maskedOwner = PayloadMask(payloadFragment.Span, _mask);
                     }
 
                     if (maskedOwner != null) // MaskPayload could return null, which means that we used the '_emptyMask' instance, WHICH also means no masking was done on the payload.
@@ -515,23 +494,11 @@ namespace Sulakore.Network
             public override bool CanWrite => true;
             public override long Length => throw new NotSupportedException();
 
-            public override void Flush()
-            {
-                _innerStream.Flush();
-            }
-            public override Task FlushAsync(CancellationToken cancellationToken)
-            {
-                return _innerStream.FlushAsync(cancellationToken);
-            }
+            public override void Flush() => _innerStream.Flush();
+            public override Task FlushAsync(CancellationToken cancellationToken) => _innerStream.FlushAsync(cancellationToken);
 
-            public override int Read(byte[] buffer, int offset, int count)
-            {
-                throw new NotImplementedException();
-            }
-            public override void Write(byte[] buffer, int offset, int count)
-            {
-                throw new NotImplementedException();
-            }
+            public override int Read(byte[] buffer, int offset, int count) => throw new NotSupportedException();
+            public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
 
             public override void SetLength(long value) => throw new NotSupportedException();
             public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
@@ -547,14 +514,34 @@ namespace Sulakore.Network
             }
             #endregion
 
+            private static void PayloadUnmask(Span<byte> payload, Span<byte> mask)
+            {
+                for (int i = 0; i < payload.Length; i++)
+                {
+                    payload[i] ^= mask[i % 4];
+                }
+            }
+            private static IMemoryOwner<byte> PayloadMask(ReadOnlySpan<byte> payload, ReadOnlySpan<byte> mask)
+            {
+                if (mask == _emptyMask) return null;
+                IMemoryOwner<byte> maskedOwner = Rent(payload.Length, out Memory<byte> maskedRegion);
+
+                Span<byte> masked = maskedRegion.Span;
+                for (int i = 0; i < payload.Length; i++)
+                {
+                    masked[i] = (byte)(payload[i] ^ mask[i % 4]);
+                }
+                return maskedOwner;
+            }
+
             [System.Diagnostics.DebuggerStepThrough]
-            static void DecodeWebSocketHeader(Span<byte> header, out bool isMasked, out int payloadLength, out int op)
+            private static void HeaderDecode(Span<byte> header, out bool isMasked, out int payloadLength, out int op)
             {
                 op = header[0] & 0b00001111;
                 payloadLength = header[1] & 0x7F;
                 isMasked = (header[1] & 0x80) == 0x80;
             }
-            private static int EncodeWebSocketHeader(Span<byte> header, int payloadLeft, bool isFirstFragment, bool isClient, out bool isFinalFragment)
+            private static int HeaderEncode(Span<byte> header, int payloadLeft, bool isFirstFragment, bool isClient, out bool isFinalFragment)
             {
                 isFinalFragment = isClient || payloadLeft <= MAX_WEBSOCKET_TOCLIENT_PAYLOAD_SIZE;
 
@@ -591,19 +578,27 @@ namespace Sulakore.Network
         }
         private sealed class BufferedNetworkStream : Stream
         {
+            private const int DEFAULT_BUFFER_SIZE = 4096;
+
             private readonly NetworkStream _networkStream;
             private readonly BufferedStream _readBuffer, _writeBuffer;
 
             private bool _disposed;
 
+            public int ReadBufferSize { get; init; }
+            public int WriteBufferSize { get; init; }
+
             public BufferedNetworkStream(Socket socket)
-                : this(socket, true)
+                : this(socket, DEFAULT_BUFFER_SIZE, DEFAULT_BUFFER_SIZE)
             { }
-            public BufferedNetworkStream(Socket socket, bool ownsSocket)
+            public BufferedNetworkStream(Socket socket, int readBufferSize, int writeBufferSize)
             {
-                _networkStream = new NetworkStream(socket, ownsSocket);
-                _readBuffer = new BufferedStream(_networkStream);
-                _writeBuffer = new BufferedStream(_networkStream); // TODO: Investigate what is the largest amount of data being sent/received, and use that value here.
+                ReadBufferSize = readBufferSize;
+                WriteBufferSize = writeBufferSize;
+
+                _networkStream = new NetworkStream(socket, true);
+                _readBuffer = new BufferedStream(_networkStream, readBufferSize);
+                _writeBuffer = new BufferedStream(_networkStream, writeBufferSize);
             }
 
             public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) => _readBuffer.ReadAsync(buffer, cancellationToken);

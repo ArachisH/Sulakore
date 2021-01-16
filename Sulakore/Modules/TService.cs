@@ -12,6 +12,7 @@ using Sulakore.Habbo;
 using Sulakore.Network;
 using Sulakore.Habbo.Packages;
 using Sulakore.Network.Protocol;
+using System.Buffers;
 
 namespace Sulakore.Modules
 {
@@ -22,7 +23,7 @@ namespace Sulakore.Modules
         private readonly TService _parent;
         private readonly IModule _container;
         private readonly List<DataCaptureAttribute> _unknownDataAttributes;
-        private readonly Dictionary<ushort, List<DataCaptureAttribute>> _outDataAttributes, _inDataAttributes;
+        private readonly Dictionary<short, List<DataCaptureAttribute>> _outDataAttributes, _inDataAttributes;
 
         public virtual bool IsStandalone { get; }
 
@@ -74,8 +75,8 @@ namespace Sulakore.Modules
             _parent = parent;
             _container = container ?? this;
             _unknownDataAttributes = parent?._unknownDataAttributes ?? new List<DataCaptureAttribute>();
-            _inDataAttributes = parent?._inDataAttributes ?? new Dictionary<ushort, List<DataCaptureAttribute>>();
-            _outDataAttributes = parent?._outDataAttributes ?? new Dictionary<ushort, List<DataCaptureAttribute>>();
+            _inDataAttributes = parent?._inDataAttributes ?? new Dictionary<short, List<DataCaptureAttribute>>();
+            _outDataAttributes = parent?._outDataAttributes ?? new Dictionary<short, List<DataCaptureAttribute>>();
 
             _entities = new ConcurrentDictionary<int, HEntity>();
             Entities = new ReadOnlyDictionary<int, HEntity>(_entities);
@@ -102,7 +103,7 @@ namespace Sulakore.Modules
                     dataCaptureAtt.Target = _container;
                     if (dataCaptureAtt.Id != null)
                     {
-                        AddCallback(dataCaptureAtt, (ushort)dataCaptureAtt.Id);
+                        AddCallback(dataCaptureAtt, (short)dataCaptureAtt.Id);
                     }
                     else _unknownDataAttributes.Add(dataCaptureAtt);
                 }
@@ -114,10 +115,10 @@ namespace Sulakore.Modules
                 HNode installerNode = HNode.ConnectAsync(moduleServer ?? DefaultModuleServer).Result;
                 if (installerNode != null)
                 {
-                    var infoPacketOut = new EvaWirePacket(0);
-                    WriteModuleInfo(infoPacketOut);
+                    //var infoPacketOut = new EvaWirePacket(0); // TODO:
+                    //WriteModuleInfo(infoPacketOut);
 
-                    installerNode.SendAsync(infoPacketOut).GetAwaiter().GetResult();
+                    //installerNode.SendAsync(infoPacketOut).GetAwaiter().GetResult();
                     Installer = _container.Installer = new DummyInstaller(_container, installerNode);
                     break;
                 }
@@ -129,7 +130,7 @@ namespace Sulakore.Modules
 
         public virtual void HandleIncoming(DataInterceptedEventArgs e) => HandleData(_inDataAttributes, e);
         public virtual void HandleOutgoing(DataInterceptedEventArgs e) => HandleData(_outDataAttributes, e);
-        private void HandleData(IDictionary<ushort, List<DataCaptureAttribute>> callbacks, DataInterceptedEventArgs e)
+        private void HandleData(IDictionary<short, List<DataCaptureAttribute>> callbacks, DataInterceptedEventArgs e)
         {
             HandleGameObjects(e.Packet, e.IsOutgoing);
             if (callbacks.TryGetValue(e.Packet.Id, out List<DataCaptureAttribute> attributes))
@@ -186,7 +187,7 @@ namespace Sulakore.Modules
                 throw new MessageResolvingException(Game.Revision, unresolved);
             }
         }
-        private void WriteModuleInfo(HPacket packet)
+        private void WriteModuleInfo(HPacket2 packet)
         {
             var moduleAssembly = Assembly.GetAssembly(_container.GetType());
 
@@ -216,7 +217,7 @@ namespace Sulakore.Modules
                 packet.Write(author.Name);
             }
         }
-        private void HandleGameObjects(HPacket packet, bool isOutgoing)
+        private void HandleGameObjects(HReadOnlyPacket packet, bool isOutgoing)
         {
             packet.Position = 0;
             if (!isOutgoing)
@@ -257,9 +258,9 @@ namespace Sulakore.Modules
             }
             packet.Position = 0;
         }
-        private void AddCallback(DataCaptureAttribute attribute, ushort id)
+        private void AddCallback(DataCaptureAttribute attribute, short id)
         {
-            Dictionary<ushort, List<DataCaptureAttribute>> callbacks = attribute.IsOutgoing ? _outDataAttributes : _inDataAttributes;
+            Dictionary<short, List<DataCaptureAttribute>> callbacks = attribute.IsOutgoing ? _outDataAttributes : _inDataAttributes;
             if (!callbacks.TryGetValue(id, out List<DataCaptureAttribute> attributes))
             {
                 attributes = new List<DataCaptureAttribute>();
@@ -279,7 +280,7 @@ namespace Sulakore.Modules
         {
             private readonly IModule _module;
             private readonly HNode _installerNode;
-            private readonly Dictionary<ushort, Action<HPacket>> _moduleEvents;
+            private readonly Dictionary<byte, Action<IMemoryOwner<byte>>> _moduleEvents;
 
             HNode IHConnection.Local => throw new NotSupportedException();
             HNode IHConnection.Remote => throw new NotSupportedException();
@@ -294,7 +295,7 @@ namespace Sulakore.Modules
             {
                 _module = module;
                 _installerNode = installerNode;
-                _moduleEvents = new Dictionary<ushort, Action<HPacket>>
+                _moduleEvents = new Dictionary<byte, Action<IMemoryOwner<byte>>>
                 {
                     [1] = HandleData,
                     [2] = HandleOnConnected
@@ -302,11 +303,13 @@ namespace Sulakore.Modules
                 _ = HandleInstallerDataAsync();
             }
 
-            private void HandleData(HPacket packet)
+            private void HandleData(IMemoryOwner<byte> packetOwner)
             {
+                var packet = new HReadOnlyPacket(IFormat.EvaWire, packetOwner.Memory.Span);
+
                 int step = packet.ReadInt32();
                 bool isOutgoing = packet.ReadBoolean();
-                var format = HFormat.GetFormat(packet.ReadUTF8());
+                IFormat format = null; // TODO IFormat.GetFormat(packet.ReadUTF8());
                 bool canContinue = packet.ReadBoolean();
 
                 int ogDataLength = packet.ReadInt32();
@@ -345,12 +348,9 @@ namespace Sulakore.Modules
                     _installerNode.SendAsync(CreateHandledDataPacket(args, false));
                 }
             }
-            private void HandleOnConnected(HPacket packet)
+            private void HandleOnConnected(IMemoryOwner<byte> packetOwner)
             {
-                int messagesJsonDataLength = packet.ReadInt32();
-                byte[] messagesJsonData = packet.ReadBytes(messagesJsonDataLength);
-                // TODO: Deserialize into the In, and Out properties
-
+                // TODO
                 _module.OnConnected();
             }
 
@@ -358,13 +358,13 @@ namespace Sulakore.Modules
             {
                 try
                 {
-                    HPacket packet = await _installerNode.ReceiveAsync().ConfigureAwait(false);
-                    if (packet == null) Environment.Exit(0);
+                    IMemoryOwner<byte> packetOwner = await _installerNode.ReceiveAsync().ConfigureAwait(false);
+                    if (packetOwner == null) Environment.Exit(0);
 
-                    Task handleInstallerDataTask = HandleInstallerDataAsync();
-                    if (_moduleEvents.TryGetValue(packet.Id, out Action<HPacket> handler))
+                    _ = HandleInstallerDataAsync();
+                    if (_moduleEvents.TryGetValue(packetOwner.Memory.Span[0], out Action<IMemoryOwner<byte>> handler))
                     {
-                        handler(packet);
+                        handler(packetOwner);
                     }
                 }
                 catch { Environment.Exit(0); }
@@ -385,7 +385,8 @@ namespace Sulakore.Modules
             }
             public ValueTask<int> SendToClientAsync(ushort id, params object[] values)
             {
-                return SendToClientAsync(EvaWirePacket.Construct(id, values));
+                return default;
+                //return SendToClientAsync(EvaWirePacket.Construct(id, values)); TODO
             }
 
             public ValueTask<int> SendToServerAsync(byte[] data)
@@ -398,27 +399,29 @@ namespace Sulakore.Modules
             }
             public ValueTask<int> SendToServerAsync(ushort id, params object[] values)
             {
-                return SendToServerAsync(EvaWirePacket.Construct(id, values));
+                return default;
+                //return SendToServerAsync(EvaWirePacket.Construct(id, values)); TODO
             }
 
             private HPacket CreateHandledDataPacket(DataInterceptedEventArgs args, bool isContinuing)
             {
-                var handledDataPacket = new EvaWirePacket(1);
-                handledDataPacket.Write(args.Step + args.IsOutgoing.ToString());
+                return null;
+                //var handledDataPacket = new EvaWirePacket(1); TODO
+                //handledDataPacket.Write(args.Step + args.IsOutgoing.ToString());
 
-                handledDataPacket.Write(isContinuing);
-                if (isContinuing)
-                {
-                    handledDataPacket.Write(args.WasRelayed);
-                }
-                else
-                {
-                    byte[] packetData = args.Packet.ToBytes();
-                    handledDataPacket.Write(packetData.Length);
-                    handledDataPacket.Write(packetData);
-                    handledDataPacket.Write(args.IsBlocked);
-                }
-                return handledDataPacket;
+                //handledDataPacket.Write(isContinuing);
+                //if (isContinuing)
+                //{
+                //    handledDataPacket.Write(args.WasRelayed);
+                //}
+                //else
+                //{
+                //    byte[] packetData = args.Packet.ToBytes();
+                //    handledDataPacket.Write(packetData.Length);
+                //    handledDataPacket.Write(packetData);
+                //    handledDataPacket.Write(args.IsBlocked);
+                //}
+                //return handledDataPacket;
             }
         }
     }

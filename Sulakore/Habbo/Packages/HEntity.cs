@@ -37,16 +37,16 @@ namespace Sulakore.Habbo.Packages
             }
         }
 
-        public HEntity(HPacket packet)
+        public HEntity(HReadOnlyPacket packet)
         {
             Id = packet.ReadInt32();
-            Name = packet.ReadUTF8();
-            Motto = packet.ReadUTF8();
-            FigureId = packet.ReadUTF8();
+            Name = packet.ReadString();
+            Motto = packet.ReadString();
+            FigureId = packet.ReadString();
             Index = packet.ReadInt32();
 
             _tile = new HPoint(packet.ReadInt32(), packet.ReadInt32(),
-                double.Parse(packet.ReadUTF8(), CultureInfo.InvariantCulture));
+                double.Parse(packet.ReadUTF16(), provider: CultureInfo.InvariantCulture));
 
             packet.ReadInt32();
             EntityType = (HEntityType)packet.ReadInt32();
@@ -55,10 +55,10 @@ namespace Sulakore.Habbo.Packages
             {
                 case HEntityType.User:
                 {
-                    Gender = (HGender)packet.ReadUTF8().ToLower()[0];
+                    Gender = (HGender)char.ToLowerInvariant(packet.ReadUTF16()[0]);
                     packet.ReadInt32();
                     packet.ReadInt32();
-                    FavoriteGroup = packet.ReadUTF8();
+                    FavoriteGroup = packet.ReadString();
                     packet.ReadUTF8();
                     packet.ReadInt32();
                     packet.ReadBoolean();
@@ -94,7 +94,7 @@ namespace Sulakore.Habbo.Packages
             }
         }
 
-        public static HEntity[] Parse(HPacket packet)
+        public static HEntity[] Parse(HReadOnlyPacket packet)
         {
             var entities = new HEntity[packet.ReadInt32()];
             for (int i = 0; i < entities.Length; i++)

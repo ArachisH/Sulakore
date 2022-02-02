@@ -1,12 +1,10 @@
 ﻿using System.Globalization;
-using System.Collections.Generic;
 
 using Sulakore.Network.Protocol;
 using Sulakore.Habbo.Packages.StuffData;
 
 namespace Sulakore.Habbo.Packages
 {
-#nullable enable
     public class HFloorObject
     {
         public int Id { get; set; }

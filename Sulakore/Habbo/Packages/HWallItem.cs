@@ -1,11 +1,9 @@
 ﻿using System.Globalization;
-using System.Collections.Generic;
 
 using Sulakore.Network.Protocol;
 
 namespace Sulakore.Habbo.Packages
 {
-#nullable enable
     public class HWallItem
     {
         public int Id { get; set; }

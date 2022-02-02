@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Protocol;
 
 namespace Sulakore.Network
 {

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Protocol;
 
 namespace Sulakore.Habbo.Packages.StuffData
 {

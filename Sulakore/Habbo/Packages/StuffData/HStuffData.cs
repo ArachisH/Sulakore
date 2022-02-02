@@ -1,8 +1,5 @@
-﻿using System;
+﻿using Sulakore.Network.Protocol;
 
-using Sulakore.Network.Protocol;
-
-#nullable enable
 namespace Sulakore.Habbo.Packages.StuffData
 {
     public class HStuffData

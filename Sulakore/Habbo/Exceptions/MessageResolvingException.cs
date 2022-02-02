@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Sulakore.Habbo
+﻿namespace Sulakore.Habbo
 {
     public sealed class MessageResolvingException : Exception
     {

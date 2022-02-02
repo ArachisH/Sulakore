@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Sulakore.Habbo
+﻿namespace Sulakore.Habbo
 {
     /// <summary>
     /// Represents all available StuffData flags.

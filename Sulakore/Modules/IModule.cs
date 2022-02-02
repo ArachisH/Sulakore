@@ -1,6 +1,4 @@
-﻿using System;
-
-using Sulakore.Network;
+﻿using Sulakore.Network;
 
 namespace Sulakore.Modules
 {

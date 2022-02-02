@@ -1,11 +1,9 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 
 using Sulakore.Network.Protocol;
 
 namespace Sulakore.Habbo.Packages
 {
-#nullable enable
     public class HEntityUpdate
     {
         public int Index { get; set; }

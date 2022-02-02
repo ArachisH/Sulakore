@@ -1,7 +1,5 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Sulakore.Habbo.Camera

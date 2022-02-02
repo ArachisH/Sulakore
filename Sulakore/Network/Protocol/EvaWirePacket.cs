@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Sulakore.Network.Protocol
+﻿namespace Sulakore.Network.Protocol
 {
     public class EvaWirePacket : HPacket
     {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Sulakore.Cryptography.Ciphers
+﻿namespace Sulakore.Cryptography.Ciphers
 {
     public interface IStreamCipher : IDisposable
     {

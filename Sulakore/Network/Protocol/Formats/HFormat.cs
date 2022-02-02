@@ -1,8 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-
-namespace Sulakore.Network.Protocol
+﻿namespace Sulakore.Network.Protocol
 {
     public abstract class HFormat
     {

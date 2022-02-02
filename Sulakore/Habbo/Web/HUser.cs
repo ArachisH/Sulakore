@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Sulakore.Habbo.Web
+﻿namespace Sulakore.Habbo.Web
 {
     [System.Diagnostics.DebuggerDisplay("Name: {Name}")]
     public class HUser

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Sulakore.Habbo.Camera
+﻿namespace Sulakore.Habbo.Camera
 {
     public class TextureColumn
     {

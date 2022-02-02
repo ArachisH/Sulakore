@@ -12,23 +12,24 @@ namespace Sulakore.Habbo.Web
         private static readonly HttpClient _client;
         private static readonly HttpClientHandler _handler;
 
+        public static CookieContainer Cookies
+        {
+            get => _handler.CookieContainer;
+            set => _handler.CookieContainer = value;
+        }
         public static JsonSerializerOptions SerializerOptions { get; }
-
-        public const string CHROME_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36";
 
         static HAPI()
         {
             _handler = new HttpClientHandler
             {
                 UseProxy = false,
-                UseCookies = false,
-                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+                AutomaticDecompression = DecompressionMethods.All
             };
 
             _client = new HttpClient(_handler);
             _client.DefaultRequestHeaders.ConnectionClose = true;
-            _client.DefaultRequestHeaders.Add("User-Agent", CHROME_USER_AGENT);
-            _client.DefaultRequestHeaders.Add("Cookie", "YPF8827340282Jdskjhfiw_928937459182JAX666=127.0.0.1");
+            _client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36 Edg/92.0.902.67");
 
             SerializerOptions = new JsonSerializerOptions
             {
@@ -67,11 +68,16 @@ namespace Sulakore.Habbo.Web
 
         public static async Task<T> ReadContentAsync<T>(Uri baseUri, string path, Func<HttpContent, Task<T>> contentConverter = null)
         {
-            using HttpRequestMessage request = new(HttpMethod.Get, baseUri.GetLeftPart(UriPartial.Authority) + path);
+            ServicePointManager.FindServicePoint(baseUri).ConnectionLeaseTimeout = 0;
+
+            string uriAuthority = baseUri.GetLeftPart(UriPartial.Authority);
+            using HttpRequestMessage request = new(HttpMethod.Get, uriAuthority + path);
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                request.Headers.Add("Referer", uriAuthority);
+            }
+
             using HttpResponseMessage response = await _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
-
-            ServicePointManager.FindServicePoint(request.RequestUri).ConnectionLeaseTimeout = 30 * 1000;
-
             if (!response.IsSuccessStatusCode) return default;
 
             if (contentConverter != null)
@@ -89,6 +95,18 @@ namespace Sulakore.Habbo.Web
                 return await response.Content.ReadFromJsonAsync<T>(SerializerOptions).ConfigureAwait(false);
 
             return default;
+        }
+
+        private static Task<HttpResponseMessage> SendMessageAsync(HHotel hotel, string path, HttpMethod method)
+        {
+            string uriAuthority = hotel.ToUri().GetLeftPart(UriPartial.Authority);
+            HttpRequestMessage requestMsg = new(method, uriAuthority + path);
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                requestMsg.Headers.Add("Referer", uriAuthority);
+            }
+            ServicePointManager.FindServicePoint(requestMsg.RequestUri).ConnectionLeaseTimeout = 0;
+            return _client.SendAsync(requestMsg);
         }
     }
 }

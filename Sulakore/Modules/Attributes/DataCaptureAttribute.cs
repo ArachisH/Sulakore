@@ -30,7 +30,6 @@ namespace Sulakore.Modules
         {
             object[] parameters = CreateValues(args);
             object result = Method?.Invoke(Target, parameters);
-
             switch (result)
             {
                 case bool isBlocked:

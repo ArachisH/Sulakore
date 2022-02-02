@@ -261,3 +261,4 @@ __pycache__/
 *.pyc
 
 /Sulakore.Sandbox
+/.github/workflows/dotnet.yml.bak

@@ -1,0 +1,5490 @@
+{
+  "outgoing": [
+    {
+      "name": "AcceptFriend",
+      "unityId": 37,
+      "hash": 444035176,
+      "structure": null
+    },
+    {
+      "name": "AcceptQuest",
+      "unityId": 3102,
+      "hash": 558260087,
+      "structure": null
+    },
+    {
+      "name": "AcceptTrading",
+      "unityId": -1,
+      "hash": 3137452836,
+      "structure": null
+    },
+    {
+      "name": "ActivateQuest",
+      "unityId": 3112,
+      "hash": 1179935349,
+      "structure": null
+    },
+    {
+      "name": "AddAdminRightsToMember",
+      "unityId": 3271,
+      "hash": 973941147,
+      "structure": null
+    },
+    {
+      "name": "AddFavouriteRoom",
+      "unityId": -1,
+      "hash": 2804958743,
+      "structure": "i"
+    },
+    {
+      "name": "AddItemsToTrade",
+      "unityId": -1,
+      "hash": 3168021720,
+      "structure": null
+    },
+    {
+      "name": "AddItemToTrade",
+      "unityId": -1,
+      "hash": 2168552447,
+      "structure": "i"
+    },
+    {
+      "name": "AddJukeboxDisk",
+      "unityId": -1,
+      "hash": 3190474422,
+      "structure": null
+    },
+    {
+      "name": "AddSpamWallPostIt",
+      "unityId": 3255,
+      "hash": 2922425118,
+      "structure": null
+    },
+    {
+      "name": "AmbassadorAlert",
+      "unityId": 92,
+      "hash": 2180227765,
+      "structure": "i"
+    },
+    {
+      "name": "ApplySnapshot",
+      "unityId": -1,
+      "hash": 2488751921,
+      "structure": null
+    },
+    {
+      "name": "ApproveAllMembershipRequests",
+      "unityId": 3269,
+      "hash": 2135548580,
+      "structure": null
+    },
+    {
+      "name": "ApproveMembershipRequest",
+      "unityId": 3267,
+      "hash": 1315536398,
+      "structure": null
+    },
+    {
+      "name": "ApproveName",
+      "unityId": -1,
+      "hash": 2868594528,
+      "structure": null
+    },
+    {
+      "name": "AssignRights",
+      "unityId": 96,
+      "hash": 390845491,
+      "structure": "i"
+    },
+    {
+      "name": "AvatarEffectActivated",
+      "unityId": -1,
+      "hash": 968919413,
+      "structure": null
+    },
+    {
+      "name": "AvatarEffectSelected",
+      "unityId": -1,
+      "hash": 2673163001,
+      "structure": null
+    },
+    {
+      "name": "AvatarExpression",
+      "unityId": -1,
+      "hash": 2421332655,
+      "structure": "i"
+    },
+    {
+      "name": "BanUserWithDuration",
+      "unityId": -1,
+      "hash": 2710312411,
+      "structure": null
+    },
+    {
+      "name": "BreedPets",
+      "unityId": 3024,
+      "hash": 1164291226,
+      "structure": null
+    },
+    {
+      "name": "BuildersClubPlaceRoomItem",
+      "unityId": 1494,
+      "hash": 253666961,
+      "structure": null
+    },
+    {
+      "name": "BuildersClubPlaceWallItem",
+      "unityId": 1495,
+      "hash": 598288005,
+      "structure": null
+    },
+    {
+      "name": "BuildersClubQueryFurniCount",
+      "unityId": 1496,
+      "hash": 1912207718,
+      "structure": null
+    },
+    {
+      "name": "BuyMarketplaceOffer",
+      "unityId": -1,
+      "hash": 2416109626,
+      "structure": "i"
+    },
+    {
+      "name": "BuyMarketplaceTokens",
+      "unityId": -1,
+      "hash": 3965997834,
+      "structure": null
+    },
+    {
+      "name": "CallForHelp",
+      "unityId": -1,
+      "hash": 3406629748,
+      "structure": null
+    },
+    {
+      "name": "CallForHelpFromForumMessage",
+      "unityId": -1,
+      "hash": 1300486039,
+      "structure": "iiiis"
+    },
+    {
+      "name": "CallForHelpFromForumThread",
+      "unityId": -1,
+      "hash": 572791669,
+      "structure": "iiis"
+    },
+    {
+      "name": "CallForHelpFromIM",
+      "unityId": -1,
+      "hash": 2215172099,
+      "structure": null
+    },
+    {
+      "name": "CallForHelpFromPhoto",
+      "unityId": -1,
+      "hash": 267818727,
+      "structure": "siiii"
+    },
+    {
+      "name": "CallForHelpFromSelfie",
+      "unityId": -1,
+      "hash": 323914055,
+      "structure": "siisi"
+    },
+    {
+      "name": "CancelEvent",
+      "unityId": -1,
+      "hash": 3834722722,
+      "structure": null
+    },
+    {
+      "name": "CancelMarketplaceOffer",
+      "unityId": -1,
+      "hash": 289610566,
+      "structure": "i"
+    },
+    {
+      "name": "CancelPetBreeding",
+      "unityId": 3046,
+      "hash": 2024823653,
+      "structure": null
+    },
+    {
+      "name": "CancelQuest",
+      "unityId": 3113,
+      "hash": 718490846,
+      "structure": null
+    },
+    {
+      "name": "CancelTyping",
+      "unityId": -1,
+      "hash": 1292785966,
+      "structure": null
+    },
+    {
+      "name": "CanCreateRoom",
+      "unityId": 387,
+      "hash": 2979140473,
+      "structure": null
+    },
+    {
+      "name": "ChangeEmail",
+      "unityId": 3251,
+      "hash": 1919161893,
+      "structure": "s"
+    },
+    {
+      "name": "ChangeMotto",
+      "unityId": -1,
+      "hash": 8361836,
+      "structure": "s"
+    },
+    {
+      "name": "ChangePosture",
+      "unityId": -1,
+      "hash": 1099959164,
+      "structure": "i"
+    },
+    {
+      "name": "ChangeQueue",
+      "unityId": -1,
+      "hash": 4080168991,
+      "structure": "i"
+    },
+    {
+      "name": "ChangeUserName",
+      "unityId": -1,
+      "hash": 1088272819,
+      "structure": null
+    },
+    {
+      "name": "Chat",
+      "unityId": 52,
+      "hash": 726080079,
+      "structure": null
+    },
+    {
+      "name": "ChatReviewGuideDecidesOnOffer",
+      "unityId": -1,
+      "hash": 1977348229,
+      "structure": null
+    },
+    {
+      "name": "ChatReviewGuideDetached",
+      "unityId": -1,
+      "hash": 3844864427,
+      "structure": null
+    },
+    {
+      "name": "ChatReviewGuideVote",
+      "unityId": -1,
+      "hash": 3993153385,
+      "structure": null
+    },
+    {
+      "name": "ChatReviewSessionCreate",
+      "unityId": 1541,
+      "hash": 91707485,
+      "structure": null
+    },
+    {
+      "name": "CheckUserName",
+      "unityId": -1,
+      "hash": 2981592386,
+      "structure": null
+    },
+    {
+      "name": "ClientHello",
+      "unityId": -1,
+      "hash": 2222670648,
+      "structure": "ssbb"
+    },
+    {
+      "name": "CloseIssueDefaultAction",
+      "unityId": 449,
+      "hash": 992245617,
+      "structure": null
+    },
+    {
+      "name": "CloseIssues",
+      "unityId": 452,
+      "hash": 95280132,
+      "structure": null
+    },
+    {
+      "name": "CloseTrading",
+      "unityId": -1,
+      "hash": 2926310674,
+      "structure": null
+    },
+    {
+      "name": "CommandBot",
+      "unityId": 3029,
+      "hash": 3818414545,
+      "structure": null
+    },
+    {
+      "name": "CommunityGoalVote",
+      "unityId": 3298,
+      "hash": 591535156,
+      "structure": "i"
+    },
+    {
+      "name": "CompetitionRoomsSearch",
+      "unityId": 526,
+      "hash": 81014995,
+      "structure": "ii"
+    },
+    {
+      "name": "CompleteDiffieHandshake",
+      "unityId": -1,
+      "hash": 966959609,
+      "structure": "s"
+    },
+    {
+      "name": "CompostPlant",
+      "unityId": 3047,
+      "hash": 2804098485,
+      "structure": null
+    },
+    {
+      "name": "ConfirmAcceptTrading",
+      "unityId": -1,
+      "hash": 3929276919,
+      "structure": null
+    },
+    {
+      "name": "ConfirmDeclineTrading",
+      "unityId": -1,
+      "hash": 2775365514,
+      "structure": null
+    },
+    {
+      "name": "ConfirmPetBreeding",
+      "unityId": 3045,
+      "hash": 3370092631,
+      "structure": null
+    },
+    {
+      "name": "ControlYoutubeDisplayPlayback",
+      "unityId": -1,
+      "hash": 1401800134,
+      "structure": null
+    },
+    {
+      "name": "ConvertGlobalRoomId",
+      "unityId": 388,
+      "hash": 11527173,
+      "structure": "s"
+    },
+    {
+      "name": "Craft",
+      "unityId": 1302,
+      "hash": 3171755697,
+      "structure": null
+    },
+    {
+      "name": "CraftSecret",
+      "unityId": 1303,
+      "hash": 4027340127,
+      "structure": null
+    },
+    {
+      "name": "CreateFlat",
+      "unityId": -1,
+      "hash": 3419995951,
+      "structure": "sssiii"
+    },
+    {
+      "name": "CreateGuild",
+      "unityId": 3262,
+      "hash": 1629721112,
+      "structure": null
+    },
+    {
+      "name": "CreditFurniRedeem",
+      "unityId": -1,
+      "hash": 3545128338,
+      "structure": "i"
+    },
+    {
+      "name": "CreditVaultStatus",
+      "unityId": -1,
+      "hash": 3010320316,
+      "structure": null
+    },
+    {
+      "name": "CustomizeAvatarWithFurni",
+      "unityId": 45,
+      "hash": 1712978891,
+      "structure": null
+    },
+    {
+      "name": "CustomizePetWithFurni",
+      "unityId": 3008,
+      "hash": 3960452763,
+      "structure": null
+    },
+    {
+      "name": "Dance",
+      "unityId": 93,
+      "hash": 3290689556,
+      "structure": "i"
+    },
+    {
+      "name": "DeactivateGuild",
+      "unityId": 3290,
+      "hash": 640189257,
+      "structure": "i"
+    },
+    {
+      "name": "DeclineFriend",
+      "unityId": 38,
+      "hash": 981432789,
+      "structure": null
+    },
+    {
+      "name": "DefaultSanction",
+      "unityId": 477,
+      "hash": 3005168029,
+      "structure": null
+    },
+    {
+      "name": "DeleteFavouriteRoom",
+      "unityId": -1,
+      "hash": 2108007513,
+      "structure": "i"
+    },
+    {
+      "name": "DeletePendingCallsForHelp",
+      "unityId": 238,
+      "hash": 2022088966,
+      "structure": null
+    },
+    {
+      "name": "DeleteRoom",
+      "unityId": -1,
+      "hash": 4238210570,
+      "structure": null
+    },
+    {
+      "name": "DeselectFavouriteHabboGroup",
+      "unityId": 3259,
+      "hash": 2030227610,
+      "structure": null
+    },
+    {
+      "name": "DiceOff",
+      "unityId": 77,
+      "hash": 2965147432,
+      "structure": "i"
+    },
+    {
+      "name": "Disconnect",
+      "unityId": 512,
+      "hash": 1882888071,
+      "structure": null
+    },
+    {
+      "name": "DropCarryItem",
+      "unityId": -1,
+      "hash": 1706850466,
+      "structure": null
+    },
+    {
+      "name": "EditEvent",
+      "unityId": -1,
+      "hash": 3184204728,
+      "structure": "iss"
+    },
+    {
+      "name": "EnterOneWayDoor",
+      "unityId": 232,
+      "hash": 4104143080,
+      "structure": "i"
+    },
+    {
+      "name": "EventLog",
+      "unityId": -1,
+      "hash": 1470555886,
+      "structure": null
+    },
+    {
+      "name": "ExtendRentOrBuyoutFurni",
+      "unityId": -1,
+      "hash": 2537696953,
+      "structure": null
+    },
+    {
+      "name": "ExtendRentOrBuyoutStripItem",
+      "unityId": -1,
+      "hash": 249865537,
+      "structure": null
+    },
+    {
+      "name": "FindNewFriends",
+      "unityId": -1,
+      "hash": 3068760472,
+      "structure": null
+    },
+    {
+      "name": "FollowFriend",
+      "unityId": 262,
+      "hash": 216594729,
+      "structure": "i"
+    },
+    {
+      "name": "ForwardToACompetitionRoom",
+      "unityId": 528,
+      "hash": 1022015793,
+      "structure": "si"
+    },
+    {
+      "name": "ForwardToARandomPromotedRoom",
+      "unityId": 485,
+      "hash": 2953435163,
+      "structure": "s"
+    },
+    {
+      "name": "ForwardToASubmittableRoom",
+      "unityId": 531,
+      "hash": 3039495912,
+      "structure": null
+    },
+    {
+      "name": "ForwardToRandomCompetitionRoom",
+      "unityId": 525,
+      "hash": 4217397661,
+      "structure": "s"
+    },
+    {
+      "name": "ForwardToSomeRoom",
+      "unityId": 486,
+      "hash": 3039844146,
+      "structure": "s"
+    },
+    {
+      "name": "FriendFurniConfirmLock",
+      "unityId": -1,
+      "hash": 2336227082,
+      "structure": null
+    },
+    {
+      "name": "FriendListUpdate",
+      "unityId": 15,
+      "hash": 3286647344,
+      "structure": null
+    },
+    {
+      "name": "FriendRequestQuestComplete",
+      "unityId": 3210,
+      "hash": 3682823438,
+      "structure": null
+    },
+    {
+      "name": "Game2CheckGameDirectoryStatus",
+      "unityId": -1,
+      "hash": 708303404,
+      "structure": null
+    },
+    {
+      "name": "Game2ExitGame",
+      "unityId": -1,
+      "hash": 868656444,
+      "structure": "B"
+    },
+    {
+      "name": "Game2GameChat",
+      "unityId": -1,
+      "hash": 1597243756,
+      "structure": "s"
+    },
+    {
+      "name": "Game2GetAccountGameStatus",
+      "unityId": -1,
+      "hash": 2708095147,
+      "structure": null
+    },
+    {
+      "name": "Game2GetFriendsLeaderboard",
+      "unityId": -1,
+      "hash": 1509796423,
+      "structure": null
+    },
+    {
+      "name": "Game2GetTotalGroupLeaderboard",
+      "unityId": -1,
+      "hash": 2910097967,
+      "structure": null
+    },
+    {
+      "name": "Game2GetTotalLeaderboard",
+      "unityId": -1,
+      "hash": 2615961331,
+      "structure": null
+    },
+    {
+      "name": "Game2GetWeeklyFriendsLeaderboard",
+      "unityId": -1,
+      "hash": 3279757234,
+      "structure": null
+    },
+    {
+      "name": "Game2GetWeeklyGroupLeaderboard",
+      "unityId": -1,
+      "hash": 1133257337,
+      "structure": null
+    },
+    {
+      "name": "Game2GetWeeklyLeaderboard",
+      "unityId": -1,
+      "hash": 3918656781,
+      "structure": null
+    },
+    {
+      "name": "Game2LeaveGame",
+      "unityId": -1,
+      "hash": 2499858286,
+      "structure": null
+    },
+    {
+      "name": "Game2LoadStageReady",
+      "unityId": -1,
+      "hash": 907483417,
+      "structure": null
+    },
+    {
+      "name": "Game2MakeSnowball",
+      "unityId": -1,
+      "hash": 2932104611,
+      "structure": null
+    },
+    {
+      "name": "Game2PlayAgain",
+      "unityId": -1,
+      "hash": 637628122,
+      "structure": null
+    },
+    {
+      "name": "Game2QuickJoinGame",
+      "unityId": -1,
+      "hash": 3155385260,
+      "structure": null
+    },
+    {
+      "name": "Game2RequestFullStatusUpdate",
+      "unityId": -1,
+      "hash": 484983072,
+      "structure": null
+    },
+    {
+      "name": "Game2SetUserMoveTarget",
+      "unityId": -1,
+      "hash": 403244781,
+      "structure": null
+    },
+    {
+      "name": "Game2StartSnowWar",
+      "unityId": -1,
+      "hash": 4099481996,
+      "structure": null
+    },
+    {
+      "name": "Game2ThrowSnowballAtHuman",
+      "unityId": -1,
+      "hash": 2633059992,
+      "structure": null
+    },
+    {
+      "name": "Game2ThrowSnowballAtPosition",
+      "unityId": -1,
+      "hash": 4085131080,
+      "structure": null
+    },
+    {
+      "name": "GetAchievements",
+      "unityId": -1,
+      "hash": 2608572532,
+      "structure": null
+    },
+    {
+      "name": "GetBadgePointLimits",
+      "unityId": 3032,
+      "hash": 2226884840,
+      "structure": null
+    },
+    {
+      "name": "GetBadges",
+      "unityId": -1,
+      "hash": 1853353553,
+      "structure": null
+    },
+    {
+      "name": "GetBannedUsersFromRoom",
+      "unityId": -1,
+      "hash": 3726576572,
+      "structure": null
+    },
+    {
+      "name": "GetBonusRareInfo",
+      "unityId": 3296,
+      "hash": 3948570367,
+      "structure": null
+    },
+    {
+      "name": "GetBotCommandConfigurationData",
+      "unityId": 3330,
+      "hash": 3655458051,
+      "structure": null
+    },
+    {
+      "name": "GetBotInventory",
+      "unityId": 3028,
+      "hash": 1431010442,
+      "structure": null
+    },
+    {
+      "name": "GetBundleDiscountRuleset",
+      "unityId": 3041,
+      "hash": 2830226908,
+      "structure": null
+    },
+    {
+      "name": "GetCatalogIndex",
+      "unityId": 101,
+      "hash": 922255328,
+      "structure": null
+    },
+    {
+      "name": "GetCatalogPage",
+      "unityId": 102,
+      "hash": 2355484120,
+      "structure": null
+    },
+    {
+      "name": "GetCatalogPageWithEarliestExpiry",
+      "unityId": 3286,
+      "hash": 834497937,
+      "structure": null
+    },
+    {
+      "name": "GetCfhChatlog",
+      "unityId": -1,
+      "hash": 3980145402,
+      "structure": "i"
+    },
+    {
+      "name": "GetCfhStatus",
+      "unityId": 1000,
+      "hash": 1451396420,
+      "structure": "B"
+    },
+    {
+      "name": "GetClubGift",
+      "unityId": -1,
+      "hash": 2680921248,
+      "structure": null
+    },
+    {
+      "name": "GetClubOffers",
+      "unityId": -1,
+      "hash": 2780112763,
+      "structure": null
+    },
+    {
+      "name": "GetCommunityGoalHallOfFame",
+      "unityId": 527,
+      "hash": 87262608,
+      "structure": null
+    },
+    {
+      "name": "GetCommunityGoalProgress",
+      "unityId": 520,
+      "hash": 1128168941,
+      "structure": null
+    },
+    {
+      "name": "GetConcurrentUsersGoalProgress",
+      "unityId": 532,
+      "hash": 703540026,
+      "structure": null
+    },
+    {
+      "name": "GetConcurrentUsersReward",
+      "unityId": -1,
+      "hash": 2821420808,
+      "structure": null
+    },
+    {
+      "name": "GetCraftableProducts",
+      "unityId": 1300,
+      "hash": 3678356873,
+      "structure": null
+    },
+    {
+      "name": "GetCraftingRecipe",
+      "unityId": 1301,
+      "hash": 3902361489,
+      "structure": null
+    },
+    {
+      "name": "GetCraftingRecipesAvailable",
+      "unityId": 1304,
+      "hash": 670814391,
+      "structure": null
+    },
+    {
+      "name": "GetCreditsInfo",
+      "unityId": -1,
+      "hash": 2492319220,
+      "structure": null
+    },
+    {
+      "name": "GetCurrentTimingCode",
+      "unityId": 530,
+      "hash": 3128860517,
+      "structure": null
+    },
+    {
+      "name": "GetCustomRoomFilter",
+      "unityId": -1,
+      "hash": 3928165746,
+      "structure": null
+    },
+    {
+      "name": "GetDailyQuest",
+      "unityId": 3109,
+      "hash": 1744774165,
+      "structure": null
+    },
+    {
+      "name": "GetEmailStatus",
+      "unityId": 3250,
+      "hash": 2255168567,
+      "structure": null
+    },
+    {
+      "name": "GetExtendedProfile",
+      "unityId": 3260,
+      "hash": 218731882,
+      "structure": null
+    },
+    {
+      "name": "GetExtendedProfileByName",
+      "unityId": -1,
+      "hash": 143058355,
+      "structure": null
+    },
+    {
+      "name": "GetFlatControllers",
+      "unityId": 3274,
+      "hash": 2573917575,
+      "structure": null
+    },
+    {
+      "name": "GetForumsList",
+      "unityId": 1605,
+      "hash": 3727291325,
+      "structure": "iii"
+    },
+    {
+      "name": "GetForumStats",
+      "unityId": 1600,
+      "hash": 1510583037,
+      "structure": "i"
+    },
+    {
+      "name": "GetFriendRequests",
+      "unityId": 233,
+      "hash": 4180750985,
+      "structure": null
+    },
+    {
+      "name": "GetFurnitureAliases",
+      "unityId": -1,
+      "hash": 1166363615,
+      "structure": null
+    },
+    {
+      "name": "GetGiftWrappingConfiguration",
+      "unityId": 473,
+      "hash": 1272988675,
+      "structure": null
+    },
+    {
+      "name": "GetGuestRoom",
+      "unityId": 385,
+      "hash": 2402334573,
+      "structure": null
+    },
+    {
+      "name": "GetGuideReportingStatus",
+      "unityId": 1540,
+      "hash": 2066393430,
+      "structure": null
+    },
+    {
+      "name": "GetGuildCreationInfo",
+      "unityId": 3261,
+      "hash": 1176087916,
+      "structure": null
+    },
+    {
+      "name": "GetGuildEditInfo",
+      "unityId": 3263,
+      "hash": 3681057958,
+      "structure": null
+    },
+    {
+      "name": "GetGuildEditorData",
+      "unityId": 3265,
+      "hash": 3245349341,
+      "structure": null
+    },
+    {
+      "name": "GetGuildFurniContextMenuInfo",
+      "unityId": 3281,
+      "hash": 1328385192,
+      "structure": null
+    },
+    {
+      "name": "GetGuildMembers",
+      "unityId": 3277,
+      "hash": 2629822971,
+      "structure": null
+    },
+    {
+      "name": "GetGuildMemberships",
+      "unityId": 3278,
+      "hash": 1269833044,
+      "structure": null
+    },
+    {
+      "name": "GetHabboClubExtendOffer",
+      "unityId": -1,
+      "hash": 3948218579,
+      "structure": null
+    },
+    {
+      "name": "GetHabboGroupBadges",
+      "unityId": 230,
+      "hash": 1838562409,
+      "structure": null
+    },
+    {
+      "name": "GetHabboGroupDetails",
+      "unityId": 231,
+      "hash": 3288773014,
+      "structure": null
+    },
+    {
+      "name": "GetHeightMap",
+      "unityId": -1,
+      "hash": 4100260856,
+      "structure": null
+    },
+    {
+      "name": "GetHotLooks",
+      "unityId": -1,
+      "hash": 3459378800,
+      "structure": null
+    },
+    {
+      "name": "GetIgnoredUsers",
+      "unityId": -1,
+      "hash": 1153800388,
+      "structure": "s"
+    },
+    {
+      "name": "GetInterstitial",
+      "unityId": 182,
+      "hash": 4083194310,
+      "structure": null
+    },
+    {
+      "name": "GetIsBadgeRequestFulfilled",
+      "unityId": 3044,
+      "hash": 3461742607,
+      "structure": "s"
+    },
+    {
+      "name": "GetIsOfferGiftable",
+      "unityId": 3030,
+      "hash": 3221083051,
+      "structure": null
+    },
+    {
+      "name": "GetIsUserPartOfCompetition",
+      "unityId": -1,
+      "hash": 2357413097,
+      "structure": null
+    },
+    {
+      "name": "GetItemData",
+      "unityId": 83,
+      "hash": 3882465632,
+      "structure": "i"
+    },
+    {
+      "name": "GetJukeboxPlayList",
+      "unityId": -1,
+      "hash": 3130303187,
+      "structure": null
+    },
+    {
+      "name": "GetLimitedOfferAppearingNext",
+      "unityId": -1,
+      "hash": 3571057396,
+      "structure": null
+    },
+    {
+      "name": "GetMarketplaceCanMakeOffer",
+      "unityId": -1,
+      "hash": 963543064,
+      "structure": null
+    },
+    {
+      "name": "GetMarketplaceConfiguration",
+      "unityId": -1,
+      "hash": 1607678038,
+      "structure": null
+    },
+    {
+      "name": "GetMarketplaceItemStats",
+      "unityId": -1,
+      "hash": 2116364386,
+      "structure": null
+    },
+    {
+      "name": "GetMarketplaceOffers",
+      "unityId": -1,
+      "hash": 2234938779,
+      "structure": null
+    },
+    {
+      "name": "GetMarketplaceOwnOffers",
+      "unityId": -1,
+      "hash": 586639379,
+      "structure": null
+    },
+    {
+      "name": "GetMemberGuildItemCount",
+      "unityId": -1,
+      "hash": 2701836807,
+      "structure": null
+    },
+    {
+      "name": "GetMessages",
+      "unityId": -1,
+      "hash": 1929089550,
+      "structure": "iiii"
+    },
+    {
+      "name": "GetModeratorRoomInfo",
+      "unityId": -1,
+      "hash": 3086563314,
+      "structure": "i"
+    },
+    {
+      "name": "GetModeratorUserInfo",
+      "unityId": 454,
+      "hash": 2684299902,
+      "structure": "i"
+    },
+    {
+      "name": "GetMOTD",
+      "unityId": -1,
+      "hash": 544195893,
+      "structure": null
+    },
+    {
+      "name": "GetNextTargetedOffer",
+      "unityId": 1530,
+      "hash": 725957790,
+      "structure": null
+    },
+    {
+      "name": "GetNowPlaying",
+      "unityId": 249,
+      "hash": 3947825804,
+      "structure": null
+    },
+    {
+      "name": "GetOccupiedTiles",
+      "unityId": -1,
+      "hash": 2822379523,
+      "structure": null
+    },
+    {
+      "name": "GetOfficialRooms",
+      "unityId": 380,
+      "hash": 1358990959,
+      "structure": null
+    },
+    {
+      "name": "GetOfficialSongId",
+      "unityId": -1,
+      "hash": 4163124054,
+      "structure": null
+    },
+    {
+      "name": "GetPendingCallsForHelp",
+      "unityId": 237,
+      "hash": 2348346742,
+      "structure": null
+    },
+    {
+      "name": "GetPetCommands",
+      "unityId": -1,
+      "hash": 953186250,
+      "structure": "i"
+    },
+    {
+      "name": "GetPetInfo",
+      "unityId": -1,
+      "hash": 3489072907,
+      "structure": "i"
+    },
+    {
+      "name": "GetPetInventory",
+      "unityId": 3000,
+      "hash": 957269698,
+      "structure": null
+    },
+    {
+      "name": "GetPopularRoomTags",
+      "unityId": 382,
+      "hash": 585153860,
+      "structure": null
+    },
+    {
+      "name": "GetProductOffer",
+      "unityId": 3042,
+      "hash": 3262674042,
+      "structure": "i"
+    },
+    {
+      "name": "GetPromoArticles",
+      "unityId": 3295,
+      "hash": 3482764844,
+      "structure": null
+    },
+    {
+      "name": "GetQuests",
+      "unityId": 3101,
+      "hash": 440737466,
+      "structure": null
+    },
+    {
+      "name": "GetQuizQuestions",
+      "unityId": -1,
+      "hash": 621813023,
+      "structure": null
+    },
+    {
+      "name": "GetRelationshipStatusInfo",
+      "unityId": 492,
+      "hash": 3839657774,
+      "structure": null
+    },
+    {
+      "name": "GetRentOrBuyoutOffer",
+      "unityId": 120,
+      "hash": 1185755207,
+      "structure": null
+    },
+    {
+      "name": "GetResolutionAchievements",
+      "unityId": -1,
+      "hash": 1925398868,
+      "structure": null
+    },
+    {
+      "name": "GetRoomAdPurchaseInfo",
+      "unityId": -1,
+      "hash": 3186203447,
+      "structure": null
+    },
+    {
+      "name": "GetRoomChatlog",
+      "unityId": -1,
+      "hash": 3314368164,
+      "structure": "ii"
+    },
+    {
+      "name": "GetRoomEntryTile",
+      "unityId": 1473,
+      "hash": 3212836531,
+      "structure": null
+    },
+    {
+      "name": "GetRoomSettings",
+      "unityId": 400,
+      "hash": 87158517,
+      "structure": null
+    },
+    {
+      "name": "GetRoomVisits",
+      "unityId": -1,
+      "hash": 4162171777,
+      "structure": "i"
+    },
+    {
+      "name": "GetSeasonalCalendarDaily",
+      "unityId": -1,
+      "hash": 1220183955,
+      "structure": null
+    },
+    {
+      "name": "GetSeasonalQuestsOnly",
+      "unityId": -1,
+      "hash": 2365782732,
+      "structure": null
+    },
+    {
+      "name": "GetSecondsUntil",
+      "unityId": -1,
+      "hash": 3199852013,
+      "structure": null
+    },
+    {
+      "name": "GetSelectedBadges",
+      "unityId": 159,
+      "hash": 296485682,
+      "structure": "i"
+    },
+    {
+      "name": "GetSelectedNftWardrobeOutfit",
+      "unityId": -1,
+      "hash": 1474684512,
+      "structure": null
+    },
+    {
+      "name": "GetSellablePetPalettes",
+      "unityId": 3007,
+      "hash": 2891788904,
+      "structure": null
+    },
+    {
+      "name": "GetSnowWarGameTokensOffer",
+      "unityId": -1,
+      "hash": 2311170031,
+      "structure": null
+    },
+    {
+      "name": "GetSongInfo",
+      "unityId": 221,
+      "hash": 3700239437,
+      "structure": null
+    },
+    {
+      "name": "GetSoundMachinePlayList",
+      "unityId": 245,
+      "hash": 2168888930,
+      "structure": null
+    },
+    {
+      "name": "GetSoundSettings",
+      "unityId": -1,
+      "hash": 2881553980,
+      "structure": null
+    },
+    {
+      "name": "GetTalentTrack",
+      "unityId": 565,
+      "hash": 1207140459,
+      "structure": null
+    },
+    {
+      "name": "GetTalentTrackLevel",
+      "unityId": 566,
+      "hash": 2626964567,
+      "structure": null
+    },
+    {
+      "name": "GetThread",
+      "unityId": -1,
+      "hash": 2484495270,
+      "structure": "ii"
+    },
+    {
+      "name": "GetThreads",
+      "unityId": -1,
+      "hash": 2764043090,
+      "structure": "iii"
+    },
+    {
+      "name": "GetUnreadForumsCount",
+      "unityId": 1607,
+      "hash": 2892184447,
+      "structure": null
+    },
+    {
+      "name": "GetUserChatlog",
+      "unityId": -1,
+      "hash": 3600577275,
+      "structure": "i"
+    },
+    {
+      "name": "GetUserEventCats",
+      "unityId": -1,
+      "hash": 2845326060,
+      "structure": null
+    },
+    {
+      "name": "GetUserFlatCats",
+      "unityId": -1,
+      "hash": 2758813311,
+      "structure": null
+    },
+    {
+      "name": "GetUserNftWardrobe",
+      "unityId": -1,
+      "hash": 2460164216,
+      "structure": null
+    },
+    {
+      "name": "GetUserSongDisks",
+      "unityId": -1,
+      "hash": 4178351517,
+      "structure": null
+    },
+    {
+      "name": "GetWardrobe",
+      "unityId": 375,
+      "hash": 686919699,
+      "structure": null
+    },
+    {
+      "name": "GetYoutubeDisplayStatus",
+      "unityId": -1,
+      "hash": 673870176,
+      "structure": null
+    },
+    {
+      "name": "GiveStarGemToUser",
+      "unityId": -1,
+      "hash": 123694427,
+      "structure": "iB"
+    },
+    {
+      "name": "GiveSupplementToPet",
+      "unityId": 87,
+      "hash": 4188766994,
+      "structure": null
+    },
+    {
+      "name": "GuideAdvertisementRead",
+      "unityId": 567,
+      "hash": 4245275354,
+      "structure": null
+    },
+    {
+      "name": "GuideSessionCreate",
+      "unityId": -1,
+      "hash": 2556394753,
+      "structure": null
+    },
+    {
+      "name": "GuideSessionFeedback",
+      "unityId": -1,
+      "hash": 2433306036,
+      "structure": null
+    },
+    {
+      "name": "GuideSessionGetRequesterRoom",
+      "unityId": -1,
+      "hash": 2227095191,
+      "structure": null
+    },
+    {
+      "name": "GuideSessionGuideDecides",
+      "unityId": -1,
+      "hash": 1894244300,
+      "structure": null
+    },
+    {
+      "name": "GuideSessionInviteRequester",
+      "unityId": -1,
+      "hash": 2984584932,
+      "structure": null
+    },
+    {
+      "name": "GuideSessionIsTyping",
+      "unityId": -1,
+      "hash": 808164050,
+      "structure": null
+    },
+    {
+      "name": "GuideSessionMessage",
+      "unityId": -1,
+      "hash": 4130632571,
+      "structure": null
+    },
+    {
+      "name": "GuideSessionOnDutyUpdate",
+      "unityId": -1,
+      "hash": 3393148027,
+      "structure": null
+    },
+    {
+      "name": "GuideSessionReport",
+      "unityId": -1,
+      "hash": 405657444,
+      "structure": null
+    },
+    {
+      "name": "GuideSessionRequesterCancels",
+      "unityId": -1,
+      "hash": 3546338867,
+      "structure": null
+    },
+    {
+      "name": "GuideSessionResolved",
+      "unityId": -1,
+      "hash": 1012283802,
+      "structure": null
+    },
+    {
+      "name": "GuildBaseSearch",
+      "unityId": 442,
+      "hash": 549261037,
+      "structure": "i"
+    },
+    {
+      "name": "HabboSearch",
+      "unityId": 41,
+      "hash": 3568017900,
+      "structure": "s"
+    },
+    {
+      "name": "HarvestPet",
+      "unityId": 3025,
+      "hash": 3917558338,
+      "structure": null
+    },
+    {
+      "name": "IgnoreUser",
+      "unityId": 319,
+      "hash": 588592892,
+      "structure": "s"
+    },
+    {
+      "name": "IgnoreUserId",
+      "unityId": -1,
+      "hash": 1690269385,
+      "structure": "i"
+    },
+    {
+      "name": "IncomeRewardClaim",
+      "unityId": -1,
+      "hash": 3453606119,
+      "structure": null
+    },
+    {
+      "name": "IncomeRewardStatus",
+      "unityId": -1,
+      "hash": 158217827,
+      "structure": null
+    },
+    {
+      "name": "InfoRetrieve",
+      "unityId": 7,
+      "hash": 189150730,
+      "structure": null
+    },
+    {
+      "name": "InitDiffieHandshake",
+      "unityId": -1,
+      "hash": 4041834192,
+      "structure": null
+    },
+    {
+      "name": "InterstitialShown",
+      "unityId": 181,
+      "hash": 253272955,
+      "structure": null
+    },
+    {
+      "name": "JoinHabboGroup",
+      "unityId": 3257,
+      "hash": 1428268060,
+      "structure": null
+    },
+    {
+      "name": "KickMember",
+      "unityId": 3272,
+      "hash": 1183433075,
+      "structure": null
+    },
+    {
+      "name": "KickUser",
+      "unityId": 95,
+      "hash": 3428184869,
+      "structure": "i"
+    },
+    {
+      "name": "LagWarningReport",
+      "unityId": -1,
+      "hash": 618311987,
+      "structure": "i"
+    },
+    {
+      "name": "LatencyPingReport",
+      "unityId": -1,
+      "hash": 3535978473,
+      "structure": null
+    },
+    {
+      "name": "LatencyPingRequest",
+      "unityId": -1,
+      "hash": 2937966446,
+      "structure": "i"
+    },
+    {
+      "name": "LetUserIn",
+      "unityId": 98,
+      "hash": 2708724842,
+      "structure": null
+    },
+    {
+      "name": "LookTo",
+      "unityId": 79,
+      "hash": 1070926975,
+      "structure": null
+    },
+    {
+      "name": "MakeOffer",
+      "unityId": -1,
+      "hash": 85015806,
+      "structure": "iii"
+    },
+    {
+      "name": "MarkCatalogNewAdditionsPageOpened",
+      "unityId": 3034,
+      "hash": 2571432016,
+      "structure": null
+    },
+    {
+      "name": "MessengerInit",
+      "unityId": 12,
+      "hash": 947264550,
+      "structure": null
+    },
+    {
+      "name": "ModAlert",
+      "unityId": 461,
+      "hash": 2297892127,
+      "structure": null
+    },
+    {
+      "name": "ModBan",
+      "unityId": 464,
+      "hash": 1729791037,
+      "structure": null
+    },
+    {
+      "name": "ModerateMessage",
+      "unityId": -1,
+      "hash": 2683772535,
+      "structure": "iiii"
+    },
+    {
+      "name": "ModerateRoom",
+      "unityId": 460,
+      "hash": 1293560247,
+      "structure": null
+    },
+    {
+      "name": "ModerateThread",
+      "unityId": -1,
+      "hash": 1563459265,
+      "structure": "iii"
+    },
+    {
+      "name": "ModeratorAction",
+      "unityId": -1,
+      "hash": 4181351831,
+      "structure": "iss"
+    },
+    {
+      "name": "ModKick",
+      "unityId": 463,
+      "hash": 127376353,
+      "structure": null
+    },
+    {
+      "name": "ModMessage",
+      "unityId": 462,
+      "hash": 2824851915,
+      "structure": null
+    },
+    {
+      "name": "ModMute",
+      "unityId": 465,
+      "hash": 1398712715,
+      "structure": null
+    },
+    {
+      "name": "ModToolPreferences",
+      "unityId": 466,
+      "hash": 2419916086,
+      "structure": null
+    },
+    {
+      "name": "ModToolSanction",
+      "unityId": -1,
+      "hash": 1712382932,
+      "structure": "iii"
+    },
+    {
+      "name": "ModTradingLock",
+      "unityId": 468,
+      "hash": 393703629,
+      "structure": null
+    },
+    {
+      "name": "MountPet",
+      "unityId": 3017,
+      "hash": 3307324817,
+      "structure": null
+    },
+    {
+      "name": "MoveAvatar",
+      "unityId": -1,
+      "hash": 2347419501,
+      "structure": null
+    },
+    {
+      "name": "MoveObject",
+      "unityId": -1,
+      "hash": 2437149303,
+      "structure": null
+    },
+    {
+      "name": "MovePet",
+      "unityId": -1,
+      "hash": 3401062871,
+      "structure": null
+    },
+    {
+      "name": "MoveWallItem",
+      "unityId": -1,
+      "hash": 833310316,
+      "structure": null
+    },
+    {
+      "name": "MuteAllInRoom",
+      "unityId": -1,
+      "hash": 4044982799,
+      "structure": null
+    },
+    {
+      "name": "MuteUser",
+      "unityId": -1,
+      "hash": 234753851,
+      "structure": null
+    },
+    {
+      "name": "MyFavouriteRoomsSearch",
+      "unityId": 435,
+      "hash": 1647127953,
+      "structure": null
+    },
+    {
+      "name": "MyFrequentRoomHistorySearch",
+      "unityId": -1,
+      "hash": 2124983738,
+      "structure": null
+    },
+    {
+      "name": "MyFriendsRoomsSearch",
+      "unityId": 432,
+      "hash": 3217974952,
+      "structure": null
+    },
+    {
+      "name": "MyGuildBasesSearch",
+      "unityId": 445,
+      "hash": 4186122035,
+      "structure": null
+    },
+    {
+      "name": "MyRecommendedRooms",
+      "unityId": -1,
+      "hash": 596188492,
+      "structure": null
+    },
+    {
+      "name": "MyRoomHistorySearch",
+      "unityId": 436,
+      "hash": 2818297075,
+      "structure": null
+    },
+    {
+      "name": "MyRoomRightsSearch",
+      "unityId": 444,
+      "hash": 1334205327,
+      "structure": null
+    },
+    {
+      "name": "MyRoomsSearch",
+      "unityId": 434,
+      "hash": 1492793958,
+      "structure": null
+    },
+    {
+      "name": "MysteryBoxWaitingCanceled",
+      "unityId": 377,
+      "hash": 2106159915,
+      "structure": "i"
+    },
+    {
+      "name": "NavigatorAddCollapsedCategory",
+      "unityId": -1,
+      "hash": 468385094,
+      "structure": null
+    },
+    {
+      "name": "NavigatorAddSavedSearch",
+      "unityId": -1,
+      "hash": 2301388674,
+      "structure": null
+    },
+    {
+      "name": "NavigatorDeleteSavedSearch",
+      "unityId": -1,
+      "hash": 3584920363,
+      "structure": null
+    },
+    {
+      "name": "NavigatorRemoveCollapsedCategory",
+      "unityId": -1,
+      "hash": 324317782,
+      "structure": null
+    },
+    {
+      "name": "NavigatorSetSearchCodeViewMode",
+      "unityId": -1,
+      "hash": 609253352,
+      "structure": null
+    },
+    {
+      "name": "NewNavigatorInit",
+      "unityId": -1,
+      "hash": 4219338490,
+      "structure": null
+    },
+    {
+      "name": "NewNavigatorSearch",
+      "unityId": -1,
+      "hash": 693235894,
+      "structure": null
+    },
+    {
+      "name": "NewUserExperienceGetGifts",
+      "unityId": -1,
+      "hash": 2027677358,
+      "structure": null
+    },
+    {
+      "name": "NewUserExperienceScriptProceed",
+      "unityId": -1,
+      "hash": 1256643173,
+      "structure": null
+    },
+    {
+      "name": "Open",
+      "unityId": -1,
+      "hash": 2077993720,
+      "structure": null
+    },
+    {
+      "name": "OpenCampaignCalendarDoor",
+      "unityId": 1401,
+      "hash": 3829229443,
+      "structure": null
+    },
+    {
+      "name": "OpenCampaignCalendarDoorAsStaff",
+      "unityId": -1,
+      "hash": 2283188993,
+      "structure": null
+    },
+    {
+      "name": "OpenFlatConnection",
+      "unityId": -1,
+      "hash": 1556892887,
+      "structure": null
+    },
+    {
+      "name": "OpenMysteryTrophy",
+      "unityId": 3297,
+      "hash": 3995993067,
+      "structure": null
+    },
+    {
+      "name": "OpenPetPackage",
+      "unityId": 3006,
+      "hash": 1549116243,
+      "structure": null
+    },
+    {
+      "name": "OpenQuestTracker",
+      "unityId": 3107,
+      "hash": 3128471153,
+      "structure": null
+    },
+    {
+      "name": "OpenTrading",
+      "unityId": -1,
+      "hash": 4167615160,
+      "structure": "i"
+    },
+    {
+      "name": "PassCarryItem",
+      "unityId": -1,
+      "hash": 2672696419,
+      "structure": "i"
+    },
+    {
+      "name": "PassCarryItemToPet",
+      "unityId": -1,
+      "hash": 2480893904,
+      "structure": "i"
+    },
+    {
+      "name": "PeerUsersClassification",
+      "unityId": -1,
+      "hash": 2771749583,
+      "structure": "s"
+    },
+    {
+      "name": "PerformanceLog",
+      "unityId": -1,
+      "hash": 3955813049,
+      "structure": null
+    },
+    {
+      "name": "PetSelected",
+      "unityId": 3022,
+      "hash": 779678044,
+      "structure": "i"
+    },
+    {
+      "name": "PhotoCompetition",
+      "unityId": -1,
+      "hash": 4205106082,
+      "structure": null
+    },
+    {
+      "name": "PickIssues",
+      "unityId": 450,
+      "hash": 2979338449,
+      "structure": null
+    },
+    {
+      "name": "PickupObject",
+      "unityId": -1,
+      "hash": 70587532,
+      "structure": null
+    },
+    {
+      "name": "PlaceBot",
+      "unityId": -1,
+      "hash": 1533543352,
+      "structure": null
+    },
+    {
+      "name": "PlaceObject",
+      "unityId": -1,
+      "hash": 3133384695,
+      "structure": null
+    },
+    {
+      "name": "PlacePet",
+      "unityId": -1,
+      "hash": 886825855,
+      "structure": null
+    },
+    {
+      "name": "PlacePostIt",
+      "unityId": 3254,
+      "hash": 986922769,
+      "structure": null
+    },
+    {
+      "name": "PollAnswer",
+      "unityId": 236,
+      "hash": 3451773440,
+      "structure": null
+    },
+    {
+      "name": "PollReject",
+      "unityId": -1,
+      "hash": 1895856663,
+      "structure": null
+    },
+    {
+      "name": "PollStart",
+      "unityId": -1,
+      "hash": 732563366,
+      "structure": null
+    },
+    {
+      "name": "Pong",
+      "unityId": 196,
+      "hash": 1867859328,
+      "structure": null
+    },
+    {
+      "name": "PopularRoomsSearch",
+      "unityId": 430,
+      "hash": 881784573,
+      "structure": "si"
+    },
+    {
+      "name": "PostMessage",
+      "unityId": -1,
+      "hash": 1125590032,
+      "structure": "iiss"
+    },
+    {
+      "name": "PostQuizAnswers",
+      "unityId": -1,
+      "hash": 678040169,
+      "structure": null
+    },
+    {
+      "name": "PresentOpen",
+      "unityId": 78,
+      "hash": 2780983329,
+      "structure": "i"
+    },
+    {
+      "name": "PublishPhoto",
+      "unityId": 3504,
+      "hash": 2519426474,
+      "structure": null
+    },
+    {
+      "name": "PurchaseBasicMembershipExtension",
+      "unityId": -1,
+      "hash": 926297098,
+      "structure": null
+    },
+    {
+      "name": "PurchaseFromCatalog",
+      "unityId": 100,
+      "hash": 3062272095,
+      "structure": null
+    },
+    {
+      "name": "PurchaseFromCatalogAsGift",
+      "unityId": 472,
+      "hash": 1621792299,
+      "structure": null
+    },
+    {
+      "name": "PurchasePhoto",
+      "unityId": 3503,
+      "hash": 2084602156,
+      "structure": null
+    },
+    {
+      "name": "PurchaseRoomAd",
+      "unityId": 349,
+      "hash": 297732352,
+      "structure": null
+    },
+    {
+      "name": "PurchaseSnowWarGameTokensOffer",
+      "unityId": -1,
+      "hash": 3094368300,
+      "structure": null
+    },
+    {
+      "name": "PurchaseTargetedOffer",
+      "unityId": 1531,
+      "hash": 100070379,
+      "structure": null
+    },
+    {
+      "name": "PurchaseVipMembershipExtension",
+      "unityId": -1,
+      "hash": 3967755235,
+      "structure": null
+    },
+    {
+      "name": "Quit",
+      "unityId": 53,
+      "hash": 3021913044,
+      "structure": null
+    },
+    {
+      "name": "RateFlat",
+      "unityId": 261,
+      "hash": 4081491515,
+      "structure": "i"
+    },
+    {
+      "name": "RedeemMarketplaceOfferCredits",
+      "unityId": -1,
+      "hash": 3710803147,
+      "structure": null
+    },
+    {
+      "name": "RedeemVoucher",
+      "unityId": -1,
+      "hash": 3421469541,
+      "structure": null
+    },
+    {
+      "name": "RejectMembershipRequest",
+      "unityId": 3268,
+      "hash": 1270851844,
+      "structure": null
+    },
+    {
+      "name": "RejectQuest",
+      "unityId": 3106,
+      "hash": 66510960,
+      "structure": null
+    },
+    {
+      "name": "ReleaseIssues",
+      "unityId": 451,
+      "hash": 3063501865,
+      "structure": null
+    },
+    {
+      "name": "RemoveAdminRightsFromMember",
+      "unityId": 3270,
+      "hash": 208976380,
+      "structure": null
+    },
+    {
+      "name": "RemoveAllRights",
+      "unityId": 155,
+      "hash": 3923912031,
+      "structure": "i"
+    },
+    {
+      "name": "RemoveBotFromFlat",
+      "unityId": 3060,
+      "hash": 3706434747,
+      "structure": "i"
+    },
+    {
+      "name": "RemoveFriend",
+      "unityId": 40,
+      "hash": 103456825,
+      "structure": null
+    },
+    {
+      "name": "RemoveItem",
+      "unityId": 85,
+      "hash": 1888606983,
+      "structure": "i"
+    },
+    {
+      "name": "RemoveItemFromTrade",
+      "unityId": -1,
+      "hash": 543887580,
+      "structure": "i"
+    },
+    {
+      "name": "RemoveJukeboxDisk",
+      "unityId": -1,
+      "hash": 2426377415,
+      "structure": null
+    },
+    {
+      "name": "RemoveOwnRoomRightsRoom",
+      "unityId": -1,
+      "hash": 2899161501,
+      "structure": "i"
+    },
+    {
+      "name": "RemovePetFromFlat",
+      "unityId": 3003,
+      "hash": 2786407868,
+      "structure": "i"
+    },
+    {
+      "name": "RemoveRights",
+      "unityId": 97,
+      "hash": 3370252638,
+      "structure": null
+    },
+    {
+      "name": "RemoveSaddleFromPet",
+      "unityId": -1,
+      "hash": 3648777253,
+      "structure": "i"
+    },
+    {
+      "name": "RenderRoom",
+      "unityId": 3502,
+      "hash": 1808146428,
+      "structure": null
+    },
+    {
+      "name": "RenderRoomThumbnail",
+      "unityId": -1,
+      "hash": 2273475850,
+      "structure": null
+    },
+    {
+      "name": "RentableSpaceCancelRent",
+      "unityId": -1,
+      "hash": 1380117822,
+      "structure": null
+    },
+    {
+      "name": "RentableSpaceRent",
+      "unityId": -1,
+      "hash": 3113320216,
+      "structure": null
+    },
+    {
+      "name": "RentableSpaceStatus",
+      "unityId": -1,
+      "hash": 2570362613,
+      "structure": null
+    },
+    {
+      "name": "RequestABadge",
+      "unityId": -1,
+      "hash": 1046481697,
+      "structure": null
+    },
+    {
+      "name": "RequestCameraConfiguration",
+      "unityId": -1,
+      "hash": 2305897285,
+      "structure": null
+    },
+    {
+      "name": "RequestFriend",
+      "unityId": 39,
+      "hash": 1930151370,
+      "structure": "s"
+    },
+    {
+      "name": "RequestFurniInventory",
+      "unityId": -1,
+      "hash": 3421846541,
+      "structure": null
+    },
+    {
+      "name": "RequestFurniInventoryWhenNotInRoom",
+      "unityId": -1,
+      "hash": 1218661831,
+      "structure": null
+    },
+    {
+      "name": "RequestRoomPropertySet",
+      "unityId": -1,
+      "hash": 716276190,
+      "structure": null
+    },
+    {
+      "name": "ResetPhoneNumberState",
+      "unityId": -1,
+      "hash": 3673174539,
+      "structure": null
+    },
+    {
+      "name": "ResetResolutionAchievement",
+      "unityId": 378,
+      "hash": 1930020656,
+      "structure": null
+    },
+    {
+      "name": "ResetUnseenItemIds",
+      "unityId": -1,
+      "hash": 4280040916,
+      "structure": null
+    },
+    {
+      "name": "ResetUnseenItems",
+      "unityId": -1,
+      "hash": 374639940,
+      "structure": null
+    },
+    {
+      "name": "RespectPet",
+      "unityId": 3005,
+      "hash": 3271878951,
+      "structure": "i"
+    },
+    {
+      "name": "RoomAdEventTabAdClicked",
+      "unityId": 356,
+      "hash": 2577174465,
+      "structure": "isi"
+    },
+    {
+      "name": "RoomAdEventTabViewed",
+      "unityId": 354,
+      "hash": 3731582931,
+      "structure": null
+    },
+    {
+      "name": "RoomAdPurchaseInitiated",
+      "unityId": 357,
+      "hash": 2490205108,
+      "structure": null
+    },
+    {
+      "name": "RoomAdSearch",
+      "unityId": 443,
+      "hash": 1239982363,
+      "structure": "ii"
+    },
+    {
+      "name": "RoomCompetitionInit",
+      "unityId": 522,
+      "hash": 3860817281,
+      "structure": null
+    },
+    {
+      "name": "RoomDimmerChangeState",
+      "unityId": 343,
+      "hash": 2650222164,
+      "structure": null
+    },
+    {
+      "name": "RoomDimmerGetPresets",
+      "unityId": -1,
+      "hash": 1140426105,
+      "structure": null
+    },
+    {
+      "name": "RoomDimmerSavePreset",
+      "unityId": 342,
+      "hash": 3744007900,
+      "structure": null
+    },
+    {
+      "name": "RoomNetworkOpenConnection",
+      "unityId": -1,
+      "hash": 732282909,
+      "structure": null
+    },
+    {
+      "name": "RoomsWhereMyFriendsAreSearch",
+      "unityId": 433,
+      "hash": 1750352248,
+      "structure": null
+    },
+    {
+      "name": "RoomsWithHighestScoreSearch",
+      "unityId": 431,
+      "hash": 2478870987,
+      "structure": "i"
+    },
+    {
+      "name": "RoomTextSearch",
+      "unityId": 437,
+      "hash": 2261848052,
+      "structure": "s"
+    },
+    {
+      "name": "RoomUsersClassification",
+      "unityId": -1,
+      "hash": 1655071539,
+      "structure": "s"
+    },
+    {
+      "name": "SaveRoomSettings",
+      "unityId": 401,
+      "hash": 321498668,
+      "structure": null
+    },
+    {
+      "name": "SaveUserNftWardrobe",
+      "unityId": -1,
+      "hash": 2123301243,
+      "structure": null
+    },
+    {
+      "name": "SaveWardrobeOutfit",
+      "unityId": 376,
+      "hash": 1054625731,
+      "structure": null
+    },
+    {
+      "name": "ScrGetKickbackInfo",
+      "unityId": -1,
+      "hash": 1579243760,
+      "structure": null
+    },
+    {
+      "name": "ScrGetUserInfo",
+      "unityId": -1,
+      "hash": 3376920914,
+      "structure": "s"
+    },
+    {
+      "name": "SelectClubGift",
+      "unityId": 475,
+      "hash": 2813780172,
+      "structure": "s"
+    },
+    {
+      "name": "SelectFavouriteHabboGroup",
+      "unityId": 3258,
+      "hash": 96075991,
+      "structure": null
+    },
+    {
+      "name": "SendMsg",
+      "unityId": -1,
+      "hash": 1713015358,
+      "structure": "is"
+    },
+    {
+      "name": "SendRoomInvite",
+      "unityId": 34,
+      "hash": 1836410609,
+      "structure": null
+    },
+    {
+      "name": "SetActivatedBadges",
+      "unityId": -1,
+      "hash": 4012807180,
+      "structure": null
+    },
+    {
+      "name": "SetChatPreferences",
+      "unityId": 227,
+      "hash": 3895895147,
+      "structure": null
+    },
+    {
+      "name": "SetChatStylePreference",
+      "unityId": 244,
+      "hash": 891684617,
+      "structure": null
+    },
+    {
+      "name": "SetClothingChangeData",
+      "unityId": -1,
+      "hash": 3547881678,
+      "structure": null
+    },
+    {
+      "name": "SetCustomStackingHeight",
+      "unityId": -1,
+      "hash": 2716068353,
+      "structure": null
+    },
+    {
+      "name": "SetIgnoreRoomInvites",
+      "unityId": -1,
+      "hash": 3423298985,
+      "structure": null
+    },
+    {
+      "name": "SetItemData",
+      "unityId": -1,
+      "hash": 2242647549,
+      "structure": null
+    },
+    {
+      "name": "SetMannequinFigure",
+      "unityId": 3256,
+      "hash": 4196610496,
+      "structure": "i"
+    },
+    {
+      "name": "SetMannequinName",
+      "unityId": 3280,
+      "hash": 1809422716,
+      "structure": null
+    },
+    {
+      "name": "SetNewNavigatorWindowPreferences",
+      "unityId": -1,
+      "hash": 2271335938,
+      "structure": null
+    },
+    {
+      "name": "SetObjectData",
+      "unityId": -1,
+      "hash": 3633827078,
+      "structure": null
+    },
+    {
+      "name": "SetPhoneNumberVerificationStatus",
+      "unityId": -1,
+      "hash": 366227278,
+      "structure": "i"
+    },
+    {
+      "name": "SetRandomState",
+      "unityId": -1,
+      "hash": 32129149,
+      "structure": null
+    },
+    {
+      "name": "SetRelationshipStatus",
+      "unityId": 491,
+      "hash": 767852138,
+      "structure": null
+    },
+    {
+      "name": "SetRoomBackgroundColorData",
+      "unityId": 3292,
+      "hash": 4235163363,
+      "structure": null
+    },
+    {
+      "name": "SetRoomCameraPreferences",
+      "unityId": 241,
+      "hash": 2534516788,
+      "structure": null
+    },
+    {
+      "name": "SetRoomSessionTags",
+      "unityId": 3285,
+      "hash": 1443500159,
+      "structure": "ss"
+    },
+    {
+      "name": "SetSoundSettings",
+      "unityId": 229,
+      "hash": 595119331,
+      "structure": null
+    },
+    {
+      "name": "SetTargetedOfferState",
+      "unityId": 1532,
+      "hash": 1434723598,
+      "structure": null
+    },
+    {
+      "name": "SetUIFlags",
+      "unityId": -1,
+      "hash": 1180321676,
+      "structure": null
+    },
+    {
+      "name": "SetYoutubeDisplayPlaylist",
+      "unityId": -1,
+      "hash": 3268068319,
+      "structure": null
+    },
+    {
+      "name": "ShopTargetedOfferViewed",
+      "unityId": 1533,
+      "hash": 1864908389,
+      "structure": null
+    },
+    {
+      "name": "Shout",
+      "unityId": 55,
+      "hash": 1279110729,
+      "structure": null
+    },
+    {
+      "name": "Sign",
+      "unityId": -1,
+      "hash": 1118978992,
+      "structure": "i"
+    },
+    {
+      "name": "SpinWheelOfFortune",
+      "unityId": 247,
+      "hash": 3362760884,
+      "structure": "i"
+    },
+    {
+      "name": "SSOTicket",
+      "unityId": -1,
+      "hash": 1230469313,
+      "structure": null
+    },
+    {
+      "name": "StartCampaign",
+      "unityId": 3108,
+      "hash": 2763659357,
+      "structure": null
+    },
+    {
+      "name": "StartTyping",
+      "unityId": -1,
+      "hash": 603358764,
+      "structure": null
+    },
+    {
+      "name": "SubmitRoomToCompetition",
+      "unityId": 521,
+      "hash": 2091909270,
+      "structure": null
+    },
+    {
+      "name": "ThrowDice",
+      "unityId": 76,
+      "hash": 1540940767,
+      "structure": "i"
+    },
+    {
+      "name": "TogglePetBreedingPermission",
+      "unityId": -1,
+      "hash": 1360359573,
+      "structure": "i"
+    },
+    {
+      "name": "TogglePetRidingPermission",
+      "unityId": -1,
+      "hash": 422583913,
+      "structure": "i"
+    },
+    {
+      "name": "ToggleStaffPick",
+      "unityId": -1,
+      "hash": 2627036747,
+      "structure": "iB"
+    },
+    {
+      "name": "TryPhoneNumber",
+      "unityId": 1500,
+      "hash": 2914124583,
+      "structure": "ss"
+    },
+    {
+      "name": "UnacceptTrading",
+      "unityId": -1,
+      "hash": 38777516,
+      "structure": null
+    },
+    {
+      "name": "UnbanUserFromRoom",
+      "unityId": -1,
+      "hash": 1749213110,
+      "structure": null
+    },
+    {
+      "name": "UnblockGroupMember",
+      "unityId": -1,
+      "hash": 4205829022,
+      "structure": null
+    },
+    {
+      "name": "UnignoreUser",
+      "unityId": 322,
+      "hash": 3545674166,
+      "structure": "s"
+    },
+    {
+      "name": "UniqueID",
+      "unityId": -1,
+      "hash": 1432595764,
+      "structure": null
+    },
+    {
+      "name": "UnmuteUser",
+      "unityId": -1,
+      "hash": 2661617944,
+      "structure": null
+    },
+    {
+      "name": "UpdateAction",
+      "unityId": -1,
+      "hash": 51033794,
+      "structure": null
+    },
+    {
+      "name": "UpdateCondition",
+      "unityId": -1,
+      "hash": 3055607602,
+      "structure": null
+    },
+    {
+      "name": "UpdateFigureData",
+      "unityId": -1,
+      "hash": 2728829865,
+      "structure": null
+    },
+    {
+      "name": "UpdateFloorProperties",
+      "unityId": -1,
+      "hash": 1189293106,
+      "structure": null
+    },
+    {
+      "name": "UpdateForumReadMarker",
+      "unityId": -1,
+      "hash": 4101634329,
+      "structure": null
+    },
+    {
+      "name": "UpdateForumSettings",
+      "unityId": 1606,
+      "hash": 3800710006,
+      "structure": "iiiii"
+    },
+    {
+      "name": "UpdateGuildBadge",
+      "unityId": 3275,
+      "hash": 2896497124,
+      "structure": null
+    },
+    {
+      "name": "UpdateGuildColors",
+      "unityId": 3276,
+      "hash": 2870235488,
+      "structure": null
+    },
+    {
+      "name": "UpdateGuildIdentity",
+      "unityId": 3264,
+      "hash": 2286439755,
+      "structure": null
+    },
+    {
+      "name": "UpdateGuildSettings",
+      "unityId": 3273,
+      "hash": 1401564294,
+      "structure": null
+    },
+    {
+      "name": "UpdateHomeRoom",
+      "unityId": -1,
+      "hash": 2288556465,
+      "structure": "i"
+    },
+    {
+      "name": "UpdateRoomCategoryAndTradeSettings",
+      "unityId": -1,
+      "hash": 3744304655,
+      "structure": null
+    },
+    {
+      "name": "UpdateRoomFilter",
+      "unityId": 407,
+      "hash": 3156777903,
+      "structure": null
+    },
+    {
+      "name": "UpdateThread",
+      "unityId": -1,
+      "hash": 1996772362,
+      "structure": "iiBB"
+    },
+    {
+      "name": "UpdateTrigger",
+      "unityId": -1,
+      "hash": 1664032756,
+      "structure": null
+    },
+    {
+      "name": "UseFurniture",
+      "unityId": -1,
+      "hash": 3394416303,
+      "structure": null
+    },
+    {
+      "name": "UseWallItem",
+      "unityId": 393,
+      "hash": 4025022829,
+      "structure": null
+    },
+    {
+      "name": "VerifyCode",
+      "unityId": 1501,
+      "hash": 4286330160,
+      "structure": "s"
+    },
+    {
+      "name": "VersionCheck",
+      "unityId": 1170,
+      "hash": 4242343903,
+      "structure": null
+    },
+    {
+      "name": "VisitUser",
+      "unityId": 264,
+      "hash": 5572756,
+      "structure": "s"
+    },
+    {
+      "name": "VoteForRoom",
+      "unityId": 523,
+      "hash": 241457445,
+      "structure": null
+    },
+    {
+      "name": "Whisper",
+      "unityId": 56,
+      "hash": 237679176,
+      "structure": "si"
+    },
+    {
+      "name": "WithdrawCreditVault",
+      "unityId": -1,
+      "hash": 1536736454,
+      "structure": null
+    }
+  ],
+  "incoming": [
+    {
+      "name": "AcceptFriendResult",
+      "unityId": 315,
+      "hash": 3691276874,
+      "structure": null
+    },
+    {
+      "name": "AccountPreferences",
+      "unityId": 308,
+      "hash": 1689661034,
+      "structure": "iiiBBBii"
+    },
+    {
+      "name": "AccountSafetyLockStatusChange",
+      "unityId": -1,
+      "hash": 326763790,
+      "structure": "i"
+    },
+    {
+      "name": "Achievement",
+      "unityId": -1,
+      "hash": 1876292167,
+      "structure": null
+    },
+    {
+      "name": "AchievementResolutionCompleted",
+      "unityId": -1,
+      "hash": 928510831,
+      "structure": "ss"
+    },
+    {
+      "name": "AchievementResolutionProgress",
+      "unityId": -1,
+      "hash": 3495562367,
+      "structure": "iisiii"
+    },
+    {
+      "name": "AchievementResolutions",
+      "unityId": -1,
+      "hash": 3219527299,
+      "structure": null
+    },
+    {
+      "name": "Achievements",
+      "unityId": -1,
+      "hash": 297388799,
+      "structure": null
+    },
+    {
+      "name": "AchievementsScore",
+      "unityId": -1,
+      "hash": 1115706807,
+      "structure": "i"
+    },
+    {
+      "name": "ActivityPoints",
+      "unityId": 628,
+      "hash": 2180592593,
+      "structure": null
+    },
+    {
+      "name": "ApproveName",
+      "unityId": -1,
+      "hash": 2186673632,
+      "structure": "is"
+    },
+    {
+      "name": "AuthenticationOK",
+      "unityId": -1,
+      "hash": 682763951,
+      "structure": null
+    },
+    {
+      "name": "AvailabilityStatus",
+      "unityId": 290,
+      "hash": 2575744959,
+      "structure": null
+    },
+    {
+      "name": "AvatarEffect",
+      "unityId": -1,
+      "hash": 697236939,
+      "structure": null
+    },
+    {
+      "name": "AvatarEffectActivated",
+      "unityId": 462,
+      "hash": 1911824456,
+      "structure": "iiB"
+    },
+    {
+      "name": "AvatarEffectAdded",
+      "unityId": 461,
+      "hash": 210392913,
+      "structure": "iiiB"
+    },
+    {
+      "name": "AvatarEffectExpired",
+      "unityId": 463,
+      "hash": 2275729106,
+      "structure": "i"
+    },
+    {
+      "name": "AvatarEffects",
+      "unityId": 460,
+      "hash": 189867866,
+      "structure": null
+    },
+    {
+      "name": "AvatarEffectSelected",
+      "unityId": 464,
+      "hash": 3040206728,
+      "structure": "i"
+    },
+    {
+      "name": "BadgePointLimits",
+      "unityId": 627,
+      "hash": 1745461012,
+      "structure": null
+    },
+    {
+      "name": "BadgeReceived",
+      "unityId": 633,
+      "hash": 1345090398,
+      "structure": "is"
+    },
+    {
+      "name": "Badges",
+      "unityId": -1,
+      "hash": 1596060039,
+      "structure": null
+    },
+    {
+      "name": "BannedUsersFromRoom",
+      "unityId": -1,
+      "hash": 987976164,
+      "structure": null
+    },
+    {
+      "name": "BonusRareInfo",
+      "unityId": 629,
+      "hash": 317210867,
+      "structure": "siii"
+    },
+    {
+      "name": "BotAddedToInventory",
+      "unityId": 3029,
+      "hash": 376441269,
+      "structure": "issssB"
+    },
+    {
+      "name": "BotCommandConfiguration",
+      "unityId": -1,
+      "hash": 1359143471,
+      "structure": "iis"
+    },
+    {
+      "name": "BotError",
+      "unityId": 3032,
+      "hash": 4219744333,
+      "structure": null
+    },
+    {
+      "name": "BotForceOpenContextMenu",
+      "unityId": 3035,
+      "hash": 1033203725,
+      "structure": "i"
+    },
+    {
+      "name": "BotInventory",
+      "unityId": 3028,
+      "hash": 3012162352,
+      "structure": null
+    },
+    {
+      "name": "BotRemovedFromInventory",
+      "unityId": 3030,
+      "hash": 4199440183,
+      "structure": "i"
+    },
+    {
+      "name": "BotSkillListUpdate",
+      "unityId": -1,
+      "hash": 1681790279,
+      "structure": null
+    },
+    {
+      "name": "BuildersClubFurniCount",
+      "unityId": 1004,
+      "hash": 2933281088,
+      "structure": "i"
+    },
+    {
+      "name": "BuildersClubSubscriptionStatus",
+      "unityId": -1,
+      "hash": 2768636374,
+      "structure": null
+    },
+    {
+      "name": "BundleDiscountRuleset",
+      "unityId": 635,
+      "hash": 2909775787,
+      "structure": null
+    },
+    {
+      "name": "CallForHelpDisabledNotify",
+      "unityId": -1,
+      "hash": 1298474957,
+      "structure": "s"
+    },
+    {
+      "name": "CallForHelpPendingCalls",
+      "unityId": -1,
+      "hash": 1351847770,
+      "structure": null
+    },
+    {
+      "name": "CallForHelpPendingCallsDeleted",
+      "unityId": -1,
+      "hash": 2526614543,
+      "structure": null
+    },
+    {
+      "name": "CallForHelpReply",
+      "unityId": -1,
+      "hash": 2027770387,
+      "structure": "s"
+    },
+    {
+      "name": "CallForHelpResult",
+      "unityId": -1,
+      "hash": 2916921380,
+      "structure": "is"
+    },
+    {
+      "name": "CameraPublishStatus",
+      "unityId": -1,
+      "hash": 2722277805,
+      "structure": null
+    },
+    {
+      "name": "CameraPurchaseOK",
+      "unityId": -1,
+      "hash": 2107018183,
+      "structure": null
+    },
+    {
+      "name": "CameraStorageUrl",
+      "unityId": -1,
+      "hash": 3585601733,
+      "structure": "s"
+    },
+    {
+      "name": "CampaignCalendarData",
+      "unityId": 1400,
+      "hash": 1343963788,
+      "structure": null
+    },
+    {
+      "name": "CampaignCalendarDoorOpened",
+      "unityId": 1401,
+      "hash": 1264339919,
+      "structure": "Bsss"
+    },
+    {
+      "name": "CancelMysteryBoxWait",
+      "unityId": 356,
+      "hash": 2966946516,
+      "structure": null
+    },
+    {
+      "name": "CanCreateRoom",
+      "unityId": 512,
+      "hash": 2770020841,
+      "structure": "ii"
+    },
+    {
+      "name": "CanCreateRoomEvent",
+      "unityId": -1,
+      "hash": 3447817915,
+      "structure": "Bi"
+    },
+    {
+      "name": "CantConnect",
+      "unityId": -1,
+      "hash": 1197115409,
+      "structure": null
+    },
+    {
+      "name": "CarryObject",
+      "unityId": -1,
+      "hash": 1495723646,
+      "structure": null
+    },
+    {
+      "name": "CatalogIndex",
+      "unityId": 126,
+      "hash": 554768122,
+      "structure": null
+    },
+    {
+      "name": "CatalogPage",
+      "unityId": 127,
+      "hash": 1458598382,
+      "structure": null
+    },
+    {
+      "name": "CatalogPageWithEarliestExpiry",
+      "unityId": 638,
+      "hash": 1180086495,
+      "structure": "sis"
+    },
+    {
+      "name": "CatalogPublished",
+      "unityId": -1,
+      "hash": 2382797874,
+      "structure": null
+    },
+    {
+      "name": "CategoriesWithVisitorCount",
+      "unityId": -1,
+      "hash": 833740316,
+      "structure": null
+    },
+    {
+      "name": "CfhChatlog",
+      "unityId": -1,
+      "hash": 3695633211,
+      "structure": null
+    },
+    {
+      "name": "CfhSanction",
+      "unityId": -1,
+      "hash": 3777009258,
+      "structure": null
+    },
+    {
+      "name": "CfhTopicsInit",
+      "unityId": 552,
+      "hash": 4136486532,
+      "structure": null
+    },
+    {
+      "name": "ChangeEmailResult",
+      "unityId": -1,
+      "hash": 1250856250,
+      "structure": "i"
+    },
+    {
+      "name": "ChangeUserNameResult",
+      "unityId": -1,
+      "hash": 1787221803,
+      "structure": null
+    },
+    {
+      "name": "Chat",
+      "unityId": 24,
+      "hash": 3965679603,
+      "structure": null
+    },
+    {
+      "name": "ChatReviewSessionDetached",
+      "unityId": -1,
+      "hash": 1814385055,
+      "structure": null
+    },
+    {
+      "name": "ChatReviewSessionOfferedToGuide",
+      "unityId": -1,
+      "hash": 2622516754,
+      "structure": "i"
+    },
+    {
+      "name": "ChatReviewSessionResults",
+      "unityId": -1,
+      "hash": 1196150405,
+      "structure": null
+    },
+    {
+      "name": "ChatReviewSessionStarted",
+      "unityId": -1,
+      "hash": 535807870,
+      "structure": "is"
+    },
+    {
+      "name": "ChatReviewSessionVotingStatus",
+      "unityId": -1,
+      "hash": 2292910444,
+      "structure": null
+    },
+    {
+      "name": "CheckUserNameResult",
+      "unityId": 571,
+      "hash": 1558162994,
+      "structure": null
+    },
+    {
+      "name": "CitizenshipVipOfferPromoEnabled",
+      "unityId": -1,
+      "hash": 575753229,
+      "structure": null
+    },
+    {
+      "name": "CloseConnection",
+      "unityId": 18,
+      "hash": 1474929872,
+      "structure": null
+    },
+    {
+      "name": "ClubGiftInfo",
+      "unityId": -1,
+      "hash": 3939740298,
+      "structure": null
+    },
+    {
+      "name": "ClubGiftNotification",
+      "unityId": -1,
+      "hash": 3752951778,
+      "structure": "i"
+    },
+    {
+      "name": "ClubGiftSelected",
+      "unityId": 624,
+      "hash": 3269481789,
+      "structure": null
+    },
+    {
+      "name": "CommunityGoalHallOfFame",
+      "unityId": 646,
+      "hash": 2917165574,
+      "structure": null
+    },
+    {
+      "name": "CommunityGoalProgress",
+      "unityId": 790,
+      "hash": 4133868938,
+      "structure": null
+    },
+    {
+      "name": "CommunityVoteReceived",
+      "unityId": -1,
+      "hash": 4019752363,
+      "structure": "B"
+    },
+    {
+      "name": "CompetitionEntrySubmitResult",
+      "unityId": 643,
+      "hash": 95951575,
+      "structure": null
+    },
+    {
+      "name": "CompetitionRoomsData",
+      "unityId": 792,
+      "hash": 3290361206,
+      "structure": null
+    },
+    {
+      "name": "CompetitionStatus",
+      "unityId": -1,
+      "hash": 2778951793,
+      "structure": "Bs"
+    },
+    {
+      "name": "CompetitionVotingInfo",
+      "unityId": 644,
+      "hash": 3114870618,
+      "structure": "isii"
+    },
+    {
+      "name": "CompleteDiffieHandshake",
+      "unityId": -1,
+      "hash": 3124614156,
+      "structure": null
+    },
+    {
+      "name": "ConcurrentUsersGoalProgress",
+      "unityId": 670,
+      "hash": 2205367966,
+      "structure": "iii"
+    },
+    {
+      "name": "ConfirmBreedingRequest",
+      "unityId": 990,
+      "hash": 2581566608,
+      "structure": null
+    },
+    {
+      "name": "ConfirmBreedingResult",
+      "unityId": -1,
+      "hash": 3785773776,
+      "structure": "ii"
+    },
+    {
+      "name": "ConvertedRoomId",
+      "unityId": 513,
+      "hash": 1516850228,
+      "structure": "si"
+    },
+    {
+      "name": "CraftableProducts",
+      "unityId": 1300,
+      "hash": 1247408351,
+      "structure": null
+    },
+    {
+      "name": "CraftingRecipe",
+      "unityId": 1301,
+      "hash": 2880887609,
+      "structure": null
+    },
+    {
+      "name": "CraftingRecipesAvailable",
+      "unityId": -1,
+      "hash": 125276079,
+      "structure": "iB"
+    },
+    {
+      "name": "CraftingResult",
+      "unityId": 1302,
+      "hash": 1818253446,
+      "structure": null
+    },
+    {
+      "name": "CreditBalance",
+      "unityId": -1,
+      "hash": 4006330596,
+      "structure": "s"
+    },
+    {
+      "name": "CreditVaultStatus",
+      "unityId": -1,
+      "hash": 1542891568,
+      "structure": "Bii"
+    },
+    {
+      "name": "CurrentTimingCode",
+      "unityId": 649,
+      "hash": 4144296917,
+      "structure": "ss"
+    },
+    {
+      "name": "CustomStackingHeightUpdate",
+      "unityId": -1,
+      "hash": 1147958756,
+      "structure": "ii"
+    },
+    {
+      "name": "CustomUserNotification",
+      "unityId": 1001,
+      "hash": 3549357296,
+      "structure": null
+    },
+    {
+      "name": "Dance",
+      "unityId": -1,
+      "hash": 3146477447,
+      "structure": null
+    },
+    {
+      "name": "DiceValue",
+      "unityId": 90,
+      "hash": 1463997675,
+      "structure": null
+    },
+    {
+      "name": "DisconnectReason",
+      "unityId": -1,
+      "hash": 175733402,
+      "structure": null
+    },
+    {
+      "name": "Doorbell",
+      "unityId": -1,
+      "hash": 1082940066,
+      "structure": "s"
+    },
+    {
+      "name": "ElementPointer",
+      "unityId": -1,
+      "hash": 1726210230,
+      "structure": "s"
+    },
+    {
+      "name": "EmailStatusResult",
+      "unityId": -1,
+      "hash": 2211226813,
+      "structure": "sBB"
+    },
+    {
+      "name": "EpicPopup",
+      "unityId": -1,
+      "hash": 3854514060,
+      "structure": "s"
+    },
+    {
+      "name": "ErrorReport",
+      "unityId": 299,
+      "hash": 4151404283,
+      "structure": "iis"
+    },
+    {
+      "name": "Expression",
+      "unityId": -1,
+      "hash": 1814880357,
+      "structure": null
+    },
+    {
+      "name": "ExtendedProfile",
+      "unityId": -1,
+      "hash": 1635333828,
+      "structure": null
+    },
+    {
+      "name": "ExtendedProfileChanged",
+      "unityId": 924,
+      "hash": 3299599755,
+      "structure": "i"
+    },
+    {
+      "name": "FavoriteMembershipUpdate",
+      "unityId": -1,
+      "hash": 1662379057,
+      "structure": "iiis"
+    },
+    {
+      "name": "FavouriteChanged",
+      "unityId": -1,
+      "hash": 3541757496,
+      "structure": "iB"
+    },
+    {
+      "name": "Favourites",
+      "unityId": -1,
+      "hash": 3851270542,
+      "structure": null
+    },
+    {
+      "name": "FigureSetIds",
+      "unityId": 3036,
+      "hash": 437452986,
+      "structure": null
+    },
+    {
+      "name": "FigureUpdate",
+      "unityId": -1,
+      "hash": 2890056306,
+      "structure": null
+    },
+    {
+      "name": "FindFriendsProcessResult",
+      "unityId": -1,
+      "hash": 2374523949,
+      "structure": "B"
+    },
+    {
+      "name": "FlatAccessDenied",
+      "unityId": -1,
+      "hash": 3981309742,
+      "structure": null
+    },
+    {
+      "name": "FlatAccessible",
+      "unityId": -1,
+      "hash": 2987410913,
+      "structure": "is"
+    },
+    {
+      "name": "FlatControllerAdded",
+      "unityId": -1,
+      "hash": 447673587,
+      "structure": "iis"
+    },
+    {
+      "name": "FlatControllerRemoved",
+      "unityId": -1,
+      "hash": 1526551538,
+      "structure": "ii"
+    },
+    {
+      "name": "FlatControllers",
+      "unityId": -1,
+      "hash": 1254675325,
+      "structure": null
+    },
+    {
+      "name": "FlatCreated",
+      "unityId": 59,
+      "hash": 3749917914,
+      "structure": "is"
+    },
+    {
+      "name": "FloodControl",
+      "unityId": -1,
+      "hash": 3115454856,
+      "structure": null
+    },
+    {
+      "name": "FloorHeightMap",
+      "unityId": -1,
+      "hash": 2372398809,
+      "structure": null
+    },
+    {
+      "name": "FollowFriendFailed",
+      "unityId": 349,
+      "hash": 2319832145,
+      "structure": "i"
+    },
+    {
+      "name": "ForumData",
+      "unityId": -1,
+      "hash": 2116077701,
+      "structure": null
+    },
+    {
+      "name": "ForumsList",
+      "unityId": -1,
+      "hash": 1730808331,
+      "structure": null
+    },
+    {
+      "name": "ForumThreads",
+      "unityId": -1,
+      "hash": 714211972,
+      "structure": null
+    },
+    {
+      "name": "FriendFurniCancelLock",
+      "unityId": -1,
+      "hash": 1716695802,
+      "structure": "i"
+    },
+    {
+      "name": "FriendFurniOtherLockConfirmed",
+      "unityId": -1,
+      "hash": 1581006525,
+      "structure": "i"
+    },
+    {
+      "name": "FriendFurniStartConfirmation",
+      "unityId": -1,
+      "hash": 1205617034,
+      "structure": "iB"
+    },
+    {
+      "name": "FriendListFragment",
+      "unityId": -1,
+      "hash": 437681836,
+      "structure": null
+    },
+    {
+      "name": "FriendListUpdate",
+      "unityId": 13,
+      "hash": 1214265166,
+      "structure": null
+    },
+    {
+      "name": "FriendNotification",
+      "unityId": -1,
+      "hash": 1293514545,
+      "structure": "sis"
+    },
+    {
+      "name": "FriendRequests",
+      "unityId": -1,
+      "hash": 865507777,
+      "structure": null
+    },
+    {
+      "name": "FurniList",
+      "unityId": -1,
+      "hash": 2079276713,
+      "structure": null
+    },
+    {
+      "name": "FurniListAddOrUpdate",
+      "unityId": -1,
+      "hash": 1615762046,
+      "structure": null
+    },
+    {
+      "name": "FurniListInvalidate",
+      "unityId": -1,
+      "hash": 1706289112,
+      "structure": null
+    },
+    {
+      "name": "FurniListRemove",
+      "unityId": -1,
+      "hash": 3495475735,
+      "structure": "i"
+    },
+    {
+      "name": "FurniRentOrBuyoutOffer",
+      "unityId": -1,
+      "hash": 649666945,
+      "structure": "BsBiii"
+    },
+    {
+      "name": "FurnitureAliases",
+      "unityId": -1,
+      "hash": 3090849890,
+      "structure": null
+    },
+    {
+      "name": "Game2AccountGameStatus",
+      "unityId": -1,
+      "hash": 1858323663,
+      "structure": "iii"
+    },
+    {
+      "name": "Game2ArenaEntered",
+      "unityId": -1,
+      "hash": 92902247,
+      "structure": null
+    },
+    {
+      "name": "Game2EnterArena",
+      "unityId": -1,
+      "hash": 532872149,
+      "structure": null
+    },
+    {
+      "name": "Game2EnterArenaFailed",
+      "unityId": -1,
+      "hash": 1363416709,
+      "structure": "i"
+    },
+    {
+      "name": "Game2FriendsLeaderboard",
+      "unityId": -1,
+      "hash": 3503554655,
+      "structure": null
+    },
+    {
+      "name": "Game2FullGameStatus",
+      "unityId": -1,
+      "hash": 2071378199,
+      "structure": null
+    },
+    {
+      "name": "Game2GameCancelled",
+      "unityId": -1,
+      "hash": 3025874027,
+      "structure": null
+    },
+    {
+      "name": "Game2GameChatFromPlayer",
+      "unityId": -1,
+      "hash": 1887236086,
+      "structure": "is"
+    },
+    {
+      "name": "Game2GameCreated",
+      "unityId": -1,
+      "hash": 3263071782,
+      "structure": null
+    },
+    {
+      "name": "Game2GameDirectoryStatus",
+      "unityId": -1,
+      "hash": 1439761094,
+      "structure": "iiii"
+    },
+    {
+      "name": "Game2GameEnding",
+      "unityId": -1,
+      "hash": 421458582,
+      "structure": null
+    },
+    {
+      "name": "Game2GameLongData",
+      "unityId": -1,
+      "hash": 2341846485,
+      "structure": null
+    },
+    {
+      "name": "Game2GameRejoin",
+      "unityId": -1,
+      "hash": 669679538,
+      "structure": "i"
+    },
+    {
+      "name": "Game2GameStarted",
+      "unityId": -1,
+      "hash": 2843616060,
+      "structure": null
+    },
+    {
+      "name": "Game2GameStatus",
+      "unityId": -1,
+      "hash": 3030427893,
+      "structure": null
+    },
+    {
+      "name": "Game2InArenaQueue",
+      "unityId": -1,
+      "hash": 3369868253,
+      "structure": "i"
+    },
+    {
+      "name": "Game2JoiningGameFailed",
+      "unityId": -1,
+      "hash": 881994675,
+      "structure": "i"
+    },
+    {
+      "name": "Game2PlayerExitedGameArena",
+      "unityId": -1,
+      "hash": 311766164,
+      "structure": "ii"
+    },
+    {
+      "name": "Game2PlayerRematches",
+      "unityId": -1,
+      "hash": 132268044,
+      "structure": "i"
+    },
+    {
+      "name": "Game2StageEnding",
+      "unityId": -1,
+      "hash": 2386324494,
+      "structure": "i"
+    },
+    {
+      "name": "Game2StageLoad",
+      "unityId": -1,
+      "hash": 1665843360,
+      "structure": "i"
+    },
+    {
+      "name": "Game2StageRunning",
+      "unityId": -1,
+      "hash": 2677885764,
+      "structure": "i"
+    },
+    {
+      "name": "Game2StageStarting",
+      "unityId": -1,
+      "hash": 3064027104,
+      "structure": null
+    },
+    {
+      "name": "Game2StageStillLoading",
+      "unityId": -1,
+      "hash": 465145380,
+      "structure": null
+    },
+    {
+      "name": "Game2StartCounter",
+      "unityId": -1,
+      "hash": 2452533186,
+      "structure": "i"
+    },
+    {
+      "name": "Game2StartingGameFailed",
+      "unityId": -1,
+      "hash": 308376974,
+      "structure": "i"
+    },
+    {
+      "name": "Game2StopCounter",
+      "unityId": -1,
+      "hash": 2697808104,
+      "structure": "i"
+    },
+    {
+      "name": "Game2TotalGroupLeaderboard",
+      "unityId": -1,
+      "hash": 1954835800,
+      "structure": null
+    },
+    {
+      "name": "Game2TotalLeaderboard",
+      "unityId": -1,
+      "hash": 3741552963,
+      "structure": null
+    },
+    {
+      "name": "Game2UserBlocked",
+      "unityId": -1,
+      "hash": 2460422102,
+      "structure": "i"
+    },
+    {
+      "name": "Game2UserJoinedGame",
+      "unityId": -1,
+      "hash": 2215669098,
+      "structure": "isssiiiiB"
+    },
+    {
+      "name": "Game2UserLeftGame",
+      "unityId": -1,
+      "hash": 53585703,
+      "structure": "i"
+    },
+    {
+      "name": "Game2WeeklyFriendsLeaderboard",
+      "unityId": -1,
+      "hash": 4158114614,
+      "structure": null
+    },
+    {
+      "name": "Game2WeeklyGroupLeaderboard",
+      "unityId": -1,
+      "hash": 3719849888,
+      "structure": null
+    },
+    {
+      "name": "Game2WeeklyLeaderboard",
+      "unityId": -1,
+      "hash": 2169429270,
+      "structure": null
+    },
+    {
+      "name": "GamePlayerValue",
+      "unityId": -1,
+      "hash": 3474643431,
+      "structure": "ii"
+    },
+    {
+      "name": "GenericError",
+      "unityId": -1,
+      "hash": 3354236779,
+      "structure": "i"
+    },
+    {
+      "name": "GetGuestRoomResult",
+      "unityId": 454,
+      "hash": 2023731753,
+      "structure": null
+    },
+    {
+      "name": "GiftReceiverNotFound",
+      "unityId": -1,
+      "hash": 3589520096,
+      "structure": null
+    },
+    {
+      "name": "GiftWrappingConfiguration",
+      "unityId": 620,
+      "hash": 1843076458,
+      "structure": null
+    },
+    {
+      "name": "GotMysteryBoxPrize",
+      "unityId": 357,
+      "hash": 2428453318,
+      "structure": "si"
+    },
+    {
+      "name": "GoToBreedingNestFailure",
+      "unityId": 991,
+      "hash": 1204898175,
+      "structure": "i"
+    },
+    {
+      "name": "GroupDetailsChanged",
+      "unityId": 932,
+      "hash": 3332622873,
+      "structure": "i"
+    },
+    {
+      "name": "GroupMembershipRequested",
+      "unityId": 931,
+      "hash": 2593415025,
+      "structure": "iiisss"
+    },
+    {
+      "name": "GuestRoomSearchResult",
+      "unityId": 451,
+      "hash": 2360048493,
+      "structure": null
+    },
+    {
+      "name": "GuideOnDutyStatus",
+      "unityId": -1,
+      "hash": 3886057700,
+      "structure": "Biii"
+    },
+    {
+      "name": "GuideReportingStatus",
+      "unityId": 1540,
+      "hash": 27477562,
+      "structure": null
+    },
+    {
+      "name": "GuideSessionAttached",
+      "unityId": -1,
+      "hash": 1017444192,
+      "structure": "Bisi"
+    },
+    {
+      "name": "GuideSessionDetached",
+      "unityId": -1,
+      "hash": 2725723251,
+      "structure": null
+    },
+    {
+      "name": "GuideSessionEnded",
+      "unityId": -1,
+      "hash": 696677966,
+      "structure": "i"
+    },
+    {
+      "name": "GuideSessionError",
+      "unityId": -1,
+      "hash": 1476960700,
+      "structure": "i"
+    },
+    {
+      "name": "GuideSessionInvitedToGuideRoom",
+      "unityId": -1,
+      "hash": 3832344001,
+      "structure": "is"
+    },
+    {
+      "name": "GuideSessionMessage",
+      "unityId": -1,
+      "hash": 3566398694,
+      "structure": "si"
+    },
+    {
+      "name": "GuideSessionPartnerIsTyping",
+      "unityId": -1,
+      "hash": 791024127,
+      "structure": "B"
+    },
+    {
+      "name": "GuideSessionRequesterRoom",
+      "unityId": -1,
+      "hash": 2106991121,
+      "structure": "i"
+    },
+    {
+      "name": "GuideSessionStarted",
+      "unityId": -1,
+      "hash": 2091548135,
+      "structure": "ississ"
+    },
+    {
+      "name": "GuideTicketCreationResult",
+      "unityId": -1,
+      "hash": 3224480242,
+      "structure": "i"
+    },
+    {
+      "name": "GuideTicketResolution",
+      "unityId": -1,
+      "hash": 1674247504,
+      "structure": "i"
+    },
+    {
+      "name": "GuildCreated",
+      "unityId": -1,
+      "hash": 3248854886,
+      "structure": "ii"
+    },
+    {
+      "name": "GuildCreationInfo",
+      "unityId": 917,
+      "hash": 3935947027,
+      "structure": null
+    },
+    {
+      "name": "GuildEditFailed",
+      "unityId": -1,
+      "hash": 3229457987,
+      "structure": "i"
+    },
+    {
+      "name": "GuildEditInfo",
+      "unityId": -1,
+      "hash": 1306988150,
+      "structure": null
+    },
+    {
+      "name": "GuildEditorData",
+      "unityId": 919,
+      "hash": 3819779120,
+      "structure": null
+    },
+    {
+      "name": "GuildFurniContextMenuInfo",
+      "unityId": -1,
+      "hash": 1481751506,
+      "structure": null
+    },
+    {
+      "name": "GuildMemberFurniCountInHQ",
+      "unityId": -1,
+      "hash": 786894448,
+      "structure": "ii"
+    },
+    {
+      "name": "GuildMemberMgmtFailed",
+      "unityId": -1,
+      "hash": 3688476541,
+      "structure": "ii"
+    },
+    {
+      "name": "GuildMembers",
+      "unityId": 926,
+      "hash": 1292769644,
+      "structure": null
+    },
+    {
+      "name": "GuildMembershipRejected",
+      "unityId": -1,
+      "hash": 239796522,
+      "structure": "ii"
+    },
+    {
+      "name": "GuildMemberships",
+      "unityId": 927,
+      "hash": 3514942175,
+      "structure": null
+    },
+    {
+      "name": "GuildMembershipUpdated",
+      "unityId": -1,
+      "hash": 3693812894,
+      "structure": "iiisss"
+    },
+    {
+      "name": "HabboAchievementNotification",
+      "unityId": -1,
+      "hash": 2503525895,
+      "structure": "iiisiiiiissB"
+    },
+    {
+      "name": "HabboActivityPointNotification",
+      "unityId": -1,
+      "hash": 380363694,
+      "structure": "iii"
+    },
+    {
+      "name": "HabboBroadcast",
+      "unityId": -1,
+      "hash": 320248836,
+      "structure": "s"
+    },
+    {
+      "name": "HabboClubExtendOffer",
+      "unityId": 630,
+      "hash": 3693941518,
+      "structure": "isBiiiBiiBiiiiiiii"
+    },
+    {
+      "name": "HabboClubOffers",
+      "unityId": 625,
+      "hash": 2753937074,
+      "structure": null
+    },
+    {
+      "name": "HabboGroupBadges",
+      "unityId": -1,
+      "hash": 3846737404,
+      "structure": null
+    },
+    {
+      "name": "HabboGroupDeactivated",
+      "unityId": -1,
+      "hash": 3030246867,
+      "structure": "i"
+    },
+    {
+      "name": "HabboGroupDetails",
+      "unityId": 311,
+      "hash": 3882061775,
+      "structure": "iBisssisiiBsBBsBBiB"
+    },
+    {
+      "name": "HabboGroupJoinFailed",
+      "unityId": -1,
+      "hash": 2912473033,
+      "structure": "i"
+    },
+    {
+      "name": "HabboSearchResult",
+      "unityId": -1,
+      "hash": 3493499982,
+      "structure": null
+    },
+    {
+      "name": "HabboUserBadges",
+      "unityId": -1,
+      "hash": 3702611302,
+      "structure": null
+    },
+    {
+      "name": "HandItemReceived",
+      "unityId": -1,
+      "hash": 2258731560,
+      "structure": "ii"
+    },
+    {
+      "name": "HeightMap",
+      "unityId": -1,
+      "hash": 1177467692,
+      "structure": null
+    },
+    {
+      "name": "HeightMapUpdate",
+      "unityId": -1,
+      "hash": 3745184229,
+      "structure": null
+    },
+    {
+      "name": "HotLooks",
+      "unityId": -1,
+      "hash": 3768507715,
+      "structure": null
+    },
+    {
+      "name": "IdentityAccounts",
+      "unityId": -1,
+      "hash": 982788199,
+      "structure": null
+    },
+    {
+      "name": "IgnoredUsers",
+      "unityId": -1,
+      "hash": 2247522357,
+      "structure": null
+    },
+    {
+      "name": "IgnoreResult",
+      "unityId": -1,
+      "hash": 2987580124,
+      "structure": "is"
+    },
+    {
+      "name": "InClientLink",
+      "unityId": 1561,
+      "hash": 581389576,
+      "structure": "s"
+    },
+    {
+      "name": "IncomeRewardClaimResponse",
+      "unityId": -1,
+      "hash": 1660393191,
+      "structure": "bB"
+    },
+    {
+      "name": "IncomeRewardStatus",
+      "unityId": -1,
+      "hash": 2070514195,
+      "structure": null
+    },
+    {
+      "name": "InfoFeedEnable",
+      "unityId": -1,
+      "hash": 2745281408,
+      "structure": "B"
+    },
+    {
+      "name": "InfoHotelClosed",
+      "unityId": 292,
+      "hash": 1666295042,
+      "structure": "iiB"
+    },
+    {
+      "name": "InfoHotelClosing",
+      "unityId": 291,
+      "hash": 3006483102,
+      "structure": "i"
+    },
+    {
+      "name": "InitCamera",
+      "unityId": -1,
+      "hash": 2005163685,
+      "structure": null
+    },
+    {
+      "name": "InitDiffieHandshake",
+      "unityId": -1,
+      "hash": 3809968236,
+      "structure": "ss"
+    },
+    {
+      "name": "InstantMessageError",
+      "unityId": 261,
+      "hash": 3403706277,
+      "structure": "iis"
+    },
+    {
+      "name": "Interstitial",
+      "unityId": 258,
+      "hash": 4068692033,
+      "structure": "B"
+    },
+    {
+      "name": "IsBadgeRequestFulfilled",
+      "unityId": -1,
+      "hash": 4019953317,
+      "structure": "sB"
+    },
+    {
+      "name": "IsFirstLoginOfDay",
+      "unityId": 8,
+      "hash": 254390194,
+      "structure": "B"
+    },
+    {
+      "name": "IssueCloseNotification",
+      "unityId": 540,
+      "hash": 2865223751,
+      "structure": "is"
+    },
+    {
+      "name": "IssueDeleted",
+      "unityId": -1,
+      "hash": 1167724097,
+      "structure": "s"
+    },
+    {
+      "name": "IssueInfo",
+      "unityId": -1,
+      "hash": 4195131297,
+      "structure": null
+    },
+    {
+      "name": "IssuePickFailed",
+      "unityId": -1,
+      "hash": 2258195735,
+      "structure": null
+    },
+    {
+      "name": "IsUserPartOfCompetition",
+      "unityId": -1,
+      "hash": 3307110419,
+      "structure": "Bi"
+    },
+    {
+      "name": "ItemAdd",
+      "unityId": -1,
+      "hash": 2779957371,
+      "structure": null
+    },
+    {
+      "name": "ItemDataUpdate",
+      "unityId": -1,
+      "hash": 448897739,
+      "structure": null
+    },
+    {
+      "name": "ItemRemove",
+      "unityId": -1,
+      "hash": 299087807,
+      "structure": null
+    },
+    {
+      "name": "Items",
+      "unityId": 45,
+      "hash": 3977425086,
+      "structure": null
+    },
+    {
+      "name": "ItemUpdate",
+      "unityId": -1,
+      "hash": 1075909454,
+      "structure": null
+    },
+    {
+      "name": "JukeboxPlayListFull",
+      "unityId": 337,
+      "hash": 4071215418,
+      "structure": null
+    },
+    {
+      "name": "JukeboxSongDisks",
+      "unityId": -1,
+      "hash": 1024548761,
+      "structure": null
+    },
+    {
+      "name": "LatencyPingResponse",
+      "unityId": -1,
+      "hash": 2640146302,
+      "structure": "i"
+    },
+    {
+      "name": "LimitedEditionSoldOut",
+      "unityId": 636,
+      "hash": 181679290,
+      "structure": null
+    },
+    {
+      "name": "LimitedOfferAppearingNext",
+      "unityId": -1,
+      "hash": 2111000525,
+      "structure": "iiis"
+    },
+    {
+      "name": "LoginFailedHotelClosed",
+      "unityId": 294,
+      "hash": 649126860,
+      "structure": "ii"
+    },
+    {
+      "name": "MaintenanceStatus",
+      "unityId": 980,
+      "hash": 1605337069,
+      "structure": null
+    },
+    {
+      "name": "MarketplaceBuyOfferResult",
+      "unityId": 613,
+      "hash": 3710899585,
+      "structure": "iiii"
+    },
+    {
+      "name": "MarketplaceCancelOfferResult",
+      "unityId": -1,
+      "hash": 4241227270,
+      "structure": "iB"
+    },
+    {
+      "name": "MarketplaceCanMakeOfferResult",
+      "unityId": 611,
+      "hash": 1839599001,
+      "structure": "ii"
+    },
+    {
+      "name": "MarketplaceConfiguration",
+      "unityId": 612,
+      "hash": 3915527844,
+      "structure": "Biiiiiiiiii"
+    },
+    {
+      "name": "MarketplaceItemStats",
+      "unityId": 617,
+      "hash": 151554762,
+      "structure": null
+    },
+    {
+      "name": "MarketplaceMakeOfferResult",
+      "unityId": 610,
+      "hash": 1248864773,
+      "structure": "i"
+    },
+    {
+      "name": "MarketPlaceOffers",
+      "unityId": -1,
+      "hash": 138568063,
+      "structure": null
+    },
+    {
+      "name": "MarketPlaceOwnOffers",
+      "unityId": -1,
+      "hash": 1782256715,
+      "structure": null
+    },
+    {
+      "name": "MessengerError",
+      "unityId": 260,
+      "hash": 3167773548,
+      "structure": "ii"
+    },
+    {
+      "name": "MessengerInit",
+      "unityId": 12,
+      "hash": 3380876627,
+      "structure": null
+    },
+    {
+      "name": "MiniMailNew",
+      "unityId": -1,
+      "hash": 2477041448,
+      "structure": null
+    },
+    {
+      "name": "MiniMailUnreadCount",
+      "unityId": -1,
+      "hash": 629633546,
+      "structure": "i"
+    },
+    {
+      "name": "Moderator",
+      "unityId": -1,
+      "hash": 2236510568,
+      "structure": "ss"
+    },
+    {
+      "name": "ModeratorActionResult",
+      "unityId": 539,
+      "hash": 1808737303,
+      "structure": "iB"
+    },
+    {
+      "name": "ModeratorCaution",
+      "unityId": 161,
+      "hash": 1066060670,
+      "structure": "ss"
+    },
+    {
+      "name": "ModeratorInit",
+      "unityId": 531,
+      "hash": 2590550346,
+      "structure": null
+    },
+    {
+      "name": "ModeratorRoomInfo",
+      "unityId": -1,
+      "hash": 204221610,
+      "structure": null
+    },
+    {
+      "name": "ModeratorToolPreferences",
+      "unityId": -1,
+      "hash": 772526894,
+      "structure": "iiii"
+    },
+    {
+      "name": "ModeratorUserInfo",
+      "unityId": -1,
+      "hash": 3579650944,
+      "structure": null
+    },
+    {
+      "name": "MOTDNotification",
+      "unityId": -1,
+      "hash": 2503523631,
+      "structure": null
+    },
+    {
+      "name": "MuteAllInRoom",
+      "unityId": -1,
+      "hash": 4206331549,
+      "structure": "B"
+    },
+    {
+      "name": "MysteryBoxKeys",
+      "unityId": 1002,
+      "hash": 650016045,
+      "structure": "ss"
+    },
+    {
+      "name": "NavigatorCollapsedCategories",
+      "unityId": -1,
+      "hash": 556064311,
+      "structure": null
+    },
+    {
+      "name": "NavigatorLiftedRooms",
+      "unityId": -1,
+      "hash": 756844409,
+      "structure": null
+    },
+    {
+      "name": "NavigatorMetaData",
+      "unityId": -1,
+      "hash": 2549266077,
+      "structure": null
+    },
+    {
+      "name": "NavigatorSavedSearches",
+      "unityId": -1,
+      "hash": 3041176493,
+      "structure": null
+    },
+    {
+      "name": "NavigatorSearchResultBlocks",
+      "unityId": -1,
+      "hash": 1200193528,
+      "structure": null
+    },
+    {
+      "name": "NavigatorSettings",
+      "unityId": 455,
+      "hash": 3837663245,
+      "structure": "ii"
+    },
+    {
+      "name": "NestBreedingSuccess",
+      "unityId": -1,
+      "hash": 425706517,
+      "structure": "ii"
+    },
+    {
+      "name": "NewConsole",
+      "unityId": -1,
+      "hash": 2222057052,
+      "structure": null
+    },
+    {
+      "name": "NewFriendRequest",
+      "unityId": -1,
+      "hash": 3207200306,
+      "structure": "iss"
+    },
+    {
+      "name": "NewNavigatorPreferences",
+      "unityId": -1,
+      "hash": 3347192506,
+      "structure": "iiiiBi"
+    },
+    {
+      "name": "NewUserExperienceGiftOffer",
+      "unityId": -1,
+      "hash": 3587195119,
+      "structure": null
+    },
+    {
+      "name": "NewUserExperienceNotComplete",
+      "unityId": -1,
+      "hash": 755616075,
+      "structure": null
+    },
+    {
+      "name": "NoobnessLevel",
+      "unityId": 1562,
+      "hash": 3155088088,
+      "structure": "i"
+    },
+    {
+      "name": "NoOwnedRoomsAlert",
+      "unityId": 793,
+      "hash": 3688043194,
+      "structure": null
+    },
+    {
+      "name": "NoSuchFlat",
+      "unityId": -1,
+      "hash": 3585823257,
+      "structure": "i"
+    },
+    {
+      "name": "NotEnoughBalance",
+      "unityId": 68,
+      "hash": 3032301298,
+      "structure": null
+    },
+    {
+      "name": "NotificationDialog",
+      "unityId": -1,
+      "hash": 75439052,
+      "structure": null
+    },
+    {
+      "name": "NowPlaying",
+      "unityId": 327,
+      "hash": 3211311797,
+      "structure": "iiiii"
+    },
+    {
+      "name": "ObjectAdd",
+      "unityId": -1,
+      "hash": 3094545877,
+      "structure": null
+    },
+    {
+      "name": "ObjectDataUpdate",
+      "unityId": -1,
+      "hash": 554495788,
+      "structure": null
+    },
+    {
+      "name": "ObjectRemove",
+      "unityId": -1,
+      "hash": 2071550506,
+      "structure": null
+    },
+    {
+      "name": "Objects",
+      "unityId": -1,
+      "hash": 3486286946,
+      "structure": null
+    },
+    {
+      "name": "ObjectsDataUpdate",
+      "unityId": -1,
+      "hash": 2218246,
+      "structure": null
+    },
+    {
+      "name": "ObjectUpdate",
+      "unityId": -1,
+      "hash": 1062039948,
+      "structure": null
+    },
+    {
+      "name": "OfferRewardDelivered",
+      "unityId": 685,
+      "hash": 4289260669,
+      "structure": "siss"
+    },
+    {
+      "name": "OfficialRooms",
+      "unityId": 450,
+      "hash": 2894382638,
+      "structure": null
+    },
+    {
+      "name": "OfficialSongId",
+      "unityId": -1,
+      "hash": 1045875581,
+      "structure": "si"
+    },
+    {
+      "name": "OneWayDoorStatus",
+      "unityId": -1,
+      "hash": 1535390042,
+      "structure": null
+    },
+    {
+      "name": "Open",
+      "unityId": -1,
+      "hash": 4090980151,
+      "structure": "i"
+    },
+    {
+      "name": "OpenConnection",
+      "unityId": -1,
+      "hash": 325377310,
+      "structure": "i"
+    },
+    {
+      "name": "OpenPetPackageRequested",
+      "unityId": -1,
+      "hash": 548922697,
+      "structure": null
+    },
+    {
+      "name": "OpenPetPackageResult",
+      "unityId": -1,
+      "hash": 2548566183,
+      "structure": null
+    },
+    {
+      "name": "PerkAllowances",
+      "unityId": 750,
+      "hash": 3425799906,
+      "structure": null
+    },
+    {
+      "name": "PetAddedToInventory",
+      "unityId": 603,
+      "hash": 1932746673,
+      "structure": null
+    },
+    {
+      "name": "PetBreeding",
+      "unityId": -1,
+      "hash": 976896902,
+      "structure": "iii"
+    },
+    {
+      "name": "PetBreedingResult",
+      "unityId": 828,
+      "hash": 3532440451,
+      "structure": "iisisiBiisisiB"
+    },
+    {
+      "name": "PetCommands",
+      "unityId": -1,
+      "hash": 2153426813,
+      "structure": null
+    },
+    {
+      "name": "PetExperience",
+      "unityId": -1,
+      "hash": 2445621385,
+      "structure": null
+    },
+    {
+      "name": "PetFigureUpdate",
+      "unityId": -1,
+      "hash": 930457165,
+      "structure": null
+    },
+    {
+      "name": "PetInfo",
+      "unityId": 601,
+      "hash": 500993197,
+      "structure": null
+    },
+    {
+      "name": "PetInventory",
+      "unityId": 600,
+      "hash": 2923209669,
+      "structure": null
+    },
+    {
+      "name": "PetLevelNotification",
+      "unityId": 602,
+      "hash": 42369775,
+      "structure": null
+    },
+    {
+      "name": "PetLevelUpdate",
+      "unityId": 38,
+      "hash": 4000975119,
+      "structure": "iii"
+    },
+    {
+      "name": "PetPlacingError",
+      "unityId": -1,
+      "hash": 10271864,
+      "structure": null
+    },
+    {
+      "name": "PetReceived",
+      "unityId": -1,
+      "hash": 2188505262,
+      "structure": null
+    },
+    {
+      "name": "PetRemovedFromInventory",
+      "unityId": 604,
+      "hash": 3539719788,
+      "structure": "i"
+    },
+    {
+      "name": "PetRespectFailed",
+      "unityId": 621,
+      "hash": 1897677551,
+      "structure": "ii"
+    },
+    {
+      "name": "PetRespectNotification",
+      "unityId": -1,
+      "hash": 3388032508,
+      "structure": null
+    },
+    {
+      "name": "PetStatusUpdate",
+      "unityId": 37,
+      "hash": 4176142486,
+      "structure": "iiBBBB"
+    },
+    {
+      "name": "PetSupplementedNotification",
+      "unityId": 598,
+      "hash": 1810606700,
+      "structure": "iii"
+    },
+    {
+      "name": "PhoneCollectionState",
+      "unityId": -1,
+      "hash": 4273875869,
+      "structure": "iii"
+    },
+    {
+      "name": "Ping",
+      "unityId": 50,
+      "hash": 634949745,
+      "structure": null
+    },
+    {
+      "name": "PlayList",
+      "unityId": -1,
+      "hash": 2501888242,
+      "structure": null
+    },
+    {
+      "name": "PlayListSongAdded",
+      "unityId": -1,
+      "hash": 2160678501,
+      "structure": "iiss"
+    },
+    {
+      "name": "PollContents",
+      "unityId": 317,
+      "hash": 307382062,
+      "structure": null
+    },
+    {
+      "name": "PollError",
+      "unityId": 318,
+      "hash": 3758173423,
+      "structure": null
+    },
+    {
+      "name": "PollOffer",
+      "unityId": 316,
+      "hash": 2278022629,
+      "structure": "isss"
+    },
+    {
+      "name": "PopularRoomTagsResult",
+      "unityId": 452,
+      "hash": 3061519130,
+      "structure": null
+    },
+    {
+      "name": "PostItPlaced",
+      "unityId": 145,
+      "hash": 1912448048,
+      "structure": "ii"
+    },
+    {
+      "name": "PostMessage",
+      "unityId": -1,
+      "hash": 104751378,
+      "structure": "iiiiissisbisii"
+    },
+    {
+      "name": "PostThread",
+      "unityId": -1,
+      "hash": 1410279219,
+      "structure": "iiissBBiiiiisibisi"
+    },
+    {
+      "name": "PresentOpened",
+      "unityId": -1,
+      "hash": 3512730460,
+      "structure": null
+    },
+    {
+      "name": "ProductOffer",
+      "unityId": 637,
+      "hash": 4096966284,
+      "structure": null
+    },
+    {
+      "name": "PromoArticles",
+      "unityId": -1,
+      "hash": 1465840009,
+      "structure": null
+    },
+    {
+      "name": "PurchaseError",
+      "unityId": 65,
+      "hash": 962458879,
+      "structure": "i"
+    },
+    {
+      "name": "PurchaseNotAllowed",
+      "unityId": 296,
+      "hash": 2234740489,
+      "structure": "i"
+    },
+    {
+      "name": "PurchaseOK",
+      "unityId": -1,
+      "hash": 935671809,
+      "structure": null
+    },
+    {
+      "name": "Quest",
+      "unityId": 802,
+      "hash": 3005892061,
+      "structure": "siiiiBssisiiissB"
+    },
+    {
+      "name": "QuestCancelled",
+      "unityId": -1,
+      "hash": 2810137854,
+      "structure": "B"
+    },
+    {
+      "name": "QuestCompleted",
+      "unityId": 801,
+      "hash": 1319438605,
+      "structure": "siiiiBssisiiissBB"
+    },
+    {
+      "name": "QuestDaily",
+      "unityId": -1,
+      "hash": 100364330,
+      "structure": null
+    },
+    {
+      "name": "Question",
+      "unityId": 1750,
+      "hash": 2731653458,
+      "structure": null
+    },
+    {
+      "name": "QuestionAnswered",
+      "unityId": 1751,
+      "hash": 11893812,
+      "structure": null
+    },
+    {
+      "name": "QuestionFinished",
+      "unityId": 1752,
+      "hash": 2234956673,
+      "structure": null
+    },
+    {
+      "name": "Quests",
+      "unityId": 800,
+      "hash": 3149902401,
+      "structure": null
+    },
+    {
+      "name": "QuizData",
+      "unityId": 560,
+      "hash": 2128879637,
+      "structure": null
+    },
+    {
+      "name": "QuizResults",
+      "unityId": -1,
+      "hash": 1470723790,
+      "structure": null
+    },
+    {
+      "name": "RelationshipStatusInfo",
+      "unityId": 914,
+      "hash": 2113729254,
+      "structure": null
+    },
+    {
+      "name": "RemainingMutePeriod",
+      "unityId": -1,
+      "hash": 3655701476,
+      "structure": "i"
+    },
+    {
+      "name": "RentableSpaceRentFailed",
+      "unityId": 1492,
+      "hash": 2077501817,
+      "structure": "i"
+    },
+    {
+      "name": "RentableSpaceRentOk",
+      "unityId": 1491,
+      "hash": 321270223,
+      "structure": "i"
+    },
+    {
+      "name": "RentableSpaceStatus",
+      "unityId": -1,
+      "hash": 2420906646,
+      "structure": null
+    },
+    {
+      "name": "RequestSpamWallPostIt",
+      "unityId": -1,
+      "hash": 604083244,
+      "structure": null
+    },
+    {
+      "name": "RespectNotification",
+      "unityId": -1,
+      "hash": 123815551,
+      "structure": "ii"
+    },
+    {
+      "name": "RestoreClient",
+      "unityId": -1,
+      "hash": 2522152013,
+      "structure": null
+    },
+    {
+      "name": "RoomAdError",
+      "unityId": 374,
+      "hash": 3294925510,
+      "structure": "is"
+    },
+    {
+      "name": "RoomAdPurchaseInfo",
+      "unityId": -1,
+      "hash": 1563587362,
+      "structure": null
+    },
+    {
+      "name": "RoomChatlog",
+      "unityId": -1,
+      "hash": 804261483,
+      "structure": null
+    },
+    {
+      "name": "RoomChatSettings",
+      "unityId": 474,
+      "hash": 2741688180,
+      "structure": "iiiii"
+    },
+    {
+      "name": "RoomDimmerPresets",
+      "unityId": 365,
+      "hash": 2760242814,
+      "structure": null
+    },
+    {
+      "name": "RoomEntryInfo",
+      "unityId": 471,
+      "hash": 1023061412,
+      "structure": "iB"
+    },
+    {
+      "name": "RoomEntryTile",
+      "unityId": 1472,
+      "hash": 2483203181,
+      "structure": "iii"
+    },
+    {
+      "name": "RoomEvent",
+      "unityId": -1,
+      "hash": 4198086950,
+      "structure": "iisiissiii"
+    },
+    {
+      "name": "RoomEventCancel",
+      "unityId": -1,
+      "hash": 275989434,
+      "structure": null
+    },
+    {
+      "name": "RoomFilterSettings",
+      "unityId": -1,
+      "hash": 826561322,
+      "structure": null
+    },
+    {
+      "name": "RoomForward",
+      "unityId": -1,
+      "hash": 2471678524,
+      "structure": "i"
+    },
+    {
+      "name": "RoomInfoUpdated",
+      "unityId": -1,
+      "hash": 1813102147,
+      "structure": "i"
+    },
+    {
+      "name": "RoomInvite",
+      "unityId": -1,
+      "hash": 3473746734,
+      "structure": "is"
+    },
+    {
+      "name": "RoomInviteError",
+      "unityId": 262,
+      "hash": 2141144901,
+      "structure": null
+    },
+    {
+      "name": "RoomMessageNotification",
+      "unityId": -1,
+      "hash": 3450871876,
+      "structure": "isi"
+    },
+    {
+      "name": "RoomOccupiedTiles",
+      "unityId": 1473,
+      "hash": 1216129769,
+      "structure": null
+    },
+    {
+      "name": "RoomProperty",
+      "unityId": -1,
+      "hash": 1414863062,
+      "structure": null
+    },
+    {
+      "name": "RoomQueueStatus",
+      "unityId": 259,
+      "hash": 1419470745,
+      "structure": null
+    },
+    {
+      "name": "RoomRating",
+      "unityId": 345,
+      "hash": 2234922025,
+      "structure": "iB"
+    },
+    {
+      "name": "RoomReady",
+      "unityId": 69,
+      "hash": 1680488788,
+      "structure": "si"
+    },
+    {
+      "name": "RoomSettingsData",
+      "unityId": -1,
+      "hash": 3896797120,
+      "structure": null
+    },
+    {
+      "name": "RoomSettingsError",
+      "unityId": 466,
+      "hash": 270582555,
+      "structure": "ii"
+    },
+    {
+      "name": "RoomSettingsSaved",
+      "unityId": 467,
+      "hash": 1250374522,
+      "structure": "i"
+    },
+    {
+      "name": "RoomSettingsSaveError",
+      "unityId": 468,
+      "hash": 2120212938,
+      "structure": "iis"
+    },
+    {
+      "name": "RoomVisits",
+      "unityId": -1,
+      "hash": 2142615791,
+      "structure": null
+    },
+    {
+      "name": "RoomVisualizationSettings",
+      "unityId": 472,
+      "hash": 931097085,
+      "structure": null
+    },
+    {
+      "name": "SanctionStatus",
+      "unityId": -1,
+      "hash": 895790938,
+      "structure": null
+    },
+    {
+      "name": "ScrSendKickbackInfo",
+      "unityId": -1,
+      "hash": 1657022733,
+      "structure": "isdiiiiii"
+    },
+    {
+      "name": "ScrSendUserInfo",
+      "unityId": -1,
+      "hash": 2398578316,
+      "structure": null
+    },
+    {
+      "name": "SeasonalCalendarDailyOffer",
+      "unityId": -1,
+      "hash": 437534395,
+      "structure": null
+    },
+    {
+      "name": "SeasonalQuests",
+      "unityId": -1,
+      "hash": 3620591675,
+      "structure": null
+    },
+    {
+      "name": "SecondsUntil",
+      "unityId": -1,
+      "hash": 103249412,
+      "structure": "si"
+    },
+    {
+      "name": "SellablePetPalettes",
+      "unityId": 827,
+      "hash": 1202180076,
+      "structure": null
+    },
+    {
+      "name": "Shout",
+      "unityId": 26,
+      "hash": 1400604357,
+      "structure": null
+    },
+    {
+      "name": "ShowEnforceRoomCategoryDialog",
+      "unityId": -1,
+      "hash": 2300679096,
+      "structure": "i"
+    },
+    {
+      "name": "ShowMysteryBoxWait",
+      "unityId": 355,
+      "hash": 2096537570,
+      "structure": null
+    },
+    {
+      "name": "Sleep",
+      "unityId": -1,
+      "hash": 677690799,
+      "structure": null
+    },
+    {
+      "name": "SlideObjectBundle",
+      "unityId": -1,
+      "hash": 641696449,
+      "structure": null
+    },
+    {
+      "name": "SnowWarGameTokens",
+      "unityId": -1,
+      "hash": 1804027612,
+      "structure": null
+    },
+    {
+      "name": "SpecialRoomEffect",
+      "unityId": -1,
+      "hash": 3274186197,
+      "structure": "i"
+    },
+    {
+      "name": "TalentLevelUp",
+      "unityId": -1,
+      "hash": 350468471,
+      "structure": null
+    },
+    {
+      "name": "TalentTrack",
+      "unityId": 565,
+      "hash": 2972062245,
+      "structure": null
+    },
+    {
+      "name": "TalentTrackLevel",
+      "unityId": -1,
+      "hash": 956977425,
+      "structure": "sii"
+    },
+    {
+      "name": "TargetedOffer",
+      "unityId": 1530,
+      "hash": 615406408,
+      "structure": null
+    },
+    {
+      "name": "TargetedOfferNotFound",
+      "unityId": 1531,
+      "hash": 3523985399,
+      "structure": null
+    },
+    {
+      "name": "ThreadMessages",
+      "unityId": -1,
+      "hash": 30926874,
+      "structure": null
+    },
+    {
+      "name": "ThumbnailStatus",
+      "unityId": -1,
+      "hash": 2714922639,
+      "structure": null
+    },
+    {
+      "name": "TradeOpenFailed",
+      "unityId": -1,
+      "hash": 3186421263,
+      "structure": "is"
+    },
+    {
+      "name": "TradingAccept",
+      "unityId": -1,
+      "hash": 2452161573,
+      "structure": "ii"
+    },
+    {
+      "name": "TradingClose",
+      "unityId": -1,
+      "hash": 1487737888,
+      "structure": "ii"
+    },
+    {
+      "name": "TradingCompleted",
+      "unityId": -1,
+      "hash": 31482310,
+      "structure": null
+    },
+    {
+      "name": "TradingConfirmation",
+      "unityId": -1,
+      "hash": 3308854309,
+      "structure": null
+    },
+    {
+      "name": "TradingItemList",
+      "unityId": -1,
+      "hash": 4279695579,
+      "structure": null
+    },
+    {
+      "name": "TradingNotOpen",
+      "unityId": -1,
+      "hash": 141011783,
+      "structure": null
+    },
+    {
+      "name": "TradingOpen",
+      "unityId": -1,
+      "hash": 498210879,
+      "structure": "iiii"
+    },
+    {
+      "name": "TradingOtherNotAllowed",
+      "unityId": -1,
+      "hash": 1991053867,
+      "structure": null
+    },
+    {
+      "name": "TradingYouAreNotAllowed",
+      "unityId": -1,
+      "hash": 874077157,
+      "structure": null
+    },
+    {
+      "name": "TraxSongInfo",
+      "unityId": -1,
+      "hash": 1370547100,
+      "structure": null
+    },
+    {
+      "name": "TryPhoneNumberResult",
+      "unityId": -1,
+      "hash": 836937510,
+      "structure": "ii"
+    },
+    {
+      "name": "TryVerificationCodeResult",
+      "unityId": -1,
+      "hash": 1109170231,
+      "structure": "ii"
+    },
+    {
+      "name": "UniqueMachineID",
+      "unityId": -1,
+      "hash": 1613626911,
+      "structure": "s"
+    },
+    {
+      "name": "UnreadForumsCount",
+      "unityId": -1,
+      "hash": 2544133236,
+      "structure": "i"
+    },
+    {
+      "name": "UnseenItems",
+      "unityId": -1,
+      "hash": 1105048897,
+      "structure": null
+    },
+    {
+      "name": "UpdateMessage",
+      "unityId": -1,
+      "hash": 446555121,
+      "structure": "iiiiissisbisii"
+    },
+    {
+      "name": "UpdateThread",
+      "unityId": -1,
+      "hash": 879066235,
+      "structure": "iiissBBiiiiisibisi"
+    },
+    {
+      "name": "UseObject",
+      "unityId": -1,
+      "hash": 1219792098,
+      "structure": null
+    },
+    {
+      "name": "UserBanned",
+      "unityId": 35,
+      "hash": 2831105878,
+      "structure": "s"
+    },
+    {
+      "name": "UserChange",
+      "unityId": -1,
+      "hash": 2401369793,
+      "structure": null
+    },
+    {
+      "name": "UserChatlog",
+      "unityId": -1,
+      "hash": 2687267371,
+      "structure": null
+    },
+    {
+      "name": "UserClassification",
+      "unityId": -1,
+      "hash": 232427595,
+      "structure": null
+    },
+    {
+      "name": "UserEventCats",
+      "unityId": -1,
+      "hash": 3096914049,
+      "structure": null
+    },
+    {
+      "name": "UserFlatCats",
+      "unityId": -1,
+      "hash": 1305579647,
+      "structure": null
+    },
+    {
+      "name": "UserNameChanged",
+      "unityId": -1,
+      "hash": 3726564377,
+      "structure": "iis"
+    },
+    {
+      "name": "UserNftWardrobe",
+      "unityId": -1,
+      "hash": 3732960891,
+      "structure": null
+    },
+    {
+      "name": "UserNftWardrobeSelection",
+      "unityId": -1,
+      "hash": 1089821668,
+      "structure": "iss"
+    },
+    {
+      "name": "UserObject",
+      "unityId": 5,
+      "hash": 2428575878,
+      "structure": "isssssBiiiBsBB"
+    },
+    {
+      "name": "UserRemove",
+      "unityId": -1,
+      "hash": 1609728960,
+      "structure": null
+    },
+    {
+      "name": "UserRights",
+      "unityId": -1,
+      "hash": 3782349727,
+      "structure": "iiB"
+    },
+    {
+      "name": "Users",
+      "unityId": -1,
+      "hash": 2702347476,
+      "structure": null
+    },
+    {
+      "name": "UserSongDisksInventory",
+      "unityId": -1,
+      "hash": 2015062434,
+      "structure": null
+    },
+    {
+      "name": "UserTyping",
+      "unityId": -1,
+      "hash": 409649145,
+      "structure": null
+    },
+    {
+      "name": "UserUnbannedFromRoom",
+      "unityId": -1,
+      "hash": 2580661710,
+      "structure": "ii"
+    },
+    {
+      "name": "UserUpdate",
+      "unityId": -1,
+      "hash": 2986321866,
+      "structure": null
+    },
+    {
+      "name": "VoucherRedeemError",
+      "unityId": 213,
+      "hash": 89973701,
+      "structure": "s"
+    },
+    {
+      "name": "VoucherRedeemOk",
+      "unityId": 212,
+      "hash": 1351315028,
+      "structure": "ss"
+    },
+    {
+      "name": "Wardrobe",
+      "unityId": -1,
+      "hash": 635633020,
+      "structure": null
+    },
+    {
+      "name": "Whisper",
+      "unityId": 25,
+      "hash": 394582171,
+      "structure": null
+    },
+    {
+      "name": "WiredFurniAction",
+      "unityId": -1,
+      "hash": 4027308459,
+      "structure": null
+    },
+    {
+      "name": "WiredFurniCondition",
+      "unityId": -1,
+      "hash": 1992447765,
+      "structure": null
+    },
+    {
+      "name": "WiredFurniTrigger",
+      "unityId": -1,
+      "hash": 1285921198,
+      "structure": null
+    },
+    {
+      "name": "WiredRewardResult",
+      "unityId": -1,
+      "hash": 2742678825,
+      "structure": "i"
+    },
+    {
+      "name": "WiredSaveSuccess",
+      "unityId": -1,
+      "hash": 1606139461,
+      "structure": null
+    },
+    {
+      "name": "WiredValidationError",
+      "unityId": -1,
+      "hash": 2655685191,
+      "structure": "s"
+    },
+    {
+      "name": "YouAreController",
+      "unityId": 42,
+      "hash": 4076097589,
+      "structure": null
+    },
+    {
+      "name": "YouAreNotController",
+      "unityId": 43,
+      "hash": 1079335163,
+      "structure": "i"
+    },
+    {
+      "name": "YouAreOwner",
+      "unityId": 47,
+      "hash": 903290553,
+      "structure": "i"
+    },
+    {
+      "name": "YouArePlayingGame",
+      "unityId": -1,
+      "hash": 3458940800,
+      "structure": "B"
+    },
+    {
+      "name": "YouAreSpectator",
+      "unityId": 254,
+      "hash": 3626743944,
+      "structure": "i"
+    },
+    {
+      "name": "YoutubeControlVideo",
+      "unityId": 1482,
+      "hash": 718148618,
+      "structure": "ii"
+    },
+    {
+      "name": "YoutubeDisplayPlaylists",
+      "unityId": -1,
+      "hash": 3126737561,
+      "structure": null
+    },
+    {
+      "name": "YoutubeDisplayVideo",
+      "unityId": 1480,
+      "hash": 2765148087,
+      "structure": "isiii"
+    }
+  ]
+}

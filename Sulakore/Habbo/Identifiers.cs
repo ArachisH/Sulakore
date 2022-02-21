@@ -4,7 +4,7 @@ namespace Sulakore.Habbo;
 
 public abstract class Identifiers : IReadOnlyList<HMessage>
 {
-    private readonly HMessage[] _messages;
+    private readonly List<HMessage> _messages;
     private readonly Dictionary<short, HMessage> _byId;
     private readonly Dictionary<uint, HMessage> _byHash;
     private readonly Dictionary<string, HMessage> _byName;
@@ -15,11 +15,14 @@ public abstract class Identifiers : IReadOnlyList<HMessage>
     public HMessage this[uint hash] => _byHash[hash];
     public HMessage this[string name] => _byName[name];
 
+    public Identifiers(bool isOutgoing)
+        : this(768, isOutgoing)
+    { }
     public Identifiers(int count, bool isOutgoing)
     {
         IsOutgoing = isOutgoing;
 
-        _messages = new HMessage[count];
+        _messages = new List<HMessage>(count);
         _byId = new Dictionary<short, HMessage>(count);
         _byHash = new Dictionary<uint, HMessage>(count);
         _byName = new Dictionary<string, HMessage>(count);
@@ -28,6 +31,14 @@ public abstract class Identifiers : IReadOnlyList<HMessage>
     public bool TryGetMessage(short id, out HMessage message) => _byId.TryGetValue(id, out message);
     public bool TryGetMessage(uint hash, out HMessage message) => _byHash.TryGetValue(hash, out message);
     public bool TryGetMessage(string name, out HMessage message) => _byName.TryGetValue(name, out message);
+
+    public void TrimExcess()
+    {
+        _byId.TrimExcess();
+        _byHash.TrimExcess();
+        _byName.TrimExcess();
+        _messages.TrimExcess();
+    }
 
     protected virtual void Register(HMessage message, string propertyName, ref HMessage backingField)
     {
@@ -43,6 +54,7 @@ public abstract class Identifiers : IReadOnlyList<HMessage>
         {
             _byHash.Add(message.Hash, backingField);
         }
+        _messages.Add(backingField);
     }
     protected virtual HMessage ResolveMessage(IGame game, string name, short unityId, string unityStructure, params uint[] postShuffleHashes)
     {
@@ -66,12 +78,12 @@ public abstract class Identifiers : IReadOnlyList<HMessage>
         }
 
         _byName.Add(name, message);
-        _messages[_byName.Count - 1] = message;
+        _messages.Add(message);
         return message;
     }
 
     #region IReadOnlyList<HMessage> Implementation
-    public int Count => _messages.Length;
+    public int Count => _messages.Count;
     HMessage IReadOnlyList<HMessage>.this[int index] => _messages[index];
 
     IEnumerator IEnumerable.GetEnumerator() => _messages.GetEnumerator();

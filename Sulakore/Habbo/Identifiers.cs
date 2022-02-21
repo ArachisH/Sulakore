@@ -26,9 +26,25 @@ public abstract class Identifiers : IReadOnlyList<HMessage>
     }
 
     public bool TryGetMessage(short id, out HMessage message) => _byId.TryGetValue(id, out message);
+    public bool TryGetMessage(uint hash, out HMessage message) => _byHash.TryGetValue(hash, out message);
     public bool TryGetMessage(string name, out HMessage message) => _byName.TryGetValue(name, out message);
 
-    protected HMessage ResolveMessage(IGame game, string name, short unityId, string unityStructure, params uint[] postShuffleHashes)
+    protected virtual void Register(HMessage message, string propertyName, ref HMessage backingField)
+    {
+        backingField = new HMessage(propertyName, message.Id, message.Hash, message.Structure, message.IsOutgoing, message.TypeName, message.ParserTypeName, message.References);
+
+        _byId.Add(backingField.Id, backingField);
+        _byName.Add(propertyName, backingField);
+        if (!string.IsNullOrWhiteSpace(message.Name))
+        {
+            _byName.Add(message.Name, backingField);
+        }
+        if (message.Hash != 0)
+        {
+            _byHash.Add(message.Hash, backingField);
+        }
+    }
+    protected virtual HMessage ResolveMessage(IGame game, string name, short unityId, string unityStructure, params uint[] postShuffleHashes)
     {
         HMessage message = default;
         if (!game.IsUnity)

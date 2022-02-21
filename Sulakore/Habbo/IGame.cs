@@ -1,16 +1,15 @@
-﻿namespace Sulakore.Habbo
+﻿namespace Sulakore.Habbo;
+
+public interface IGame
 {
-    public interface IGame
-    {
-        Incoming In { get; }
-        Outgoing Out { get; }
+    Incoming In { get; }
+    Outgoing Out { get; }
 
-        bool IsUnity { get; }
-        bool IsPostShuffle { get; }
+    bool IsUnity { get; }
+    bool IsPostShuffle { get; }
 
-        string Path { get; }
-        string Revision { get; }
+    string Path { get; }
+    string Revision { get; }
 
-        short Resolve(string name, bool isOutgoing);
-    }
+    bool TryResolveMessage(string name, uint hash, bool isOutgoing, out HMessage message);
 }

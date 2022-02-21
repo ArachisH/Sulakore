@@ -1,5 +1,8 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Linq;
+using System.Text;
 using System.CodeDom.Compiler;
+using System.Runtime.Serialization.Json;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -9,31 +12,23 @@ namespace Sulakore.Generators
     [Generator]
     public class MessagesGenerator : ISourceGenerator
     {
-        public record Message(bool IsOutgoing, string Name, string Hash, short Id);
-
         public void Execute(GeneratorExecutionContext context)
         {
-            List<Message> outMessages = new(), inMessages = new();
-            foreach ((bool IsOutgoing, string[] Items) in ParseEntries(context.AdditionalFiles.Single(at => at.Path.EndsWith("Messages.ini")).Path))
-            {
-                string name = Items[0], hash = null;
-                if (!short.TryParse(Items[1], out short id))
-                {
-                    id = -1;
-                    hash = Items[1];
-                }
-                else if (Items.Length > 2) hash = Items[2];
-                (IsOutgoing ? outMessages : inMessages).Add(new Message(IsOutgoing, name, hash, id));
-            }
-            context.AddSource("Outgoing.cs", SourceText.From(CreateMessagesSource(outMessages, true), Encoding.UTF8));
-            context.AddSource("Incoming.cs", SourceText.From(CreateMessagesSource(inMessages, false), Encoding.UTF8));
+            string messagesJsonPath = context.AdditionalFiles.Single(at => at.Path.EndsWith("messages.json")).Path;
+            using var messagesStream = new MemoryStream(File.ReadAllBytes(messagesJsonPath));
+
+            var messagesSerializer = new DataContractJsonSerializer(typeof(Messages));
+            var messages = (Messages)messagesSerializer.ReadObject(messagesStream);
+
+            context.AddSource("Outgoing.cs", SourceText.From(CreateMessagesSource(messages.Outgoing, true), Encoding.UTF8));
+            context.AddSource("Incoming.cs", SourceText.From(CreateMessagesSource(messages.Incoming, false), Encoding.UTF8));
         }
         public void Initialize(GeneratorInitializationContext context)
         { }
 
-        public static string CreateMessagesSource(IList<Message> messages, bool isOutgoing)
+        private static string CreateMessagesSource(Message[] messages, bool isOutgoing)
         {
-            string className = (isOutgoing ? "Outgoing" : "Incoming");
+            string className = isOutgoing ? "Outgoing" : "Incoming";
             string isOutgoingString = isOutgoing.ToString().ToLowerInvariant();
 
             using var text = new StringWriter();
@@ -49,18 +44,30 @@ namespace Sulakore.Generators
 
             foreach (Message message in messages)
             {
-                indentedText.WriteLine($"public HMessage {message.Name} {{ get; }}");
+                indentedText.WriteLine($"public HMessage {message.Name} {{ get; init; }}");
             }
 
             indentedText.WriteLine();
             indentedText.WriteLine($"public {className}() : this(null) {{ }}");
-            indentedText.WriteLine($"public {className}(IGame game) : base({messages.Count}, {isOutgoingString})");
+            indentedText.WriteLine($"public {className}(IGame game) : base({messages.Length}, {isOutgoingString})");
             indentedText.WriteLine("{");
             indentedText.Indent++;
 
             foreach (Message message in messages)
             {
-                indentedText.WriteLine($"{message.Name} = Initialize(game?.Resolve(\"{message.Name}\", {isOutgoingString}) ?? {message.Id}, \"{message.Name}\");");
+                indentedText.Write($"{message.Name} = ResolveMessage(game, \"{message.Name}\", {message.UnityId}, ");
+                if (string.IsNullOrWhiteSpace(message.UnityStructure))
+                {
+                    indentedText.Write("null");
+                }
+                else indentedText.Write("\"" + message.UnityStructure + "\"");
+
+                foreach (uint postShuffleHash in message.PostShuffleHashes)
+                {
+                    indentedText.Write(", ");
+                    indentedText.Write(postShuffleHash);
+                }
+                indentedText.WriteLine(");");
             }
 
             indentedText.Indent--;
@@ -74,32 +81,6 @@ namespace Sulakore.Generators
 
             indentedText.Flush();
             return text.ToString();
-        }
-        public static IEnumerable<(bool IsOutgoing, string[] Items)> ParseEntries(string path)
-        {
-            bool isOutgoing = true;
-            foreach (string line in File.ReadAllLines(path))
-            {
-                string[] items = line.Split(new char[] { '=', ',' }, StringSplitOptions.RemoveEmptyEntries);
-                for (int i = 0; i < items.Length; i++)
-                {
-                    items[i] = items[i].Trim();
-                }
-
-                if (items.Length == 1)
-                {
-                    if (line.Equals("[outgoing]", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        isOutgoing = true;
-                    }
-                    else if (line.Equals("[incoming]", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        isOutgoing = false;
-                    }
-                    continue;
-                }
-                yield return (isOutgoing, items);
-            }
         }
     }
 }

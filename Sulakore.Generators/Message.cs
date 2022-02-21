@@ -16,4 +16,7 @@ public sealed class Message
 
     [DataMember(Name = "postShuffleHashes")]
     public uint[] PostShuffleHashes { get; set; }
+
+    [IgnoreDataMember]
+    public string BackingFieldName { get; set; }
 }

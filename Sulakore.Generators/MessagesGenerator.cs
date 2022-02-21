@@ -35,27 +35,40 @@ namespace Sulakore.Generators
             using var indentedText = new IndentedTextWriter(text);
 
             indentedText.WriteLine("namespace Sulakore.Habbo");
-            indentedText.WriteLine("{");
+            indentedText.WriteLine('{');
             indentedText.Indent++;
 
             indentedText.WriteLine($"public sealed class {className} : Identifiers");
-            indentedText.WriteLine("{");
+            indentedText.WriteLine('{');
             indentedText.Indent++;
 
+            indentedText.Write("#region Message Properties");
             foreach (Message message in messages)
             {
-                indentedText.WriteLine($"public HMessage {message.Name} {{ get; init; }}");
+                indentedText.WriteLine();
+                message.BackingFieldName = $"_{char.ToLower(message.Name[0]) + message.Name.Substring(1)}";
+                indentedText.WriteLine($"private HMessage {message.BackingFieldName};");
+                indentedText.WriteLine($"public HMessage {message.Name}");
+                indentedText.WriteLine('{');
+
+                indentedText.Indent++;
+                indentedText.WriteLine($"get => {message.BackingFieldName};");
+                indentedText.WriteLine($"init => Register(value, \"{message.Name}\", ref {message.BackingFieldName});");
+                indentedText.Indent--;
+
+                indentedText.WriteLine('}');
             }
+            indentedText.WriteLine("#endregion");
 
             indentedText.WriteLine();
-            indentedText.WriteLine($"public {className}() : this(null) {{ }}");
+            indentedText.WriteLine($"public {className}() : base({isOutgoingString}) {{ }}");
             indentedText.WriteLine($"public {className}(IGame game) : base({messages.Length}, {isOutgoingString})");
-            indentedText.WriteLine("{");
+            indentedText.WriteLine('{');
             indentedText.Indent++;
 
             foreach (Message message in messages)
             {
-                indentedText.Write($"{message.Name} = ResolveMessage(game, \"{message.Name}\", {message.UnityId}, ");
+                indentedText.Write($"{message.BackingFieldName} = ResolveMessage(game, \"{message.Name}\", {message.UnityId}, ");
                 if (string.IsNullOrWhiteSpace(message.UnityStructure))
                 {
                     indentedText.Write("null");
@@ -71,13 +84,13 @@ namespace Sulakore.Generators
             }
 
             indentedText.Indent--;
-            indentedText.WriteLine("}");
+            indentedText.WriteLine('}');
 
             indentedText.Indent--;
-            indentedText.WriteLine("}");
+            indentedText.WriteLine('}');
 
             indentedText.Indent--;
-            indentedText.WriteLine("}");
+            indentedText.WriteLine('}');
 
             indentedText.Flush();
             return text.ToString();

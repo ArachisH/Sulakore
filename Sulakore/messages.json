@@ -3,5488 +3,7316 @@
     {
       "name": "AcceptFriend",
       "unityId": 37,
-      "hash": 444035176,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        444035176
+      ]
     },
     {
       "name": "AcceptQuest",
       "unityId": 3102,
-      "hash": 558260087,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        558260087
+      ]
     },
     {
       "name": "AcceptTrading",
       "unityId": -1,
-      "hash": 3137452836,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3137452836
+      ]
     },
     {
       "name": "ActivateQuest",
       "unityId": 3112,
-      "hash": 1179935349,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1179935349
+      ]
     },
     {
       "name": "AddAdminRightsToMember",
       "unityId": 3271,
-      "hash": 973941147,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        973941147
+      ]
     },
     {
       "name": "AddFavouriteRoom",
       "unityId": -1,
-      "hash": 2804958743,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2804958743
+      ]
     },
     {
       "name": "AddItemsToTrade",
       "unityId": -1,
-      "hash": 3168021720,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3168021720
+      ]
     },
     {
       "name": "AddItemToTrade",
       "unityId": -1,
-      "hash": 2168552447,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2168552447
+      ]
     },
     {
       "name": "AddJukeboxDisk",
       "unityId": -1,
-      "hash": 3190474422,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3190474422
+      ]
     },
     {
       "name": "AddSpamWallPostIt",
       "unityId": 3255,
-      "hash": 2922425118,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2922425118
+      ]
     },
     {
       "name": "AmbassadorAlert",
       "unityId": 92,
-      "hash": 2180227765,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2180227765
+      ]
     },
     {
       "name": "ApplySnapshot",
       "unityId": -1,
-      "hash": 2488751921,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2488751921
+      ]
     },
     {
       "name": "ApproveAllMembershipRequests",
       "unityId": 3269,
-      "hash": 2135548580,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2135548580
+      ]
     },
     {
       "name": "ApproveMembershipRequest",
       "unityId": 3267,
-      "hash": 1315536398,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1315536398
+      ]
     },
     {
       "name": "ApproveName",
       "unityId": -1,
-      "hash": 2868594528,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2868594528
+      ]
     },
     {
       "name": "AssignRights",
       "unityId": 96,
-      "hash": 390845491,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        390845491
+      ]
     },
     {
       "name": "AvatarEffectActivated",
       "unityId": -1,
-      "hash": 968919413,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        968919413
+      ]
     },
     {
       "name": "AvatarEffectSelected",
       "unityId": -1,
-      "hash": 2673163001,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2673163001
+      ]
     },
     {
       "name": "AvatarExpression",
       "unityId": -1,
-      "hash": 2421332655,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2421332655
+      ]
     },
     {
       "name": "BanUserWithDuration",
       "unityId": -1,
-      "hash": 2710312411,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2710312411
+      ]
     },
     {
       "name": "BreedPets",
       "unityId": 3024,
-      "hash": 1164291226,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1164291226
+      ]
     },
     {
       "name": "BuildersClubPlaceRoomItem",
       "unityId": 1494,
-      "hash": 253666961,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        253666961
+      ]
     },
     {
       "name": "BuildersClubPlaceWallItem",
       "unityId": 1495,
-      "hash": 598288005,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        598288005
+      ]
     },
     {
       "name": "BuildersClubQueryFurniCount",
       "unityId": 1496,
-      "hash": 1912207718,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1912207718
+      ]
     },
     {
       "name": "BuyMarketplaceOffer",
       "unityId": -1,
-      "hash": 2416109626,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2416109626
+      ]
     },
     {
       "name": "BuyMarketplaceTokens",
       "unityId": -1,
-      "hash": 3965997834,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3965997834
+      ]
     },
     {
       "name": "CallForHelp",
       "unityId": -1,
-      "hash": 3406629748,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3406629748
+      ]
     },
     {
       "name": "CallForHelpFromForumMessage",
       "unityId": -1,
-      "hash": 1300486039,
-      "structure": "iiiis"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1300486039
+      ]
     },
     {
       "name": "CallForHelpFromForumThread",
       "unityId": -1,
-      "hash": 572791669,
-      "structure": "iiis"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        572791669
+      ]
     },
     {
       "name": "CallForHelpFromIM",
       "unityId": -1,
-      "hash": 2215172099,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2215172099
+      ]
     },
     {
       "name": "CallForHelpFromPhoto",
       "unityId": -1,
-      "hash": 267818727,
-      "structure": "siiii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        267818727
+      ]
     },
     {
       "name": "CallForHelpFromSelfie",
       "unityId": -1,
-      "hash": 323914055,
-      "structure": "siisi"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        323914055
+      ]
     },
     {
       "name": "CancelEvent",
       "unityId": -1,
-      "hash": 3834722722,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3834722722
+      ]
     },
     {
       "name": "CancelMarketplaceOffer",
       "unityId": -1,
-      "hash": 289610566,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        289610566
+      ]
     },
     {
       "name": "CancelPetBreeding",
       "unityId": 3046,
-      "hash": 2024823653,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2024823653
+      ]
     },
     {
       "name": "CancelQuest",
       "unityId": 3113,
-      "hash": 718490846,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        718490846
+      ]
     },
     {
       "name": "CancelTyping",
       "unityId": -1,
-      "hash": 1292785966,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1292785966
+      ]
     },
     {
       "name": "CanCreateRoom",
       "unityId": 387,
-      "hash": 2979140473,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2979140473
+      ]
     },
     {
       "name": "ChangeEmail",
       "unityId": 3251,
-      "hash": 1919161893,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1919161893
+      ]
     },
     {
       "name": "ChangeMotto",
       "unityId": -1,
-      "hash": 8361836,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        8361836
+      ]
     },
     {
       "name": "ChangePosture",
       "unityId": -1,
-      "hash": 1099959164,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1099959164
+      ]
     },
     {
       "name": "ChangeQueue",
       "unityId": -1,
-      "hash": 4080168991,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4080168991
+      ]
     },
     {
       "name": "ChangeUserName",
       "unityId": -1,
-      "hash": 1088272819,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1088272819
+      ]
     },
     {
       "name": "Chat",
       "unityId": 52,
-      "hash": 726080079,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        726080079
+      ]
     },
     {
       "name": "ChatReviewGuideDecidesOnOffer",
       "unityId": -1,
-      "hash": 1977348229,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1977348229
+      ]
     },
     {
       "name": "ChatReviewGuideDetached",
       "unityId": -1,
-      "hash": 3844864427,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3844864427
+      ]
     },
     {
       "name": "ChatReviewGuideVote",
       "unityId": -1,
-      "hash": 3993153385,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3993153385
+      ]
     },
     {
       "name": "ChatReviewSessionCreate",
       "unityId": 1541,
-      "hash": 91707485,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        91707485
+      ]
     },
     {
       "name": "CheckUserName",
       "unityId": -1,
-      "hash": 2981592386,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2981592386
+      ]
     },
     {
       "name": "ClientHello",
       "unityId": -1,
-      "hash": 2222670648,
-      "structure": "ssbb"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2222670648
+      ]
     },
     {
       "name": "CloseIssueDefaultAction",
       "unityId": 449,
-      "hash": 992245617,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        992245617
+      ]
     },
     {
       "name": "CloseIssues",
       "unityId": 452,
-      "hash": 95280132,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        95280132
+      ]
     },
     {
       "name": "CloseTrading",
       "unityId": -1,
-      "hash": 2926310674,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2926310674
+      ]
     },
     {
       "name": "CommandBot",
       "unityId": 3029,
-      "hash": 3818414545,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3818414545
+      ]
     },
     {
       "name": "CommunityGoalVote",
       "unityId": 3298,
-      "hash": 591535156,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        591535156
+      ]
     },
     {
       "name": "CompetitionRoomsSearch",
       "unityId": 526,
-      "hash": 81014995,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        81014995
+      ]
     },
     {
       "name": "CompleteDiffieHandshake",
       "unityId": -1,
-      "hash": 966959609,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        966959609
+      ]
     },
     {
       "name": "CompostPlant",
       "unityId": 3047,
-      "hash": 2804098485,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2804098485
+      ]
     },
     {
       "name": "ConfirmAcceptTrading",
       "unityId": -1,
-      "hash": 3929276919,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3929276919
+      ]
     },
     {
       "name": "ConfirmDeclineTrading",
       "unityId": -1,
-      "hash": 2775365514,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2775365514
+      ]
     },
     {
       "name": "ConfirmPetBreeding",
       "unityId": 3045,
-      "hash": 3370092631,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3370092631
+      ]
     },
     {
       "name": "ControlYoutubeDisplayPlayback",
       "unityId": -1,
-      "hash": 1401800134,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1401800134
+      ]
     },
     {
       "name": "ConvertGlobalRoomId",
       "unityId": 388,
-      "hash": 11527173,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        11527173
+      ]
     },
     {
       "name": "Craft",
       "unityId": 1302,
-      "hash": 3171755697,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3171755697
+      ]
     },
     {
       "name": "CraftSecret",
       "unityId": 1303,
-      "hash": 4027340127,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4027340127
+      ]
     },
     {
       "name": "CreateFlat",
       "unityId": -1,
-      "hash": 3419995951,
-      "structure": "sssiii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3419995951
+      ]
     },
     {
       "name": "CreateGuild",
       "unityId": 3262,
-      "hash": 1629721112,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1629721112
+      ]
     },
     {
       "name": "CreditFurniRedeem",
       "unityId": -1,
-      "hash": 3545128338,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3545128338
+      ]
     },
     {
       "name": "CreditVaultStatus",
       "unityId": -1,
-      "hash": 3010320316,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3010320316
+      ]
     },
     {
       "name": "CustomizeAvatarWithFurni",
       "unityId": 45,
-      "hash": 1712978891,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1712978891
+      ]
     },
     {
       "name": "CustomizePetWithFurni",
       "unityId": 3008,
-      "hash": 3960452763,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3960452763
+      ]
     },
     {
       "name": "Dance",
       "unityId": 93,
-      "hash": 3290689556,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3290689556
+      ]
     },
     {
       "name": "DeactivateGuild",
       "unityId": 3290,
-      "hash": 640189257,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        640189257
+      ]
     },
     {
       "name": "DeclineFriend",
       "unityId": 38,
-      "hash": 981432789,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        981432789
+      ]
     },
     {
       "name": "DefaultSanction",
       "unityId": 477,
-      "hash": 3005168029,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3005168029
+      ]
     },
     {
       "name": "DeleteFavouriteRoom",
       "unityId": -1,
-      "hash": 2108007513,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2108007513
+      ]
     },
     {
       "name": "DeletePendingCallsForHelp",
       "unityId": 238,
-      "hash": 2022088966,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2022088966
+      ]
     },
     {
       "name": "DeleteRoom",
       "unityId": -1,
-      "hash": 4238210570,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4238210570
+      ]
     },
     {
       "name": "DeselectFavouriteHabboGroup",
       "unityId": 3259,
-      "hash": 2030227610,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2030227610
+      ]
     },
     {
       "name": "DiceOff",
       "unityId": 77,
-      "hash": 2965147432,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2965147432
+      ]
     },
     {
       "name": "Disconnect",
       "unityId": 512,
-      "hash": 1882888071,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1882888071
+      ]
     },
     {
       "name": "DropCarryItem",
       "unityId": -1,
-      "hash": 1706850466,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1706850466
+      ]
     },
     {
       "name": "EditEvent",
       "unityId": -1,
-      "hash": 3184204728,
-      "structure": "iss"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3184204728
+      ]
     },
     {
       "name": "EnterOneWayDoor",
       "unityId": 232,
-      "hash": 4104143080,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4104143080
+      ]
     },
     {
       "name": "EventLog",
       "unityId": -1,
-      "hash": 1470555886,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1470555886
+      ]
     },
     {
       "name": "ExtendRentOrBuyoutFurni",
       "unityId": -1,
-      "hash": 2537696953,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2537696953
+      ]
     },
     {
       "name": "ExtendRentOrBuyoutStripItem",
       "unityId": -1,
-      "hash": 249865537,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        249865537
+      ]
     },
     {
       "name": "FindNewFriends",
       "unityId": -1,
-      "hash": 3068760472,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3068760472
+      ]
     },
     {
       "name": "FollowFriend",
       "unityId": 262,
-      "hash": 216594729,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        216594729
+      ]
     },
     {
       "name": "ForwardToACompetitionRoom",
       "unityId": 528,
-      "hash": 1022015793,
-      "structure": "si"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1022015793
+      ]
     },
     {
       "name": "ForwardToARandomPromotedRoom",
       "unityId": 485,
-      "hash": 2953435163,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2953435163
+      ]
     },
     {
       "name": "ForwardToASubmittableRoom",
       "unityId": 531,
-      "hash": 3039495912,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3039495912
+      ]
     },
     {
       "name": "ForwardToRandomCompetitionRoom",
       "unityId": 525,
-      "hash": 4217397661,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4217397661
+      ]
     },
     {
       "name": "ForwardToSomeRoom",
       "unityId": 486,
-      "hash": 3039844146,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3039844146
+      ]
     },
     {
       "name": "FriendFurniConfirmLock",
       "unityId": -1,
-      "hash": 2336227082,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2336227082
+      ]
     },
     {
       "name": "FriendListUpdate",
       "unityId": 15,
-      "hash": 3286647344,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3286647344
+      ]
     },
     {
       "name": "FriendRequestQuestComplete",
       "unityId": 3210,
-      "hash": 3682823438,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3682823438
+      ]
     },
     {
       "name": "Game2CheckGameDirectoryStatus",
       "unityId": -1,
-      "hash": 708303404,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        708303404
+      ]
     },
     {
       "name": "Game2ExitGame",
       "unityId": -1,
-      "hash": 868656444,
-      "structure": "B"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        868656444
+      ]
     },
     {
       "name": "Game2GameChat",
       "unityId": -1,
-      "hash": 1597243756,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1597243756
+      ]
     },
     {
       "name": "Game2GetAccountGameStatus",
       "unityId": -1,
-      "hash": 2708095147,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2708095147
+      ]
     },
     {
       "name": "Game2GetFriendsLeaderboard",
       "unityId": -1,
-      "hash": 1509796423,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1509796423
+      ]
     },
     {
       "name": "Game2GetTotalGroupLeaderboard",
       "unityId": -1,
-      "hash": 2910097967,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2910097967
+      ]
     },
     {
       "name": "Game2GetTotalLeaderboard",
       "unityId": -1,
-      "hash": 2615961331,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2615961331
+      ]
     },
     {
       "name": "Game2GetWeeklyFriendsLeaderboard",
       "unityId": -1,
-      "hash": 3279757234,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3279757234
+      ]
     },
     {
       "name": "Game2GetWeeklyGroupLeaderboard",
       "unityId": -1,
-      "hash": 1133257337,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1133257337
+      ]
     },
     {
       "name": "Game2GetWeeklyLeaderboard",
       "unityId": -1,
-      "hash": 3918656781,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3918656781
+      ]
     },
     {
       "name": "Game2LeaveGame",
       "unityId": -1,
-      "hash": 2499858286,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2499858286
+      ]
     },
     {
       "name": "Game2LoadStageReady",
       "unityId": -1,
-      "hash": 907483417,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        907483417
+      ]
     },
     {
       "name": "Game2MakeSnowball",
       "unityId": -1,
-      "hash": 2932104611,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2932104611
+      ]
     },
     {
       "name": "Game2PlayAgain",
       "unityId": -1,
-      "hash": 637628122,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        637628122
+      ]
     },
     {
       "name": "Game2QuickJoinGame",
       "unityId": -1,
-      "hash": 3155385260,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3155385260
+      ]
     },
     {
       "name": "Game2RequestFullStatusUpdate",
       "unityId": -1,
-      "hash": 484983072,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        484983072
+      ]
     },
     {
       "name": "Game2SetUserMoveTarget",
       "unityId": -1,
-      "hash": 403244781,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        403244781
+      ]
     },
     {
       "name": "Game2StartSnowWar",
       "unityId": -1,
-      "hash": 4099481996,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4099481996
+      ]
     },
     {
       "name": "Game2ThrowSnowballAtHuman",
       "unityId": -1,
-      "hash": 2633059992,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2633059992
+      ]
     },
     {
       "name": "Game2ThrowSnowballAtPosition",
       "unityId": -1,
-      "hash": 4085131080,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4085131080
+      ]
     },
     {
       "name": "GetAchievements",
       "unityId": -1,
-      "hash": 2608572532,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2608572532
+      ]
     },
     {
       "name": "GetBadgePointLimits",
       "unityId": 3032,
-      "hash": 2226884840,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2226884840
+      ]
     },
     {
       "name": "GetBadges",
       "unityId": -1,
-      "hash": 1853353553,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1853353553
+      ]
     },
     {
       "name": "GetBannedUsersFromRoom",
       "unityId": -1,
-      "hash": 3726576572,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3726576572
+      ]
     },
     {
       "name": "GetBonusRareInfo",
       "unityId": 3296,
-      "hash": 3948570367,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3948570367
+      ]
     },
     {
       "name": "GetBotCommandConfigurationData",
       "unityId": 3330,
-      "hash": 3655458051,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3655458051
+      ]
     },
     {
       "name": "GetBotInventory",
       "unityId": 3028,
-      "hash": 1431010442,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1431010442
+      ]
     },
     {
       "name": "GetBundleDiscountRuleset",
       "unityId": 3041,
-      "hash": 2830226908,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2830226908
+      ]
     },
     {
       "name": "GetCatalogIndex",
       "unityId": 101,
-      "hash": 922255328,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        922255328
+      ]
     },
     {
       "name": "GetCatalogPage",
       "unityId": 102,
-      "hash": 2355484120,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2355484120
+      ]
     },
     {
       "name": "GetCatalogPageWithEarliestExpiry",
       "unityId": 3286,
-      "hash": 834497937,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        834497937
+      ]
     },
     {
       "name": "GetCfhChatlog",
       "unityId": -1,
-      "hash": 3980145402,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3980145402
+      ]
     },
     {
       "name": "GetCfhStatus",
       "unityId": 1000,
-      "hash": 1451396420,
-      "structure": "B"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1451396420
+      ]
     },
     {
       "name": "GetClubGift",
       "unityId": -1,
-      "hash": 2680921248,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2680921248
+      ]
     },
     {
       "name": "GetClubOffers",
       "unityId": -1,
-      "hash": 2780112763,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2780112763
+      ]
     },
     {
       "name": "GetCommunityGoalHallOfFame",
       "unityId": 527,
-      "hash": 87262608,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        87262608
+      ]
     },
     {
       "name": "GetCommunityGoalProgress",
       "unityId": 520,
-      "hash": 1128168941,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1128168941
+      ]
     },
     {
       "name": "GetConcurrentUsersGoalProgress",
       "unityId": 532,
-      "hash": 703540026,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        703540026
+      ]
     },
     {
       "name": "GetConcurrentUsersReward",
       "unityId": -1,
-      "hash": 2821420808,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2821420808
+      ]
     },
     {
       "name": "GetCraftableProducts",
       "unityId": 1300,
-      "hash": 3678356873,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3678356873
+      ]
     },
     {
       "name": "GetCraftingRecipe",
       "unityId": 1301,
-      "hash": 3902361489,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3902361489
+      ]
     },
     {
       "name": "GetCraftingRecipesAvailable",
       "unityId": 1304,
-      "hash": 670814391,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        670814391
+      ]
     },
     {
       "name": "GetCreditsInfo",
       "unityId": -1,
-      "hash": 2492319220,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2492319220
+      ]
     },
     {
       "name": "GetCurrentTimingCode",
       "unityId": 530,
-      "hash": 3128860517,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3128860517
+      ]
     },
     {
       "name": "GetCustomRoomFilter",
       "unityId": -1,
-      "hash": 3928165746,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3928165746
+      ]
     },
     {
       "name": "GetDailyQuest",
       "unityId": 3109,
-      "hash": 1744774165,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1744774165
+      ]
     },
     {
       "name": "GetEmailStatus",
       "unityId": 3250,
-      "hash": 2255168567,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2255168567
+      ]
     },
     {
       "name": "GetExtendedProfile",
       "unityId": 3260,
-      "hash": 218731882,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        218731882
+      ]
     },
     {
       "name": "GetExtendedProfileByName",
       "unityId": -1,
-      "hash": 143058355,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        143058355
+      ]
     },
     {
       "name": "GetFlatControllers",
       "unityId": 3274,
-      "hash": 2573917575,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2573917575
+      ]
     },
     {
       "name": "GetForumsList",
       "unityId": 1605,
-      "hash": 3727291325,
-      "structure": "iii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3727291325
+      ]
     },
     {
       "name": "GetForumStats",
       "unityId": 1600,
-      "hash": 1510583037,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1510583037
+      ]
     },
     {
       "name": "GetFriendRequests",
       "unityId": 233,
-      "hash": 4180750985,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4180750985
+      ]
     },
     {
       "name": "GetFurnitureAliases",
       "unityId": -1,
-      "hash": 1166363615,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1166363615
+      ]
     },
     {
       "name": "GetGiftWrappingConfiguration",
       "unityId": 473,
-      "hash": 1272988675,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1272988675
+      ]
     },
     {
       "name": "GetGuestRoom",
       "unityId": 385,
-      "hash": 2402334573,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2402334573
+      ]
     },
     {
       "name": "GetGuideReportingStatus",
       "unityId": 1540,
-      "hash": 2066393430,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2066393430
+      ]
     },
     {
       "name": "GetGuildCreationInfo",
       "unityId": 3261,
-      "hash": 1176087916,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1176087916
+      ]
     },
     {
       "name": "GetGuildEditInfo",
       "unityId": 3263,
-      "hash": 3681057958,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3681057958
+      ]
     },
     {
       "name": "GetGuildEditorData",
       "unityId": 3265,
-      "hash": 3245349341,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3245349341
+      ]
     },
     {
       "name": "GetGuildFurniContextMenuInfo",
       "unityId": 3281,
-      "hash": 1328385192,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1328385192
+      ]
     },
     {
       "name": "GetGuildMembers",
       "unityId": 3277,
-      "hash": 2629822971,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2629822971
+      ]
     },
     {
       "name": "GetGuildMemberships",
       "unityId": 3278,
-      "hash": 1269833044,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1269833044
+      ]
     },
     {
       "name": "GetHabboClubExtendOffer",
       "unityId": -1,
-      "hash": 3948218579,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3948218579
+      ]
     },
     {
       "name": "GetHabboGroupBadges",
       "unityId": 230,
-      "hash": 1838562409,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1838562409
+      ]
     },
     {
       "name": "GetHabboGroupDetails",
       "unityId": 231,
-      "hash": 3288773014,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3288773014
+      ]
     },
     {
       "name": "GetHeightMap",
       "unityId": -1,
-      "hash": 4100260856,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4100260856
+      ]
     },
     {
       "name": "GetHotLooks",
       "unityId": -1,
-      "hash": 3459378800,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3459378800
+      ]
     },
     {
       "name": "GetIgnoredUsers",
       "unityId": -1,
-      "hash": 1153800388,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1153800388
+      ]
     },
     {
       "name": "GetInterstitial",
       "unityId": 182,
-      "hash": 4083194310,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4083194310
+      ]
     },
     {
       "name": "GetIsBadgeRequestFulfilled",
       "unityId": 3044,
-      "hash": 3461742607,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3461742607
+      ]
     },
     {
       "name": "GetIsOfferGiftable",
       "unityId": 3030,
-      "hash": 3221083051,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3221083051
+      ]
     },
     {
       "name": "GetIsUserPartOfCompetition",
       "unityId": -1,
-      "hash": 2357413097,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2357413097
+      ]
     },
     {
       "name": "GetItemData",
       "unityId": 83,
-      "hash": 3882465632,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3882465632
+      ]
     },
     {
       "name": "GetJukeboxPlayList",
       "unityId": -1,
-      "hash": 3130303187,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3130303187
+      ]
     },
     {
       "name": "GetLimitedOfferAppearingNext",
       "unityId": -1,
-      "hash": 3571057396,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3571057396
+      ]
     },
     {
       "name": "GetMarketplaceCanMakeOffer",
       "unityId": -1,
-      "hash": 963543064,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        963543064
+      ]
     },
     {
       "name": "GetMarketplaceConfiguration",
       "unityId": -1,
-      "hash": 1607678038,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1607678038
+      ]
     },
     {
       "name": "GetMarketplaceItemStats",
       "unityId": -1,
-      "hash": 2116364386,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2116364386
+      ]
     },
     {
       "name": "GetMarketplaceOffers",
       "unityId": -1,
-      "hash": 2234938779,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2234938779
+      ]
     },
     {
       "name": "GetMarketplaceOwnOffers",
       "unityId": -1,
-      "hash": 586639379,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        586639379
+      ]
     },
     {
       "name": "GetMemberGuildItemCount",
       "unityId": -1,
-      "hash": 2701836807,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2701836807
+      ]
     },
     {
       "name": "GetMessages",
       "unityId": -1,
-      "hash": 1929089550,
-      "structure": "iiii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1929089550
+      ]
     },
     {
       "name": "GetModeratorRoomInfo",
       "unityId": -1,
-      "hash": 3086563314,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3086563314
+      ]
     },
     {
       "name": "GetModeratorUserInfo",
       "unityId": 454,
-      "hash": 2684299902,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2684299902
+      ]
     },
     {
       "name": "GetMOTD",
       "unityId": -1,
-      "hash": 544195893,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        544195893
+      ]
     },
     {
       "name": "GetNextTargetedOffer",
       "unityId": 1530,
-      "hash": 725957790,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        725957790
+      ]
     },
     {
       "name": "GetNowPlaying",
       "unityId": 249,
-      "hash": 3947825804,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3947825804
+      ]
     },
     {
       "name": "GetOccupiedTiles",
       "unityId": -1,
-      "hash": 2822379523,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2822379523
+      ]
     },
     {
       "name": "GetOfficialRooms",
       "unityId": 380,
-      "hash": 1358990959,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1358990959
+      ]
     },
     {
       "name": "GetOfficialSongId",
       "unityId": -1,
-      "hash": 4163124054,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4163124054
+      ]
     },
     {
       "name": "GetPendingCallsForHelp",
       "unityId": 237,
-      "hash": 2348346742,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2348346742
+      ]
     },
     {
       "name": "GetPetCommands",
       "unityId": -1,
-      "hash": 953186250,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        953186250
+      ]
     },
     {
       "name": "GetPetInfo",
       "unityId": -1,
-      "hash": 3489072907,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3489072907
+      ]
     },
     {
       "name": "GetPetInventory",
       "unityId": 3000,
-      "hash": 957269698,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        957269698
+      ]
     },
     {
       "name": "GetPopularRoomTags",
       "unityId": 382,
-      "hash": 585153860,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        585153860
+      ]
     },
     {
       "name": "GetProductOffer",
       "unityId": 3042,
-      "hash": 3262674042,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3262674042
+      ]
     },
     {
       "name": "GetPromoArticles",
       "unityId": 3295,
-      "hash": 3482764844,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3482764844
+      ]
     },
     {
       "name": "GetQuests",
       "unityId": 3101,
-      "hash": 440737466,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        440737466
+      ]
     },
     {
       "name": "GetQuizQuestions",
       "unityId": -1,
-      "hash": 621813023,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        621813023
+      ]
     },
     {
       "name": "GetRelationshipStatusInfo",
       "unityId": 492,
-      "hash": 3839657774,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3839657774
+      ]
     },
     {
       "name": "GetRentOrBuyoutOffer",
       "unityId": 120,
-      "hash": 1185755207,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1185755207
+      ]
     },
     {
       "name": "GetResolutionAchievements",
       "unityId": -1,
-      "hash": 1925398868,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1925398868
+      ]
     },
     {
       "name": "GetRoomAdPurchaseInfo",
       "unityId": -1,
-      "hash": 3186203447,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3186203447
+      ]
     },
     {
       "name": "GetRoomChatlog",
       "unityId": -1,
-      "hash": 3314368164,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3314368164
+      ]
     },
     {
       "name": "GetRoomEntryTile",
       "unityId": 1473,
-      "hash": 3212836531,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3212836531
+      ]
     },
     {
       "name": "GetRoomSettings",
       "unityId": 400,
-      "hash": 87158517,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        87158517
+      ]
     },
     {
       "name": "GetRoomVisits",
       "unityId": -1,
-      "hash": 4162171777,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4162171777
+      ]
     },
     {
       "name": "GetSeasonalCalendarDaily",
       "unityId": -1,
-      "hash": 1220183955,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1220183955
+      ]
     },
     {
       "name": "GetSeasonalQuestsOnly",
       "unityId": -1,
-      "hash": 2365782732,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2365782732
+      ]
     },
     {
       "name": "GetSecondsUntil",
       "unityId": -1,
-      "hash": 3199852013,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3199852013
+      ]
     },
     {
       "name": "GetSelectedBadges",
       "unityId": 159,
-      "hash": 296485682,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        296485682
+      ]
     },
     {
       "name": "GetSelectedNftWardrobeOutfit",
       "unityId": -1,
-      "hash": 1474684512,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1474684512
+      ]
     },
     {
       "name": "GetSellablePetPalettes",
       "unityId": 3007,
-      "hash": 2891788904,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2891788904
+      ]
     },
     {
       "name": "GetSnowWarGameTokensOffer",
       "unityId": -1,
-      "hash": 2311170031,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2311170031
+      ]
     },
     {
       "name": "GetSongInfo",
       "unityId": 221,
-      "hash": 3700239437,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3700239437
+      ]
     },
     {
       "name": "GetSoundMachinePlayList",
       "unityId": 245,
-      "hash": 2168888930,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2168888930
+      ]
     },
     {
       "name": "GetSoundSettings",
       "unityId": -1,
-      "hash": 2881553980,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2881553980
+      ]
     },
     {
       "name": "GetTalentTrack",
       "unityId": 565,
-      "hash": 1207140459,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1207140459
+      ]
     },
     {
       "name": "GetTalentTrackLevel",
       "unityId": 566,
-      "hash": 2626964567,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2626964567
+      ]
     },
     {
       "name": "GetThread",
       "unityId": -1,
-      "hash": 2484495270,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2484495270
+      ]
     },
     {
       "name": "GetThreads",
       "unityId": -1,
-      "hash": 2764043090,
-      "structure": "iii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2764043090
+      ]
     },
     {
       "name": "GetUnreadForumsCount",
       "unityId": 1607,
-      "hash": 2892184447,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2892184447
+      ]
     },
     {
       "name": "GetUserChatlog",
       "unityId": -1,
-      "hash": 3600577275,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3600577275
+      ]
     },
     {
       "name": "GetUserEventCats",
       "unityId": -1,
-      "hash": 2845326060,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2845326060
+      ]
     },
     {
       "name": "GetUserFlatCats",
       "unityId": -1,
-      "hash": 2758813311,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2758813311
+      ]
     },
     {
       "name": "GetUserNftWardrobe",
       "unityId": -1,
-      "hash": 2460164216,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2460164216
+      ]
     },
     {
       "name": "GetUserSongDisks",
       "unityId": -1,
-      "hash": 4178351517,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4178351517
+      ]
     },
     {
       "name": "GetWardrobe",
       "unityId": 375,
-      "hash": 686919699,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        686919699
+      ]
     },
     {
       "name": "GetYoutubeDisplayStatus",
       "unityId": -1,
-      "hash": 673870176,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        673870176
+      ]
     },
     {
       "name": "GiveStarGemToUser",
       "unityId": -1,
-      "hash": 123694427,
-      "structure": "iB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        123694427
+      ]
     },
     {
       "name": "GiveSupplementToPet",
       "unityId": 87,
-      "hash": 4188766994,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4188766994
+      ]
     },
     {
       "name": "GuideAdvertisementRead",
       "unityId": 567,
-      "hash": 4245275354,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4245275354
+      ]
     },
     {
       "name": "GuideSessionCreate",
       "unityId": -1,
-      "hash": 2556394753,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2556394753
+      ]
     },
     {
       "name": "GuideSessionFeedback",
       "unityId": -1,
-      "hash": 2433306036,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2433306036
+      ]
     },
     {
       "name": "GuideSessionGetRequesterRoom",
       "unityId": -1,
-      "hash": 2227095191,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2227095191
+      ]
     },
     {
       "name": "GuideSessionGuideDecides",
       "unityId": -1,
-      "hash": 1894244300,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1894244300
+      ]
     },
     {
       "name": "GuideSessionInviteRequester",
       "unityId": -1,
-      "hash": 2984584932,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2984584932
+      ]
     },
     {
       "name": "GuideSessionIsTyping",
       "unityId": -1,
-      "hash": 808164050,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        808164050
+      ]
     },
     {
       "name": "GuideSessionMessage",
       "unityId": -1,
-      "hash": 4130632571,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4130632571
+      ]
     },
     {
       "name": "GuideSessionOnDutyUpdate",
       "unityId": -1,
-      "hash": 3393148027,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3393148027
+      ]
     },
     {
       "name": "GuideSessionReport",
       "unityId": -1,
-      "hash": 405657444,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        405657444
+      ]
     },
     {
       "name": "GuideSessionRequesterCancels",
       "unityId": -1,
-      "hash": 3546338867,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3546338867
+      ]
     },
     {
       "name": "GuideSessionResolved",
       "unityId": -1,
-      "hash": 1012283802,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1012283802
+      ]
     },
     {
       "name": "GuildBaseSearch",
       "unityId": 442,
-      "hash": 549261037,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        549261037
+      ]
     },
     {
       "name": "HabboSearch",
       "unityId": 41,
-      "hash": 3568017900,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3568017900
+      ]
     },
     {
       "name": "HarvestPet",
       "unityId": 3025,
-      "hash": 3917558338,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3917558338
+      ]
     },
     {
       "name": "IgnoreUser",
       "unityId": 319,
-      "hash": 588592892,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        588592892
+      ]
     },
     {
       "name": "IgnoreUserId",
       "unityId": -1,
-      "hash": 1690269385,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1690269385
+      ]
     },
     {
       "name": "IncomeRewardClaim",
       "unityId": -1,
-      "hash": 3453606119,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3453606119
+      ]
     },
     {
       "name": "IncomeRewardStatus",
       "unityId": -1,
-      "hash": 158217827,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        158217827
+      ]
     },
     {
       "name": "InfoRetrieve",
       "unityId": 7,
-      "hash": 189150730,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        189150730
+      ]
     },
     {
       "name": "InitDiffieHandshake",
       "unityId": -1,
-      "hash": 4041834192,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4041834192
+      ]
     },
     {
       "name": "InterstitialShown",
       "unityId": 181,
-      "hash": 253272955,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        253272955
+      ]
     },
     {
       "name": "JoinHabboGroup",
       "unityId": 3257,
-      "hash": 1428268060,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1428268060
+      ]
     },
     {
       "name": "KickMember",
       "unityId": 3272,
-      "hash": 1183433075,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1183433075
+      ]
     },
     {
       "name": "KickUser",
       "unityId": 95,
-      "hash": 3428184869,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3428184869
+      ]
     },
     {
       "name": "LagWarningReport",
       "unityId": -1,
-      "hash": 618311987,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        618311987
+      ]
     },
     {
       "name": "LatencyPingReport",
       "unityId": -1,
-      "hash": 3535978473,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3535978473
+      ]
     },
     {
       "name": "LatencyPingRequest",
       "unityId": -1,
-      "hash": 2937966446,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2937966446
+      ]
     },
     {
       "name": "LetUserIn",
       "unityId": 98,
-      "hash": 2708724842,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2708724842
+      ]
     },
     {
       "name": "LookTo",
       "unityId": 79,
-      "hash": 1070926975,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1070926975
+      ]
     },
     {
       "name": "MakeOffer",
       "unityId": -1,
-      "hash": 85015806,
-      "structure": "iii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        85015806
+      ]
     },
     {
       "name": "MarkCatalogNewAdditionsPageOpened",
       "unityId": 3034,
-      "hash": 2571432016,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2571432016
+      ]
     },
     {
       "name": "MessengerInit",
       "unityId": 12,
-      "hash": 947264550,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        947264550
+      ]
     },
     {
       "name": "ModAlert",
       "unityId": 461,
-      "hash": 2297892127,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2297892127
+      ]
     },
     {
       "name": "ModBan",
       "unityId": 464,
-      "hash": 1729791037,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1729791037
+      ]
     },
     {
       "name": "ModerateMessage",
       "unityId": -1,
-      "hash": 2683772535,
-      "structure": "iiii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2683772535
+      ]
     },
     {
       "name": "ModerateRoom",
       "unityId": 460,
-      "hash": 1293560247,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1293560247
+      ]
     },
     {
       "name": "ModerateThread",
       "unityId": -1,
-      "hash": 1563459265,
-      "structure": "iii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1563459265
+      ]
     },
     {
       "name": "ModeratorAction",
       "unityId": -1,
-      "hash": 4181351831,
-      "structure": "iss"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4181351831
+      ]
     },
     {
       "name": "ModKick",
       "unityId": 463,
-      "hash": 127376353,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        127376353
+      ]
     },
     {
       "name": "ModMessage",
       "unityId": 462,
-      "hash": 2824851915,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2824851915
+      ]
     },
     {
       "name": "ModMute",
       "unityId": 465,
-      "hash": 1398712715,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1398712715
+      ]
     },
     {
       "name": "ModToolPreferences",
       "unityId": 466,
-      "hash": 2419916086,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2419916086
+      ]
     },
     {
       "name": "ModToolSanction",
       "unityId": -1,
-      "hash": 1712382932,
-      "structure": "iii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1712382932
+      ]
     },
     {
       "name": "ModTradingLock",
       "unityId": 468,
-      "hash": 393703629,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        393703629
+      ]
     },
     {
       "name": "MountPet",
       "unityId": 3017,
-      "hash": 3307324817,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3307324817
+      ]
     },
     {
       "name": "MoveAvatar",
       "unityId": -1,
-      "hash": 2347419501,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2347419501
+      ]
     },
     {
       "name": "MoveObject",
       "unityId": -1,
-      "hash": 2437149303,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2437149303
+      ]
     },
     {
       "name": "MovePet",
       "unityId": -1,
-      "hash": 3401062871,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3401062871
+      ]
     },
     {
       "name": "MoveWallItem",
       "unityId": -1,
-      "hash": 833310316,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        833310316
+      ]
     },
     {
       "name": "MuteAllInRoom",
       "unityId": -1,
-      "hash": 4044982799,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4044982799
+      ]
     },
     {
       "name": "MuteUser",
       "unityId": -1,
-      "hash": 234753851,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        234753851
+      ]
     },
     {
       "name": "MyFavouriteRoomsSearch",
       "unityId": 435,
-      "hash": 1647127953,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1647127953
+      ]
     },
     {
       "name": "MyFrequentRoomHistorySearch",
       "unityId": -1,
-      "hash": 2124983738,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2124983738
+      ]
     },
     {
       "name": "MyFriendsRoomsSearch",
       "unityId": 432,
-      "hash": 3217974952,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3217974952
+      ]
     },
     {
       "name": "MyGuildBasesSearch",
       "unityId": 445,
-      "hash": 4186122035,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4186122035
+      ]
     },
     {
       "name": "MyRecommendedRooms",
       "unityId": -1,
-      "hash": 596188492,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        596188492
+      ]
     },
     {
       "name": "MyRoomHistorySearch",
       "unityId": 436,
-      "hash": 2818297075,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2818297075
+      ]
     },
     {
       "name": "MyRoomRightsSearch",
       "unityId": 444,
-      "hash": 1334205327,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1334205327
+      ]
     },
     {
       "name": "MyRoomsSearch",
       "unityId": 434,
-      "hash": 1492793958,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1492793958
+      ]
     },
     {
       "name": "MysteryBoxWaitingCanceled",
       "unityId": 377,
-      "hash": 2106159915,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2106159915
+      ]
     },
     {
       "name": "NavigatorAddCollapsedCategory",
       "unityId": -1,
-      "hash": 468385094,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        468385094
+      ]
     },
     {
       "name": "NavigatorAddSavedSearch",
       "unityId": -1,
-      "hash": 2301388674,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2301388674
+      ]
     },
     {
       "name": "NavigatorDeleteSavedSearch",
       "unityId": -1,
-      "hash": 3584920363,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3584920363
+      ]
     },
     {
       "name": "NavigatorRemoveCollapsedCategory",
       "unityId": -1,
-      "hash": 324317782,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        324317782
+      ]
     },
     {
       "name": "NavigatorSetSearchCodeViewMode",
       "unityId": -1,
-      "hash": 609253352,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        609253352
+      ]
     },
     {
       "name": "NewNavigatorInit",
       "unityId": -1,
-      "hash": 4219338490,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4219338490
+      ]
     },
     {
       "name": "NewNavigatorSearch",
       "unityId": -1,
-      "hash": 693235894,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        693235894
+      ]
     },
     {
       "name": "NewUserExperienceGetGifts",
       "unityId": -1,
-      "hash": 2027677358,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2027677358
+      ]
     },
     {
       "name": "NewUserExperienceScriptProceed",
       "unityId": -1,
-      "hash": 1256643173,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1256643173
+      ]
     },
     {
       "name": "Open",
       "unityId": -1,
-      "hash": 2077993720,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2077993720
+      ]
     },
     {
       "name": "OpenCampaignCalendarDoor",
       "unityId": 1401,
-      "hash": 3829229443,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3829229443
+      ]
     },
     {
       "name": "OpenCampaignCalendarDoorAsStaff",
       "unityId": -1,
-      "hash": 2283188993,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2283188993
+      ]
     },
     {
       "name": "OpenFlatConnection",
       "unityId": -1,
-      "hash": 1556892887,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1556892887
+      ]
     },
     {
       "name": "OpenMysteryTrophy",
       "unityId": 3297,
-      "hash": 3995993067,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3995993067
+      ]
     },
     {
       "name": "OpenPetPackage",
       "unityId": 3006,
-      "hash": 1549116243,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1549116243
+      ]
     },
     {
       "name": "OpenQuestTracker",
       "unityId": 3107,
-      "hash": 3128471153,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3128471153
+      ]
     },
     {
       "name": "OpenTrading",
       "unityId": -1,
-      "hash": 4167615160,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4167615160
+      ]
     },
     {
       "name": "PassCarryItem",
       "unityId": -1,
-      "hash": 2672696419,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2672696419
+      ]
     },
     {
       "name": "PassCarryItemToPet",
       "unityId": -1,
-      "hash": 2480893904,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2480893904
+      ]
     },
     {
       "name": "PeerUsersClassification",
       "unityId": -1,
-      "hash": 2771749583,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2771749583
+      ]
     },
     {
       "name": "PerformanceLog",
       "unityId": -1,
-      "hash": 3955813049,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3955813049
+      ]
     },
     {
       "name": "PetSelected",
       "unityId": 3022,
-      "hash": 779678044,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        779678044
+      ]
     },
     {
       "name": "PhotoCompetition",
       "unityId": -1,
-      "hash": 4205106082,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4205106082
+      ]
     },
     {
       "name": "PickIssues",
       "unityId": 450,
-      "hash": 2979338449,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2979338449
+      ]
     },
     {
       "name": "PickupObject",
       "unityId": -1,
-      "hash": 70587532,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        70587532
+      ]
     },
     {
       "name": "PlaceBot",
       "unityId": -1,
-      "hash": 1533543352,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1533543352
+      ]
     },
     {
       "name": "PlaceObject",
       "unityId": -1,
-      "hash": 3133384695,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3133384695
+      ]
     },
     {
       "name": "PlacePet",
       "unityId": -1,
-      "hash": 886825855,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        886825855
+      ]
     },
     {
       "name": "PlacePostIt",
       "unityId": 3254,
-      "hash": 986922769,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        986922769
+      ]
     },
     {
       "name": "PollAnswer",
       "unityId": 236,
-      "hash": 3451773440,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3451773440
+      ]
     },
     {
       "name": "PollReject",
       "unityId": -1,
-      "hash": 1895856663,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1895856663
+      ]
     },
     {
       "name": "PollStart",
       "unityId": -1,
-      "hash": 732563366,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        732563366
+      ]
     },
     {
       "name": "Pong",
       "unityId": 196,
-      "hash": 1867859328,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1867859328
+      ]
     },
     {
       "name": "PopularRoomsSearch",
       "unityId": 430,
-      "hash": 881784573,
-      "structure": "si"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        881784573
+      ]
     },
     {
       "name": "PostMessage",
       "unityId": -1,
-      "hash": 1125590032,
-      "structure": "iiss"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1125590032
+      ]
     },
     {
       "name": "PostQuizAnswers",
       "unityId": -1,
-      "hash": 678040169,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        678040169
+      ]
     },
     {
       "name": "PresentOpen",
       "unityId": 78,
-      "hash": 2780983329,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2780983329
+      ]
     },
     {
       "name": "PublishPhoto",
       "unityId": 3504,
-      "hash": 2519426474,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2519426474
+      ]
     },
     {
       "name": "PurchaseBasicMembershipExtension",
       "unityId": -1,
-      "hash": 926297098,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        926297098
+      ]
     },
     {
       "name": "PurchaseFromCatalog",
       "unityId": 100,
-      "hash": 3062272095,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3062272095
+      ]
     },
     {
       "name": "PurchaseFromCatalogAsGift",
       "unityId": 472,
-      "hash": 1621792299,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1621792299
+      ]
     },
     {
       "name": "PurchasePhoto",
       "unityId": 3503,
-      "hash": 2084602156,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2084602156
+      ]
     },
     {
       "name": "PurchaseRoomAd",
       "unityId": 349,
-      "hash": 297732352,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        297732352
+      ]
     },
     {
       "name": "PurchaseSnowWarGameTokensOffer",
       "unityId": -1,
-      "hash": 3094368300,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3094368300
+      ]
     },
     {
       "name": "PurchaseTargetedOffer",
       "unityId": 1531,
-      "hash": 100070379,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        100070379
+      ]
     },
     {
       "name": "PurchaseVipMembershipExtension",
       "unityId": -1,
-      "hash": 3967755235,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3967755235
+      ]
     },
     {
       "name": "Quit",
       "unityId": 53,
-      "hash": 3021913044,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3021913044
+      ]
     },
     {
       "name": "RateFlat",
       "unityId": 261,
-      "hash": 4081491515,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4081491515
+      ]
     },
     {
       "name": "RedeemMarketplaceOfferCredits",
       "unityId": -1,
-      "hash": 3710803147,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3710803147
+      ]
     },
     {
       "name": "RedeemVoucher",
       "unityId": -1,
-      "hash": 3421469541,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3421469541
+      ]
     },
     {
       "name": "RejectMembershipRequest",
       "unityId": 3268,
-      "hash": 1270851844,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1270851844
+      ]
     },
     {
       "name": "RejectQuest",
       "unityId": 3106,
-      "hash": 66510960,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        66510960
+      ]
     },
     {
       "name": "ReleaseIssues",
       "unityId": 451,
-      "hash": 3063501865,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3063501865
+      ]
     },
     {
       "name": "RemoveAdminRightsFromMember",
       "unityId": 3270,
-      "hash": 208976380,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        208976380
+      ]
     },
     {
       "name": "RemoveAllRights",
       "unityId": 155,
-      "hash": 3923912031,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3923912031
+      ]
     },
     {
       "name": "RemoveBotFromFlat",
       "unityId": 3060,
-      "hash": 3706434747,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3706434747
+      ]
     },
     {
       "name": "RemoveFriend",
       "unityId": 40,
-      "hash": 103456825,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        103456825
+      ]
     },
     {
       "name": "RemoveItem",
       "unityId": 85,
-      "hash": 1888606983,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1888606983
+      ]
     },
     {
       "name": "RemoveItemFromTrade",
       "unityId": -1,
-      "hash": 543887580,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        543887580
+      ]
     },
     {
       "name": "RemoveJukeboxDisk",
       "unityId": -1,
-      "hash": 2426377415,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2426377415
+      ]
     },
     {
       "name": "RemoveOwnRoomRightsRoom",
       "unityId": -1,
-      "hash": 2899161501,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2899161501
+      ]
     },
     {
       "name": "RemovePetFromFlat",
       "unityId": 3003,
-      "hash": 2786407868,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2786407868
+      ]
     },
     {
       "name": "RemoveRights",
       "unityId": 97,
-      "hash": 3370252638,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3370252638
+      ]
     },
     {
       "name": "RemoveSaddleFromPet",
       "unityId": -1,
-      "hash": 3648777253,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3648777253
+      ]
     },
     {
       "name": "RenderRoom",
       "unityId": 3502,
-      "hash": 1808146428,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1808146428
+      ]
     },
     {
       "name": "RenderRoomThumbnail",
       "unityId": -1,
-      "hash": 2273475850,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2273475850
+      ]
     },
     {
       "name": "RentableSpaceCancelRent",
       "unityId": -1,
-      "hash": 1380117822,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1380117822
+      ]
     },
     {
       "name": "RentableSpaceRent",
       "unityId": -1,
-      "hash": 3113320216,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3113320216
+      ]
     },
     {
       "name": "RentableSpaceStatus",
       "unityId": -1,
-      "hash": 2570362613,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2570362613
+      ]
     },
     {
       "name": "RequestABadge",
       "unityId": -1,
-      "hash": 1046481697,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1046481697
+      ]
     },
     {
       "name": "RequestCameraConfiguration",
       "unityId": -1,
-      "hash": 2305897285,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2305897285
+      ]
     },
     {
       "name": "RequestFriend",
       "unityId": 39,
-      "hash": 1930151370,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1930151370
+      ]
     },
     {
       "name": "RequestFurniInventory",
       "unityId": -1,
-      "hash": 3421846541,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3421846541
+      ]
     },
     {
       "name": "RequestFurniInventoryWhenNotInRoom",
       "unityId": -1,
-      "hash": 1218661831,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1218661831
+      ]
     },
     {
       "name": "RequestRoomPropertySet",
       "unityId": -1,
-      "hash": 716276190,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        716276190
+      ]
     },
     {
       "name": "ResetPhoneNumberState",
       "unityId": -1,
-      "hash": 3673174539,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3673174539
+      ]
     },
     {
       "name": "ResetResolutionAchievement",
       "unityId": 378,
-      "hash": 1930020656,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1930020656
+      ]
     },
     {
       "name": "ResetUnseenItemIds",
       "unityId": -1,
-      "hash": 4280040916,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4280040916
+      ]
     },
     {
       "name": "ResetUnseenItems",
       "unityId": -1,
-      "hash": 374639940,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        374639940
+      ]
     },
     {
       "name": "RespectPet",
       "unityId": 3005,
-      "hash": 3271878951,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3271878951
+      ]
     },
     {
       "name": "RoomAdEventTabAdClicked",
       "unityId": 356,
-      "hash": 2577174465,
-      "structure": "isi"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2577174465
+      ]
     },
     {
       "name": "RoomAdEventTabViewed",
       "unityId": 354,
-      "hash": 3731582931,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3731582931
+      ]
     },
     {
       "name": "RoomAdPurchaseInitiated",
       "unityId": 357,
-      "hash": 2490205108,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2490205108
+      ]
     },
     {
       "name": "RoomAdSearch",
       "unityId": 443,
-      "hash": 1239982363,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1239982363
+      ]
     },
     {
       "name": "RoomCompetitionInit",
       "unityId": 522,
-      "hash": 3860817281,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3860817281
+      ]
     },
     {
       "name": "RoomDimmerChangeState",
       "unityId": 343,
-      "hash": 2650222164,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2650222164
+      ]
     },
     {
       "name": "RoomDimmerGetPresets",
       "unityId": -1,
-      "hash": 1140426105,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1140426105
+      ]
     },
     {
       "name": "RoomDimmerSavePreset",
       "unityId": 342,
-      "hash": 3744007900,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3744007900
+      ]
     },
     {
       "name": "RoomNetworkOpenConnection",
       "unityId": -1,
-      "hash": 732282909,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        732282909
+      ]
     },
     {
       "name": "RoomsWhereMyFriendsAreSearch",
       "unityId": 433,
-      "hash": 1750352248,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1750352248
+      ]
     },
     {
       "name": "RoomsWithHighestScoreSearch",
       "unityId": 431,
-      "hash": 2478870987,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2478870987
+      ]
     },
     {
       "name": "RoomTextSearch",
       "unityId": 437,
-      "hash": 2261848052,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2261848052
+      ]
     },
     {
       "name": "RoomUsersClassification",
       "unityId": -1,
-      "hash": 1655071539,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1655071539
+      ]
     },
     {
       "name": "SaveRoomSettings",
       "unityId": 401,
-      "hash": 321498668,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        321498668
+      ]
     },
     {
       "name": "SaveUserNftWardrobe",
       "unityId": -1,
-      "hash": 2123301243,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2123301243
+      ]
     },
     {
       "name": "SaveWardrobeOutfit",
       "unityId": 376,
-      "hash": 1054625731,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1054625731
+      ]
     },
     {
       "name": "ScrGetKickbackInfo",
       "unityId": -1,
-      "hash": 1579243760,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1579243760
+      ]
     },
     {
       "name": "ScrGetUserInfo",
       "unityId": -1,
-      "hash": 3376920914,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3376920914
+      ]
     },
     {
       "name": "SelectClubGift",
       "unityId": 475,
-      "hash": 2813780172,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2813780172
+      ]
     },
     {
       "name": "SelectFavouriteHabboGroup",
       "unityId": 3258,
-      "hash": 96075991,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        96075991
+      ]
     },
     {
       "name": "SendMsg",
       "unityId": -1,
-      "hash": 1713015358,
-      "structure": "is"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1713015358
+      ]
     },
     {
       "name": "SendRoomInvite",
       "unityId": 34,
-      "hash": 1836410609,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1836410609
+      ]
     },
     {
       "name": "SetActivatedBadges",
       "unityId": -1,
-      "hash": 4012807180,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4012807180
+      ]
     },
     {
       "name": "SetChatPreferences",
       "unityId": 227,
-      "hash": 3895895147,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3895895147
+      ]
     },
     {
       "name": "SetChatStylePreference",
       "unityId": 244,
-      "hash": 891684617,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        891684617
+      ]
     },
     {
       "name": "SetClothingChangeData",
       "unityId": -1,
-      "hash": 3547881678,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3547881678
+      ]
     },
     {
       "name": "SetCustomStackingHeight",
       "unityId": -1,
-      "hash": 2716068353,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2716068353
+      ]
     },
     {
       "name": "SetIgnoreRoomInvites",
       "unityId": -1,
-      "hash": 3423298985,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3423298985
+      ]
     },
     {
       "name": "SetItemData",
       "unityId": -1,
-      "hash": 2242647549,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2242647549
+      ]
     },
     {
       "name": "SetMannequinFigure",
       "unityId": 3256,
-      "hash": 4196610496,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4196610496
+      ]
     },
     {
       "name": "SetMannequinName",
       "unityId": 3280,
-      "hash": 1809422716,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1809422716
+      ]
     },
     {
       "name": "SetNewNavigatorWindowPreferences",
       "unityId": -1,
-      "hash": 2271335938,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2271335938
+      ]
     },
     {
       "name": "SetObjectData",
       "unityId": -1,
-      "hash": 3633827078,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3633827078
+      ]
     },
     {
       "name": "SetPhoneNumberVerificationStatus",
       "unityId": -1,
-      "hash": 366227278,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        366227278
+      ]
     },
     {
       "name": "SetRandomState",
       "unityId": -1,
-      "hash": 32129149,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        32129149
+      ]
     },
     {
       "name": "SetRelationshipStatus",
       "unityId": 491,
-      "hash": 767852138,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        767852138
+      ]
     },
     {
       "name": "SetRoomBackgroundColorData",
       "unityId": 3292,
-      "hash": 4235163363,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4235163363
+      ]
     },
     {
       "name": "SetRoomCameraPreferences",
       "unityId": 241,
-      "hash": 2534516788,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2534516788
+      ]
     },
     {
       "name": "SetRoomSessionTags",
       "unityId": 3285,
-      "hash": 1443500159,
-      "structure": "ss"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1443500159
+      ]
     },
     {
       "name": "SetSoundSettings",
       "unityId": 229,
-      "hash": 595119331,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        595119331
+      ]
     },
     {
       "name": "SetTargetedOfferState",
       "unityId": 1532,
-      "hash": 1434723598,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1434723598
+      ]
     },
     {
       "name": "SetUIFlags",
       "unityId": -1,
-      "hash": 1180321676,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1180321676
+      ]
     },
     {
       "name": "SetYoutubeDisplayPlaylist",
       "unityId": -1,
-      "hash": 3268068319,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3268068319
+      ]
     },
     {
       "name": "ShopTargetedOfferViewed",
       "unityId": 1533,
-      "hash": 1864908389,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1864908389
+      ]
     },
     {
       "name": "Shout",
       "unityId": 55,
-      "hash": 1279110729,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1279110729
+      ]
     },
     {
       "name": "Sign",
       "unityId": -1,
-      "hash": 1118978992,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1118978992
+      ]
     },
     {
       "name": "SpinWheelOfFortune",
       "unityId": 247,
-      "hash": 3362760884,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3362760884
+      ]
     },
     {
       "name": "SSOTicket",
       "unityId": -1,
-      "hash": 1230469313,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1230469313
+      ]
     },
     {
       "name": "StartCampaign",
       "unityId": 3108,
-      "hash": 2763659357,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2763659357
+      ]
     },
     {
       "name": "StartTyping",
       "unityId": -1,
-      "hash": 603358764,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        603358764
+      ]
     },
     {
       "name": "SubmitRoomToCompetition",
       "unityId": 521,
-      "hash": 2091909270,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2091909270
+      ]
     },
     {
       "name": "ThrowDice",
       "unityId": 76,
-      "hash": 1540940767,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1540940767
+      ]
     },
     {
       "name": "TogglePetBreedingPermission",
       "unityId": -1,
-      "hash": 1360359573,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1360359573
+      ]
     },
     {
       "name": "TogglePetRidingPermission",
       "unityId": -1,
-      "hash": 422583913,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        422583913
+      ]
     },
     {
       "name": "ToggleStaffPick",
       "unityId": -1,
-      "hash": 2627036747,
-      "structure": "iB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2627036747
+      ]
     },
     {
       "name": "TryPhoneNumber",
       "unityId": 1500,
-      "hash": 2914124583,
-      "structure": "ss"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2914124583
+      ]
     },
     {
       "name": "UnacceptTrading",
       "unityId": -1,
-      "hash": 38777516,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        38777516
+      ]
     },
     {
       "name": "UnbanUserFromRoom",
       "unityId": -1,
-      "hash": 1749213110,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1749213110
+      ]
     },
     {
       "name": "UnblockGroupMember",
       "unityId": -1,
-      "hash": 4205829022,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4205829022
+      ]
     },
     {
       "name": "UnignoreUser",
       "unityId": 322,
-      "hash": 3545674166,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3545674166
+      ]
     },
     {
       "name": "UniqueID",
       "unityId": -1,
-      "hash": 1432595764,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1432595764
+      ]
     },
     {
       "name": "UnmuteUser",
       "unityId": -1,
-      "hash": 2661617944,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2661617944
+      ]
     },
     {
       "name": "UpdateAction",
       "unityId": -1,
-      "hash": 51033794,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        51033794
+      ]
     },
     {
       "name": "UpdateCondition",
       "unityId": -1,
-      "hash": 3055607602,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3055607602
+      ]
     },
     {
       "name": "UpdateFigureData",
       "unityId": -1,
-      "hash": 2728829865,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2728829865
+      ]
     },
     {
       "name": "UpdateFloorProperties",
       "unityId": -1,
-      "hash": 1189293106,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1189293106
+      ]
     },
     {
       "name": "UpdateForumReadMarker",
       "unityId": -1,
-      "hash": 4101634329,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4101634329
+      ]
     },
     {
       "name": "UpdateForumSettings",
       "unityId": 1606,
-      "hash": 3800710006,
-      "structure": "iiiii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3800710006
+      ]
     },
     {
       "name": "UpdateGuildBadge",
       "unityId": 3275,
-      "hash": 2896497124,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2896497124
+      ]
     },
     {
       "name": "UpdateGuildColors",
       "unityId": 3276,
-      "hash": 2870235488,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2870235488
+      ]
     },
     {
       "name": "UpdateGuildIdentity",
       "unityId": 3264,
-      "hash": 2286439755,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2286439755
+      ]
     },
     {
       "name": "UpdateGuildSettings",
       "unityId": 3273,
-      "hash": 1401564294,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1401564294
+      ]
     },
     {
       "name": "UpdateHomeRoom",
       "unityId": -1,
-      "hash": 2288556465,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2288556465
+      ]
     },
     {
       "name": "UpdateRoomCategoryAndTradeSettings",
       "unityId": -1,
-      "hash": 3744304655,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3744304655
+      ]
     },
     {
       "name": "UpdateRoomFilter",
       "unityId": 407,
-      "hash": 3156777903,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3156777903
+      ]
     },
     {
       "name": "UpdateThread",
       "unityId": -1,
-      "hash": 1996772362,
-      "structure": "iiBB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1996772362
+      ]
     },
     {
       "name": "UpdateTrigger",
       "unityId": -1,
-      "hash": 1664032756,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1664032756
+      ]
     },
     {
       "name": "UseFurniture",
       "unityId": -1,
-      "hash": 3394416303,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3394416303
+      ]
     },
     {
       "name": "UseWallItem",
       "unityId": 393,
-      "hash": 4025022829,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4025022829
+      ]
     },
     {
       "name": "VerifyCode",
       "unityId": 1501,
-      "hash": 4286330160,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4286330160
+      ]
     },
     {
       "name": "VersionCheck",
       "unityId": 1170,
-      "hash": 4242343903,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4242343903
+      ]
     },
     {
       "name": "VisitUser",
       "unityId": 264,
-      "hash": 5572756,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        5572756
+      ]
     },
     {
       "name": "VoteForRoom",
       "unityId": 523,
-      "hash": 241457445,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        241457445
+      ]
     },
     {
       "name": "Whisper",
       "unityId": 56,
-      "hash": 237679176,
-      "structure": "si"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        237679176
+      ]
     },
     {
       "name": "WithdrawCreditVault",
       "unityId": -1,
-      "hash": 1536736454,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1536736454
+      ]
     }
   ],
   "incoming": [
     {
       "name": "AcceptFriendResult",
       "unityId": 315,
-      "hash": 3691276874,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3691276874
+      ]
     },
     {
       "name": "AccountPreferences",
       "unityId": 308,
-      "hash": 1689661034,
-      "structure": "iiiBBBii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1689661034
+      ]
     },
     {
       "name": "AccountSafetyLockStatusChange",
       "unityId": -1,
-      "hash": 326763790,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        326763790
+      ]
     },
     {
       "name": "Achievement",
       "unityId": -1,
-      "hash": 1876292167,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1876292167
+      ]
     },
     {
       "name": "AchievementResolutionCompleted",
       "unityId": -1,
-      "hash": 928510831,
-      "structure": "ss"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        928510831
+      ]
     },
     {
       "name": "AchievementResolutionProgress",
       "unityId": -1,
-      "hash": 3495562367,
-      "structure": "iisiii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3495562367
+      ]
     },
     {
       "name": "AchievementResolutions",
       "unityId": -1,
-      "hash": 3219527299,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3219527299
+      ]
     },
     {
       "name": "Achievements",
       "unityId": -1,
-      "hash": 297388799,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        297388799
+      ]
     },
     {
       "name": "AchievementsScore",
       "unityId": -1,
-      "hash": 1115706807,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1115706807
+      ]
     },
     {
       "name": "ActivityPoints",
       "unityId": 628,
-      "hash": 2180592593,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2180592593
+      ]
     },
     {
       "name": "ApproveName",
       "unityId": -1,
-      "hash": 2186673632,
-      "structure": "is"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2186673632
+      ]
     },
     {
       "name": "AuthenticationOK",
       "unityId": -1,
-      "hash": 682763951,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        682763951
+      ]
     },
     {
       "name": "AvailabilityStatus",
       "unityId": 290,
-      "hash": 2575744959,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2575744959
+      ]
     },
     {
       "name": "AvatarEffect",
       "unityId": -1,
-      "hash": 697236939,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        697236939
+      ]
     },
     {
       "name": "AvatarEffectActivated",
       "unityId": 462,
-      "hash": 1911824456,
-      "structure": "iiB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1911824456
+      ]
     },
     {
       "name": "AvatarEffectAdded",
       "unityId": 461,
-      "hash": 210392913,
-      "structure": "iiiB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        210392913
+      ]
     },
     {
       "name": "AvatarEffectExpired",
       "unityId": 463,
-      "hash": 2275729106,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2275729106
+      ]
     },
     {
       "name": "AvatarEffects",
       "unityId": 460,
-      "hash": 189867866,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        189867866
+      ]
     },
     {
       "name": "AvatarEffectSelected",
       "unityId": 464,
-      "hash": 3040206728,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3040206728
+      ]
     },
     {
       "name": "BadgePointLimits",
       "unityId": 627,
-      "hash": 1745461012,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1745461012
+      ]
     },
     {
       "name": "BadgeReceived",
       "unityId": 633,
-      "hash": 1345090398,
-      "structure": "is"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1345090398
+      ]
     },
     {
       "name": "Badges",
       "unityId": -1,
-      "hash": 1596060039,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1596060039
+      ]
     },
     {
       "name": "BannedUsersFromRoom",
       "unityId": -1,
-      "hash": 987976164,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        987976164
+      ]
     },
     {
       "name": "BonusRareInfo",
       "unityId": 629,
-      "hash": 317210867,
-      "structure": "siii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        317210867
+      ]
     },
     {
       "name": "BotAddedToInventory",
       "unityId": 3029,
-      "hash": 376441269,
-      "structure": "issssB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        376441269
+      ]
     },
     {
       "name": "BotCommandConfiguration",
       "unityId": -1,
-      "hash": 1359143471,
-      "structure": "iis"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1359143471
+      ]
     },
     {
       "name": "BotError",
       "unityId": 3032,
-      "hash": 4219744333,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4219744333
+      ]
     },
     {
       "name": "BotForceOpenContextMenu",
       "unityId": 3035,
-      "hash": 1033203725,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1033203725
+      ]
     },
     {
       "name": "BotInventory",
       "unityId": 3028,
-      "hash": 3012162352,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3012162352
+      ]
     },
     {
       "name": "BotRemovedFromInventory",
       "unityId": 3030,
-      "hash": 4199440183,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4199440183
+      ]
     },
     {
       "name": "BotSkillListUpdate",
       "unityId": -1,
-      "hash": 1681790279,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1681790279
+      ]
     },
     {
       "name": "BuildersClubFurniCount",
       "unityId": 1004,
-      "hash": 2933281088,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2933281088
+      ]
     },
     {
       "name": "BuildersClubSubscriptionStatus",
       "unityId": -1,
-      "hash": 2768636374,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2768636374
+      ]
     },
     {
       "name": "BundleDiscountRuleset",
       "unityId": 635,
-      "hash": 2909775787,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2909775787
+      ]
     },
     {
       "name": "CallForHelpDisabledNotify",
       "unityId": -1,
-      "hash": 1298474957,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1298474957
+      ]
     },
     {
       "name": "CallForHelpPendingCalls",
       "unityId": -1,
-      "hash": 1351847770,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1351847770
+      ]
     },
     {
       "name": "CallForHelpPendingCallsDeleted",
       "unityId": -1,
-      "hash": 2526614543,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2526614543
+      ]
     },
     {
       "name": "CallForHelpReply",
       "unityId": -1,
-      "hash": 2027770387,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2027770387
+      ]
     },
     {
       "name": "CallForHelpResult",
       "unityId": -1,
-      "hash": 2916921380,
-      "structure": "is"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2916921380
+      ]
     },
     {
       "name": "CameraPublishStatus",
       "unityId": -1,
-      "hash": 2722277805,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2722277805
+      ]
     },
     {
       "name": "CameraPurchaseOK",
       "unityId": -1,
-      "hash": 2107018183,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2107018183
+      ]
     },
     {
       "name": "CameraStorageUrl",
       "unityId": -1,
-      "hash": 3585601733,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3585601733
+      ]
     },
     {
       "name": "CampaignCalendarData",
       "unityId": 1400,
-      "hash": 1343963788,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1343963788
+      ]
     },
     {
       "name": "CampaignCalendarDoorOpened",
       "unityId": 1401,
-      "hash": 1264339919,
-      "structure": "Bsss"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1264339919
+      ]
     },
     {
       "name": "CancelMysteryBoxWait",
       "unityId": 356,
-      "hash": 2966946516,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2966946516
+      ]
     },
     {
       "name": "CanCreateRoom",
       "unityId": 512,
-      "hash": 2770020841,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2770020841
+      ]
     },
     {
       "name": "CanCreateRoomEvent",
       "unityId": -1,
-      "hash": 3447817915,
-      "structure": "Bi"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3447817915
+      ]
     },
     {
       "name": "CantConnect",
       "unityId": -1,
-      "hash": 1197115409,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1197115409
+      ]
     },
     {
       "name": "CarryObject",
       "unityId": -1,
-      "hash": 1495723646,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1495723646
+      ]
     },
     {
       "name": "CatalogIndex",
       "unityId": 126,
-      "hash": 554768122,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        554768122
+      ]
     },
     {
       "name": "CatalogPage",
       "unityId": 127,
-      "hash": 1458598382,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1458598382
+      ]
     },
     {
       "name": "CatalogPageWithEarliestExpiry",
       "unityId": 638,
-      "hash": 1180086495,
-      "structure": "sis"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1180086495
+      ]
     },
     {
       "name": "CatalogPublished",
       "unityId": -1,
-      "hash": 2382797874,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2382797874
+      ]
     },
     {
       "name": "CategoriesWithVisitorCount",
       "unityId": -1,
-      "hash": 833740316,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        833740316
+      ]
     },
     {
       "name": "CfhChatlog",
       "unityId": -1,
-      "hash": 3695633211,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3695633211
+      ]
     },
     {
       "name": "CfhSanction",
       "unityId": -1,
-      "hash": 3777009258,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3777009258
+      ]
     },
     {
       "name": "CfhTopicsInit",
       "unityId": 552,
-      "hash": 4136486532,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4136486532
+      ]
     },
     {
       "name": "ChangeEmailResult",
       "unityId": -1,
-      "hash": 1250856250,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1250856250
+      ]
     },
     {
       "name": "ChangeUserNameResult",
       "unityId": -1,
-      "hash": 1787221803,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1787221803
+      ]
     },
     {
       "name": "Chat",
       "unityId": 24,
-      "hash": 3965679603,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3965679603
+      ]
     },
     {
       "name": "ChatReviewSessionDetached",
       "unityId": -1,
-      "hash": 1814385055,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1814385055
+      ]
     },
     {
       "name": "ChatReviewSessionOfferedToGuide",
       "unityId": -1,
-      "hash": 2622516754,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2622516754
+      ]
     },
     {
       "name": "ChatReviewSessionResults",
       "unityId": -1,
-      "hash": 1196150405,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1196150405
+      ]
     },
     {
       "name": "ChatReviewSessionStarted",
       "unityId": -1,
-      "hash": 535807870,
-      "structure": "is"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        535807870
+      ]
     },
     {
       "name": "ChatReviewSessionVotingStatus",
       "unityId": -1,
-      "hash": 2292910444,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2292910444
+      ]
     },
     {
       "name": "CheckUserNameResult",
       "unityId": 571,
-      "hash": 1558162994,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1558162994
+      ]
     },
     {
       "name": "CitizenshipVipOfferPromoEnabled",
       "unityId": -1,
-      "hash": 575753229,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        575753229
+      ]
     },
     {
       "name": "CloseConnection",
       "unityId": 18,
-      "hash": 1474929872,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1474929872
+      ]
     },
     {
       "name": "ClubGiftInfo",
       "unityId": -1,
-      "hash": 3939740298,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3939740298
+      ]
     },
     {
       "name": "ClubGiftNotification",
       "unityId": -1,
-      "hash": 3752951778,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3752951778
+      ]
     },
     {
       "name": "ClubGiftSelected",
       "unityId": 624,
-      "hash": 3269481789,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3269481789
+      ]
     },
     {
       "name": "CommunityGoalHallOfFame",
       "unityId": 646,
-      "hash": 2917165574,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2917165574
+      ]
     },
     {
       "name": "CommunityGoalProgress",
       "unityId": 790,
-      "hash": 4133868938,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4133868938
+      ]
     },
     {
       "name": "CommunityVoteReceived",
       "unityId": -1,
-      "hash": 4019752363,
-      "structure": "B"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4019752363
+      ]
     },
     {
       "name": "CompetitionEntrySubmitResult",
       "unityId": 643,
-      "hash": 95951575,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        95951575
+      ]
     },
     {
       "name": "CompetitionRoomsData",
       "unityId": 792,
-      "hash": 3290361206,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3290361206
+      ]
     },
     {
       "name": "CompetitionStatus",
       "unityId": -1,
-      "hash": 2778951793,
-      "structure": "Bs"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2778951793
+      ]
     },
     {
       "name": "CompetitionVotingInfo",
       "unityId": 644,
-      "hash": 3114870618,
-      "structure": "isii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3114870618
+      ]
     },
     {
       "name": "CompleteDiffieHandshake",
       "unityId": -1,
-      "hash": 3124614156,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3124614156
+      ]
     },
     {
       "name": "ConcurrentUsersGoalProgress",
       "unityId": 670,
-      "hash": 2205367966,
-      "structure": "iii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2205367966
+      ]
     },
     {
       "name": "ConfirmBreedingRequest",
       "unityId": 990,
-      "hash": 2581566608,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2581566608
+      ]
     },
     {
       "name": "ConfirmBreedingResult",
       "unityId": -1,
-      "hash": 3785773776,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3785773776
+      ]
     },
     {
       "name": "ConvertedRoomId",
       "unityId": 513,
-      "hash": 1516850228,
-      "structure": "si"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1516850228
+      ]
     },
     {
       "name": "CraftableProducts",
       "unityId": 1300,
-      "hash": 1247408351,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1247408351
+      ]
     },
     {
       "name": "CraftingRecipe",
       "unityId": 1301,
-      "hash": 2880887609,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2880887609
+      ]
     },
     {
       "name": "CraftingRecipesAvailable",
       "unityId": -1,
-      "hash": 125276079,
-      "structure": "iB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        125276079
+      ]
     },
     {
       "name": "CraftingResult",
       "unityId": 1302,
-      "hash": 1818253446,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1818253446
+      ]
     },
     {
       "name": "CreditBalance",
       "unityId": -1,
-      "hash": 4006330596,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4006330596
+      ]
     },
     {
       "name": "CreditVaultStatus",
       "unityId": -1,
-      "hash": 1542891568,
-      "structure": "Bii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1542891568
+      ]
     },
     {
       "name": "CurrentTimingCode",
       "unityId": 649,
-      "hash": 4144296917,
-      "structure": "ss"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4144296917
+      ]
     },
     {
       "name": "CustomStackingHeightUpdate",
       "unityId": -1,
-      "hash": 1147958756,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1147958756
+      ]
     },
     {
       "name": "CustomUserNotification",
       "unityId": 1001,
-      "hash": 3549357296,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3549357296
+      ]
     },
     {
       "name": "Dance",
       "unityId": -1,
-      "hash": 3146477447,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3146477447
+      ]
     },
     {
       "name": "DiceValue",
       "unityId": 90,
-      "hash": 1463997675,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1463997675
+      ]
     },
     {
       "name": "DisconnectReason",
       "unityId": -1,
-      "hash": 175733402,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        175733402
+      ]
     },
     {
       "name": "Doorbell",
       "unityId": -1,
-      "hash": 1082940066,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1082940066
+      ]
     },
     {
       "name": "ElementPointer",
       "unityId": -1,
-      "hash": 1726210230,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1726210230
+      ]
     },
     {
       "name": "EmailStatusResult",
       "unityId": -1,
-      "hash": 2211226813,
-      "structure": "sBB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2211226813
+      ]
     },
     {
       "name": "EpicPopup",
       "unityId": -1,
-      "hash": 3854514060,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3854514060
+      ]
     },
     {
       "name": "ErrorReport",
       "unityId": 299,
-      "hash": 4151404283,
-      "structure": "iis"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4151404283
+      ]
     },
     {
       "name": "Expression",
       "unityId": -1,
-      "hash": 1814880357,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1814880357
+      ]
     },
     {
       "name": "ExtendedProfile",
       "unityId": -1,
-      "hash": 1635333828,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1635333828
+      ]
     },
     {
       "name": "ExtendedProfileChanged",
       "unityId": 924,
-      "hash": 3299599755,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3299599755
+      ]
     },
     {
       "name": "FavoriteMembershipUpdate",
       "unityId": -1,
-      "hash": 1662379057,
-      "structure": "iiis"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1662379057
+      ]
     },
     {
       "name": "FavouriteChanged",
       "unityId": -1,
-      "hash": 3541757496,
-      "structure": "iB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3541757496
+      ]
     },
     {
       "name": "Favourites",
       "unityId": -1,
-      "hash": 3851270542,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3851270542
+      ]
     },
     {
       "name": "FigureSetIds",
       "unityId": 3036,
-      "hash": 437452986,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        437452986
+      ]
     },
     {
       "name": "FigureUpdate",
       "unityId": -1,
-      "hash": 2890056306,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2890056306
+      ]
     },
     {
       "name": "FindFriendsProcessResult",
       "unityId": -1,
-      "hash": 2374523949,
-      "structure": "B"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2374523949
+      ]
     },
     {
       "name": "FlatAccessDenied",
       "unityId": -1,
-      "hash": 3981309742,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3981309742
+      ]
     },
     {
       "name": "FlatAccessible",
       "unityId": -1,
-      "hash": 2987410913,
-      "structure": "is"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2987410913
+      ]
     },
     {
       "name": "FlatControllerAdded",
       "unityId": -1,
-      "hash": 447673587,
-      "structure": "iis"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        447673587
+      ]
     },
     {
       "name": "FlatControllerRemoved",
       "unityId": -1,
-      "hash": 1526551538,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1526551538
+      ]
     },
     {
       "name": "FlatControllers",
       "unityId": -1,
-      "hash": 1254675325,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1254675325
+      ]
     },
     {
       "name": "FlatCreated",
       "unityId": 59,
-      "hash": 3749917914,
-      "structure": "is"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3749917914
+      ]
     },
     {
       "name": "FloodControl",
       "unityId": -1,
-      "hash": 3115454856,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3115454856
+      ]
     },
     {
       "name": "FloorHeightMap",
       "unityId": -1,
-      "hash": 2372398809,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2372398809
+      ]
     },
     {
       "name": "FollowFriendFailed",
       "unityId": 349,
-      "hash": 2319832145,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2319832145
+      ]
     },
     {
       "name": "ForumData",
       "unityId": -1,
-      "hash": 2116077701,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2116077701
+      ]
     },
     {
       "name": "ForumsList",
       "unityId": -1,
-      "hash": 1730808331,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1730808331
+      ]
     },
     {
       "name": "ForumThreads",
       "unityId": -1,
-      "hash": 714211972,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        714211972
+      ]
     },
     {
       "name": "FriendFurniCancelLock",
       "unityId": -1,
-      "hash": 1716695802,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1716695802
+      ]
     },
     {
       "name": "FriendFurniOtherLockConfirmed",
       "unityId": -1,
-      "hash": 1581006525,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1581006525
+      ]
     },
     {
       "name": "FriendFurniStartConfirmation",
       "unityId": -1,
-      "hash": 1205617034,
-      "structure": "iB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1205617034
+      ]
     },
     {
       "name": "FriendListFragment",
       "unityId": -1,
-      "hash": 437681836,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        437681836
+      ]
     },
     {
       "name": "FriendListUpdate",
       "unityId": 13,
-      "hash": 1214265166,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1214265166
+      ]
     },
     {
       "name": "FriendNotification",
       "unityId": -1,
-      "hash": 1293514545,
-      "structure": "sis"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1293514545
+      ]
     },
     {
       "name": "FriendRequests",
       "unityId": -1,
-      "hash": 865507777,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        865507777
+      ]
     },
     {
       "name": "FurniList",
       "unityId": -1,
-      "hash": 2079276713,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2079276713
+      ]
     },
     {
       "name": "FurniListAddOrUpdate",
       "unityId": -1,
-      "hash": 1615762046,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1615762046
+      ]
     },
     {
       "name": "FurniListInvalidate",
       "unityId": -1,
-      "hash": 1706289112,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1706289112
+      ]
     },
     {
       "name": "FurniListRemove",
       "unityId": -1,
-      "hash": 3495475735,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3495475735
+      ]
     },
     {
       "name": "FurniRentOrBuyoutOffer",
       "unityId": -1,
-      "hash": 649666945,
-      "structure": "BsBiii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        649666945
+      ]
     },
     {
       "name": "FurnitureAliases",
       "unityId": -1,
-      "hash": 3090849890,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3090849890
+      ]
     },
     {
       "name": "Game2AccountGameStatus",
       "unityId": -1,
-      "hash": 1858323663,
-      "structure": "iii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1858323663
+      ]
     },
     {
       "name": "Game2ArenaEntered",
       "unityId": -1,
-      "hash": 92902247,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        92902247
+      ]
     },
     {
       "name": "Game2EnterArena",
       "unityId": -1,
-      "hash": 532872149,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        532872149
+      ]
     },
     {
       "name": "Game2EnterArenaFailed",
       "unityId": -1,
-      "hash": 1363416709,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1363416709
+      ]
     },
     {
       "name": "Game2FriendsLeaderboard",
       "unityId": -1,
-      "hash": 3503554655,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3503554655
+      ]
     },
     {
       "name": "Game2FullGameStatus",
       "unityId": -1,
-      "hash": 2071378199,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2071378199
+      ]
     },
     {
       "name": "Game2GameCancelled",
       "unityId": -1,
-      "hash": 3025874027,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3025874027
+      ]
     },
     {
       "name": "Game2GameChatFromPlayer",
       "unityId": -1,
-      "hash": 1887236086,
-      "structure": "is"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1887236086
+      ]
     },
     {
       "name": "Game2GameCreated",
       "unityId": -1,
-      "hash": 3263071782,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3263071782
+      ]
     },
     {
       "name": "Game2GameDirectoryStatus",
       "unityId": -1,
-      "hash": 1439761094,
-      "structure": "iiii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1439761094
+      ]
     },
     {
       "name": "Game2GameEnding",
       "unityId": -1,
-      "hash": 421458582,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        421458582
+      ]
     },
     {
       "name": "Game2GameLongData",
       "unityId": -1,
-      "hash": 2341846485,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2341846485
+      ]
     },
     {
       "name": "Game2GameRejoin",
       "unityId": -1,
-      "hash": 669679538,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        669679538
+      ]
     },
     {
       "name": "Game2GameStarted",
       "unityId": -1,
-      "hash": 2843616060,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2843616060
+      ]
     },
     {
       "name": "Game2GameStatus",
       "unityId": -1,
-      "hash": 3030427893,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3030427893
+      ]
     },
     {
       "name": "Game2InArenaQueue",
       "unityId": -1,
-      "hash": 3369868253,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3369868253
+      ]
     },
     {
       "name": "Game2JoiningGameFailed",
       "unityId": -1,
-      "hash": 881994675,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        881994675
+      ]
     },
     {
       "name": "Game2PlayerExitedGameArena",
       "unityId": -1,
-      "hash": 311766164,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        311766164
+      ]
     },
     {
       "name": "Game2PlayerRematches",
       "unityId": -1,
-      "hash": 132268044,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        132268044
+      ]
     },
     {
       "name": "Game2StageEnding",
       "unityId": -1,
-      "hash": 2386324494,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2386324494
+      ]
     },
     {
       "name": "Game2StageLoad",
       "unityId": -1,
-      "hash": 1665843360,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1665843360
+      ]
     },
     {
       "name": "Game2StageRunning",
       "unityId": -1,
-      "hash": 2677885764,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2677885764
+      ]
     },
     {
       "name": "Game2StageStarting",
       "unityId": -1,
-      "hash": 3064027104,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3064027104
+      ]
     },
     {
       "name": "Game2StageStillLoading",
       "unityId": -1,
-      "hash": 465145380,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        465145380
+      ]
     },
     {
       "name": "Game2StartCounter",
       "unityId": -1,
-      "hash": 2452533186,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2452533186
+      ]
     },
     {
       "name": "Game2StartingGameFailed",
       "unityId": -1,
-      "hash": 308376974,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        308376974
+      ]
     },
     {
       "name": "Game2StopCounter",
       "unityId": -1,
-      "hash": 2697808104,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2697808104
+      ]
     },
     {
       "name": "Game2TotalGroupLeaderboard",
       "unityId": -1,
-      "hash": 1954835800,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1954835800
+      ]
     },
     {
       "name": "Game2TotalLeaderboard",
       "unityId": -1,
-      "hash": 3741552963,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3741552963
+      ]
     },
     {
       "name": "Game2UserBlocked",
       "unityId": -1,
-      "hash": 2460422102,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2460422102
+      ]
     },
     {
       "name": "Game2UserJoinedGame",
       "unityId": -1,
-      "hash": 2215669098,
-      "structure": "isssiiiiB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2215669098
+      ]
     },
     {
       "name": "Game2UserLeftGame",
       "unityId": -1,
-      "hash": 53585703,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        53585703
+      ]
     },
     {
       "name": "Game2WeeklyFriendsLeaderboard",
       "unityId": -1,
-      "hash": 4158114614,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4158114614
+      ]
     },
     {
       "name": "Game2WeeklyGroupLeaderboard",
       "unityId": -1,
-      "hash": 3719849888,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3719849888
+      ]
     },
     {
       "name": "Game2WeeklyLeaderboard",
       "unityId": -1,
-      "hash": 2169429270,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2169429270
+      ]
     },
     {
       "name": "GamePlayerValue",
       "unityId": -1,
-      "hash": 3474643431,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3474643431
+      ]
     },
     {
       "name": "GenericError",
       "unityId": -1,
-      "hash": 3354236779,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3354236779
+      ]
     },
     {
       "name": "GetGuestRoomResult",
       "unityId": 454,
-      "hash": 2023731753,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2023731753
+      ]
     },
     {
       "name": "GiftReceiverNotFound",
       "unityId": -1,
-      "hash": 3589520096,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3589520096
+      ]
     },
     {
       "name": "GiftWrappingConfiguration",
       "unityId": 620,
-      "hash": 1843076458,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1843076458
+      ]
     },
     {
       "name": "GotMysteryBoxPrize",
       "unityId": 357,
-      "hash": 2428453318,
-      "structure": "si"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2428453318
+      ]
     },
     {
       "name": "GoToBreedingNestFailure",
       "unityId": 991,
-      "hash": 1204898175,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1204898175
+      ]
     },
     {
       "name": "GroupDetailsChanged",
       "unityId": 932,
-      "hash": 3332622873,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3332622873
+      ]
     },
     {
       "name": "GroupMembershipRequested",
       "unityId": 931,
-      "hash": 2593415025,
-      "structure": "iiisss"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2593415025
+      ]
     },
     {
       "name": "GuestRoomSearchResult",
       "unityId": 451,
-      "hash": 2360048493,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2360048493
+      ]
     },
     {
       "name": "GuideOnDutyStatus",
       "unityId": -1,
-      "hash": 3886057700,
-      "structure": "Biii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3886057700
+      ]
     },
     {
       "name": "GuideReportingStatus",
       "unityId": 1540,
-      "hash": 27477562,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        27477562
+      ]
     },
     {
       "name": "GuideSessionAttached",
       "unityId": -1,
-      "hash": 1017444192,
-      "structure": "Bisi"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1017444192
+      ]
     },
     {
       "name": "GuideSessionDetached",
       "unityId": -1,
-      "hash": 2725723251,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2725723251
+      ]
     },
     {
       "name": "GuideSessionEnded",
       "unityId": -1,
-      "hash": 696677966,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        696677966
+      ]
     },
     {
       "name": "GuideSessionError",
       "unityId": -1,
-      "hash": 1476960700,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1476960700
+      ]
     },
     {
       "name": "GuideSessionInvitedToGuideRoom",
       "unityId": -1,
-      "hash": 3832344001,
-      "structure": "is"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3832344001
+      ]
     },
     {
       "name": "GuideSessionMessage",
       "unityId": -1,
-      "hash": 3566398694,
-      "structure": "si"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3566398694
+      ]
     },
     {
       "name": "GuideSessionPartnerIsTyping",
       "unityId": -1,
-      "hash": 791024127,
-      "structure": "B"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        791024127
+      ]
     },
     {
       "name": "GuideSessionRequesterRoom",
       "unityId": -1,
-      "hash": 2106991121,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2106991121
+      ]
     },
     {
       "name": "GuideSessionStarted",
       "unityId": -1,
-      "hash": 2091548135,
-      "structure": "ississ"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2091548135
+      ]
     },
     {
       "name": "GuideTicketCreationResult",
       "unityId": -1,
-      "hash": 3224480242,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3224480242
+      ]
     },
     {
       "name": "GuideTicketResolution",
       "unityId": -1,
-      "hash": 1674247504,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1674247504
+      ]
     },
     {
       "name": "GuildCreated",
       "unityId": -1,
-      "hash": 3248854886,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3248854886
+      ]
     },
     {
       "name": "GuildCreationInfo",
       "unityId": 917,
-      "hash": 3935947027,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3935947027
+      ]
     },
     {
       "name": "GuildEditFailed",
       "unityId": -1,
-      "hash": 3229457987,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3229457987
+      ]
     },
     {
       "name": "GuildEditInfo",
       "unityId": -1,
-      "hash": 1306988150,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1306988150
+      ]
     },
     {
       "name": "GuildEditorData",
       "unityId": 919,
-      "hash": 3819779120,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3819779120
+      ]
     },
     {
       "name": "GuildFurniContextMenuInfo",
       "unityId": -1,
-      "hash": 1481751506,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1481751506
+      ]
     },
     {
       "name": "GuildMemberFurniCountInHQ",
       "unityId": -1,
-      "hash": 786894448,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        786894448
+      ]
     },
     {
       "name": "GuildMemberMgmtFailed",
       "unityId": -1,
-      "hash": 3688476541,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3688476541
+      ]
     },
     {
       "name": "GuildMembers",
       "unityId": 926,
-      "hash": 1292769644,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1292769644
+      ]
     },
     {
       "name": "GuildMembershipRejected",
       "unityId": -1,
-      "hash": 239796522,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        239796522
+      ]
     },
     {
       "name": "GuildMemberships",
       "unityId": 927,
-      "hash": 3514942175,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3514942175
+      ]
     },
     {
       "name": "GuildMembershipUpdated",
       "unityId": -1,
-      "hash": 3693812894,
-      "structure": "iiisss"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3693812894
+      ]
     },
     {
       "name": "HabboAchievementNotification",
       "unityId": -1,
-      "hash": 2503525895,
-      "structure": "iiisiiiiissB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2503525895
+      ]
     },
     {
       "name": "HabboActivityPointNotification",
       "unityId": -1,
-      "hash": 380363694,
-      "structure": "iii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        380363694
+      ]
     },
     {
       "name": "HabboBroadcast",
       "unityId": -1,
-      "hash": 320248836,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        320248836
+      ]
     },
     {
       "name": "HabboClubExtendOffer",
       "unityId": 630,
-      "hash": 3693941518,
-      "structure": "isBiiiBiiBiiiiiiii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3693941518
+      ]
     },
     {
       "name": "HabboClubOffers",
       "unityId": 625,
-      "hash": 2753937074,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2753937074
+      ]
     },
     {
       "name": "HabboGroupBadges",
       "unityId": -1,
-      "hash": 3846737404,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3846737404
+      ]
     },
     {
       "name": "HabboGroupDeactivated",
       "unityId": -1,
-      "hash": 3030246867,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3030246867
+      ]
     },
     {
       "name": "HabboGroupDetails",
       "unityId": 311,
-      "hash": 3882061775,
-      "structure": "iBisssisiiBsBBsBBiB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3882061775
+      ]
     },
     {
       "name": "HabboGroupJoinFailed",
       "unityId": -1,
-      "hash": 2912473033,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2912473033
+      ]
     },
     {
       "name": "HabboSearchResult",
       "unityId": -1,
-      "hash": 3493499982,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3493499982
+      ]
     },
     {
       "name": "HabboUserBadges",
       "unityId": -1,
-      "hash": 3702611302,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3702611302
+      ]
     },
     {
       "name": "HandItemReceived",
       "unityId": -1,
-      "hash": 2258731560,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2258731560
+      ]
     },
     {
       "name": "HeightMap",
       "unityId": -1,
-      "hash": 1177467692,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1177467692
+      ]
     },
     {
       "name": "HeightMapUpdate",
       "unityId": -1,
-      "hash": 3745184229,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3745184229
+      ]
     },
     {
       "name": "HotLooks",
       "unityId": -1,
-      "hash": 3768507715,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3768507715
+      ]
     },
     {
       "name": "IdentityAccounts",
       "unityId": -1,
-      "hash": 982788199,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        982788199
+      ]
     },
     {
       "name": "IgnoredUsers",
       "unityId": -1,
-      "hash": 2247522357,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2247522357
+      ]
     },
     {
       "name": "IgnoreResult",
       "unityId": -1,
-      "hash": 2987580124,
-      "structure": "is"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2987580124
+      ]
     },
     {
       "name": "InClientLink",
       "unityId": 1561,
-      "hash": 581389576,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        581389576
+      ]
     },
     {
       "name": "IncomeRewardClaimResponse",
       "unityId": -1,
-      "hash": 1660393191,
-      "structure": "bB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1660393191
+      ]
     },
     {
       "name": "IncomeRewardStatus",
       "unityId": -1,
-      "hash": 2070514195,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2070514195
+      ]
     },
     {
       "name": "InfoFeedEnable",
       "unityId": -1,
-      "hash": 2745281408,
-      "structure": "B"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2745281408
+      ]
     },
     {
       "name": "InfoHotelClosed",
       "unityId": 292,
-      "hash": 1666295042,
-      "structure": "iiB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1666295042
+      ]
     },
     {
       "name": "InfoHotelClosing",
       "unityId": 291,
-      "hash": 3006483102,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3006483102
+      ]
     },
     {
       "name": "InitCamera",
       "unityId": -1,
-      "hash": 2005163685,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2005163685
+      ]
     },
     {
       "name": "InitDiffieHandshake",
       "unityId": -1,
-      "hash": 3809968236,
-      "structure": "ss"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3809968236
+      ]
     },
     {
       "name": "InstantMessageError",
       "unityId": 261,
-      "hash": 3403706277,
-      "structure": "iis"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3403706277
+      ]
     },
     {
       "name": "Interstitial",
       "unityId": 258,
-      "hash": 4068692033,
-      "structure": "B"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4068692033
+      ]
     },
     {
       "name": "IsBadgeRequestFulfilled",
       "unityId": -1,
-      "hash": 4019953317,
-      "structure": "sB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4019953317
+      ]
     },
     {
       "name": "IsFirstLoginOfDay",
       "unityId": 8,
-      "hash": 254390194,
-      "structure": "B"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        254390194
+      ]
     },
     {
       "name": "IssueCloseNotification",
       "unityId": 540,
-      "hash": 2865223751,
-      "structure": "is"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2865223751
+      ]
     },
     {
       "name": "IssueDeleted",
       "unityId": -1,
-      "hash": 1167724097,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1167724097
+      ]
     },
     {
       "name": "IssueInfo",
       "unityId": -1,
-      "hash": 4195131297,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4195131297
+      ]
     },
     {
       "name": "IssuePickFailed",
       "unityId": -1,
-      "hash": 2258195735,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2258195735
+      ]
     },
     {
       "name": "IsUserPartOfCompetition",
       "unityId": -1,
-      "hash": 3307110419,
-      "structure": "Bi"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3307110419
+      ]
     },
     {
       "name": "ItemAdd",
       "unityId": -1,
-      "hash": 2779957371,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2779957371
+      ]
     },
     {
       "name": "ItemDataUpdate",
       "unityId": -1,
-      "hash": 448897739,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        448897739
+      ]
     },
     {
       "name": "ItemRemove",
       "unityId": -1,
-      "hash": 299087807,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        299087807
+      ]
     },
     {
       "name": "Items",
       "unityId": 45,
-      "hash": 3977425086,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3977425086
+      ]
     },
     {
       "name": "ItemUpdate",
       "unityId": -1,
-      "hash": 1075909454,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1075909454
+      ]
     },
     {
       "name": "JukeboxPlayListFull",
       "unityId": 337,
-      "hash": 4071215418,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4071215418
+      ]
     },
     {
       "name": "JukeboxSongDisks",
       "unityId": -1,
-      "hash": 1024548761,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1024548761
+      ]
     },
     {
       "name": "LatencyPingResponse",
       "unityId": -1,
-      "hash": 2640146302,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2640146302
+      ]
     },
     {
       "name": "LimitedEditionSoldOut",
       "unityId": 636,
-      "hash": 181679290,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        181679290
+      ]
     },
     {
       "name": "LimitedOfferAppearingNext",
       "unityId": -1,
-      "hash": 2111000525,
-      "structure": "iiis"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2111000525
+      ]
     },
     {
       "name": "LoginFailedHotelClosed",
       "unityId": 294,
-      "hash": 649126860,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        649126860
+      ]
     },
     {
       "name": "MaintenanceStatus",
       "unityId": 980,
-      "hash": 1605337069,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1605337069
+      ]
     },
     {
       "name": "MarketplaceBuyOfferResult",
       "unityId": 613,
-      "hash": 3710899585,
-      "structure": "iiii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3710899585
+      ]
     },
     {
       "name": "MarketplaceCancelOfferResult",
       "unityId": -1,
-      "hash": 4241227270,
-      "structure": "iB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4241227270
+      ]
     },
     {
       "name": "MarketplaceCanMakeOfferResult",
       "unityId": 611,
-      "hash": 1839599001,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1839599001
+      ]
     },
     {
       "name": "MarketplaceConfiguration",
       "unityId": 612,
-      "hash": 3915527844,
-      "structure": "Biiiiiiiiii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3915527844
+      ]
     },
     {
       "name": "MarketplaceItemStats",
       "unityId": 617,
-      "hash": 151554762,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        151554762
+      ]
     },
     {
       "name": "MarketplaceMakeOfferResult",
       "unityId": 610,
-      "hash": 1248864773,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1248864773
+      ]
     },
     {
       "name": "MarketPlaceOffers",
       "unityId": -1,
-      "hash": 138568063,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        138568063
+      ]
     },
     {
       "name": "MarketPlaceOwnOffers",
       "unityId": -1,
-      "hash": 1782256715,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1782256715
+      ]
     },
     {
       "name": "MessengerError",
       "unityId": 260,
-      "hash": 3167773548,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3167773548
+      ]
     },
     {
       "name": "MessengerInit",
       "unityId": 12,
-      "hash": 3380876627,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3380876627
+      ]
     },
     {
       "name": "MiniMailNew",
       "unityId": -1,
-      "hash": 2477041448,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2477041448
+      ]
     },
     {
       "name": "MiniMailUnreadCount",
       "unityId": -1,
-      "hash": 629633546,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        629633546
+      ]
     },
     {
       "name": "Moderator",
       "unityId": -1,
-      "hash": 2236510568,
-      "structure": "ss"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2236510568
+      ]
     },
     {
       "name": "ModeratorActionResult",
       "unityId": 539,
-      "hash": 1808737303,
-      "structure": "iB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1808737303
+      ]
     },
     {
       "name": "ModeratorCaution",
       "unityId": 161,
-      "hash": 1066060670,
-      "structure": "ss"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1066060670
+      ]
     },
     {
       "name": "ModeratorInit",
       "unityId": 531,
-      "hash": 2590550346,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2590550346
+      ]
     },
     {
       "name": "ModeratorRoomInfo",
       "unityId": -1,
-      "hash": 204221610,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        204221610
+      ]
     },
     {
       "name": "ModeratorToolPreferences",
       "unityId": -1,
-      "hash": 772526894,
-      "structure": "iiii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        772526894
+      ]
     },
     {
       "name": "ModeratorUserInfo",
       "unityId": -1,
-      "hash": 3579650944,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3579650944
+      ]
     },
     {
       "name": "MOTDNotification",
       "unityId": -1,
-      "hash": 2503523631,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2503523631
+      ]
     },
     {
       "name": "MuteAllInRoom",
       "unityId": -1,
-      "hash": 4206331549,
-      "structure": "B"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4206331549
+      ]
     },
     {
       "name": "MysteryBoxKeys",
       "unityId": 1002,
-      "hash": 650016045,
-      "structure": "ss"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        650016045
+      ]
     },
     {
       "name": "NavigatorCollapsedCategories",
       "unityId": -1,
-      "hash": 556064311,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        556064311
+      ]
     },
     {
       "name": "NavigatorLiftedRooms",
       "unityId": -1,
-      "hash": 756844409,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        756844409
+      ]
     },
     {
       "name": "NavigatorMetaData",
       "unityId": -1,
-      "hash": 2549266077,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2549266077
+      ]
     },
     {
       "name": "NavigatorSavedSearches",
       "unityId": -1,
-      "hash": 3041176493,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3041176493
+      ]
     },
     {
       "name": "NavigatorSearchResultBlocks",
       "unityId": -1,
-      "hash": 1200193528,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1200193528
+      ]
     },
     {
       "name": "NavigatorSettings",
       "unityId": 455,
-      "hash": 3837663245,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3837663245
+      ]
     },
     {
       "name": "NestBreedingSuccess",
       "unityId": -1,
-      "hash": 425706517,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        425706517
+      ]
     },
     {
       "name": "NewConsole",
       "unityId": -1,
-      "hash": 2222057052,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2222057052
+      ]
     },
     {
       "name": "NewFriendRequest",
       "unityId": -1,
-      "hash": 3207200306,
-      "structure": "iss"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3207200306
+      ]
     },
     {
       "name": "NewNavigatorPreferences",
       "unityId": -1,
-      "hash": 3347192506,
-      "structure": "iiiiBi"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3347192506
+      ]
     },
     {
       "name": "NewUserExperienceGiftOffer",
       "unityId": -1,
-      "hash": 3587195119,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3587195119
+      ]
     },
     {
       "name": "NewUserExperienceNotComplete",
       "unityId": -1,
-      "hash": 755616075,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        755616075
+      ]
     },
     {
       "name": "NoobnessLevel",
       "unityId": 1562,
-      "hash": 3155088088,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3155088088
+      ]
     },
     {
       "name": "NoOwnedRoomsAlert",
       "unityId": 793,
-      "hash": 3688043194,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3688043194
+      ]
     },
     {
       "name": "NoSuchFlat",
       "unityId": -1,
-      "hash": 3585823257,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3585823257
+      ]
     },
     {
       "name": "NotEnoughBalance",
       "unityId": 68,
-      "hash": 3032301298,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3032301298
+      ]
     },
     {
       "name": "NotificationDialog",
       "unityId": -1,
-      "hash": 75439052,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        75439052
+      ]
     },
     {
       "name": "NowPlaying",
       "unityId": 327,
-      "hash": 3211311797,
-      "structure": "iiiii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3211311797
+      ]
     },
     {
       "name": "ObjectAdd",
       "unityId": -1,
-      "hash": 3094545877,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3094545877
+      ]
     },
     {
       "name": "ObjectDataUpdate",
       "unityId": -1,
-      "hash": 554495788,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        554495788
+      ]
     },
     {
       "name": "ObjectRemove",
       "unityId": -1,
-      "hash": 2071550506,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2071550506
+      ]
     },
     {
       "name": "Objects",
       "unityId": -1,
-      "hash": 3486286946,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3486286946
+      ]
     },
     {
       "name": "ObjectsDataUpdate",
       "unityId": -1,
-      "hash": 2218246,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2218246
+      ]
     },
     {
       "name": "ObjectUpdate",
       "unityId": -1,
-      "hash": 1062039948,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1062039948
+      ]
     },
     {
       "name": "OfferRewardDelivered",
       "unityId": 685,
-      "hash": 4289260669,
-      "structure": "siss"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4289260669
+      ]
     },
     {
       "name": "OfficialRooms",
       "unityId": 450,
-      "hash": 2894382638,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2894382638
+      ]
     },
     {
       "name": "OfficialSongId",
       "unityId": -1,
-      "hash": 1045875581,
-      "structure": "si"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1045875581
+      ]
     },
     {
       "name": "OneWayDoorStatus",
       "unityId": -1,
-      "hash": 1535390042,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1535390042
+      ]
     },
     {
       "name": "Open",
       "unityId": -1,
-      "hash": 4090980151,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4090980151
+      ]
     },
     {
       "name": "OpenConnection",
       "unityId": -1,
-      "hash": 325377310,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        325377310
+      ]
     },
     {
       "name": "OpenPetPackageRequested",
       "unityId": -1,
-      "hash": 548922697,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        548922697
+      ]
     },
     {
       "name": "OpenPetPackageResult",
       "unityId": -1,
-      "hash": 2548566183,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2548566183
+      ]
     },
     {
       "name": "PerkAllowances",
       "unityId": 750,
-      "hash": 3425799906,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3425799906
+      ]
     },
     {
       "name": "PetAddedToInventory",
       "unityId": 603,
-      "hash": 1932746673,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1932746673
+      ]
     },
     {
       "name": "PetBreeding",
       "unityId": -1,
-      "hash": 976896902,
-      "structure": "iii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        976896902
+      ]
     },
     {
       "name": "PetBreedingResult",
       "unityId": 828,
-      "hash": 3532440451,
-      "structure": "iisisiBiisisiB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3532440451
+      ]
     },
     {
       "name": "PetCommands",
       "unityId": -1,
-      "hash": 2153426813,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2153426813
+      ]
     },
     {
       "name": "PetExperience",
       "unityId": -1,
-      "hash": 2445621385,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2445621385
+      ]
     },
     {
       "name": "PetFigureUpdate",
       "unityId": -1,
-      "hash": 930457165,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        930457165
+      ]
     },
     {
       "name": "PetInfo",
       "unityId": 601,
-      "hash": 500993197,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        500993197
+      ]
     },
     {
       "name": "PetInventory",
       "unityId": 600,
-      "hash": 2923209669,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2923209669
+      ]
     },
     {
       "name": "PetLevelNotification",
       "unityId": 602,
-      "hash": 42369775,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        42369775
+      ]
     },
     {
       "name": "PetLevelUpdate",
       "unityId": 38,
-      "hash": 4000975119,
-      "structure": "iii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4000975119
+      ]
     },
     {
       "name": "PetPlacingError",
       "unityId": -1,
-      "hash": 10271864,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        10271864
+      ]
     },
     {
       "name": "PetReceived",
       "unityId": -1,
-      "hash": 2188505262,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2188505262
+      ]
     },
     {
       "name": "PetRemovedFromInventory",
       "unityId": 604,
-      "hash": 3539719788,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3539719788
+      ]
     },
     {
       "name": "PetRespectFailed",
       "unityId": 621,
-      "hash": 1897677551,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1897677551
+      ]
     },
     {
       "name": "PetRespectNotification",
       "unityId": -1,
-      "hash": 3388032508,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3388032508
+      ]
     },
     {
       "name": "PetStatusUpdate",
       "unityId": 37,
-      "hash": 4176142486,
-      "structure": "iiBBBB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4176142486
+      ]
     },
     {
       "name": "PetSupplementedNotification",
       "unityId": 598,
-      "hash": 1810606700,
-      "structure": "iii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1810606700
+      ]
     },
     {
       "name": "PhoneCollectionState",
       "unityId": -1,
-      "hash": 4273875869,
-      "structure": "iii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4273875869
+      ]
     },
     {
       "name": "Ping",
       "unityId": 50,
-      "hash": 634949745,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        634949745
+      ]
     },
     {
       "name": "PlayList",
       "unityId": -1,
-      "hash": 2501888242,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2501888242
+      ]
     },
     {
       "name": "PlayListSongAdded",
       "unityId": -1,
-      "hash": 2160678501,
-      "structure": "iiss"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2160678501
+      ]
     },
     {
       "name": "PollContents",
       "unityId": 317,
-      "hash": 307382062,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        307382062
+      ]
     },
     {
       "name": "PollError",
       "unityId": 318,
-      "hash": 3758173423,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3758173423
+      ]
     },
     {
       "name": "PollOffer",
       "unityId": 316,
-      "hash": 2278022629,
-      "structure": "isss"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2278022629
+      ]
     },
     {
       "name": "PopularRoomTagsResult",
       "unityId": 452,
-      "hash": 3061519130,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3061519130
+      ]
     },
     {
       "name": "PostItPlaced",
       "unityId": 145,
-      "hash": 1912448048,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1912448048
+      ]
     },
     {
       "name": "PostMessage",
       "unityId": -1,
-      "hash": 104751378,
-      "structure": "iiiiissisbisii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        104751378
+      ]
     },
     {
       "name": "PostThread",
       "unityId": -1,
-      "hash": 1410279219,
-      "structure": "iiissBBiiiiisibisi"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1410279219
+      ]
     },
     {
       "name": "PresentOpened",
       "unityId": -1,
-      "hash": 3512730460,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3512730460
+      ]
     },
     {
       "name": "ProductOffer",
       "unityId": 637,
-      "hash": 4096966284,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4096966284
+      ]
     },
     {
       "name": "PromoArticles",
       "unityId": -1,
-      "hash": 1465840009,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1465840009
+      ]
     },
     {
       "name": "PurchaseError",
       "unityId": 65,
-      "hash": 962458879,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        962458879
+      ]
     },
     {
       "name": "PurchaseNotAllowed",
       "unityId": 296,
-      "hash": 2234740489,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2234740489
+      ]
     },
     {
       "name": "PurchaseOK",
       "unityId": -1,
-      "hash": 935671809,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        935671809
+      ]
     },
     {
       "name": "Quest",
       "unityId": 802,
-      "hash": 3005892061,
-      "structure": "siiiiBssisiiissB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3005892061
+      ]
     },
     {
       "name": "QuestCancelled",
       "unityId": -1,
-      "hash": 2810137854,
-      "structure": "B"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2810137854
+      ]
     },
     {
       "name": "QuestCompleted",
       "unityId": 801,
-      "hash": 1319438605,
-      "structure": "siiiiBssisiiissBB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1319438605
+      ]
     },
     {
       "name": "QuestDaily",
       "unityId": -1,
-      "hash": 100364330,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        100364330
+      ]
     },
     {
       "name": "Question",
       "unityId": 1750,
-      "hash": 2731653458,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2731653458
+      ]
     },
     {
       "name": "QuestionAnswered",
       "unityId": 1751,
-      "hash": 11893812,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        11893812
+      ]
     },
     {
       "name": "QuestionFinished",
       "unityId": 1752,
-      "hash": 2234956673,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2234956673
+      ]
     },
     {
       "name": "Quests",
       "unityId": 800,
-      "hash": 3149902401,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3149902401
+      ]
     },
     {
       "name": "QuizData",
       "unityId": 560,
-      "hash": 2128879637,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2128879637
+      ]
     },
     {
       "name": "QuizResults",
       "unityId": -1,
-      "hash": 1470723790,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1470723790
+      ]
     },
     {
       "name": "RelationshipStatusInfo",
       "unityId": 914,
-      "hash": 2113729254,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2113729254
+      ]
     },
     {
       "name": "RemainingMutePeriod",
       "unityId": -1,
-      "hash": 3655701476,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3655701476
+      ]
     },
     {
       "name": "RentableSpaceRentFailed",
       "unityId": 1492,
-      "hash": 2077501817,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2077501817
+      ]
     },
     {
       "name": "RentableSpaceRentOk",
       "unityId": 1491,
-      "hash": 321270223,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        321270223
+      ]
     },
     {
       "name": "RentableSpaceStatus",
       "unityId": -1,
-      "hash": 2420906646,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2420906646
+      ]
     },
     {
       "name": "RequestSpamWallPostIt",
       "unityId": -1,
-      "hash": 604083244,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        604083244
+      ]
     },
     {
       "name": "RespectNotification",
       "unityId": -1,
-      "hash": 123815551,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        123815551
+      ]
     },
     {
       "name": "RestoreClient",
       "unityId": -1,
-      "hash": 2522152013,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2522152013
+      ]
     },
     {
       "name": "RoomAdError",
       "unityId": 374,
-      "hash": 3294925510,
-      "structure": "is"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3294925510
+      ]
     },
     {
       "name": "RoomAdPurchaseInfo",
       "unityId": -1,
-      "hash": 1563587362,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1563587362
+      ]
     },
     {
       "name": "RoomChatlog",
       "unityId": -1,
-      "hash": 804261483,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        804261483
+      ]
     },
     {
       "name": "RoomChatSettings",
       "unityId": 474,
-      "hash": 2741688180,
-      "structure": "iiiii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2741688180
+      ]
     },
     {
       "name": "RoomDimmerPresets",
       "unityId": 365,
-      "hash": 2760242814,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2760242814
+      ]
     },
     {
       "name": "RoomEntryInfo",
       "unityId": 471,
-      "hash": 1023061412,
-      "structure": "iB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1023061412
+      ]
     },
     {
       "name": "RoomEntryTile",
       "unityId": 1472,
-      "hash": 2483203181,
-      "structure": "iii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2483203181
+      ]
     },
     {
       "name": "RoomEvent",
       "unityId": -1,
-      "hash": 4198086950,
-      "structure": "iisiissiii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4198086950
+      ]
     },
     {
       "name": "RoomEventCancel",
       "unityId": -1,
-      "hash": 275989434,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        275989434
+      ]
     },
     {
       "name": "RoomFilterSettings",
       "unityId": -1,
-      "hash": 826561322,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        826561322
+      ]
     },
     {
       "name": "RoomForward",
       "unityId": -1,
-      "hash": 2471678524,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2471678524
+      ]
     },
     {
       "name": "RoomInfoUpdated",
       "unityId": -1,
-      "hash": 1813102147,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1813102147
+      ]
     },
     {
       "name": "RoomInvite",
       "unityId": -1,
-      "hash": 3473746734,
-      "structure": "is"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3473746734
+      ]
     },
     {
       "name": "RoomInviteError",
       "unityId": 262,
-      "hash": 2141144901,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2141144901
+      ]
     },
     {
       "name": "RoomMessageNotification",
       "unityId": -1,
-      "hash": 3450871876,
-      "structure": "isi"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3450871876
+      ]
     },
     {
       "name": "RoomOccupiedTiles",
       "unityId": 1473,
-      "hash": 1216129769,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1216129769
+      ]
     },
     {
       "name": "RoomProperty",
       "unityId": -1,
-      "hash": 1414863062,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1414863062
+      ]
     },
     {
       "name": "RoomQueueStatus",
       "unityId": 259,
-      "hash": 1419470745,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1419470745
+      ]
     },
     {
       "name": "RoomRating",
       "unityId": 345,
-      "hash": 2234922025,
-      "structure": "iB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2234922025
+      ]
     },
     {
       "name": "RoomReady",
       "unityId": 69,
-      "hash": 1680488788,
-      "structure": "si"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1680488788
+      ]
     },
     {
       "name": "RoomSettingsData",
       "unityId": -1,
-      "hash": 3896797120,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3896797120
+      ]
     },
     {
       "name": "RoomSettingsError",
       "unityId": 466,
-      "hash": 270582555,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        270582555
+      ]
     },
     {
       "name": "RoomSettingsSaved",
       "unityId": 467,
-      "hash": 1250374522,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1250374522
+      ]
     },
     {
       "name": "RoomSettingsSaveError",
       "unityId": 468,
-      "hash": 2120212938,
-      "structure": "iis"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2120212938
+      ]
     },
     {
       "name": "RoomVisits",
       "unityId": -1,
-      "hash": 2142615791,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2142615791
+      ]
     },
     {
       "name": "RoomVisualizationSettings",
       "unityId": 472,
-      "hash": 931097085,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        931097085
+      ]
     },
     {
       "name": "SanctionStatus",
       "unityId": -1,
-      "hash": 895790938,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        895790938
+      ]
     },
     {
       "name": "ScrSendKickbackInfo",
       "unityId": -1,
-      "hash": 1657022733,
-      "structure": "isdiiiiii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1657022733
+      ]
     },
     {
       "name": "ScrSendUserInfo",
       "unityId": -1,
-      "hash": 2398578316,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2398578316
+      ]
     },
     {
       "name": "SeasonalCalendarDailyOffer",
       "unityId": -1,
-      "hash": 437534395,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        437534395
+      ]
     },
     {
       "name": "SeasonalQuests",
       "unityId": -1,
-      "hash": 3620591675,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3620591675
+      ]
     },
     {
       "name": "SecondsUntil",
       "unityId": -1,
-      "hash": 103249412,
-      "structure": "si"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        103249412
+      ]
     },
     {
       "name": "SellablePetPalettes",
       "unityId": 827,
-      "hash": 1202180076,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1202180076
+      ]
     },
     {
       "name": "Shout",
       "unityId": 26,
-      "hash": 1400604357,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1400604357
+      ]
     },
     {
       "name": "ShowEnforceRoomCategoryDialog",
       "unityId": -1,
-      "hash": 2300679096,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2300679096
+      ]
     },
     {
       "name": "ShowMysteryBoxWait",
       "unityId": 355,
-      "hash": 2096537570,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2096537570
+      ]
     },
     {
       "name": "Sleep",
       "unityId": -1,
-      "hash": 677690799,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        677690799
+      ]
     },
     {
       "name": "SlideObjectBundle",
       "unityId": -1,
-      "hash": 641696449,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        641696449
+      ]
     },
     {
       "name": "SnowWarGameTokens",
       "unityId": -1,
-      "hash": 1804027612,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1804027612
+      ]
     },
     {
       "name": "SpecialRoomEffect",
       "unityId": -1,
-      "hash": 3274186197,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3274186197
+      ]
     },
     {
       "name": "TalentLevelUp",
       "unityId": -1,
-      "hash": 350468471,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        350468471
+      ]
     },
     {
       "name": "TalentTrack",
       "unityId": 565,
-      "hash": 2972062245,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2972062245
+      ]
     },
     {
       "name": "TalentTrackLevel",
       "unityId": -1,
-      "hash": 956977425,
-      "structure": "sii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        956977425
+      ]
     },
     {
       "name": "TargetedOffer",
       "unityId": 1530,
-      "hash": 615406408,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        615406408
+      ]
     },
     {
       "name": "TargetedOfferNotFound",
       "unityId": 1531,
-      "hash": 3523985399,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3523985399
+      ]
     },
     {
       "name": "ThreadMessages",
       "unityId": -1,
-      "hash": 30926874,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        30926874
+      ]
     },
     {
       "name": "ThumbnailStatus",
       "unityId": -1,
-      "hash": 2714922639,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2714922639
+      ]
     },
     {
       "name": "TradeOpenFailed",
       "unityId": -1,
-      "hash": 3186421263,
-      "structure": "is"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3186421263
+      ]
     },
     {
       "name": "TradingAccept",
       "unityId": -1,
-      "hash": 2452161573,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2452161573
+      ]
     },
     {
       "name": "TradingClose",
       "unityId": -1,
-      "hash": 1487737888,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1487737888
+      ]
     },
     {
       "name": "TradingCompleted",
       "unityId": -1,
-      "hash": 31482310,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        31482310
+      ]
     },
     {
       "name": "TradingConfirmation",
       "unityId": -1,
-      "hash": 3308854309,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3308854309
+      ]
     },
     {
       "name": "TradingItemList",
       "unityId": -1,
-      "hash": 4279695579,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4279695579
+      ]
     },
     {
       "name": "TradingNotOpen",
       "unityId": -1,
-      "hash": 141011783,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        141011783
+      ]
     },
     {
       "name": "TradingOpen",
       "unityId": -1,
-      "hash": 498210879,
-      "structure": "iiii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        498210879
+      ]
     },
     {
       "name": "TradingOtherNotAllowed",
       "unityId": -1,
-      "hash": 1991053867,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1991053867
+      ]
     },
     {
       "name": "TradingYouAreNotAllowed",
       "unityId": -1,
-      "hash": 874077157,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        874077157
+      ]
     },
     {
       "name": "TraxSongInfo",
       "unityId": -1,
-      "hash": 1370547100,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1370547100
+      ]
     },
     {
       "name": "TryPhoneNumberResult",
       "unityId": -1,
-      "hash": 836937510,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        836937510
+      ]
     },
     {
       "name": "TryVerificationCodeResult",
       "unityId": -1,
-      "hash": 1109170231,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1109170231
+      ]
     },
     {
       "name": "UniqueMachineID",
       "unityId": -1,
-      "hash": 1613626911,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1613626911
+      ]
     },
     {
       "name": "UnreadForumsCount",
       "unityId": -1,
-      "hash": 2544133236,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2544133236
+      ]
     },
     {
       "name": "UnseenItems",
       "unityId": -1,
-      "hash": 1105048897,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1105048897
+      ]
     },
     {
       "name": "UpdateMessage",
       "unityId": -1,
-      "hash": 446555121,
-      "structure": "iiiiissisbisii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        446555121
+      ]
     },
     {
       "name": "UpdateThread",
       "unityId": -1,
-      "hash": 879066235,
-      "structure": "iiissBBiiiiisibisi"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        879066235
+      ]
     },
     {
       "name": "UseObject",
       "unityId": -1,
-      "hash": 1219792098,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1219792098
+      ]
     },
     {
       "name": "UserBanned",
       "unityId": 35,
-      "hash": 2831105878,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2831105878
+      ]
     },
     {
       "name": "UserChange",
       "unityId": -1,
-      "hash": 2401369793,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2401369793
+      ]
     },
     {
       "name": "UserChatlog",
       "unityId": -1,
-      "hash": 2687267371,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2687267371
+      ]
     },
     {
       "name": "UserClassification",
       "unityId": -1,
-      "hash": 232427595,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        232427595
+      ]
     },
     {
       "name": "UserEventCats",
       "unityId": -1,
-      "hash": 3096914049,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3096914049
+      ]
     },
     {
       "name": "UserFlatCats",
       "unityId": -1,
-      "hash": 1305579647,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1305579647
+      ]
     },
     {
       "name": "UserNameChanged",
       "unityId": -1,
-      "hash": 3726564377,
-      "structure": "iis"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3726564377
+      ]
     },
     {
       "name": "UserNftWardrobe",
       "unityId": -1,
-      "hash": 3732960891,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3732960891
+      ]
     },
     {
       "name": "UserNftWardrobeSelection",
       "unityId": -1,
-      "hash": 1089821668,
-      "structure": "iss"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1089821668
+      ]
     },
     {
       "name": "UserObject",
       "unityId": 5,
-      "hash": 2428575878,
-      "structure": "isssssBiiiBsBB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2428575878
+      ]
     },
     {
       "name": "UserRemove",
       "unityId": -1,
-      "hash": 1609728960,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1609728960
+      ]
     },
     {
       "name": "UserRights",
       "unityId": -1,
-      "hash": 3782349727,
-      "structure": "iiB"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3782349727
+      ]
     },
     {
       "name": "Users",
       "unityId": -1,
-      "hash": 2702347476,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2702347476
+      ]
     },
     {
       "name": "UserSongDisksInventory",
       "unityId": -1,
-      "hash": 2015062434,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2015062434
+      ]
     },
     {
       "name": "UserTyping",
       "unityId": -1,
-      "hash": 409649145,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        409649145
+      ]
     },
     {
       "name": "UserUnbannedFromRoom",
       "unityId": -1,
-      "hash": 2580661710,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2580661710
+      ]
     },
     {
       "name": "UserUpdate",
       "unityId": -1,
-      "hash": 2986321866,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2986321866
+      ]
     },
     {
       "name": "VoucherRedeemError",
       "unityId": 213,
-      "hash": 89973701,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        89973701
+      ]
     },
     {
       "name": "VoucherRedeemOk",
       "unityId": 212,
-      "hash": 1351315028,
-      "structure": "ss"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1351315028
+      ]
     },
     {
       "name": "Wardrobe",
       "unityId": -1,
-      "hash": 635633020,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        635633020
+      ]
     },
     {
       "name": "Whisper",
       "unityId": 25,
-      "hash": 394582171,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        394582171
+      ]
     },
     {
       "name": "WiredFurniAction",
       "unityId": -1,
-      "hash": 4027308459,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4027308459
+      ]
     },
     {
       "name": "WiredFurniCondition",
       "unityId": -1,
-      "hash": 1992447765,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1992447765
+      ]
     },
     {
       "name": "WiredFurniTrigger",
       "unityId": -1,
-      "hash": 1285921198,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1285921198
+      ]
     },
     {
       "name": "WiredRewardResult",
       "unityId": -1,
-      "hash": 2742678825,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2742678825
+      ]
     },
     {
       "name": "WiredSaveSuccess",
       "unityId": -1,
-      "hash": 1606139461,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1606139461
+      ]
     },
     {
       "name": "WiredValidationError",
       "unityId": -1,
-      "hash": 2655685191,
-      "structure": "s"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2655685191
+      ]
     },
     {
       "name": "YouAreController",
       "unityId": 42,
-      "hash": 4076097589,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        4076097589
+      ]
     },
     {
       "name": "YouAreNotController",
       "unityId": 43,
-      "hash": 1079335163,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        1079335163
+      ]
     },
     {
       "name": "YouAreOwner",
       "unityId": 47,
-      "hash": 903290553,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        903290553
+      ]
     },
     {
       "name": "YouArePlayingGame",
       "unityId": -1,
-      "hash": 3458940800,
-      "structure": "B"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3458940800
+      ]
     },
     {
       "name": "YouAreSpectator",
       "unityId": 254,
-      "hash": 3626743944,
-      "structure": "i"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3626743944
+      ]
     },
     {
       "name": "YoutubeControlVideo",
       "unityId": 1482,
-      "hash": 718148618,
-      "structure": "ii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        718148618
+      ]
     },
     {
       "name": "YoutubeDisplayPlaylists",
       "unityId": -1,
-      "hash": 3126737561,
-      "structure": null
+      "unityStructure": null,
+      "postShuffleHashes": [
+        3126737561
+      ]
     },
     {
       "name": "YoutubeDisplayVideo",
       "unityId": 1480,
-      "hash": 2765148087,
-      "structure": "isiii"
+      "unityStructure": null,
+      "postShuffleHashes": [
+        2765148087
+      ]
     }
   ]
 }

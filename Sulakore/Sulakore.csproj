@@ -10,12 +10,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<AdditionalFiles Include="Messages.ini" />
+		<AdditionalFiles Include="messages.json" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<None Update="Messages.ini">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
 </Project>

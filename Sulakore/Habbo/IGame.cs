@@ -2,9 +2,6 @@
 
 public interface IGame
 {
-    Incoming In { get; }
-    Outgoing Out { get; }
-
     bool IsUnity { get; }
     bool IsPostShuffle { get; }
 

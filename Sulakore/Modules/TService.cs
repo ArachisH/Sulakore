@@ -29,8 +29,8 @@ public class TService : IModule
         set => _installer = value;
     }
 
-    public Incoming In => Installer.Game.In;
-    public Outgoing Out => Installer.Game.Out;
+    public Incoming In => Installer.In;
+    public Outgoing Out => Installer.Out;
 
     public IGame Game => Installer.Game;
     public IHConnection Connection => Installer.Connection;
@@ -114,7 +114,7 @@ public class TService : IModule
                 WriteModuleInfo(infoPacketOut);
 
                 installerNode.SendAsync(infoPacketOut).GetAwaiter().GetResult();
-                Installer = _container.Installer = new DummyInstaller(_container, installerNode);
+                Installer = _container.Installer = new RemoteInstaller(_container, installerNode);
                 break;
             }
             else throw new Exception($"Failed to establish connection with the module server: {moduleServer}");
@@ -151,7 +151,7 @@ public class TService : IModule
             if (string.IsNullOrWhiteSpace(messageAtt?.Identifier)) continue;
 
             HMessage message = GetMessage(messageAtt.Identifier, messageAtt.IsOutgoing);
-            if (message == null)
+            if (message == default)
             {
                 if (!unresolved.TryGetValue(messageAtt.Identifier, out IList<string> users))
                 {
@@ -271,7 +271,7 @@ public class TService : IModule
         _unknownDataAttributes.Clear();
     }
 
-    private class DummyInstaller : IInstaller, IHConnection
+    private sealed class RemoteInstaller : IInstaller, IHConnection
     {
         private readonly IModule _module;
         private readonly HNode _installerNode;
@@ -286,7 +286,7 @@ public class TService : IModule
         public IGame Game { get; set; }
         public IHConnection Connection => this;
 
-        public DummyInstaller(IModule module, HNode installerNode)
+        public RemoteInstaller(IModule module, HNode installerNode)
         {
             _module = module;
             _installerNode = installerNode;

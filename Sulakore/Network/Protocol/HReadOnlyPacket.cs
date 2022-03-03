@@ -9,11 +9,9 @@ public ref struct HReadOnlyPacket
     public int Position { get; set; }
     public IFormat Format { get; init; }
 
-    public short Id => Format.ReadId(_buffer);
-    public int Length => Format.ReadLength(_buffer);
-    public int Available => _buffer.Length - Position;
-
-    public byte this[int index] => _buffer[index];
+    public readonly short Id => Format.ReadId(_buffer);
+    public readonly int Length => Format.ReadLength(_buffer);
+    public readonly int Available => _buffer.Length - Position;
 
     public HReadOnlyPacket(IFormat format, ReadOnlySpan<byte> buffer)
     {

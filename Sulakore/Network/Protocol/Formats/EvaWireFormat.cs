@@ -2,6 +2,7 @@
 using System.Buffers;
 using System.Text.Unicode;
 using System.Buffers.Binary;
+using System.Runtime.CompilerServices;
 
 using Sulakore.Buffers;
 using Sulakore.Cryptography.Ciphers;
@@ -19,34 +20,7 @@ public sealed class EvaWireFormat : IFormat
     public void WriteId(Span<byte> destination, short id) => Write(destination[4..], id);
     public void WriteLength(Span<byte> destination, int length) => Write(destination, length);
 
-    public int GetSize<T>(T value) where T : struct
-    {
-        if (typeof(T) == typeof(int))
-        {
-            return sizeof(int);
-        }
-        else if (typeof(T) == typeof(short))
-        {
-            return sizeof(short);
-        }
-        else if (typeof(T) == typeof(bool))
-        {
-            return sizeof(bool);
-        }
-        else if (typeof(T) == typeof(long))
-        {
-            return sizeof(long);
-        }
-        else if (typeof(T) == typeof(float))
-        {
-            return sizeof(float);
-        }
-        else if (typeof(T) == typeof(double))
-        {
-            return sizeof(double);
-        }
-        return 0;
-    }
+    public int GetSize<T>(T value) where T : struct => Unsafe.SizeOf<T>();
     public int GetSize(ReadOnlySpan<char> value) => sizeof(short) + Encoding.UTF8.GetByteCount(value);
 
     public void Write<T>(Span<byte> destination, T value) where T : struct
@@ -61,7 +35,8 @@ public sealed class EvaWireFormat : IFormat
         }
         else if (typeof(T) == typeof(bool))
         {
-            destination[0] = (byte)(((bool)(object)value) ? 1 : 0);
+            bool @bool = (bool)(object)value;
+            destination[0] = Unsafe.As<bool, byte>(ref @bool);
         }
         else if (typeof(T) == typeof(long))
         {

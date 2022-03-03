@@ -7,7 +7,6 @@ namespace Sulakore.Buffers;
 
 public sealed class HPacket : IMemoryOwner<byte>
 {
-
     private bool _disposed;
     private IMemoryOwner<byte> _owner;
 

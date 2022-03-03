@@ -38,6 +38,10 @@ public sealed class EvaWireFormat : IFormat
             bool @bool = (bool)(object)value;
             destination[0] = Unsafe.As<bool, byte>(ref @bool);
         }
+        else if (typeof(T) == typeof(byte))
+        {
+            destination[0] = (byte)(object)value;
+        }
         else if (typeof(T) == typeof(long))
         {
             BinaryPrimitives.WriteInt64BigEndian(destination, (long)(object)value);
@@ -72,6 +76,10 @@ public sealed class EvaWireFormat : IFormat
         else if (typeof(T) == typeof(bool))
         {
             value = (T)(object)(source[0] != 0);
+        }
+        else if (typeof(T) == typeof(byte))
+        {
+            value = (T)(object)source[0];
         }
         else if (typeof(T) == typeof(long))
         {

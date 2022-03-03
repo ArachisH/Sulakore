@@ -9,8 +9,9 @@ using System.Buffers.Binary;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
-using Sulakore.Network.Protocol;
+using Sulakore.Buffers;
 using Sulakore.Cryptography.Ciphers;
+using Sulakore.Network.Protocol.Formats;
 
 namespace Sulakore.Network
 {
@@ -35,8 +36,8 @@ namespace Sulakore.Network
         public IStreamCipher Encrypter { get; set; }
         public IStreamCipher Decrypter { get; set; }
 
-        public HFormat SendFormat { get; set; }
-        public HFormat ReceiveFormat { get; set; }
+        public IFormat SendFormat { get; set; }
+        public IFormat ReceiveFormat { get; set; }
         public HotelEndPoint RemoteEndPoint { get; private set; }
 
         public bool IsClient { get; private set; }
@@ -73,40 +74,63 @@ namespace Sulakore.Network
             socket.NoDelay = true;
             socket.LingerState = new LingerOption(false, 0);
 
-            SendFormat = HFormat.EvaWire;
-            ReceiveFormat = HFormat.EvaWire;
+            SendFormat = IFormat.EvaWire;
+            ReceiveFormat = IFormat.EvaWire;
             RemoteEndPoint = remoteEndPoint;
         }
 
         /// <summary>
-        /// Returns a rented piece of memory that contains a packet.
+        /// Sends a mutable packet where if encryption is necessary then the buffer will be overwritten.
         /// </summary>
-        public async ValueTask<HPacket> ReceiveAsync()
-        {
-            if (ReceiveFormat == null)
-            {
-                throw new NullReferenceException($"Cannot receive structued data while {nameof(ReceiveFormat)} is null.");
-            }
-            HPacket packet = null;
-            await _packetReceiveSemaphore.WaitAsync().ConfigureAwait(false);
-            try
-            {
-                packet = await ReceiveFormat.ReceivePacketAsync(this).ConfigureAwait(false);
-            }
-            finally { _packetReceiveSemaphore.Release(); }
-            return packet;
-        }
-        public ValueTask<int> SendAsync(HPacket packet)
-        {
-            return SendAsync(packet.ToBytes());
-        }
-        public ValueTask<int> SendAsync(ushort id, params object[] values)
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        /// <exception cref="NullReferenceException"></exception>
+        public ValueTask<int> SendPacketAsync(Memory<byte> buffer)
         {
             if (SendFormat == null)
             {
-                throw new NullReferenceException($"Cannot send structued data while {nameof(SendFormat)} is null.");
+                throw new NullReferenceException($"Cannot send structured data while {nameof(SendFormat)} is null.");
             }
-            return SendAsync(SendFormat.Construct(id, values));
+            return SendFormat.SendPacketAsync(this, buffer);
+        }
+        /// <summary>
+        /// Sends an immuttable packet where if encryption is necessary then the buffer will be copied.
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        /// <exception cref="NullReferenceException"></exception>
+        public ValueTask<int> SendPacketAsync(ReadOnlyMemory<byte> buffer)
+        {
+            if (SendFormat == null)
+            {
+                throw new NullReferenceException($"Cannot send structured data while {nameof(SendFormat)} is null.");
+            }
+            return SendFormat.SendPacketAsync(this, buffer);
+        }
+        /// <summary>
+        /// Receives a packet directly into <paramref name="packetRegion"/>.
+        /// </summary>
+        public async Task<HPacket> ReceiveRentedPacketAsync()
+        {
+            if (ReceiveFormat == null)
+            {
+                throw new NullReferenceException($"Cannot receive structured data while {nameof(ReceiveFormat)} is null.");
+            }
+
+            HPacket packetOwner = null;
+            await _packetReceiveSemaphore.WaitAsync().ConfigureAwait(false);
+            try
+            {
+                packetOwner = await ReceiveFormat.ReceiveRentedPacketAsync(this).ConfigureAwait(false);
+            }
+            finally { _packetReceiveSemaphore.Release(); }
+
+            if (packetOwner == null)
+            {
+                Dispose();
+            }
+
+            return packetOwner;
         }
 
         public bool ReflectFormats(HNode other)
@@ -134,13 +158,12 @@ namespace Sulakore.Network
             IsWebSocket = isWebSocket;
             if (IsWebSocket || possibleId == 4000)
             {
-                SendFormat = HFormat.EvaWire;
-                ReceiveFormat = HFormat.EvaWire;
+                SendFormat = IFormat.EvaWire;
+                ReceiveFormat = IFormat.EvaWire;
             }
             else if (possibleId == 206)
             {
-                SendFormat = HFormat.WedgieIn;
-                ReceiveFormat = HFormat.WedgieOut;
+                throw new NotSupportedException("Wedgie format is currently not supported.");
             }
             else wasDetermined = false;
 
@@ -177,7 +200,7 @@ namespace Sulakore.Network
             if (!secureSocketStream.IsAuthenticated) return false;
 
             string webRequest = $"GET /websocket HTTP/1.1\r\nHost: {RemoteEndPoint}\r\n{requestHeaders}\r\nSec-WebSocket-Key: {GenerateWebSocketKey()}\r\n\r\n";
-            await SendAsync(Encoding.UTF8.GetBytes(webRequest)).ConfigureAwait(false);
+            await SendPacketAsync(Encoding.UTF8.GetBytes(webRequest)).ConfigureAwait(false);
 
             using IMemoryOwner<byte> receiveOwner = Rent(256, out Memory<byte> receiveRegion);
             int received = await ReceiveAsync(receiveRegion).ConfigureAwait(false);
@@ -189,7 +212,7 @@ namespace Sulakore.Network
             IsUpgraded = true;
             _socketStream = _webSocketStream = new WebSocketStream(_socketStream, _mask, false); // Anything now being sent or received through the stream will be parsed using the WebSocket protocol.
 
-            await SendAsync(_startTLSBytes).ConfigureAwait(false);
+            await SendPacketAsync(_startTLSBytes).ConfigureAwait(false);
             received = await ReceiveAsync(receiveRegion).ConfigureAwait(false);
             if (!IsTLSAccepted(receiveRegion.Span.Slice(0, received))) return false;
 
@@ -230,7 +253,7 @@ namespace Sulakore.Network
 
             using IMemoryOwner<byte> responseOwner = Rent(256, out Memory<byte> responseRegion);
             FillWebResponse(receivedRegion.Span.Slice(0, received), responseRegion.Span, out int responseWritten);
-            await SendAsync(responseRegion.Slice(0, responseWritten)).ConfigureAwait(false);
+            await SendPacketAsync(responseRegion.Slice(0, responseWritten)).ConfigureAwait(false);
 
             // Begin receiving/sending data as WebSocket frames.
             IsUpgraded = true;
@@ -239,7 +262,7 @@ namespace Sulakore.Network
             received = await ReceiveAsync(receivedRegion).ConfigureAwait(false);
             if (IsTLSRequested(receivedRegion.Span.Slice(0, received)))
             {
-                await SendAsync(_okBytes).ConfigureAwait(false);
+                await SendPacketAsync(_okBytes).ConfigureAwait(false);
 
                 var secureSocketStream = new SslStream(_socketStream, false, ValidateRemoteCertificate);
                 _socketStream = secureSocketStream;
@@ -249,64 +272,39 @@ namespace Sulakore.Network
             return IsUpgraded;
         }
 
-        public virtual ValueTask<int> SendAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) => TransportAsync(buffer, false, cancellationToken);
-        public virtual ValueTask<int> ReceiveAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) => TransportAsync(buffer, true, cancellationToken);
-        protected virtual async ValueTask<int> TransportAsync(Memory<byte> buffer, bool isReceiving, CancellationToken cancellationToken = default)
+        public virtual async ValueTask<int> ReceiveAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
         {
-            static void EncryptReversedId(IStreamCipher cipher, ReadOnlySpan<byte> unprocessed, Span<byte> encrypted)
-            {
-                unprocessed.CopyTo(encrypted);
-                Span<byte> id = encrypted.Slice(4, 2);
-                id.Reverse();
-
-                cipher.Process(id);
-                id.Reverse();
-            }
-
             if (!IsConnected) return -1;
             if (buffer.Length == 0) return 0;
 
-            int transported;
-            IMemoryOwner<byte> encryptedOwner = null;
-            SemaphoreSlim transportSemaphore = isReceiving ? _receiveSemaphore : _sendSemaphore;
-            await transportSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+            await _receiveSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                if (isReceiving)
+                Stream tunnel = _socketStream;
+                if (BypassReceiveSecureTunnel > 0 && _webSocketStream != null)
                 {
-                    Stream tunnel = _socketStream;
-                    if (BypassReceiveSecureTunnel > 0 && _webSocketStream != null)
-                    {
-                        tunnel = _webSocketStream;
-                        BypassReceiveSecureTunnel--;
-                    }
-                    transported = await tunnel.ReadAsync(buffer, cancellationToken).ConfigureAwait(false);
+                    tunnel = _webSocketStream;
+                    BypassReceiveSecureTunnel--;
                 }
-                else
-                {
-                    if (Encrypter != null)
-                    {
-                        encryptedOwner = Rent(buffer.Length, out Memory<byte> encryptedRegion);
-                        if (IsWebSocket)
-                        {
-                            EncryptReversedId(Encrypter, buffer.Span, encryptedRegion.Span);
-                        }
-                        else Encrypter.Process(buffer.Span, encryptedRegion.Span);
-                        buffer = encryptedRegion;
-                    }
-
-                    await _socketStream.WriteAsync(buffer, cancellationToken).ConfigureAwait(false);
-                    await _socketStream.FlushAsync(cancellationToken).ConfigureAwait(false); // Ensure the buffered write stream sends all the data.
-                    transported = buffer.Length;
-                }
+                return await tunnel.ReadAsync(buffer, cancellationToken).ConfigureAwait(false);
             }
             catch { return -1; }
-            finally
+            finally { _receiveSemaphore.Release(); }
+        }
+        public virtual async ValueTask<int> SendAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
+        {
+            if (!IsConnected) return -1;
+            if (buffer.Length == 0) return 0;
+
+            await _sendSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+            try
             {
-                encryptedOwner?.Dispose();
-                transportSemaphore.Release();
+                await _socketStream.WriteAsync(buffer, cancellationToken).ConfigureAwait(false);
+                await _socketStream.FlushAsync(cancellationToken).ConfigureAwait(false);
+                return buffer.Length;
             }
-            return transported;
+            catch { return -1; }
+            finally { _sendSemaphore.Release(); }
         }
 
         public void Dispose()
@@ -318,20 +316,17 @@ namespace Sulakore.Network
         {
             if (disposing && !_disposed)
             {
-                try
-                {
-                    _socketStream.Dispose();
-                    Encrypter?.Dispose();
-                    Decrypter?.Dispose();
-                    _disposed = true;
-                }
+                try { _socketStream.Dispose(); }
                 catch { /* The socket doesn't like being shutdown/closed and will throw a fit everytime. */ }
+                Encrypter?.Dispose();
+                Decrypter?.Dispose();
+                _disposed = true;
             }
             _socketStream = null;
             Encrypter = Decrypter = null;
         }
 
-        [System.Diagnostics.DebuggerStepThrough]
+        [DebuggerStepThrough]
         private static IMemoryOwner<byte> Rent(int size, out Memory<byte> trimmedRegion)
         {
             var trimmedOwner = MemoryPool<byte>.Shared.Rent(size);

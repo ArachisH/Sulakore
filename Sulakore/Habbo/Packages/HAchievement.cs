@@ -1,30 +1,30 @@
 ﻿using Sulakore.Network.Protocol;
 
-namespace Sulakore.Habbo.Packages
+using static Sulakore.Habbo.Packages.HAchievement;
+
+namespace Sulakore.Habbo.Packages;
+
+public sealed record HAchievement(string Name, ACHLevel[] Levels)
 {
-    public class HAchievement
+    public static HAchievement[] Parse(ref HReadOnlyPacket packet)
     {
-        public string Name { get; set; }
-        public HAchievementLevel[] Levels { get; set; }
-
-        public HAchievement(HPacket packet)
+        var achieve_ments = new HAchievement[packet.Read<int>()];
+        for (int i = 0; i < achieve_ments.Length; i++)
         {
-            Name = packet.ReadUTF8();
-            Levels = new HAchievementLevel[packet.ReadInt32()];
-            for (int i = 0; i < Levels.Length; i++)
+            string name = packet.Read<string>();
+            var levels = new ACHLevel[packet.Read<int>()];
+
+            achieve_ments[i] = new HAchievement(name, levels);
+            for (int j = 0; j < levels.Length; j++)
             {
-                Levels[i] = new HAchievementLevel(Name, packet);
+                int level = packet.Read<int>();
+                int pointLimit = packet.Read<int>();
+
+                levels[j] = new ACHLevel(level, pointLimit, $"ACH_{name}{level}");
             }
         }
-
-        public static HAchievement[] Parse(HPacket packet)
-        {
-            var achievements = new HAchievement[packet.ReadInt32()];
-            for (int i = 0; i < achievements.Length; i++)
-            {
-                achievements[i] = new HAchievement(packet);
-            }
-            return achievements;
-        }
+        return achieve_ments;
     }
+
+    public sealed record ACHLevel(int Level, int PointLimit, string BadgeId);
 }

@@ -1,163 +1,173 @@
 ﻿using System.Text;
 using System.Buffers;
+using System.Text.Unicode;
 using System.Buffers.Binary;
 
-namespace Sulakore.Network.Protocol
+using Sulakore.Buffers;
+using Sulakore.Cryptography.Ciphers;
+
+namespace Sulakore.Network.Protocol.Formats;
+
+public sealed class EvaWireFormat : IFormat
 {
-    public class EvaWireFormat : HFormat
+    public int MinPacketLength => sizeof(short);
+    public int MinBufferSize => sizeof(int) + MinPacketLength;
+
+    public short ReadId(ReadOnlySpan<byte> source) => Read<short>(source[4..], out _);
+    public int ReadLength(ReadOnlySpan<byte> source) => Read<int>(source, out _);
+
+    public void WriteId(Span<byte> destination, short id) => Write(destination[4..], id);
+    public void WriteLength(Span<byte> destination, int length) => Write(destination, length);
+
+    public int GetSize<T>(T value) where T : struct
     {
-        public override int IdPosition => 4;
-        public override string Name => "EVAWIRE";
+        if (typeof(T) == typeof(int))
+        {
+            return sizeof(int);
+        }
+        else if (typeof(T) == typeof(short))
+        {
+            return sizeof(short);
+        }
+        else if (typeof(T) == typeof(bool))
+        {
+            return sizeof(bool);
+        }
+        else if (typeof(T) == typeof(long))
+        {
+            return sizeof(long);
+        }
+        else if (typeof(T) == typeof(float))
+        {
+            return sizeof(float);
+        }
+        else if (typeof(T) == typeof(double))
+        {
+            return sizeof(double);
+        }
+        return 0;
+    }
+    public int GetSize(ReadOnlySpan<char> value) => sizeof(short) + Encoding.UTF8.GetByteCount(value);
 
-        public EvaWireFormat()
-            : base(false)
-        { }
+    public void Write<T>(Span<byte> destination, T value) where T : struct
+    {
+        if (typeof(T) == typeof(int))
+        {
+            BinaryPrimitives.WriteInt32BigEndian(destination, (int)(object)value);
+        }
+        else if (typeof(T) == typeof(short))
+        {
+            BinaryPrimitives.WriteInt16BigEndian(destination, (short)(object)value);
+        }
+        else if (typeof(T) == typeof(bool))
+        {
+            destination[0] = (byte)(((bool)(object)value) ? 1 : 0);
+        }
+        else if (typeof(T) == typeof(long))
+        {
+            BinaryPrimitives.WriteInt64BigEndian(destination, (long)(object)value);
+        }
+        else if (typeof(T) == typeof(float))
+        {
+            BinaryPrimitives.WriteSingleBigEndian(destination, (float)(object)value);
+        }
+        else if (typeof(T) == typeof(double))
+        {
+            BinaryPrimitives.WriteDoubleBigEndian(destination, (double)(object)value);
+        }
+    }
+    public void Write(Span<byte> destination, ReadOnlySpan<char> value)
+    {
+        Utf8.FromUtf16(value, destination[sizeof(short)..], out _, out int bytesWritten);
+        Write(destination, (short)bytesWritten);
+    }
 
-        public override ushort GetId(IList<byte> data)
+    public T Read<T>(ReadOnlySpan<byte> source, out int bytesRead) where T : struct
+    {
+        T value = default;
+        bytesRead = GetSize(value);
+        if (typeof(T) == typeof(int))
         {
-            return ReadUInt16(data, 4);
+            value = (T)(object)BinaryPrimitives.ReadInt32BigEndian(source);
         }
-        public override byte[] GetBody(IList<byte> data)
+        else if (typeof(T) == typeof(short))
         {
-            var body = new byte[data.Count - 6];
-            for (int i = 0; i < body.Length; i++)
-            {
-                body[i] = data[i + 6];
-            }
-            return body;
+            value = (T)(object)BinaryPrimitives.ReadInt16BigEndian(source);
         }
+        else if (typeof(T) == typeof(bool))
+        {
+            value = (T)(object)(source[0] != 0);
+        }
+        else if (typeof(T) == typeof(long))
+        {
+            value = (T)(object)BinaryPrimitives.ReadInt64BigEndian(source);
+        }
+        else if (typeof(T) == typeof(float))
+        {
+            value = (T)(object)BinaryPrimitives.ReadSingleBigEndian(source);
+        }
+        else if (typeof(T) == typeof(double))
+        {
+            value = (T)(object)BinaryPrimitives.ReadDoubleBigEndian(source);
+        }
+        return value;
+    }
+    public string ReadUTF8(ReadOnlySpan<byte> source, out int bytesRead)
+    {
+        var length = Read<short>(source, out bytesRead);
+        bytesRead += length;
 
-        public override int GetSize(int value) => 4;
-        public override int GetSize(bool value) => 1;
-        public override int GetSize(string value) => 2 + Encoding.UTF8.GetByteCount(value);
-        public override int GetSize(ushort value) => 2;
-        public override int GetSize(double value) => 6;
+        return Encoding.UTF8.GetString(source.Slice(sizeof(short), length));
+    }
 
-        public override byte[] GetBytes(int value)
-        {
-            var data = new byte[4];
-            data[0] = (byte)(value >> 24);
-            data[1] = (byte)(value >> 16);
-            data[2] = (byte)(value >> 8);
-            data[3] = (byte)value;
-            return data;
-        }
-        public override byte[] GetBytes(bool value)
-        {
-            return new byte[] { (byte)(value ? 1 : 0) };
-        }
-        public override byte[] GetBytes(string value)
-        {
-            byte[] stringData = Encoding.UTF8.GetBytes(value);
-            byte[] lengthData = GetBytes((ushort)stringData.Length);
+    public ValueTask<int> SendPacketAsync(HNode node, Memory<byte> buffer)
+    {
+        Encipher(node.Encrypter, buffer.Span, node.IsWebSocket);
+        return node.SendAsync(buffer);
+    }
+    public async ValueTask<int> SendPacketAsync(HNode node, ReadOnlyMemory<byte> buffer)
+    {
+        using IMemoryOwner<byte> encryptedOwner = MemoryPool<byte>.Shared.Rent(buffer.Length);
+        Memory<byte> encryptedRegion = encryptedOwner.Memory[..buffer.Length];
+        buffer.CopyTo(encryptedRegion);
 
-            var data = new byte[lengthData.Length + stringData.Length];
-            Buffer.BlockCopy(lengthData, 0, data, 0, lengthData.Length);
-            Buffer.BlockCopy(stringData, 0, data, lengthData.Length, stringData.Length);
-            return data;
-        }
-        public override byte[] GetBytes(ushort value)
-        {
-            var data = new byte[2];
-            data[0] = (byte)(value >> 8);
-            data[1] = (byte)value;
-            return data;
-        }
-        public override byte[] GetBytes(double value)
-        {
-            byte[] data = BitConverter.GetBytes(value);
-            Array.Reverse(data);
-            return data;
-        }
+        Encipher(node.Encrypter, encryptedRegion.Span, node.IsWebSocket);
+        return await node.SendAsync(encryptedRegion).ConfigureAwait(false);
+    }
+    public async Task<HPacket> ReceiveRentedPacketAsync(HNode node)
+    {
+        var packet = new HPacket(this, 6);
 
-        public override int ReadInt32(IList<byte> data, int index)
-        {
-            int result = data[index++] << 24;
-            result += data[index++] << 16;
-            result += data[index++] << 8;
-            return result + data[index];
-        }
-        public override string ReadUTF8(IList<byte> data, int index)
-        {
-            ushort length = ReadUInt16(data, index);
-            index += 2;
+        int bytesReceived = await node.ReceiveAsync(packet.LengthRegion).ConfigureAwait(false);
+        if (bytesReceived != 4) return null;
 
-            var chunk = new byte[length];
-            for (int i = index, j = 0; j < length; i++, j++)
-            {
-                chunk[j] = data[i];
-            }
-            return Encoding.UTF8.GetString(chunk, 0, length);
-        }
-        public override bool ReadBoolean(IList<byte> data, int index)
+        int packetLength = BinaryPrimitives.ReadInt32BigEndian(packet.LengthRegion.Span);
+        packet.EnsureMinimumCapacity(packetLength);
+
+        // TODO
+        //int received = 0;
+        //do received += await node.ReceiveAsync(packetOwner.Memory.Slice(4 + received, packetLength - received)).ConfigureAwait(false);
+        //while (received != packetLength);
+
+        //if (node.Decrypter != null)
+        //{
+        //    Encipher(node.Decrypter, packetOwner.Memory[..(4 + packetLength)].Span, node.IsWebSocket);
+        //}
+
+        return packet;
+    }
+
+    private static void Encipher(IStreamCipher cipher, Span<byte> buffer, bool isWebSocket)
+    {
+        if (cipher == null) return;
+        if (isWebSocket)
         {
-            return data[index] == 1;
+            Span<byte> packetId = buffer.Slice(4, 2);
+            packetId.Reverse();
+
+            cipher.Process(packetId);
+            packetId.Reverse();
         }
-        public override ushort ReadUInt16(IList<byte> data, int index)
-        {
-            int result = data[index++] << 8;
-            return (ushort)(result + data[index]);
-        }
-        public override double ReadDouble(IList<byte> data, int index)
-        {
-            var chunk = new byte[data.Count - index];
-            for (int i = chunk.Length - 1, j = index + chunk.Length; i >= 0; i--, j--)
-            {
-                chunk[i] = data[i];
-            }
-            return BitConverter.ToDouble(chunk, 0);
-        }
-
-        protected override byte[] ConstructTails(ushort id, IList<byte> body)
-        {
-            var data = new byte[6 + body.Count];
-            PlaceBytes(body.Count + 2, data, 0);
-            PlaceBytes(id, data, 4);
-
-            body.CopyTo(data, 6);
-            return data;
-        }
-        public override async ValueTask<HPacket> ReceivePacketAsync(HNode node)
-        {
-            using IMemoryOwner<byte> lengthOwner = MemoryPool<byte>.Shared.Rent(4);
-
-            int lengthReceived = 0;
-            do lengthReceived = await node.ReceiveAsync(lengthOwner.Memory.Slice(0, 4)).ConfigureAwait(false);
-            while (lengthReceived == 0);
-
-            if (lengthReceived != 4) node.Dispose();
-            int length = BinaryPrimitives.ReadInt32BigEndian(lengthOwner.Memory.Span);
-
-            using IMemoryOwner<byte> bodyOwner = MemoryPool<byte>.Shared.Rent(length);
-            Memory<byte> body = bodyOwner.Memory.Slice(0, length);
-
-            int received = 0;
-            do received += await node.ReceiveAsync(bodyOwner.Memory.Slice(received, length - received));
-            while (received != length);
-
-            var packetData = new byte[sizeof(int) + length];
-            BinaryPrimitives.WriteInt32BigEndian(packetData, length);
-            Buffer.BlockCopy(bodyOwner.Memory.ToArray(), 0, packetData, 4, length);
-
-            if (node.IsWebSocket && node.Decrypter != null)
-            {
-                node.Decrypter.Process(packetData.AsSpan().Slice(5, 1));
-                node.Decrypter.Process(packetData.AsSpan().Slice(4, 1));
-            }
-            return CreatePacket(packetData);
-        }
-
-        public override HPacket CreatePacket()
-        {
-            return new EvaWirePacket();
-        }
-        public override HPacket CreatePacket(IList<byte> data)
-        {
-            return new EvaWirePacket(data);
-        }
-        public override HPacket CreatePacket(ushort id, params object[] values)
-        {
-            return new EvaWirePacket(id, values);
-        }
+        else cipher.Process(buffer);
     }
 }

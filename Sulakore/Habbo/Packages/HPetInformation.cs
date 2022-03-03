@@ -1,91 +1,90 @@
 ﻿using Sulakore.Network.Protocol;
 
-namespace Sulakore.Habbo.Packages
+namespace Sulakore.Habbo.Packages;
+
+public class HPetInformation
 {
-    public class HPetInformation
+    public int Id { get; set; }
+    public string Name { get; set; }
+
+    public int Level { get; set; }
+    public int MaxLevel { get; set; }
+
+    public int Experience { get; set; }
+    public int MaxExperience { get; set; }
+
+    public int Energy { get; set; }
+    public int MaxEnergy { get; set; }
+
+    public int Nutrition { get; set; }
+    public int MaxNutrition { get; set; }
+
+    public int OwnerId { get; set; }
+    public string OwnerName { get; set; }
+
+    public int Scratches { get; set; }
+    public int Age { get; set; }
+    public int BreedId { get; set; }
+
+    public bool HasFreeSaddle { get; set; }
+    public bool IsRiding { get; set; }
+
+    public int[] SkillThresholds { get; set; }
+    public int AccessRights { get; set; }
+
+    public bool CanBreed { get; set; }
+    public bool CanHarvest { get; set; }
+    public bool CanRevive { get; set; }
+
+    public int RarityLevel { get; set; }
+    public int MaxWellBeingSeconds { get; set; }
+    public int RemainingWellBeingSeconds { get; set; }
+    public int RemainingGrowingSeconds { get; set; }
+    public bool HasBreedingPermission { get; set; }
+
+    public HPetInformation(ref HReadOnlyPacket packet)
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        Id = packet.Read<int>();
+        Name = packet.Read<string>();
 
-        public int Level { get; set; }
-        public int MaxLevel { get; set; }
+        Level = packet.Read<int>();
+        MaxLevel = packet.Read<int>();
 
-        public int Experience { get; set; }
-        public int MaxExperience { get; set; }
+        Experience = packet.Read<int>();
+        MaxExperience = packet.Read<int>();
 
-        public int Energy { get; set; }
-        public int MaxEnergy { get; set; }
+        Energy = packet.Read<int>();
+        MaxEnergy = packet.Read<int>();
 
-        public int Nutrition { get; set; }
-        public int MaxNutrition { get; set; }
+        Nutrition = packet.Read<int>();
+        MaxNutrition = packet.Read<int>();
 
-        public int OwnerId { get; set; }
-        public string OwnerName { get; set; }
+        Scratches = packet.Read<int>();
+        OwnerId = packet.Read<int>();
+        Age = packet.Read<int>();
+        OwnerName = packet.Read<string>();
 
-        public int Scratches { get; set; }
-        public int Age { get; set; }
-        public int BreedId { get; set; }
+        BreedId = packet.Read<int>();
 
-        public bool HasFreeSaddle { get; set; }
-        public bool IsRiding { get; set; }
+        HasFreeSaddle = packet.Read<bool>();
+        IsRiding = packet.Read<bool>();
 
-        public int[] SkillThresholds { get; set; }
-        public int AccessRights { get; set; }
-
-        public bool CanBreed { get; set; }
-        public bool CanHarvest { get; set; }
-        public bool CanRevive { get; set; }
-
-        public int RarityLevel { get; set; }
-        public int MaxWellBeingSeconds { get; set; }
-        public int RemainingWellBeingSeconds { get; set; }
-        public int RemainingGrowingSeconds { get; set; }
-        public bool HasBreedingPermission { get; set; }
-
-        public HPetInformation(HPacket packet)
+        SkillThresholds = new int[packet.Read<int>()];
+        for (int i = 0; i < SkillThresholds.Length; i++)
         {
-            Id = packet.ReadInt32();
-            Name = packet.ReadUTF8();
-
-            Level = packet.ReadInt32();
-            MaxLevel = packet.ReadInt32();
-
-            Experience = packet.ReadInt32();
-            MaxExperience = packet.ReadInt32();
-
-            Energy = packet.ReadInt32();
-            MaxEnergy = packet.ReadInt32();
-
-            Nutrition = packet.ReadInt32();
-            MaxNutrition = packet.ReadInt32();
-
-            Scratches = packet.ReadInt32();
-            OwnerId = packet.ReadInt32();
-            Age = packet.ReadInt32();
-            OwnerName = packet.ReadUTF8();
-
-            BreedId = packet.ReadInt32();
-
-            HasFreeSaddle = packet.ReadBoolean();
-            IsRiding = packet.ReadBoolean();
-
-            SkillThresholds = new int[packet.ReadInt32()];
-            for (int i = 0; i < SkillThresholds.Length; i++)
-            {
-                SkillThresholds[i] = packet.ReadInt32();
-            }
-            AccessRights = packet.ReadInt32();
-
-            CanBreed = packet.ReadBoolean();
-            CanHarvest = packet.ReadBoolean();
-            CanRevive = packet.ReadBoolean();
-
-            RarityLevel = packet.ReadInt32();
-            MaxWellBeingSeconds = packet.ReadInt32();
-            RemainingWellBeingSeconds = packet.ReadInt32();
-            RemainingGrowingSeconds = packet.ReadInt32();
-
-            HasBreedingPermission = packet.ReadBoolean();
+            SkillThresholds[i] = packet.Read<int>();
         }
+        AccessRights = packet.Read<int>();
+
+        CanBreed = packet.Read<bool>();
+        CanHarvest = packet.Read<bool>();
+        CanRevive = packet.Read<bool>();
+
+        RarityLevel = packet.Read<int>();
+        MaxWellBeingSeconds = packet.Read<int>();
+        RemainingWellBeingSeconds = packet.Read<int>();
+        RemainingGrowingSeconds = packet.Read<int>();
+
+        HasBreedingPermission = packet.Read<bool>();
     }
 }

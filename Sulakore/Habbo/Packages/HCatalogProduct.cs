@@ -1,43 +1,41 @@
 ﻿using Sulakore.Network.Protocol;
 
-namespace Sulakore.Habbo.Packages
+namespace Sulakore.Habbo.Packages;
+
+public class HCatalogProduct
 {
-#nullable enable
-    public class HCatalogProduct
+    public HProductType Type { get; set; }
+    public int? ClassId { get; set; }
+
+    public string ExtraData { get; set; }
+    public int ProductCount { get; set; }
+
+    public bool IsLimited { get; set; }
+    public int? LimitedTotal { get; set; }
+    public int? LimitedRemaining { get; set; }
+
+    public HCatalogProduct(ref HReadOnlyPacket packet)
     {
-        public HProductType Type { get; set; }
-        public int? ClassId { get; set; }
-
-        public string ExtraData { get; set; }
-        public int ProductCount { get; set; }
-
-        public bool IsLimited { get; set; }
-        public int? LimitedTotal { get; set; }
-        public int? LimitedRemaining { get; set; }
-
-        public HCatalogProduct(HPacket packet)
+        Type = (HProductType)packet.Read<string>()[0];
+        switch (Type)
         {
-            Type = (HProductType)packet.ReadUTF8()[0];
-            switch (Type)
+            case HProductType.Badge:
             {
-                case HProductType.Badge:
+                ExtraData = packet.Read<string>();
+                ProductCount = 1;
+                break;
+            }
+            default:
+            {
+                ClassId = packet.Read<int>();
+                ExtraData = packet.Read<string>();
+                ProductCount = packet.Read<int>();
+                if (IsLimited = packet.Read<bool>())
                 {
-                    ExtraData = packet.ReadUTF8();
-                    ProductCount = 1;
-                    break;
+                    LimitedTotal = packet.Read<int>();
+                    LimitedRemaining = packet.Read<int>();
                 }
-                default:
-                {
-                    ClassId = packet.ReadInt32();
-                    ExtraData = packet.ReadUTF8();
-                    ProductCount = packet.ReadInt32();
-                    if (IsLimited = packet.ReadBoolean())
-                    {
-                        LimitedTotal = packet.ReadInt32();
-                        LimitedRemaining = packet.ReadInt32();
-                    }
-                    break;
-                }
+                break;
             }
         }
     }

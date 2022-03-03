@@ -1,45 +1,44 @@
 ﻿using Sulakore.Network.Protocol;
 
-namespace Sulakore.Habbo.Packages
+namespace Sulakore.Habbo.Packages;
+
+public class HNavigatorSearchResult
 {
-    public class HNavigatorSearchResult
+    public string SearchCode { get; set; }
+    public string Text { get; set; }
+
+    public int ActionAllowed { get; set; }
+    public bool ForceClosed { get; set; }
+    public int ViewMode { get; set; }
+
+    public HRoomEntry[] Rooms { get; set; }
+
+    public HNavigatorSearchResult(ref HReadOnlyPacket packet)
     {
-        public string SearchCode { get; set; }
-        public string Text { get; set; }
+        SearchCode = packet.Read<string>();
+        Text = packet.Read<string>();
 
-        public int ActionAllowed { get; set; }
-        public bool ForceClosed { get; set; }
-        public int ViewMode { get; set; }
+        ActionAllowed = packet.Read<int>();
+        ForceClosed = packet.Read<bool>();
+        ViewMode = packet.Read<int>();
 
-        public HRoomEntry[] Rooms { get; set; }
-
-        public HNavigatorSearchResult(HPacket packet)
+        Rooms = new HRoomEntry[packet.Read<int>()];
+        for (int i = 0; i < Rooms.Length; i++)
         {
-            SearchCode = packet.ReadUTF8();
-            Text = packet.ReadUTF8();
-
-            ActionAllowed = packet.ReadInt32();
-            ForceClosed = packet.ReadBoolean();
-            ViewMode = packet.ReadInt32();
-
-            Rooms = new HRoomEntry[packet.ReadInt32()];
-            for (int i = 0; i < Rooms.Length; i++)
-            {
-                Rooms[i] = new HRoomEntry(packet);
-            }
+            Rooms[i] = new HRoomEntry(ref packet);
         }
+    }
 
-        public static HNavigatorSearchResult[] Parse(HPacket packet)
+    public static HNavigatorSearchResult[] Parse(ref HReadOnlyPacket packet)
+    {
+        string searchCode = packet.Read<string>();
+        string filter = packet.Read<string>();
+
+        var results = new HNavigatorSearchResult[packet.Read<int>()];
+        for (int i = 0; i < results.Length; i++)
         {
-            string searchCode = packet.ReadUTF8();
-            string filter = packet.ReadUTF8();
-
-            var results = new HNavigatorSearchResult[packet.ReadInt32()];
-            for (int i = 0; i < results.Length; i++)
-            {
-                results[i] = new HNavigatorSearchResult(packet);
-            }
-            return results;
+            results[i] = new HNavigatorSearchResult(ref packet);
         }
+        return results;
     }
 }

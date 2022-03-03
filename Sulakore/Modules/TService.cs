@@ -8,6 +8,7 @@ using Sulakore.Habbo;
 using Sulakore.Network;
 using Sulakore.Habbo.Packages;
 using Sulakore.Network.Protocol;
+using Sulakore.Network.Protocol.Formats;
 
 namespace Sulakore.Modules;
 
@@ -110,10 +111,8 @@ public class TService : IModule
             HNode installerNode = HNode.ConnectAsync(moduleServer ?? DefaultModuleServer).Result;
             if (installerNode != null)
             {
-                var infoPacketOut = new EvaWirePacket(0);
-                WriteModuleInfo(infoPacketOut);
-
-                installerNode.SendAsync(infoPacketOut).GetAwaiter().GetResult();
+                using HPacket infoPacket = CreateModuleInfoPacket();
+                installerNode.SendAsync(infoPacket).GetAwaiter().GetResult();
                 Installer = _container.Installer = new RemoteInstaller(_container, installerNode);
                 break;
             }
@@ -182,8 +181,9 @@ public class TService : IModule
             throw new MessageResolvingException(Game.Revision, unresolved);
         }
     }
-    private void WriteModuleInfo(HPacket packet)
+    private HPacket CreateModuleInfoPacket()
     {
+        var packet = EvaWireFormat.CreatePacket(0);
         var moduleAssembly = Assembly.GetAssembly(_container.GetType());
 
         var description = string.Empty;
@@ -211,15 +211,16 @@ public class TService : IModule
         {
             packet.Write(author.Name);
         }
+        return packet;
     }
-    private void HandleGameObjects(HPacket packet, bool isOutgoing)
+    private void HandleGameObjects(ref HReadOnlyPacket packet, bool isOutgoing)
     {
         packet.Position = 0;
         if (!isOutgoing)
         {
             if (packet.Id == In.Users)
             {
-                HEntity[] entities = HEntity.Parse(packet);
+                HEntity[] entities = HEntity.Parse(ref packet);
                 foreach (HEntity entity in entities)
                 {
                     _entities[entity.Index] = entity;
@@ -228,7 +229,7 @@ public class TService : IModule
             }
             else if (packet.Id == In.Items)
             {
-                HWallItem[] wallItems = HWallItem.Parse(packet);
+                HWallItem[] wallItems = HWallItem.Parse(ref packet);
                 foreach (HWallItem wallItem in wallItems)
                 {
                     _wallItems[wallItem.Id] = wallItem;
@@ -237,7 +238,7 @@ public class TService : IModule
             }
             else if (packet.Id == In.Objects)
             {
-                HFloorObject[] floorObjects = HFloorObject.Parse(packet);
+                HFloorObject[] floorObjects = HFloorObject.Parse(ref packet);
                 foreach (HFloorObject floorObject in floorObjects)
                 {
                     _floorObjects[floorObject.Id] = floorObject;
@@ -273,9 +274,11 @@ public class TService : IModule
 
     private sealed class RemoteInstaller : IInstaller, IHConnection
     {
+        private delegate void DataEvent(ref HReadOnlyPacket packet);
+
         private readonly IModule _module;
         private readonly HNode _installerNode;
-        private readonly Dictionary<ushort, Action<HPacket>> _moduleEvents;
+        private readonly Dictionary<ushort, DataEvent> _moduleEvents;
 
         HNode IHConnection.Local => throw new NotSupportedException();
         HNode IHConnection.Remote => throw new NotSupportedException();
@@ -290,7 +293,7 @@ public class TService : IModule
         {
             _module = module;
             _installerNode = installerNode;
-            _moduleEvents = new Dictionary<ushort, Action<HPacket>>
+            _moduleEvents = new Dictionary<ushort, DataEvent>
             {
                 [1] = HandleData,
                 [2] = HandleOnConnected
@@ -298,21 +301,21 @@ public class TService : IModule
             _ = HandleInstallerDataAsync();
         }
 
-        private void HandleData(HPacket packet)
+        private void HandleData(ref HReadOnlyPacket packet)
         {
-            int step = packet.ReadInt32();
-            bool isOutgoing = packet.ReadBoolean();
-            var format = HFormat.GetFormat(packet.ReadUTF8());
-            bool canContinue = packet.ReadBoolean();
+            int step = packet.Read<int>();
+            bool isOutgoing = packet.Read<bool>();
+            //TODO: var format = HFormat.GetFormat(packet.Read<string>());
+            bool canContinue = packet.Read<bool>();
 
-            int ogDataLength = packet.ReadInt32();
+            int ogDataLength = packet.Read<int>();
             byte[] ogData = packet.ReadBytes(ogDataLength);
             var args = new DataInterceptedEventArgs(format.CreatePacket(ogData), step, isOutgoing, ContinueAsync);
 
-            bool isOriginal = packet.ReadBoolean();
+            bool isOriginal = packet.Read<bool>();
             if (!isOriginal)
             {
-                int packetLength = packet.ReadInt32();
+                int packetLength = packet.Read<int>();
                 byte[] packetData = packet.ReadBytes(packetLength);
                 args.Packet = format.CreatePacket(packetData);
             }
@@ -341,9 +344,9 @@ public class TService : IModule
                 _installerNode.SendAsync(CreateHandledDataPacket(args, false));
             }
         }
-        private void HandleOnConnected(HPacket packet)
+        private void HandleOnConnected(ref HReadOnlyPacket packet)
         {
-            int messagesJsonDataLength = packet.ReadInt32();
+            int messagesJsonDataLength = packet.Read<int>();
             byte[] messagesJsonData = packet.ReadBytes(messagesJsonDataLength);
             // TODO: Deserialize into the In, and Out properties
 
@@ -354,7 +357,7 @@ public class TService : IModule
         {
             try
             {
-                HPacket packet = await _installerNode.ReceiveAsync().ConfigureAwait(false);
+                HPacket packet = await _installerNode.ReceiveRentedPacketAsync().ConfigureAwait(false);
                 if (packet == null) Environment.Exit(0);
 
                 Task handleInstallerDataTask = HandleInstallerDataAsync();
@@ -399,7 +402,7 @@ public class TService : IModule
 
         private HPacket CreateHandledDataPacket(DataInterceptedEventArgs args, bool isContinuing)
         {
-            var handledDataPacket = new EvaWirePacket(1);
+            var handledDataPacket = EvaWireFormat.CreatePacket(1);
             handledDataPacket.Write(args.Step + args.IsOutgoing.ToString());
 
             handledDataPacket.Write(isContinuing);

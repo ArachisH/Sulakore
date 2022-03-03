@@ -2,53 +2,50 @@
 
 using Sulakore.Network.Protocol;
 
-namespace Sulakore.Habbo.Packages
+namespace Sulakore.Habbo.Packages;
+
+public class HSlideObjectBundle
 {
-#nullable enable
-    public class HSlideObjectBundle
+    /// <summary>
+    /// The room object's identifier which causes the item(s) movement.
+    /// </summary>
+    public int Id { get; set; }
+
+    /// <summary>
+    /// The moving object bundle.
+    /// </summary>
+    public HSlideObject[] Objects { get; set; }
+
+    /// <summary>
+    /// Represents possible entity sliding on the object.
+    /// </summary>
+    public HSlideObject Entity { get; set; }
+
+    public HSlideObjectBundle(ref HReadOnlyPacket packet)
     {
-        /// <summary>
-        /// The room object's identifier which causes the item(s) movement.
-        /// </summary>
-        public int Id { get; set; }
+        var location = new HPoint(packet.Read<int>(), packet.Read<int>());
+        var target = new HPoint(packet.Read<int>(), packet.Read<int>());
 
-        /// <summary>
-        /// The moving object bundle.
-        /// </summary>
-        public HSlideObject[] Objects { get; set; }
-
-        /// <summary>
-        /// Represents possible entity sliding on the object.
-        /// </summary>
-        public HSlideObject? Entity { get; set; }
-
-        public HSlideObjectBundle(HPacket packet)
+        Objects = new HSlideObject[packet.Read<int>()];
+        for (int i = 0; i < Objects.Length; i++)
         {
-            HPoint location = new HPoint(packet.ReadInt32(), packet.ReadInt32());
-            HPoint target = new HPoint(packet.ReadInt32(), packet.ReadInt32());
+            int objectId = packet.Read<int>();
+            location.Z = double.Parse(packet.Read<string>(), CultureInfo.InvariantCulture);
+            target.Z = double.Parse(packet.Read<string>(), CultureInfo.InvariantCulture);
 
-            Objects = new HSlideObject[packet.ReadInt32()];
-            for (int i = 0; i < Objects.Length; i++)
-            {
-                int objectId = packet.ReadInt32();
-                location.Z = double.Parse(packet.ReadUTF8(), CultureInfo.InvariantCulture);
-                target.Z = double.Parse(packet.ReadUTF8(), CultureInfo.InvariantCulture);
+            Objects[i] = new HSlideObject(objectId, location, target);
+        }
+        Id = packet.Read<int>();
 
-                Objects[i] = new HSlideObject(objectId, location, target);
-            }
+        if (packet.Available > 0)
+        {
+            var type = (HMoveType)packet.Read<int>();
 
-            Id = packet.ReadInt32();
+            int entityIndex = packet.Read<int>();
+            location.Z = double.Parse(packet.Read<string>(), CultureInfo.InvariantCulture);
+            target.Z = double.Parse(packet.Read<string>(), CultureInfo.InvariantCulture);
 
-            if (packet.ReadableBytes > 0)
-            {
-                HMoveType type = (HMoveType)packet.ReadInt32();
-
-                int entityIndex = packet.ReadInt32();
-                location.Z = double.Parse(packet.ReadUTF8(), CultureInfo.InvariantCulture);
-                target.Z = double.Parse(packet.ReadUTF8(), CultureInfo.InvariantCulture);
-
-                Entity = new HSlideObject(entityIndex, location, target, type);
-            }
+            Entity = new HSlideObject(entityIndex, location, target, type);
         }
     }
 }

@@ -1,22 +1,21 @@
 ﻿using Sulakore.Network.Protocol;
 
-namespace Sulakore.Habbo.Packages.StuffData
-{
-    public class HCrackableStuffData : HStuffData
-    {
-        public string State { get; set; }
-        public int Hits { get; set; }
-        public int Target { get; set; }
+namespace Sulakore.Habbo.Packages.StuffData;
 
-        public HCrackableStuffData()
-            : base(HStuffDataFormat.Crackable)
-        { }
-        public HCrackableStuffData(HPacket packet)
-            : this()
-        {
-            State = packet.ReadUTF8();
-            Hits = packet.ReadInt32();
-            Target = packet.ReadInt32();
-        }
+public class HCrackableStuffData : HStuffData
+{
+    public string State { get; set; }
+    public int Hits { get; set; }
+    public int Target { get; set; }
+
+    public HCrackableStuffData()
+        : base(HStuffDataFormat.Crackable)
+    { }
+    public HCrackableStuffData(ref HReadOnlyPacket packet)
+        : this()
+    {
+        State = packet.Read<string>();
+        Hits = packet.Read<int>();
+        Target = packet.Read<int>();
     }
 }

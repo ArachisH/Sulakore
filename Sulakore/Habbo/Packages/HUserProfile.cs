@@ -1,47 +1,47 @@
 ﻿using Sulakore.Network.Protocol;
 
-namespace Sulakore.Habbo.Packages
+namespace Sulakore.Habbo.Packages;
+
+public class HUserProfile
 {
-    public class HUserProfile
+    public int Id { get; set; }
+    public string Username { get; set; }
+    public string Motto { get; set; }
+    public string Figure { get; set; }
+    public DateTime CreationDate { get; set; }
+    public int AchievementScore { get; set; }
+    public int FriendCount { get; set; }
+
+    public bool IsFriend { get; set; }
+    public bool IsFriendRequestSent { get; set; }
+    public bool IsOnline { get; set; }
+
+    public HGroupEntry[] Groups { get; set; }
+
+    public int SinceLastAccessInSeconds { get; set; }
+    public bool OpenProfileView { get; set; }
+
+    public HUserProfile(ref HReadOnlyPacket packet)
     {
-        public int Id { get; set; }
-        public string Username { get; set; }
-        public string Motto { get; set; }
-        public string Figure { get; set; }
-        public DateTime CreationDate { get; set; }
-        public int AchievementScore { get; set; }
-        public int FriendCount { get; set; }
+        Id = packet.Read<int>();
+        Username = packet.Read<string>();
+        Motto = packet.Read<string>();
+        Figure = packet.Read<string>();
+        CreationDate = DateTime.Parse(packet.Read<string>());
+        AchievementScore = packet.Read<int>();
+        FriendCount = packet.Read<int>();
 
-        public bool IsFriend { get; set; }
-        public bool IsFriendRequestSent { get; set; }
-        public bool IsOnline { get; set; }
+        IsFriend = packet.Read<bool>();
+        IsFriendRequestSent = packet.Read<bool>();
+        IsOnline = packet.Read<bool>();
 
-        public HGroupEntry[] Groups { get; set; }
-
-        public int SinceLastAccessInSeconds { get; set; }
-        public bool OpenProfileView { get; set; }
-
-        public HUserProfile(HPacket packet)
+        Groups = new HGroupEntry[packet.Read<int>()];
+        for (int i = 0; i < Groups.Length; i++)
         {
-            Id = packet.ReadInt32();
-            Username = packet.ReadUTF8();
-            Motto = packet.ReadUTF8();
-            Figure = packet.ReadUTF8();
-            CreationDate = DateTime.Parse(packet.ReadUTF8());
-            AchievementScore = packet.ReadInt32();
-            FriendCount = packet.ReadInt32();
-
-            IsFriend = packet.ReadBoolean();
-            IsFriendRequestSent = packet.ReadBoolean();
-            IsOnline = packet.ReadBoolean();
-
-            Groups = new HGroupEntry[packet.ReadInt32()];
-            for (int i = 0; i < Groups.Length; i++)
-            {
-                Groups[i] = new HGroupEntry(packet);
-            }
-            SinceLastAccessInSeconds = packet.ReadInt32();
-            OpenProfileView = packet.ReadBoolean();
+            Groups[i] = new HGroupEntry(ref packet);
         }
+
+        SinceLastAccessInSeconds = packet.Read<int>();
+        OpenProfileView = packet.Read<bool>();
     }
 }

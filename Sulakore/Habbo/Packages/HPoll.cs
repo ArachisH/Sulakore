@@ -1,29 +1,28 @@
 ﻿using Sulakore.Network.Protocol;
 
-namespace Sulakore.Habbo.Packages
+namespace Sulakore.Habbo.Packages;
+
+public class HPoll
 {
-    public class HPoll
+    public int Id { get; set; }
+
+    public string StartMessage { get; set; }
+    public string EndMessage { get; set; }
+
+    public HPollQuestion[] Questions { get; set; }
+
+    public HPoll(ref HReadOnlyPacket packet)
     {
-        public int Id { get; set; }
+        Id = packet.Read<int>();
 
-        public string StartMessage { get; set; }
-        public string EndMessage { get; set; }
+        StartMessage = packet.Read<string>();
+        EndMessage = packet.Read<string>();
 
-        public HPollQuestion[] Questions { get; set; }
-
-        public HPoll(HPacket packet)
+        Questions = new HPollQuestion[packet.Read<int>()];
+        for (int i = 0; i < Questions.Length; i++)
         {
-            Id = packet.ReadInt32();
-
-            StartMessage = packet.ReadUTF8();
-            EndMessage = packet.ReadUTF8();
-            
-            Questions = new HPollQuestion[packet.ReadInt32()];
-            for (int i = 0; i < Questions.Length; i++)
-            {
-                Questions[i] = new HPollQuestion(packet);
-            }
-            packet.ReadBoolean();
+            Questions[i] = new HPollQuestion(ref packet);
         }
+        packet.Read<bool>();
     }
 }

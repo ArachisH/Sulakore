@@ -1,30 +1,29 @@
 ﻿using Sulakore.Network.Protocol;
 
-namespace Sulakore.Habbo.Packages.StuffData
+namespace Sulakore.Habbo.Packages.StuffData;
+
+public class HHighScoreStuffData : HStuffData
 {
-    public class HHighScoreStuffData : HStuffData
+    public string State { get; set; }
+    public HScoreType ScoreType { get; set; }
+    public HScoreClearType ClearType { get; set; }
+
+    public HHighScoreData[] Entries { get; set; }
+
+    public HHighScoreStuffData()
+        : base(HStuffDataFormat.HighScore)
+    { }
+    public HHighScoreStuffData(ref HReadOnlyPacket packet)
+        : this()
     {
-        public string State { get; set; }
-        public HScoreType ScoreType { get; set; }
-        public HScoreClearType ClearType { get; set; }
+        State = packet.Read<string>();
+        ScoreType = (HScoreType)packet.Read<int>();
+        ClearType = (HScoreClearType)packet.Read<int>();
 
-        public HHighScoreData[] Entries { get; set; }
-
-        public HHighScoreStuffData()
-            : base(HStuffDataFormat.HighScore)
-        { }
-        public HHighScoreStuffData(HPacket packet)
-            : this()
+        Entries = new HHighScoreData[packet.Read<int>()];
+        for (int i = 0; i < Entries.Length; i++)
         {
-            State = packet.ReadUTF8();
-            ScoreType = (HScoreType)packet.ReadInt32();
-            ClearType = (HScoreClearType)packet.ReadInt32();
-
-            Entries = new HHighScoreData[packet.ReadInt32()];
-            for (int i = 0; i < Entries.Length; i++)
-            {
-                Entries[i] = new HHighScoreData(packet);
-            }
+            Entries[i] = new HHighScoreData(ref packet);
         }
     }
 }

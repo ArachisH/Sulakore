@@ -1,24 +1,23 @@
 ﻿using Sulakore.Network.Protocol;
 
-namespace Sulakore.Habbo.Packages.StuffData
+namespace Sulakore.Habbo.Packages.StuffData;
+
+public class HMapStuffData : HStuffData
 {
-    public class HMapStuffData : HStuffData
+    public Dictionary<string, string> Data { get; set; }
+
+    public HMapStuffData()
+        : base(HStuffDataFormat.Map)
+    { }
+    public HMapStuffData(ref HReadOnlyPacket packet)
+        : this()
     {
-        public Dictionary<string, string> Data { get; set; }
+        int length = packet.Read<int>();
+        Data = new(length);
 
-        public HMapStuffData()
-            : base(HStuffDataFormat.Map)
-        { }
-        public HMapStuffData(HPacket packet)
-            : this()
+        for (int i = 0; i < length; i++)
         {
-            int length = packet.ReadInt32();
-            Data = new(length);
-
-            for (int i = 0; i < length; i++)
-            {
-                Data[packet.ReadUTF8()] = packet.ReadUTF8();
-            }
+            Data[packet.Read<string>()] = packet.Read<string>();
         }
     }
 }

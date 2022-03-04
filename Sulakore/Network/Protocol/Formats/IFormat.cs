@@ -1,6 +1,4 @@
-﻿using Sulakore.Buffers;
-
-namespace Sulakore.Network.Protocol.Formats;
+﻿namespace Sulakore.Network.Protocol.Formats;
 
 public interface IFormat
 {
@@ -8,6 +6,7 @@ public interface IFormat
 
     public int MinBufferSize { get; }
     public int MinPacketLength { get; }
+    public bool HasLengthIndicator { get; }
 
     public short ReadId(ReadOnlySpan<byte> soruce);
     public int ReadLength(ReadOnlySpan<byte> source);
@@ -23,8 +22,4 @@ public interface IFormat
 
     public T Read<T>(ReadOnlySpan<byte> source, out int bytesRead) where T : struct;
     public string ReadUTF8(ReadOnlySpan<byte> source, out int bytesRead);
-
-    public abstract ValueTask<int> SendPacketAsync(HNode node, Memory<byte> packetRegion);
-    public abstract ValueTask<int> SendPacketAsync(HNode node, ReadOnlyMemory<byte> packetRegion);
-    public abstract Task<HPacket> ReceiveRentedPacketAsync(HNode node);
 }

@@ -3,24 +3,24 @@ using System.Text.Unicode;
 using System.Buffers.Binary;
 using System.Runtime.CompilerServices;
 
-namespace Sulakore.Network.Protocol.Formats;
+namespace Sulakore.Network.Formats;
 
-public sealed class EvaWireFormat : IFormat
+public sealed class EvaWireFormat : HFormat
 {
-    public bool HasLengthIndicator => true;
-    public int MinPacketLength => sizeof(short);
-    public int MinBufferSize => sizeof(int) + MinPacketLength;
+    public override bool HasLengthIndicator => true;
+    public override int MinPacketLength => sizeof(short);
+    public override int MinBufferSize => sizeof(int) + MinPacketLength;
 
-    public short ReadId(ReadOnlySpan<byte> source) => Read<short>(source[4..], out _);
-    public int ReadLength(ReadOnlySpan<byte> source) => Read<int>(source, out _);
+    public override short ReadId(ReadOnlySpan<byte> source) => Read<short>(source[4..], out _);
+    public override int ReadLength(ReadOnlySpan<byte> source) => Read<int>(source, out _);
 
-    public void WriteId(Span<byte> destination, short id) => Write(destination[4..], id);
-    public void WriteLength(Span<byte> destination, int length) => Write(destination, length);
+    public override void WriteId(Span<byte> destination, short id) => Write(destination[4..], id);
+    public override void WriteLength(Span<byte> destination, int length) => Write(destination, length);
 
-    public int GetSize<T>(T value) where T : struct => Unsafe.SizeOf<T>();
-    public int GetSize(ReadOnlySpan<char> value) => sizeof(short) + Encoding.UTF8.GetByteCount(value);
+    public override int GetSize<T>(T value) where T : struct => Unsafe.SizeOf<T>();
+    public override int GetSize(ReadOnlySpan<char> value) => sizeof(short) + Encoding.UTF8.GetByteCount(value);
 
-    public void Write<T>(Span<byte> destination, T value) where T : struct
+    public override void Write<T>(Span<byte> destination, T value) where T : struct
     {
         if (typeof(T) == typeof(int))
         {
@@ -52,13 +52,13 @@ public sealed class EvaWireFormat : IFormat
             BinaryPrimitives.WriteDoubleBigEndian(destination, (double)(object)value);
         }
     }
-    public void Write(Span<byte> destination, ReadOnlySpan<char> value)
+    public override void Write(Span<byte> destination, ReadOnlySpan<char> value)
     {
         Utf8.FromUtf16(value, destination[sizeof(short)..], out _, out int bytesWritten);
         Write(destination, (short)bytesWritten);
     }
 
-    public T Read<T>(ReadOnlySpan<byte> source, out int bytesRead) where T : struct
+    public override T Read<T>(ReadOnlySpan<byte> source, out int bytesRead) where T : struct
     {
         T value = default;
         bytesRead = GetSize(value);
@@ -92,7 +92,7 @@ public sealed class EvaWireFormat : IFormat
         }
         return value;
     }
-    public string ReadUTF8(ReadOnlySpan<byte> source, out int bytesRead)
+    public override string ReadUTF8(ReadOnlySpan<byte> source, out int bytesRead)
     {
         var length = Read<short>(source, out bytesRead);
         bytesRead += length;

@@ -1,18 +1,13 @@
-﻿using Sulakore.Network.Protocol;
+﻿namespace Sulakore.Network;
 
-namespace Sulakore.Network
+public interface IHConnection
 {
-    public interface IHConnection
-    {
-        HNode Local { get; }
-        HNode Remote { get; }
+    HNode Local { get; }
+    HNode Remote { get; }
 
-        ValueTask<int> SendToServerAsync(byte[] data);
-        ValueTask<int> SendToServerAsync(HPacket packet);
-        ValueTask<int> SendToServerAsync(ushort id, params object[] values);
+    ValueTask<int> SendToServerAsync(ReadOnlyMemory<byte> data);
+    ValueTask<int> SendToServerAsync(short id, params object[] values);
 
-        ValueTask<int> SendToClientAsync(byte[] data);
-        ValueTask<int> SendToClientAsync(HPacket packet);
-        ValueTask<int> SendToClientAsync(ushort id, params object[] values);
-    }
+    ValueTask<int> SendToClientAsync(ReadOnlyMemory<byte> data);
+    ValueTask<int> SendToClientAsync(short id, params object[] values);
 }

@@ -120,29 +120,28 @@ public sealed class HNode : IDisposable
     /// <param name="cancellationToken"></param>
     /// <returns>A rented memory owner that contains a buffer that allows for the reading, and writing of data without causing any allocations.</returns>
     /// <exception cref="NullReferenceException"></exception>
-    public async Task<IMemoryOwner<byte>> ReceiveRentedPacketAsync(CancellationToken cancellationToken = default)
+    public async Task<HPacket> ReceiveRentedPacketAsync(CancellationToken cancellationToken = default)
     {
         if (ReceiveFormat == null)
         {
             throw new NullReferenceException($"Cannot receive structured data while {nameof(ReceiveFormat)} is null.");
         }
 
-        IMemoryOwner<byte> packetOwner = null;
+        HPacket packet = null;
         await _packetReceiveSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
         try
         {
             // TODO: Avoid an attempt to rent an already allocated buffer, and instead allocate ourselves for small packets?
-            packetOwner = MemoryPool<byte>.Shared.Rent(ReceiveFormat.MinBufferSize);
-            Memory<byte> packetRegion = packetOwner.Memory;
+            packet = new HPacket(ReceiveFormat);
 
             int received = 0;
-            do received = await ReceiveAsync(packetRegion[..ReceiveFormat.MinBufferSize], cancellationToken).ConfigureAwait(false);
+            do received = await ReceiveAsync(packet.Memory, cancellationToken).ConfigureAwait(false);
             while (received == 0);
 
-            // That data that did manage to get through did not meet the minimum requirement, close the connection.
-            if (received != ReceiveFormat.MinBufferSize) Dispose();
+            // That data that did manage to get through did not meet the minimum length requirement, close the connection.
+            if (received != packet.Memory.Length) Dispose();
 
-            int packetLength = ReceiveFormat.ReadLength(packetRegion.Span);
+            int packetLength = ReceiveFormat.ReadLength(packet.Memory.Span);
             if (ReceiveFormat.HasLengthIndicator && packetLength > ReceiveFormat.MinPacketLength) // Is there more data to be read for this packet?
             {
                 if (packetLength > packetRegion.Length) // Do we need to enlarge the current buffer?
@@ -172,9 +171,11 @@ public sealed class HNode : IDisposable
             {
                 Encipher(Decrypter, packetRegion.Span[..(4 + packetLength)]);
             }
+
+            packet = new HPacket(ReceiveFormat, packetOwner);
         }
         finally { _packetReceiveSemaphore.Release(); }
-        return packetOwner;
+        return packet;
     }
 
     public bool ReflectFormats(HNode other)

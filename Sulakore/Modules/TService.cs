@@ -7,8 +7,7 @@ using System.Collections.ObjectModel;
 using Sulakore.Habbo;
 using Sulakore.Network;
 using Sulakore.Habbo.Packages;
-using Sulakore.Network.Protocol;
-using Sulakore.Network.Protocol.Formats;
+using Sulakore.Network.Formats;
 
 namespace Sulakore.Modules;
 

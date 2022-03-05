@@ -1,4 +1,4 @@
-﻿using Sulakore.Network.Formats;
+﻿using Sulakore.Network.Buffers;
 
 namespace Sulakore.Network
 {
@@ -7,18 +7,14 @@ namespace Sulakore.Network
     /// </summary>
     public class DataInterceptedEventArgs : EventArgs
     {
-        private readonly object _continueLock;
         private readonly DataInterceptedEventArgs _args;
         private readonly Func<DataInterceptedEventArgs, Task> _continuation;
         private readonly Func<DataInterceptedEventArgs, ValueTask<int>> _relayer;
 
         public int Step { get; }
-        public HFormat Format { get; }
         public bool IsOutgoing { get; }
-        public DateTime Timestamp { get; }
         public Task WaitUntil { get; set; }
 
-        public ReadOnlyMemory<byte> ReplacementRegion { get; set; }
         public bool IsContinuable => _continuation != null && !HasContinued;
 
         private bool _isBlocked;
@@ -63,17 +59,17 @@ namespace Sulakore.Network
             }
         }
 
-        private ReadOnlyMemory<byte> _packetRegion;
-        public ReadOnlyMemory<byte> PacketRegion
+        private HPacket _packet;
+        public HPacket Packet
         {
-            get => _args?.PacketRegion ?? _packetRegion;
+            get => _args?.Packet ?? _packet;
             set
             {
                 if (_args != null)
                 {
-                    _args.PacketRegion = value;
+                    _args.Packet = value;
                 }
-                _packetRegion = value;
+                _packet = value;
             }
         }
 
@@ -82,44 +78,34 @@ namespace Sulakore.Network
             _args = args;
             _relayer = args._relayer;
             _continuation = args._continuation;
-            _continueLock = args._continueLock;
 
             Step = args.Step;
-            Timestamp = args.Timestamp;
             IsOutgoing = args.IsOutgoing;
         }
-        public DataInterceptedEventArgs(ReadOnlyMemory<byte> packetRegion, int step, bool isOutgoing, HFormat format, Func<DataInterceptedEventArgs, Task> continuation = null, Func<DataInterceptedEventArgs, ValueTask<int>> relayer = null)
+        public DataInterceptedEventArgs(HPacket packet, int step, bool isOutgoing, Func<DataInterceptedEventArgs, Task> continuation = null, Func<DataInterceptedEventArgs, ValueTask<int>> relayer = null)
         {
-            Step = step;
-            Format = format;
-            IsOutgoing = isOutgoing;
-            Timestamp = DateTime.Now;
-            PacketRegion = packetRegion;
-
-            _continueLock = new object();
+            _relayer = relayer;
             _continuation = continuation;
 
-            _relayer = relayer;
+            Step = step;
+            Packet = packet;
+            IsOutgoing = isOutgoing;
         }
 
         public void Relay()
         {
             if (_relayer == null) return;
-            lock (_continueLock)
-            {
-                WasRelayed = true;
-                Task.Run(() => _relayer(this));
-            }
+
+            WasRelayed = true;
+            Task.Run(() => _relayer(this));
         }
         public void Continue(bool relay = false)
         {
             if (!IsContinuable) return;
-            lock (_continueLock)
-            {
-                if (relay) Relay();
-                HasContinued = true;
-                _continuation(this);
-            }
+
+            if (relay) Relay();
+            HasContinued = true;
+            _continuation(this);
         }
     }
 }

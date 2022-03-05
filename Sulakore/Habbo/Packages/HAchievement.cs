@@ -1,4 +1,5 @@
-﻿using Sulakore.Network.Formats;
+﻿using Sulakore.Network;
+using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages;
 
@@ -13,7 +14,11 @@ public sealed class HAchievement
         Levels = new ACHLevel[format.Read<int>(ref packetSpan)];
     }
 
-    public static HAchievement[] Parse(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public static HAchievement[] Parse(HPacket packet)
+    {
+        return Parse(packet.Format, packet.Memory.Span);
+    }
+    public static HAchievement[] Parse(HFormat format, ReadOnlySpan<byte> packetSpan)
     {
         var achievements = new HAchievement[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < achievements.Length; i++)

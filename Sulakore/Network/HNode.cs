@@ -9,8 +9,8 @@ using System.Buffers.Binary;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
+using Sulakore.Network.Formats;
 using Sulakore.Cryptography.Ciphers;
-using Sulakore.Network.Protocol.Formats;
 
 namespace Sulakore.Network;
 
@@ -35,8 +35,8 @@ public sealed class HNode : IDisposable
     public IStreamCipher Encrypter { get; set; }
     public IStreamCipher Decrypter { get; set; }
 
-    public IFormat SendFormat { get; set; }
-    public IFormat ReceiveFormat { get; set; }
+    public HFormat SendFormat { get; set; }
+    public HFormat ReceiveFormat { get; set; }
     public HotelEndPoint RemoteEndPoint { get; private set; }
 
     public bool IsClient { get; private set; }
@@ -73,8 +73,8 @@ public sealed class HNode : IDisposable
         socket.NoDelay = true;
         socket.LingerState = new LingerOption(false, 0);
 
-        SendFormat = IFormat.EvaWire;
-        ReceiveFormat = IFormat.EvaWire;
+        SendFormat = HFormat.EvaWire;
+        ReceiveFormat = HFormat.EvaWire;
         RemoteEndPoint = remoteEndPoint;
     }
 
@@ -202,8 +202,8 @@ public sealed class HNode : IDisposable
         IsWebSocket = isWebSocket;
         if (IsWebSocket || possibleId == 4000)
         {
-            SendFormat = IFormat.EvaWire;
-            ReceiveFormat = IFormat.EvaWire;
+            SendFormat = HFormat.EvaWire;
+            ReceiveFormat = HFormat.EvaWire;
         }
         else if (possibleId == 206)
         {

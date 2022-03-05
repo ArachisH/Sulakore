@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-using Sulakore.Network.Protocol;
+using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages;
 
@@ -21,29 +21,34 @@ public class HSlideObjectBundle
     /// </summary>
     public HSlideObject Entity { get; set; }
 
-    public HSlideObjectBundle(ref HReadOnlyPacket packet)
+    public HSlideObjectBundle(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        var location = new HPoint(packet.Read<int>(), packet.Read<int>());
-        var target = new HPoint(packet.Read<int>(), packet.Read<int>());
+        int locationX = format.Read<int>(ref packetSpan);
+        int locationY = format.Read<int>(ref packetSpan);
 
-        Objects = new HSlideObject[packet.Read<int>()];
+        int targetX = format.Read<int>(ref packetSpan);
+        int targetY = format.Read<int>(ref packetSpan);
+        HPoint location, target;
+
+        Objects = new HSlideObject[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < Objects.Length; i++)
         {
-            int objectId = packet.Read<int>();
-            location.Z = double.Parse(packet.Read<string>(), CultureInfo.InvariantCulture);
-            target.Z = double.Parse(packet.Read<string>(), CultureInfo.InvariantCulture);
+            int objectId = format.Read<int>(ref packetSpan);
+
+            location = new HPoint(locationX, locationY, float.Parse(format.ReadUTF8(ref packetSpan), CultureInfo.InvariantCulture));
+            target = new HPoint(targetX, targetY, float.Parse(format.ReadUTF8(ref packetSpan), CultureInfo.InvariantCulture));
 
             Objects[i] = new HSlideObject(objectId, location, target);
         }
-        Id = packet.Read<int>();
 
-        if (packet.Available > 0)
+        Id = format.Read<int>(ref packetSpan);
+        if (!packetSpan.IsEmpty)
         {
-            var type = (HMoveType)packet.Read<int>();
+            var type = (HMoveType)format.Read<int>(ref packetSpan);
 
-            int entityIndex = packet.Read<int>();
-            location.Z = double.Parse(packet.Read<string>(), CultureInfo.InvariantCulture);
-            target.Z = double.Parse(packet.Read<string>(), CultureInfo.InvariantCulture);
+            int entityIndex = format.Read<int>(ref packetSpan);
+            location = new HPoint(locationX, locationY, float.Parse(format.ReadUTF8(ref packetSpan), CultureInfo.InvariantCulture));
+            target = new HPoint(targetX, targetY, float.Parse(format.ReadUTF8(ref packetSpan), CultureInfo.InvariantCulture));
 
             Entity = new HSlideObject(entityIndex, location, target, type);
         }

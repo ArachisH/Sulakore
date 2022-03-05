@@ -1,4 +1,4 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages;
 
@@ -24,30 +24,30 @@ public class HUserObject
     public bool NameChangeAllowed { get; set; }
     public bool AccountSafetyLocked { get; set; }
 
-    public HUserObject(ref HReadOnlyPacket packet)
+    public HUserObject(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        Id = packet.Read<int>();
-        Name = packet.Read<string>();
+        Id = format.Read<int>(ref packetSpan);
+        Name = format.ReadUTF8(ref packetSpan);
 
-        Figure = packet.Read<string>();
-        Gender = (HGender)packet.Read<string>()[0];
+        Figure = format.ReadUTF8(ref packetSpan);
+        Gender = (HGender)format.ReadUTF8(ref packetSpan)[0];
 
-        CustomData = packet.Read<string>();
-        RealName = packet.Read<string>();
-        DirectMail = packet.Read<bool>();
+        CustomData = format.ReadUTF8(ref packetSpan);
+        RealName = format.ReadUTF8(ref packetSpan);
+        DirectMail = format.Read<bool>(ref packetSpan);
 
-        RespectTotal = packet.Read<int>();
-        RespectLeft = packet.Read<int>();
-        ScratchesLeft = packet.Read<int>();
+        RespectTotal = format.Read<int>(ref packetSpan);
+        RespectLeft = format.Read<int>(ref packetSpan);
+        ScratchesLeft = format.Read<int>(ref packetSpan);
 
-        StreamPublishingAllowed = packet.Read<bool>();
+        StreamPublishingAllowed = format.Read<bool>(ref packetSpan);
 
-        if (DateTime.TryParse(packet.Read<string>(), out DateTime lastAccess))
+        if (DateTime.TryParse(format.ReadUTF8(ref packetSpan), out DateTime lastAccess))
         {
             LastAccess = lastAccess;
         }
 
-        NameChangeAllowed = packet.Read<bool>();
-        AccountSafetyLocked = packet.Read<bool>();
+        NameChangeAllowed = format.Read<bool>(ref packetSpan);
+        AccountSafetyLocked = format.Read<bool>(ref packetSpan);
     }
 }

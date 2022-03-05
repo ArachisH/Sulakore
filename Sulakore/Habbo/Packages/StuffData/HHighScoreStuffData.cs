@@ -1,4 +1,4 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages.StuffData;
 
@@ -13,17 +13,17 @@ public class HHighScoreStuffData : HStuffData
     public HHighScoreStuffData()
         : base(HStuffDataFormat.HighScore)
     { }
-    public HHighScoreStuffData(ref HReadOnlyPacket packet)
+    public HHighScoreStuffData(HFormat format, ref ReadOnlySpan<byte> packetSpan)
         : this()
     {
-        State = packet.Read<string>();
-        ScoreType = (HScoreType)packet.Read<int>();
-        ClearType = (HScoreClearType)packet.Read<int>();
+        State = format.ReadUTF8(ref packetSpan);
+        ScoreType = (HScoreType)format.Read<int>(ref packetSpan);
+        ClearType = (HScoreClearType)format.Read<int>(ref packetSpan);
 
-        Entries = new HHighScoreData[packet.Read<int>()];
+        Entries = new HHighScoreData[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < Entries.Length; i++)
         {
-            Entries[i] = new HHighScoreData(ref packet);
+            Entries[i] = new HHighScoreData(format, ref packetSpan);
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿using Sulakore.Network.Protocol;
-using Sulakore.Habbo.Packages.StuffData;
+﻿using Sulakore.Habbo.Packages.StuffData;
+using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages;
 
@@ -27,42 +27,42 @@ public class HItem
     public string SlotId { get; set; }
     public int Extra { get; set; }
 
-    public HItem(ref HReadOnlyPacket packet)
+    public HItem(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        RoomItemId = packet.Read<int>();
-        Type = (HProductType)packet.Read<string>()[0];
-        Id = packet.Read<int>();
-        TypeId = packet.Read<int>();
-        Category = (HFurniCategory)packet.Read<int>();
+        RoomItemId = format.Read<int>(ref packetSpan);
+        Type = (HProductType)format.ReadUTF8(ref packetSpan)[0];
+        Id = format.Read<int>(ref packetSpan);
+        TypeId = format.Read<int>(ref packetSpan);
+        Category = (HFurniCategory)format.Read<int>(ref packetSpan);
 
-        StuffData = HStuffData.Parse(ref packet);
+        StuffData = HStuffData.Parse(format, ref packetSpan);
 
-        IsRecyclable = packet.Read<bool>();
-        IsTradable = packet.Read<bool>();
-        IsGroupable = packet.Read<bool>();
-        IsSellable = packet.Read<bool>();
+        IsRecyclable = format.Read<bool>(ref packetSpan);
+        IsTradable = format.Read<bool>(ref packetSpan);
+        IsGroupable = format.Read<bool>(ref packetSpan);
+        IsSellable = format.Read<bool>(ref packetSpan);
 
-        CanPlaceInMarketplace = packet.Read<bool>();
-        SecondsToExpiration = packet.Read<int>();
+        CanPlaceInMarketplace = format.Read<bool>(ref packetSpan);
+        SecondsToExpiration = format.Read<int>(ref packetSpan);
 
-        HasRentPeriodStarted = packet.Read<bool>();
-        RoomId = packet.Read<int>();
+        HasRentPeriodStarted = format.Read<bool>(ref packetSpan);
+        RoomId = format.Read<int>(ref packetSpan);
 
         if (Type == HProductType.Stuff)
         {
-            SlotId = packet.Read<string>();
-            Extra = packet.Read<int>();
+            SlotId = format.ReadUTF8(ref packetSpan);
+            Extra = format.Read<int>(ref packetSpan);
         }
     }
 
-    public static HItem[] Parse(ref HReadOnlyPacket packet)
+    public static HItem[] Parse(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        packet.Read<int>();
-        packet.Read<int>();
-        var items = new HItem[packet.Read<int>()];
+        format.Read<int>(ref packetSpan);
+        format.Read<int>(ref packetSpan);
+        var items = new HItem[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < items.Length; i++)
         {
-            items[i] = new HItem(ref packet);
+            items[i] = new HItem(format, ref packetSpan);
         }
         return items;
     }

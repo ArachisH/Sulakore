@@ -1,4 +1,4 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages.StuffData;
 
@@ -9,13 +9,13 @@ public class HStringArrayStuffData : HStuffData
     public HStringArrayStuffData()
         : base(HStuffDataFormat.StringArray)
     { }
-    public HStringArrayStuffData(ref HReadOnlyPacket packet)
+    public HStringArrayStuffData(HFormat format, ref ReadOnlySpan<byte> packetSpan)
         : this()
     {
-        Data = new string[packet.Read<int>()];
+        Data = new string[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < Data.Length; i++)
         {
-            Data[i] = packet.Read<string>();
+            Data[i] = format.ReadUTF8(ref packetSpan);
         }
     }
 }

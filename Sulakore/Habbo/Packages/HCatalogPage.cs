@@ -1,4 +1,4 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages;
 
@@ -18,33 +18,33 @@ public class HCatalogPage
 
     public bool IsFrontPage { get; set; }
 
-    public HCatalogPage(ref HReadOnlyPacket packet)
+    public HCatalogPage(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        Id = packet.Read<int>();
-        CatalogType = packet.Read<string>();
-        LayoutCode = packet.Read<string>();
+        Id = format.Read<int>(ref packetSpan);
+        CatalogType = format.ReadUTF8(ref packetSpan);
+        LayoutCode = format.ReadUTF8(ref packetSpan);
 
-        Images = new string[packet.Read<int>()];
+        Images = new string[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < Images.Length; i++)
         {
-            Images[i] = packet.Read<string>();
+            Images[i] = format.ReadUTF8(ref packetSpan);
         }
 
-        Texts = new string[packet.Read<int>()];
+        Texts = new string[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < Texts.Length; i++)
         {
-            Texts[i] = packet.Read<string>();
+            Texts[i] = format.ReadUTF8(ref packetSpan);
         }
 
-        Offers = new HCatalogOffer[packet.Read<int>()];
+        Offers = new HCatalogOffer[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < Offers.Length; i++)
         {
-            Offers[i] = new HCatalogOffer(ref packet);
+            Offers[i] = new HCatalogOffer(format, ref packetSpan);
         }
 
-        OfferId = packet.Read<int>();
-        AcceptSeasonCurrencyAsCredits = packet.Read<bool>();
+        OfferId = format.Read<int>(ref packetSpan);
+        AcceptSeasonCurrencyAsCredits = format.Read<bool>(ref packetSpan);
 
-        IsFrontPage = packet.Available > 0;
+        IsFrontPage = !packetSpan.IsEmpty;
     }
 }

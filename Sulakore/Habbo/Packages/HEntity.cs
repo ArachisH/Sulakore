@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-using Sulakore.Network.Protocol;
+using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages;
 
@@ -35,69 +35,69 @@ public class HEntity
         }
     }
 
-    public HEntity(ref HReadOnlyPacket packet)
+    public HEntity(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        Id = packet.Read<int>();
-        Name = packet.Read<string>();
-        Motto = packet.Read<string>();
-        FigureId = packet.Read<string>();
-        Index = packet.Read<int>();
+        Id = format.Read<int>(ref packetSpan);
+        Name = format.ReadUTF8(ref packetSpan);
+        Motto = format.ReadUTF8(ref packetSpan);
+        FigureId = format.ReadUTF8(ref packetSpan);
+        Index = format.Read<int>(ref packetSpan);
 
-        _tile = new HPoint(packet.Read<int>(), packet.Read<int>(),
-            double.Parse(packet.Read<string>(), CultureInfo.InvariantCulture));
+        _tile = new HPoint(format.Read<int>(ref packetSpan), format.Read<int>(ref packetSpan),
+            float.Parse(format.ReadUTF8(ref packetSpan), CultureInfo.InvariantCulture));
 
-        packet.Read<int>();
-        EntityType = (HEntityType)packet.Read<int>();
+        format.Read<int>(ref packetSpan);
+        EntityType = (HEntityType)format.Read<int>(ref packetSpan);
 
         switch (EntityType)
         {
             case HEntityType.User:
             {
-                Gender = (HGender)packet.Read<string>().ToLower()[0];
-                packet.Read<int>();
-                packet.Read<int>();
-                FavoriteGroup = packet.Read<string>();
-                packet.Read<string>();
-                packet.Read<int>();
-                packet.Read<bool>();
+                Gender = (HGender)format.ReadUTF8(ref packetSpan).ToLower()[0];
+                format.Read<int>(ref packetSpan);
+                format.Read<int>(ref packetSpan);
+                FavoriteGroup = format.ReadUTF8(ref packetSpan);
+                format.ReadUTF8(ref packetSpan);
+                format.Read<int>(ref packetSpan);
+                format.Read<bool>(ref packetSpan);
                 break;
             }
             case HEntityType.Pet:
             {
-                packet.Read<int>();
-                packet.Read<int>();
-                packet.Read<string>();
-                packet.Read<int>();
-                packet.Read<bool>();
-                packet.Read<bool>();
-                packet.Read<bool>();
-                packet.Read<bool>();
-                packet.Read<bool>();
-                packet.Read<bool>();
-                packet.Read<int>();
-                packet.Read<string>();
+                format.Read<int>(ref packetSpan);
+                format.Read<int>(ref packetSpan);
+                format.ReadUTF8(ref packetSpan);
+                format.Read<int>(ref packetSpan);
+                format.Read<bool>(ref packetSpan);
+                format.Read<bool>(ref packetSpan);
+                format.Read<bool>(ref packetSpan);
+                format.Read<bool>(ref packetSpan);
+                format.Read<bool>(ref packetSpan);
+                format.Read<bool>(ref packetSpan);
+                format.Read<int>(ref packetSpan);
+                format.ReadUTF8(ref packetSpan);
                 break;
             }
             case HEntityType.RentableBot:
             {
-                packet.Read<string>();
-                packet.Read<int>();
-                packet.Read<string>();
-                for (int j = packet.Read<int>(); j > 0; j--)
+                format.ReadUTF8(ref packetSpan);
+                format.Read<int>(ref packetSpan);
+                format.ReadUTF8(ref packetSpan);
+                for (int j = format.Read<int>(ref packetSpan); j > 0; j--)
                 {
-                    packet.Read<short>();
+                    format.Read<short>(ref packetSpan);
                 }
                 break;
             }
         }
     }
 
-    public static HEntity[] Parse(ref HReadOnlyPacket packet)
+    public static HEntity[] Parse(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        var entities = new HEntity[packet.Read<int>()];
+        var entities = new HEntity[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < entities.Length; i++)
         {
-            entities[i] = new HEntity(ref packet);
+            entities[i] = new HEntity(format, ref packetSpan);
         }
         return entities;
     }

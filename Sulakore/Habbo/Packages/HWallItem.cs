@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-using Sulakore.Network.Protocol;
+using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages;
 
@@ -25,15 +25,15 @@ public class HWallItem
     public int OwnerId { get; set; }
     public string OwnerName { get; set; }
 
-    public HWallItem(ref HReadOnlyPacket packet)
+    public HWallItem(HFormat format, ref ReadOnlySpan<byte> packetData)
     {
-        Id = int.Parse(packet.Read<string>());
-        TypeId = packet.Read<int>();
-        Location = packet.Read<string>();
-        Data = packet.Read<string>();
-        SecondsToExpiration = packet.Read<int>();
-        UsagePolicy = (HUsagePolicy)packet.Read<int>();
-        OwnerId = packet.Read<int>();
+        Id = int.Parse(format.ReadUTF8(ref packetData));
+        TypeId = format.Read<int>(ref packetData);
+        Location = format.ReadUTF8(ref packetData);
+        Data = format.ReadUTF8(ref packetData);
+        SecondsToExpiration = format.Read<int>(ref packetData);
+        UsagePolicy = (HUsagePolicy)format.Read<int>(ref packetData);
+        OwnerId = format.Read<int>(ref packetData);
 
         if (float.TryParse(Data, out _))
         {
@@ -79,23 +79,26 @@ public class HWallItem
         }
     }
 
-    public static HWallItem[] Parse(ref HReadOnlyPacket packet)
+    public static HWallItem[] Parse(HFormat format, ref ReadOnlySpan<byte> packetData)
     {
-        int ownersCount = packet.Read<int>();
+        int ownersCount = format.Read<int>(ref packetData);
         var owners = new Dictionary<int, string>(ownersCount);
         for (int i = 0; i < ownersCount; i++)
         {
-            owners.Add(packet.Read<int>(), packet.Read<string>());
+            owners.Add(
+                format.Read<int>(ref packetData),
+                format.ReadUTF8(ref packetData));
         }
 
-        var wallItems = new HWallItem[packet.Read<int>()];
+        var wallItems = new HWallItem[format.Read<int>(ref packetData)];
         for (int i = 0; i < wallItems.Length; i++)
         {
-            var wallItem = new HWallItem(ref packet);
+            var wallItem = new HWallItem(format, ref packetData);
             wallItem.OwnerName = owners[wallItem.OwnerId];
 
             wallItems[i] = wallItem;
         }
+
         return wallItems;
     }
 }

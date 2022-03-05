@@ -1,4 +1,4 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages;
 
@@ -16,35 +16,35 @@ public class HUserSearchResult
 
     public string RealName { get; set; }
 
-    public HUserSearchResult(ref HReadOnlyPacket packet)
+    public HUserSearchResult(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        Id = packet.Read<int>();
-        Name = packet.Read<string>();
-        Motto = packet.Read<string>();
+        Id = format.Read<int>(ref packetSpan);
+        Name = format.ReadUTF8(ref packetSpan);
+        Motto = format.ReadUTF8(ref packetSpan);
 
-        IsOnline = packet.Read<bool>();
-        CanFollow = packet.Read<bool>();
+        IsOnline = format.Read<bool>(ref packetSpan);
+        CanFollow = format.Read<bool>(ref packetSpan);
 
-        packet.Read<string>();
+        format.ReadUTF8(ref packetSpan);
 
-        Gender = packet.Read<int>() == 1 ? HGender.Male : HGender.Female; //TODO: HExtension, ffs sulake
-        Figure = packet.Read<string>();
+        Gender = format.Read<int>(ref packetSpan) == 1 ? HGender.Male : HGender.Female;
+        Figure = format.ReadUTF8(ref packetSpan);
 
-        RealName = packet.Read<string>();
+        RealName = format.ReadUTF8(ref packetSpan);
     }
 
-    public static (HUserSearchResult[] friends, HUserSearchResult[] others) Parse(ref HReadOnlyPacket packet)
+    public static (HUserSearchResult[] friends, HUserSearchResult[] others) Parse(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        var friends = new HUserSearchResult[packet.Read<int>()];
+        var friends = new HUserSearchResult[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < friends.Length; i++)
         {
-            friends[i] = new HUserSearchResult(ref packet);
+            friends[i] = new HUserSearchResult(format, ref packetSpan);
         }
 
-        var others = new HUserSearchResult[packet.Read<int>()];
+        var others = new HUserSearchResult[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < others.Length; i++)
         {
-            others[i] = new HUserSearchResult(ref packet);
+            others[i] = new HUserSearchResult(format, ref packetSpan);
         }
         return (friends, others);
     }

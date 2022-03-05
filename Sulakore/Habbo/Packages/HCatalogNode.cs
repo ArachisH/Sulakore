@@ -1,4 +1,4 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages;
 
@@ -14,34 +14,33 @@ public class HCatalogNode
     public int[] OfferIds { get; set; }
     public HCatalogNode[] Children { get; set; }
 
-    public HCatalogNode(ref HReadOnlyPacket packet)
+    public HCatalogNode(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        Visible = packet.Read<bool>();
+        Visible = format.Read<bool>(ref packetSpan);
 
-        Icon = packet.Read<int>();
-        PageId = packet.Read<int>();
-        PageName = packet.Read<string>();
-        Localization = packet.Read<string>();
+        Icon = format.Read<int>(ref packetSpan);
+        PageId = format.Read<int>(ref packetSpan);
+        PageName = format.ReadUTF8(ref packetSpan);
+        Localization = format.ReadUTF8(ref packetSpan);
 
-        OfferIds = new int[packet.Read<int>()];
+        OfferIds = new int[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < OfferIds.Length; i++)
         {
-            OfferIds[i] = packet.Read<int>();
+            OfferIds[i] = format.Read<int>(ref packetSpan);
         }
 
-        Children = new HCatalogNode[packet.Read<int>()];
+        Children = new HCatalogNode[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < Children.Length; i++)
         {
-            Children[i] = new HCatalogNode(ref packet);
+            Children[i] = new HCatalogNode(format, ref packetSpan);
         }
     }
 
-    public static HCatalogNode Parse(ref HReadOnlyPacket packet)
+    public static HCatalogNode Parse(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        var root = new HCatalogNode(ref packet);
-        bool newAdditionsAvailable = packet.Read<bool>();
-        string catalogType = packet.Read<string>();
-
+        var root = new HCatalogNode(format, ref packetSpan);
+        bool newAdditionsAvailable = format.Read<bool>(ref packetSpan);
+        string catalogType = format.ReadUTF8(ref packetSpan);
         return root;
     }
 }

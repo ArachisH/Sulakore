@@ -1,4 +1,4 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages.StuffData;
 
@@ -9,15 +9,15 @@ public class HMapStuffData : HStuffData
     public HMapStuffData()
         : base(HStuffDataFormat.Map)
     { }
-    public HMapStuffData(ref HReadOnlyPacket packet)
+    public HMapStuffData(HFormat format, ref ReadOnlySpan<byte> packetSpan)
         : this()
     {
-        int length = packet.Read<int>();
+        int length = format.Read<int>(ref packetSpan);
         Data = new(length);
 
         for (int i = 0; i < length; i++)
         {
-            Data[packet.Read<string>()] = packet.Read<string>();
+            Data[format.ReadUTF8(ref packetSpan)] = format.ReadUTF8(ref packetSpan);
         }
     }
 }

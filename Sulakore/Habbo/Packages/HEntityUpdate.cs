@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-using Sulakore.Network.Protocol;
+using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages;
 
@@ -18,17 +18,17 @@ public class HEntityUpdate
     public HDirection HeadFacing { get; set; }
     public HDirection BodyFacing { get; set; }
 
-    public HEntityUpdate(ref HReadOnlyPacket packet)
+    public HEntityUpdate(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        Index = packet.Read<int>();
+        Index = format.Read<int>(ref packetSpan);
 
-        Tile = new HPoint(packet.Read<int>(), packet.Read<int>(),
-            double.Parse(packet.Read<string>(), CultureInfo.InvariantCulture));
+        Tile = new HPoint(format.Read<int>(ref packetSpan), format.Read<int>(ref packetSpan),
+            float.Parse(format.ReadUTF8(ref packetSpan), CultureInfo.InvariantCulture));
 
-        HeadFacing = (HDirection)packet.Read<int>();
-        BodyFacing = (HDirection)packet.Read<int>();
+        HeadFacing = (HDirection)format.Read<int>(ref packetSpan);
+        BodyFacing = (HDirection)format.Read<int>(ref packetSpan);
 
-        string action = packet.Read<string>();
+        string action = format.ReadUTF8(ref packetSpan);
         string[] actionData = action.Split('/', StringSplitOptions.RemoveEmptyEntries);
         foreach (string actionInfo in actionData)
         {
@@ -50,7 +50,7 @@ public class HEntityUpdate
                     if (values.Length >= 3)
                     {
                         MovingTo = new HPoint(int.Parse(values[0]), int.Parse(values[1]),
-                            double.Parse(values[2], CultureInfo.InvariantCulture));
+                            float.Parse(values[2], CultureInfo.InvariantCulture));
                     }
                     Action = HAction.Move;
                     break;
@@ -77,12 +77,12 @@ public class HEntityUpdate
         }
     }
 
-    public static HEntityUpdate[] Parse(ref HReadOnlyPacket packet)
+    public static HEntityUpdate[] Parse(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        var updates = new HEntityUpdate[packet.Read<int>()];
+        var updates = new HEntityUpdate[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < updates.Length; i++)
         {
-            updates[i] = new HEntityUpdate(ref packet);
+            updates[i] = new HEntityUpdate(format, ref packetSpan);
         }
         return updates;
     }

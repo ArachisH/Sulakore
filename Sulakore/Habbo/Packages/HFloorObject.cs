@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 
-using Sulakore.Network.Protocol;
 using Sulakore.Habbo.Packages.StuffData;
+using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages;
 
@@ -25,45 +25,44 @@ public class HFloorObject
 
     public string StaticClass { get; set; }
 
-    public HFloorObject(ref HReadOnlyPacket packet)
+    public HFloorObject(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        Id = packet.Read<int>();
-        TypeId = packet.Read<int>();
+        Id = format.Read<int>(ref packetSpan);
+        TypeId = format.Read<int>(ref packetSpan);
 
-        var tile = new HPoint(packet.Read<int>(), packet.Read<int>());
-        Facing = (HDirection)packet.Read<int>();
+        int x = format.Read<int>(ref packetSpan);
+        int y = format.Read<int>(ref packetSpan);
+        Facing = (HDirection)format.Read<int>(ref packetSpan);
+        Tile = new HPoint(x, y, float.Parse(format.ReadUTF8(ref packetSpan), CultureInfo.InvariantCulture));
 
-        tile.Z = double.Parse(packet.Read<string>(), CultureInfo.InvariantCulture);
-        Tile = tile;
+        Height = double.Parse(format.ReadUTF8(ref packetSpan), CultureInfo.InvariantCulture);
+        Extra = format.Read<int>(ref packetSpan);
 
-        Height = double.Parse(packet.Read<string>(), CultureInfo.InvariantCulture);
-        Extra = packet.Read<int>();
+        StuffData = HStuffData.Parse(format, ref packetSpan);
 
-        StuffData = HStuffData.Parse(ref packet);
+        SecondsToExpiration = format.Read<int>(ref packetSpan);
+        UsagePolicy = (HUsagePolicy)format.Read<int>(ref packetSpan);
 
-        SecondsToExpiration = packet.Read<int>();
-        UsagePolicy = (HUsagePolicy)packet.Read<int>();
-
-        OwnerId = packet.Read<int>();
+        OwnerId = format.Read<int>(ref packetSpan);
         if (TypeId < 0)
         {
-            StaticClass = packet.Read<string>();
+            StaticClass = format.ReadUTF8(ref packetSpan);
         }
     }
 
-    public static HFloorObject[] Parse(ref HReadOnlyPacket packet)
+    public static HFloorObject[] Parse(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        int ownersCount = packet.Read<int>();
+        int ownersCount = format.Read<int>(ref packetSpan);
         var owners = new Dictionary<int, string>(ownersCount);
         for (int i = 0; i < ownersCount; i++)
         {
-            owners.Add(packet.Read<int>(), packet.Read<string>());
+            owners.Add(format.Read<int>(ref packetSpan), format.ReadUTF8(ref packetSpan));
         }
 
-        var floorObjects = new HFloorObject[packet.Read<int>()];
+        var floorObjects = new HFloorObject[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < floorObjects.Length; i++)
         {
-            var floorObject = new HFloorObject(ref packet);
+            var floorObject = new HFloorObject(format, ref packetSpan);
             floorObject.OwnerName = owners[floorObject.OwnerId];
 
             floorObjects[i] = floorObject;

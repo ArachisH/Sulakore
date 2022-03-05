@@ -1,4 +1,4 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages;
 
@@ -14,26 +14,26 @@ public class HCatalogProduct
     public int? LimitedTotal { get; set; }
     public int? LimitedRemaining { get; set; }
 
-    public HCatalogProduct(ref HReadOnlyPacket packet)
+    public HCatalogProduct(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        Type = (HProductType)packet.Read<string>()[0];
+        Type = (HProductType)format.ReadUTF8(ref packetSpan)[0];
         switch (Type)
         {
             case HProductType.Badge:
             {
-                ExtraData = packet.Read<string>();
+                ExtraData = format.ReadUTF8(ref packetSpan);
                 ProductCount = 1;
                 break;
             }
             default:
             {
-                ClassId = packet.Read<int>();
-                ExtraData = packet.Read<string>();
-                ProductCount = packet.Read<int>();
-                if (IsLimited = packet.Read<bool>())
+                ClassId = format.Read<int>(ref packetSpan);
+                ExtraData = format.ReadUTF8(ref packetSpan);
+                ProductCount = format.Read<int>(ref packetSpan);
+                if (IsLimited = format.Read<bool>(ref packetSpan))
                 {
-                    LimitedTotal = packet.Read<int>();
-                    LimitedRemaining = packet.Read<int>();
+                    LimitedTotal = format.Read<int>(ref packetSpan);
+                    LimitedRemaining = format.Read<int>(ref packetSpan);
                 }
                 break;
             }

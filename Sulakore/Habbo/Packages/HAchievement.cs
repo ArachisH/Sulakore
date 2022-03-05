@@ -1,30 +1,47 @@
-﻿using Sulakore.Network.Protocol;
-
-using static Sulakore.Habbo.Packages.HAchievement;
+﻿using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages;
 
-public sealed record HAchievement(string Name, ACHLevel[] Levels)
+public sealed class HAchievement
 {
-    public static HAchievement[] Parse(ref HReadOnlyPacket packet)
+    public string Name { get; set; }
+    public ACHLevel[] Levels { get; set; }
+
+    public HAchievement(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        var achieve_ments = new HAchievement[packet.Read<int>()];
-        for (int i = 0; i < achieve_ments.Length; i++)
-        {
-            string name = packet.Read<string>();
-            var levels = new ACHLevel[packet.Read<int>()];
-
-            achieve_ments[i] = new HAchievement(name, levels);
-            for (int j = 0; j < levels.Length; j++)
-            {
-                int level = packet.Read<int>();
-                int pointLimit = packet.Read<int>();
-
-                levels[j] = new ACHLevel(level, pointLimit, $"ACH_{name}{level}");
-            }
-        }
-        return achieve_ments;
+        Name = format.ReadUTF8(ref packetSpan);
+        Levels = new ACHLevel[format.Read<int>(ref packetSpan)];
     }
 
-    public sealed record ACHLevel(int Level, int PointLimit, string BadgeId);
+    public static HAchievement[] Parse(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    {
+        var achievements = new HAchievement[format.Read<int>(ref packetSpan)];
+        for (int i = 0; i < achievements.Length; i++)
+        {
+            var achievement = new HAchievement(format, ref packetSpan);
+            achievements[i] = achievement;
+
+            for (int j = 0; j < achievement.Levels.Length; j++)
+            {
+                var level = new ACHLevel(format, ref packetSpan);
+                level.BadgeId = $"ACH_{achievement.Name}{level.Level}";
+
+                achievement.Levels[j] = level;
+            }
+        }
+        return achievements;
+    }
+
+    public sealed class ACHLevel
+    {
+        public int Level { get; set; }
+        public int PointLimit { get; set; }
+        public string BadgeId { get; set; }
+
+        public ACHLevel(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+        {
+            Level = format.Read<int>(ref packetSpan);
+            PointLimit = format.Read<int>(ref packetSpan);
+        }
+    }
 }

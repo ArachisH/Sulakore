@@ -1,4 +1,4 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages;
 
@@ -15,13 +15,13 @@ public class HPerk
         IsAllowed = isAllowed;
     }
 
-    public static HPerk[] Parse(ref HReadOnlyPacket packet)
+    public static HPerk[] Parse(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        var perkAllowances = new HPerk[packet.Read<int>()];
+        var perkAllowances = new HPerk[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < perkAllowances.Length; i++)
         {
-            perkAllowances[i] = new HPerk(packet.Read<string>(),
-                packet.Read<string>(), packet.Read<bool>());
+            perkAllowances[i] = new HPerk(format.ReadUTF8(ref packetSpan),
+                format.ReadUTF8(ref packetSpan), format.Read<bool>(ref packetSpan));
         }
         return perkAllowances;
     }

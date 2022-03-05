@@ -1,4 +1,4 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages.StuffData;
 
@@ -10,10 +10,10 @@ public class HVoteResultStuffData : HStuffData
     public HVoteResultStuffData()
         : base(HStuffDataFormat.VoteResult)
     { }
-    public HVoteResultStuffData(ref HReadOnlyPacket packet)
+    public HVoteResultStuffData(HFormat format, ref ReadOnlySpan<byte> packetSpan)
         : this()
     {
-        State = packet.Read<string>();
-        Result = packet.Read<int>();
+        State = format.ReadUTF8(ref packetSpan);
+        Result = format.Read<int>(ref packetSpan);
     }
 }

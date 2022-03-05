@@ -1,4 +1,4 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages;
 
@@ -11,18 +11,18 @@ public class HPoll
 
     public HPollQuestion[] Questions { get; set; }
 
-    public HPoll(ref HReadOnlyPacket packet)
+    public HPoll(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        Id = packet.Read<int>();
+        Id = format.Read<int>(ref packetSpan);
 
-        StartMessage = packet.Read<string>();
-        EndMessage = packet.Read<string>();
+        StartMessage = format.ReadUTF8(ref packetSpan);
+        EndMessage = format.ReadUTF8(ref packetSpan);
 
-        Questions = new HPollQuestion[packet.Read<int>()];
+        Questions = new HPollQuestion[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < Questions.Length; i++)
         {
-            Questions[i] = new HPollQuestion(ref packet);
+            Questions[i] = new HPollQuestion(format, ref packetSpan);
         }
-        packet.Read<bool>();
+        format.Read<bool>(ref packetSpan);
     }
 }

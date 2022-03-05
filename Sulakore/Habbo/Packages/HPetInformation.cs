@@ -1,4 +1,4 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages;
 
@@ -42,49 +42,49 @@ public class HPetInformation
     public int RemainingGrowingSeconds { get; set; }
     public bool HasBreedingPermission { get; set; }
 
-    public HPetInformation(ref HReadOnlyPacket packet)
+    public HPetInformation(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        Id = packet.Read<int>();
-        Name = packet.Read<string>();
+        Id = format.Read<int>(ref packetSpan);
+        Name = format.ReadUTF8(ref packetSpan);
 
-        Level = packet.Read<int>();
-        MaxLevel = packet.Read<int>();
+        Level = format.Read<int>(ref packetSpan);
+        MaxLevel = format.Read<int>(ref packetSpan);
 
-        Experience = packet.Read<int>();
-        MaxExperience = packet.Read<int>();
+        Experience = format.Read<int>(ref packetSpan);
+        MaxExperience = format.Read<int>(ref packetSpan);
 
-        Energy = packet.Read<int>();
-        MaxEnergy = packet.Read<int>();
+        Energy = format.Read<int>(ref packetSpan);
+        MaxEnergy = format.Read<int>(ref packetSpan);
 
-        Nutrition = packet.Read<int>();
-        MaxNutrition = packet.Read<int>();
+        Nutrition = format.Read<int>(ref packetSpan);
+        MaxNutrition = format.Read<int>(ref packetSpan);
 
-        Scratches = packet.Read<int>();
-        OwnerId = packet.Read<int>();
-        Age = packet.Read<int>();
-        OwnerName = packet.Read<string>();
+        Scratches = format.Read<int>(ref packetSpan);
+        OwnerId = format.Read<int>(ref packetSpan);
+        Age = format.Read<int>(ref packetSpan);
+        OwnerName = format.ReadUTF8(ref packetSpan);
 
-        BreedId = packet.Read<int>();
+        BreedId = format.Read<int>(ref packetSpan);
 
-        HasFreeSaddle = packet.Read<bool>();
-        IsRiding = packet.Read<bool>();
+        HasFreeSaddle = format.Read<bool>(ref packetSpan);
+        IsRiding = format.Read<bool>(ref packetSpan);
 
-        SkillThresholds = new int[packet.Read<int>()];
+        SkillThresholds = new int[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < SkillThresholds.Length; i++)
         {
-            SkillThresholds[i] = packet.Read<int>();
+            SkillThresholds[i] = format.Read<int>(ref packetSpan);
         }
-        AccessRights = packet.Read<int>();
+        AccessRights = format.Read<int>(ref packetSpan);
 
-        CanBreed = packet.Read<bool>();
-        CanHarvest = packet.Read<bool>();
-        CanRevive = packet.Read<bool>();
+        CanBreed = format.Read<bool>(ref packetSpan);
+        CanHarvest = format.Read<bool>(ref packetSpan);
+        CanRevive = format.Read<bool>(ref packetSpan);
 
-        RarityLevel = packet.Read<int>();
-        MaxWellBeingSeconds = packet.Read<int>();
-        RemainingWellBeingSeconds = packet.Read<int>();
-        RemainingGrowingSeconds = packet.Read<int>();
+        RarityLevel = format.Read<int>(ref packetSpan);
+        MaxWellBeingSeconds = format.Read<int>(ref packetSpan);
+        RemainingWellBeingSeconds = format.Read<int>(ref packetSpan);
+        RemainingGrowingSeconds = format.Read<int>(ref packetSpan);
 
-        HasBreedingPermission = packet.Read<bool>();
+        HasBreedingPermission = format.Read<bool>(ref packetSpan);
     }
 }

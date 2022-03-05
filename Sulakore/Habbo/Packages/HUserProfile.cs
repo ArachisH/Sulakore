@@ -1,4 +1,4 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages;
 
@@ -21,27 +21,27 @@ public class HUserProfile
     public int SinceLastAccessInSeconds { get; set; }
     public bool OpenProfileView { get; set; }
 
-    public HUserProfile(ref HReadOnlyPacket packet)
+    public HUserProfile(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        Id = packet.Read<int>();
-        Username = packet.Read<string>();
-        Motto = packet.Read<string>();
-        Figure = packet.Read<string>();
-        CreationDate = DateTime.Parse(packet.Read<string>());
-        AchievementScore = packet.Read<int>();
-        FriendCount = packet.Read<int>();
+        Id = format.Read<int>(ref packetSpan);
+        Username = format.ReadUTF8(ref packetSpan);
+        Motto = format.ReadUTF8(ref packetSpan);
+        Figure = format.ReadUTF8(ref packetSpan);
+        CreationDate = DateTime.Parse(format.ReadUTF8(ref packetSpan));
+        AchievementScore = format.Read<int>(ref packetSpan);
+        FriendCount = format.Read<int>(ref packetSpan);
 
-        IsFriend = packet.Read<bool>();
-        IsFriendRequestSent = packet.Read<bool>();
-        IsOnline = packet.Read<bool>();
+        IsFriend = format.Read<bool>(ref packetSpan);
+        IsFriendRequestSent = format.Read<bool>(ref packetSpan);
+        IsOnline = format.Read<bool>(ref packetSpan);
 
-        Groups = new HGroupEntry[packet.Read<int>()];
+        Groups = new HGroupEntry[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < Groups.Length; i++)
         {
-            Groups[i] = new HGroupEntry(ref packet);
+            Groups[i] = new HGroupEntry(format, ref packetSpan);
         }
 
-        SinceLastAccessInSeconds = packet.Read<int>();
-        OpenProfileView = packet.Read<bool>();
+        SinceLastAccessInSeconds = format.Read<int>(ref packetSpan);
+        OpenProfileView = format.Read<bool>(ref packetSpan);
     }
 }

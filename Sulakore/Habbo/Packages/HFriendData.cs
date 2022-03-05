@@ -1,4 +1,4 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages;
 
@@ -20,35 +20,35 @@ public class HFriendData
     public bool IsPocketHabboUser { get; set; }
     public HRelationship RelationshipStatus { get; set; }
 
-    public HFriendData(ref HReadOnlyPacket packet)
+    public HFriendData(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        Id = packet.Read<int>();
-        Username = packet.Read<string>();
-        Gender = packet.Read<int>() == 1 ? HGender.Male : HGender.Female;
+        Id = format.Read<int>(ref packetSpan);
+        Username = format.ReadUTF8(ref packetSpan);
+        Gender = format.Read<int>(ref packetSpan) == 1 ? HGender.Male : HGender.Female;
 
-        IsOnline = packet.Read<bool>();
-        CanFollow = packet.Read<bool>();
-        Figure = packet.Read<string>();
-        CategoryId = packet.Read<int>();
-        Motto = packet.Read<string>();
-        RealName = packet.Read<string>();
-        packet.Read<string>();
+        IsOnline = format.Read<bool>(ref packetSpan);
+        CanFollow = format.Read<bool>(ref packetSpan);
+        Figure = format.ReadUTF8(ref packetSpan);
+        CategoryId = format.Read<int>(ref packetSpan);
+        Motto = format.ReadUTF8(ref packetSpan);
+        RealName = format.ReadUTF8(ref packetSpan);
+        format.ReadUTF8(ref packetSpan);
 
-        IsPersisted = packet.Read<bool>();
-        packet.Read<bool>();
-        IsPocketHabboUser = packet.Read<bool>();
-        RelationshipStatus = (HRelationship)packet.Read<short>();
+        IsPersisted = format.Read<bool>(ref packetSpan);
+        format.Read<bool>(ref packetSpan);
+        IsPocketHabboUser = format.Read<bool>(ref packetSpan);
+        RelationshipStatus = (HRelationship)format.Read<short>(ref packetSpan);
     }
 
-    public static HFriendData[] Parse(ref HReadOnlyPacket packet)
+    public static HFriendData[] Parse(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        int removedFriends = packet.Read<int>();
-        int addedFriends = packet.Read<int>();
+        int removedFriends = format.Read<int>(ref packetSpan);
+        int addedFriends = format.Read<int>(ref packetSpan);
 
-        var friends = new HFriendData[packet.Read<int>()];
+        var friends = new HFriendData[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < friends.Length; i++)
         {
-            friends[i] = new HFriendData(ref packet);
+            friends[i] = new HFriendData(format, ref packetSpan);
         }
         return friends;
     }

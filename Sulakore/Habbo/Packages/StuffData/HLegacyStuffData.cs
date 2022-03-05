@@ -1,4 +1,4 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages.StuffData;
 
@@ -9,9 +9,9 @@ public class HLegacyStuffData : HStuffData
     public HLegacyStuffData()
         : base(HStuffDataFormat.Legacy)
     { }
-    public HLegacyStuffData(ref HReadOnlyPacket packet)
+    public HLegacyStuffData(HFormat format, ref ReadOnlySpan<byte> packetSpan)
         : this()
     {
-        Data = packet.Read<string>();
+        Data = format.ReadUTF8(ref packetSpan);
     }
 }

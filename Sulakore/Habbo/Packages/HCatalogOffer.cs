@@ -1,4 +1,4 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages;
 
@@ -22,27 +22,27 @@ public class HCatalogOffer
 
     public string PreviewImage { get; set; }
 
-    public HCatalogOffer(ref HReadOnlyPacket packet)
+    public HCatalogOffer(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        Id = packet.Read<int>();
-        DisplayName = packet.Read<string>();
-        IsRentable = packet.Read<bool>();
+        Id = format.Read<int>(ref packetSpan);
+        DisplayName = format.ReadUTF8(ref packetSpan);
+        IsRentable = format.Read<bool>(ref packetSpan);
 
-        CreditCost = packet.Read<int>();
-        OtherCurrencyCost = packet.Read<int>();
-        OtherCurrencyType = packet.Read<int>();
-        CanGift = packet.Read<bool>();
+        CreditCost = format.Read<int>(ref packetSpan);
+        OtherCurrencyCost = format.Read<int>(ref packetSpan);
+        OtherCurrencyType = format.Read<int>(ref packetSpan);
+        CanGift = format.Read<bool>(ref packetSpan);
 
-        Products = new HCatalogProduct[packet.Read<int>()];
+        Products = new HCatalogProduct[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < Products.Length; i++)
         {
-            Products[i] = new HCatalogProduct(ref packet);
+            Products[i] = new HCatalogProduct(format, ref packetSpan);
         }
 
-        ClubLevel = packet.Read<int>();
-        AllowBundle = packet.Read<bool>();
-        IsPet = packet.Read<bool>();
+        ClubLevel = format.Read<int>(ref packetSpan);
+        AllowBundle = format.Read<bool>(ref packetSpan);
+        IsPet = format.Read<bool>(ref packetSpan);
 
-        PreviewImage = packet.Read<string>();
+        PreviewImage = format.ReadUTF8(ref packetSpan);
     }
 }

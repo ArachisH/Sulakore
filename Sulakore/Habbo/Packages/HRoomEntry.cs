@@ -1,4 +1,4 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages;
 
@@ -36,47 +36,47 @@ public class HRoomEntry
     public bool AllowPets { get; set; }
     public bool ShowEntryAd { get; set; }
 
-    public HRoomEntry(ref HReadOnlyPacket packet)
+    public HRoomEntry(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        Id = packet.Read<int>();
-        Name = packet.Read<string>();
+        Id = format.Read<int>(ref packetSpan);
+        Name = format.ReadUTF8(ref packetSpan);
 
-        OwnerId = packet.Read<int>();
-        OwnerName = packet.Read<string>();
+        OwnerId = format.Read<int>(ref packetSpan);
+        OwnerName = format.ReadUTF8(ref packetSpan);
 
-        DoorMode = (HDoorMode)packet.Read<int>();
-        UserCount = packet.Read<int>();
-        MaxUserCount = packet.Read<int>();
+        DoorMode = (HDoorMode)format.Read<int>(ref packetSpan);
+        UserCount = format.Read<int>(ref packetSpan);
+        MaxUserCount = format.Read<int>(ref packetSpan);
 
-        Description = packet.Read<string>();
-        TradeMode = (HTradeMode)packet.Read<int>();
-        Ranking = packet.Read<int>();
-        Stars = packet.Read<int>();
-        Category = (HRoomCategory)packet.Read<int>();
+        Description = format.ReadUTF8(ref packetSpan);
+        TradeMode = (HTradeMode)format.Read<int>(ref packetSpan);
+        Ranking = format.Read<int>(ref packetSpan);
+        Stars = format.Read<int>(ref packetSpan);
+        Category = (HRoomCategory)format.Read<int>(ref packetSpan);
 
-        Tags = new string[packet.Read<int>()];
+        Tags = new string[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < Tags.Length; i++)
         {
-            Tags[i] = packet.Read<string>();
+            Tags[i] = format.ReadUTF8(ref packetSpan);
         }
 
-        HRoomFlags roomFlags = (HRoomFlags)packet.Read<int>();
+        HRoomFlags roomFlags = (HRoomFlags)format.Read<int>(ref packetSpan);
 
         if (roomFlags.HasFlag(HRoomFlags.HasCustomThumbnail))
         {
-            ThumbnailUrl = packet.Read<string>();
+            ThumbnailUrl = format.ReadUTF8(ref packetSpan);
         }
         if (roomFlags.HasFlag(HRoomFlags.HasGroup))
         {
-            GroupId = packet.Read<int>();
-            GroupName = packet.Read<string>();
-            GroupBadgeCode = packet.Read<string>();
+            GroupId = format.Read<int>(ref packetSpan);
+            GroupName = format.ReadUTF8(ref packetSpan);
+            GroupBadgeCode = format.ReadUTF8(ref packetSpan);
         }
         if (roomFlags.HasFlag(HRoomFlags.HasAdvertisement))
         {
-            AdName = packet.Read<string>();
-            AdDescription = packet.Read<string>();
-            AdExpiresInMinutes = packet.Read<int>();
+            AdName = format.ReadUTF8(ref packetSpan);
+            AdDescription = format.ReadUTF8(ref packetSpan);
+            AdExpiresInMinutes = format.Read<int>(ref packetSpan);
         }
 
         ShowOwner = roomFlags.HasFlag(HRoomFlags.ShowOwner);

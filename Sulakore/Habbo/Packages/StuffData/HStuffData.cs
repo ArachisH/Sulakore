@@ -1,4 +1,4 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages.StuffData;
 
@@ -18,27 +18,27 @@ public class HStuffData
         Format = format;
     }
 
-    public static HStuffData Parse(ref HReadOnlyPacket packet)
+    public static HStuffData Parse(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        int value = packet.Read<int>();
+        int value = format.Read<int>(ref packetSpan);
         HStuffData stuffData = (HStuffDataFormat)(value & 0xFF) switch
         {
-            HStuffDataFormat.Legacy => new HLegacyStuffData(ref packet),
-            HStuffDataFormat.Map => new HMapStuffData(ref packet),
-            HStuffDataFormat.StringArray => new HStringArrayStuffData(ref packet),
-            HStuffDataFormat.VoteResult => new HVoteResultStuffData(ref packet),
+            HStuffDataFormat.Legacy => new HLegacyStuffData(format, ref packetSpan),
+            HStuffDataFormat.Map => new HMapStuffData(format, ref packetSpan),
+            HStuffDataFormat.StringArray => new HStringArrayStuffData(format, ref packetSpan),
+            HStuffDataFormat.VoteResult => new HVoteResultStuffData(format, ref packetSpan),
             HStuffDataFormat.Empty => new HStuffData(),
-            HStuffDataFormat.IntArray => new HIntArrayStuffData(ref packet),
-            HStuffDataFormat.HighScore => new HHighScoreStuffData(ref packet),
-            HStuffDataFormat.Crackable => new HCrackableStuffData(ref packet),
+            HStuffDataFormat.IntArray => new HIntArrayStuffData(format, ref packetSpan),
+            HStuffDataFormat.HighScore => new HHighScoreStuffData(format, ref packetSpan),
+            HStuffDataFormat.Crackable => new HCrackableStuffData(format, ref packetSpan),
             _ => throw new NotImplementedException((value & 0xFF).ToString()),
         };
 
         stuffData.Flags = (HStuffDataFlags)(value & 0xFF00);
         if (stuffData.Flags.HasFlag(HStuffDataFlags.HasUniqueSerialNumber))
         {
-            stuffData.UniqueSerialNumber = packet.Read<int>();
-            stuffData.UniqueSeriesSize = packet.Read<int>();
+            stuffData.UniqueSerialNumber = format.Read<int>(ref packetSpan);
+            stuffData.UniqueSeriesSize = format.Read<int>(ref packetSpan);
         }
         return stuffData;
     }

@@ -1,4 +1,4 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages;
 
@@ -14,16 +14,16 @@ public class HGroupEntry
     public int OwnerId { get; set; }
     public bool HasForum { get; set; }
 
-    public HGroupEntry(ref HReadOnlyPacket packet)
+    public HGroupEntry(HFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        Id = packet.Read<int>();
-        Name = packet.Read<string>();
-        BadgeCode = packet.Read<string>();
-        PrimaryColor = packet.Read<string>();
-        SecondaryColor = packet.Read<string>();
+        Id = format.Read<int>(ref packetSpan);
+        Name = format.ReadUTF8(ref packetSpan);
+        BadgeCode = format.ReadUTF8(ref packetSpan);
+        PrimaryColor = format.ReadUTF8(ref packetSpan);
+        SecondaryColor = format.ReadUTF8(ref packetSpan);
 
-        Favorite = packet.Read<bool>();
-        OwnerId = packet.Read<int>();
-        HasForum = packet.Read<bool>();
+        Favorite = format.Read<bool>(ref packetSpan);
+        OwnerId = format.Read<int>(ref packetSpan);
+        HasForum = format.Read<bool>(ref packetSpan);
     }
 }

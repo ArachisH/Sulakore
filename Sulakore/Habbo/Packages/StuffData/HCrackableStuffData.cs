@@ -1,4 +1,4 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages.StuffData;
 
@@ -11,11 +11,11 @@ public class HCrackableStuffData : HStuffData
     public HCrackableStuffData()
         : base(HStuffDataFormat.Crackable)
     { }
-    public HCrackableStuffData(ref HReadOnlyPacket packet)
+    public HCrackableStuffData(HFormat format, ref ReadOnlySpan<byte> packetSpan)
         : this()
     {
-        State = packet.Read<string>();
-        Hits = packet.Read<int>();
-        Target = packet.Read<int>();
+        State = format.ReadUTF8(ref packetSpan);
+        Hits = format.Read<int>(ref packetSpan);
+        Target = format.Read<int>(ref packetSpan);
     }
 }

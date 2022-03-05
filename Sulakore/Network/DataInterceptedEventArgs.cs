@@ -1,4 +1,4 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
 namespace Sulakore.Network
 {
@@ -7,19 +7,18 @@ namespace Sulakore.Network
     /// </summary>
     public class DataInterceptedEventArgs : EventArgs
     {
-        private readonly byte[] _ogData;
-        private readonly string _ogString;
         private readonly object _continueLock;
         private readonly DataInterceptedEventArgs _args;
         private readonly Func<DataInterceptedEventArgs, Task> _continuation;
         private readonly Func<DataInterceptedEventArgs, ValueTask<int>> _relayer;
 
         public int Step { get; }
+        public HFormat Format { get; }
         public bool IsOutgoing { get; }
         public DateTime Timestamp { get; }
         public Task WaitUntil { get; set; }
 
-        public bool IsOriginal => Packet.ToString().Equals(_ogString);
+        public ReadOnlyMemory<byte> ReplacementRegion { get; set; }
         public bool IsContinuable => _continuation != null && !HasContinued;
 
         private bool _isBlocked;
@@ -33,20 +32,6 @@ namespace Sulakore.Network
                     _args.IsBlocked = value;
                 }
                 _isBlocked = value;
-            }
-        }
-
-        private HPacket _packet;
-        public HPacket Packet
-        {
-            get => _args?.Packet ?? _packet;
-            set
-            {
-                if (_args != null)
-                {
-                    _args.Packet = value;
-                }
-                _packet = value;
             }
         }
 
@@ -78,11 +63,23 @@ namespace Sulakore.Network
             }
         }
 
+        private ReadOnlyMemory<byte> _packetRegion;
+        public ReadOnlyMemory<byte> PacketRegion
+        {
+            get => _args?.PacketRegion ?? _packetRegion;
+            set
+            {
+                if (_args != null)
+                {
+                    _args.PacketRegion = value;
+                }
+                _packetRegion = value;
+            }
+        }
+
         public DataInterceptedEventArgs(DataInterceptedEventArgs args)
         {
             _args = args;
-            _ogData = args._ogData;
-            _ogString = args._ogString;
             _relayer = args._relayer;
             _continuation = args._continuation;
             _continueLock = args._continueLock;
@@ -91,25 +88,17 @@ namespace Sulakore.Network
             Timestamp = args.Timestamp;
             IsOutgoing = args.IsOutgoing;
         }
-        public DataInterceptedEventArgs(HPacket packet, int step, bool isOutgoing)
+        public DataInterceptedEventArgs(ReadOnlyMemory<byte> packetRegion, int step, bool isOutgoing, HFormat format, Func<DataInterceptedEventArgs, Task> continuation = null, Func<DataInterceptedEventArgs, ValueTask<int>> relayer = null)
         {
-            _ogData = packet.ToBytes();
-            _ogString = packet.ToString();
-
             Step = step;
-            Packet = packet;
+            Format = format;
             IsOutgoing = isOutgoing;
             Timestamp = DateTime.Now;
-        }
-        public DataInterceptedEventArgs(HPacket packet, int step, bool isOutgoing, Func<DataInterceptedEventArgs, Task> continuation)
-            : this(packet, step, isOutgoing)
-        {
+            PacketRegion = packetRegion;
+
             _continueLock = new object();
             _continuation = continuation;
-        }
-        public DataInterceptedEventArgs(HPacket packet, int step, bool isOutgoing, Func<DataInterceptedEventArgs, Task> continuation, Func<DataInterceptedEventArgs, ValueTask<int>> relayer)
-            : this(packet, step, isOutgoing, continuation)
-        {
+
             _relayer = relayer;
         }
 
@@ -119,14 +108,10 @@ namespace Sulakore.Network
             lock (_continueLock)
             {
                 WasRelayed = true;
-                _relayer(this);
+                Task.Run(() => _relayer(this));
             }
         }
-        public void Continue()
-        {
-            Continue(false);
-        }
-        public void Continue(bool relay)
+        public void Continue(bool relay = false)
         {
             if (!IsContinuable) return;
             lock (_continueLock)
@@ -134,19 +119,6 @@ namespace Sulakore.Network
                 if (relay) Relay();
                 HasContinued = true;
                 _continuation(this);
-            }
-        }
-
-        public byte[] GetOriginalData() => _ogData;
-
-        /// <summary>
-        /// Restores the intercepted data to its initial form, before it was replaced/modified.
-        /// </summary>
-        public void Restore()
-        {
-            if (!IsOriginal)
-            {
-                Packet = Packet.Format.CreatePacket(_ogData);
             }
         }
     }

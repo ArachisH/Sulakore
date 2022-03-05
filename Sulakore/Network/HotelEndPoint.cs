@@ -4,7 +4,7 @@ using Sulakore.Habbo;
 
 namespace Sulakore.Network;
 
-public class HotelEndPoint : IPEndPoint
+public sealed class HotelEndPoint : IPEndPoint
 {
     public string Host { get; init; }
     public HHotel Hotel { get; init; }
@@ -38,8 +38,5 @@ public class HotelEndPoint : IPEndPoint
         return new HotelEndPoint(ips[0], port, host) { Host = host, Hotel = host.AsSpan().ToHotel() };
     }
 
-    public override string ToString()
-    {
-        return $"{(string.IsNullOrWhiteSpace(Host) ? Address.ToString() : Host)}:{Port}";
-    }
+    public override string ToString() => $"{(string.IsNullOrWhiteSpace(Host) ? Address.ToString() : Host)}:{Port}";
 }

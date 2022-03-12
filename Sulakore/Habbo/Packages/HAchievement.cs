@@ -1,4 +1,4 @@
-﻿using Sulakore.Network;
+﻿using Sulakore.Network.Buffers;
 using Sulakore.Network.Formats;
 
 namespace Sulakore.Habbo.Packages;
@@ -16,7 +16,7 @@ public sealed class HAchievement
 
     public static HAchievement[] Parse(HPacket packet)
     {
-        return Parse(packet.Format, packet.Memory.Span);
+        return Parse(packet.Format, packet.Buffer.Span);
     }
     public static HAchievement[] Parse(HFormat format, ReadOnlySpan<byte> packetSpan)
     {

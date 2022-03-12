@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
 using Sulakore.Network.Formats;
+using Sulakore.Network.Buffers;
 using Sulakore.Cryptography.Ciphers;
 
 namespace Sulakore.Network;
@@ -91,7 +92,7 @@ public sealed class HNode : IDisposable
             throw new NullReferenceException($"Cannot send structured data while {nameof(SendFormat)} is null.");
         }
 
-        Encipher(Encrypter, buffer.Span);
+        Encipher(Encrypter, buffer.Span, IsWebSocket);
         return SendAsync(buffer, cancellationToken);
     }
     /// <summary>
@@ -111,16 +112,10 @@ public sealed class HNode : IDisposable
         Memory<byte> encryptedRegion = encryptedOwner.Memory[..buffer.Length];
         buffer.CopyTo(encryptedRegion);
 
-        Encipher(Encrypter, encryptedRegion.Span);
+        Encipher(Encrypter, encryptedRegion.Span, IsWebSocket);
         return SendAsync(encryptedRegion, cancellationToken);
     }
-    /// <summary>
-    /// Returns a <see cref="IMemoryOwner{Byte}"/> instance that contains the packet in a buffer that was provided by <see cref="MemoryPool{T}.Shared"/>.
-    /// </summary>
-    /// <param name="cancellationToken"></param>
-    /// <returns>A rented memory owner that contains a buffer that allows for the reading, and writing of data without causing any allocations.</returns>
-    /// <exception cref="NullReferenceException"></exception>
-    public async Task<HPacket> ReceiveRentedPacketAsync(CancellationToken cancellationToken = default)
+    public async Task<HPacket> ReceivePacketAsync(CancellationToken cancellationToken = default)
     {
         if (ReceiveFormat == null)
         {
@@ -131,48 +126,54 @@ public sealed class HNode : IDisposable
         await _packetReceiveSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
         try
         {
-            // TODO: Avoid an attempt to rent an already allocated buffer, and instead allocate ourselves for small packets?
-            packet = new HPacket(ReceiveFormat);
+            IMemoryOwner<byte> owner = null;
+            Memory<byte> buffer = new byte[ReceiveFormat.MinBufferSize];
 
-            int received = 0;
-            do received = await ReceiveAsync(packet.Memory, cancellationToken).ConfigureAwait(false);
+            int received;
+            do received = await ReceiveAsync(buffer, cancellationToken).ConfigureAwait(false);
             while (received == 0);
 
-            // That data that did manage to get through did not meet the minimum length requirement, close the connection.
-            if (received != packet.Memory.Length) Dispose();
+            // Did the first buffer receive meet the minimum requirements?
+            if (received != buffer.Length || !ReceiveFormat.TryGetHeader(buffer.Span, out int length, out short id)) return null;
 
-            int packetLength = ReceiveFormat.ReadLength(packet.Memory.Span);
-            if (ReceiveFormat.HasLengthIndicator && packetLength > ReceiveFormat.MinPacketLength) // Is there more data to be read for this packet?
+            int fullPacketLength = ReceiveFormat.MinBufferSize - ReceiveFormat.MinPacketLength + length;
+            if (fullPacketLength > buffer.Length) // Should the buffer be enlarged to ensure it fits the full packet?
             {
-                if (packetLength > packetRegion.Length) // Do we need to enlarge the current buffer?
+                var enlargedBuffer = Memory<byte>.Empty;
+                if (fullPacketLength > HPacket.MAX_ALLOC_SIZE)
                 {
-                    IMemoryOwner<byte> enlargedPacketOwner = MemoryPool<byte>.Shared.Rent(packetLength);
-                    Memory<byte> enlargedPacketRegion = enlargedPacketOwner.Memory;
-
-                    packetRegion.CopyTo(enlargedPacketRegion);
-                    packetRegion = enlargedPacketRegion;
-
-                    packetOwner.Dispose();
-                    packetOwner = enlargedPacketOwner;
+                    owner = MemoryPool<byte>.Shared.Rent(fullPacketLength);
+                    enlargedBuffer = owner.Memory[..fullPacketLength];
                 }
+                else enlargedBuffer = new byte[fullPacketLength];
+                buffer.CopyTo(enlargedBuffer);
+                buffer = enlargedBuffer;
+            }
+            else if (length == -1) { /* Assume the packet ends with null/0 ?? */ }
 
-                do received += await ReceiveAsync(packetRegion[received..packetLength], cancellationToken).ConfigureAwait(false);
-                while (received < packetLength);
+            // Continue attempting to receive more packet data
+            while (received < fullPacketLength)
+            {
+                received += await ReceiveAsync(buffer[received..], cancellationToken).ConfigureAwait(false);
+            }
 
-                if (received != packetLength)
+            if (received != fullPacketLength)
+            {
+                /* TODO: What's going on? */
+                if (Debugger.IsAttached)
                 {
-                    /* TODO: What's going on? */
                     Debugger.Break();
                 }
             }
-            else if (!ReceiveFormat.HasLengthIndicator) { /* Assume the packet ends with null/0. */ }
 
             if (Decrypter != null)
             {
-                Encipher(Decrypter, packetRegion.Span[..(4 + packetLength)]);
+                Encipher(Decrypter, buffer.Span, IsWebSocket);
             }
 
-            packet = new HPacket(ReceiveFormat, packetOwner);
+            packet = owner == null ?
+                new HPacket(ReceiveFormat, id, buffer) :
+                new HPacket(ReceiveFormat, id, length, owner);
         }
         finally { _packetReceiveSemaphore.Release(); }
         return packet;
@@ -197,7 +198,7 @@ public sealed class HNode : IDisposable
         using IMemoryOwner<byte> initialBytesOwner = Rent(6, out Memory<byte> initialBytesRegion);
 
         int initialBytesRead = await _socket.ReceiveAsync(initialBytesRegion, SocketFlags.Peek).ConfigureAwait(false);
-        ParseInitialBytes(initialBytesRegion.Span.Slice(0, initialBytesRead), out bool isWebSocket, out ushort possibleId);
+        ParseInitialBytes(initialBytesRegion.Span[..initialBytesRead], out bool isWebSocket, out ushort possibleId);
 
         bool wasDetermined = true;
         IsWebSocket = isWebSocket;
@@ -317,20 +318,6 @@ public sealed class HNode : IDisposable
         return IsUpgraded;
     }
 
-    private void Encipher(IStreamCipher cipher, Span<byte> buffer)
-    {
-        if (IsWebSocket)
-        {
-            // Reverse the packet id and encrypt/decrypt it.
-            Span<byte> idBuffer = stackalloc byte[2] { buffer[5], buffer[4] };
-            cipher.Process(idBuffer);
-
-            // After encryption/decryption, then reverse it back and place it on the original buffer.
-            buffer[4] = idBuffer[1];
-            buffer[5] = idBuffer[0];
-        }
-        else cipher.Process(buffer);
-    }
     public async ValueTask<int> ReceiveAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
     {
         if (!IsConnected) return -1;
@@ -381,6 +368,20 @@ public sealed class HNode : IDisposable
         GC.SuppressFinalize(this);
     }
 
+    private static void Encipher(IStreamCipher cipher, Span<byte> buffer, bool isWebSocket)
+    {
+        if (isWebSocket)
+        {
+            // Reverse the packet id and encrypt/decrypt it.
+            Span<byte> idBuffer = stackalloc byte[2] { buffer[5], buffer[4] };
+            cipher.Process(idBuffer);
+
+            // After encryption/decryption, then reverse it back and place it on the original buffer.
+            buffer[4] = idBuffer[1];
+            buffer[5] = idBuffer[0];
+        }
+        else cipher.Process(buffer);
+    }
     [DebuggerStepThrough]
     private static IMemoryOwner<byte> Rent(int minBufferSize, out Memory<byte> trimmedRegion)
     {

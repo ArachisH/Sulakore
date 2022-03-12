@@ -4,41 +4,71 @@ using Sulakore.Network.Formats;
 
 namespace Sulakore.Network.Buffers;
 
-public sealed class HPacket : IMemoryOwner<byte>, IBufferWriter<byte>
+public class HPacket : IDisposable
 {
-    private IMemoryOwner<byte> _owner;
+    public const int MAX_ALLOC_SIZE = byte.MaxValue;
 
     private bool _disposed;
+    internal Memory<byte> _buffer;
+    internal IMemoryOwner<byte> _owner;
 
-    public short Id { get; set; }
-    public int Length => Format.MinPacketLength + Memory.Length;
-
+    public short Id { get; }
     public HFormat Format { get; }
-    public Memory<byte> Memory { get; }
 
-    public HPacket(HFormat format, int minBufferSize = -1)
+    public ReadOnlyMemory<byte> Buffer => !_disposed
+        ? _buffer
+        : throw new ObjectDisposedException("The underlying buffer has already been disposed.");
+
+    public static implicit operator HPacketReader(HPacket packet) => packet.AsReader();
+
+    public HPacket(HFormat format, short id)
     {
-        if (minBufferSize == -1)
-        {
-            minBufferSize = format.MinBufferSize;
-        }
-        if (minBufferSize < format.MinBufferSize)
-        {
-            throw new ArgumentException($"The minimum buffer size must be greater than {format.MinBufferSize}", nameof(minBufferSize));
-        }
-        _owner = MemoryPool<byte>.Shared.Rent(minBufferSize);
+        Id = id;
+        Format = format;
 
-        Memory = _owner.Memory[Format.MinBufferSize..]; // Expose only the body of the packet for reading/writing.
+        _buffer = new byte[format.MinBufferSize];
+        Span<byte> bufferSpan = _buffer.Span;
+
+        format.WriteId(bufferSpan, Id);
+        format.WriteLength(bufferSpan, format.MinPacketLength);
+    }
+    /// <summary>
+    /// Initializes an instance of <see cref="HPacket"/> with a non-rented heap allocated buffer.
+    /// </summary>
+    /// <param name="format"></param>
+    /// <param name="id"></param>
+    /// <param name="buffer"></param>
+    protected internal HPacket(HFormat format, short id, Memory<byte> buffer)
+    {
+        _buffer = buffer;
+
+        Id = id;
         Format = format;
     }
-
-    public HPacketWriter AsWriter()
+    /// <summary>
+    /// Initializes an instance of <see cref="HPacket"/> with a buffer that is owned by a memory pool implementation.
+    /// </summary>
+    /// <param name="format"></param>
+    /// <param name="id"></param>
+    /// <param name="length"></param>
+    /// <param name="owner"></param>
+    protected internal HPacket(HFormat format, short id, int length, IMemoryOwner<byte> owner)
+        : this(format, id, owner.Memory[..length])
     {
-        return new HPacketWriter(this);
+        _owner = owner;
     }
-    public HPacketReader AsPacketReader()
+
+    public HPacketReader AsReader() => !_disposed
+        ? (new(this))
+        : throw new ObjectDisposedException("The underlying buffer has already been disposed.");
+
+    internal Memory<byte> EnsureCapacity(int capacity, int position)
     {
-        return new HPacketReader(this);
+        // TODO
+        _owner = null;
+        _buffer = null;
+
+        return _buffer;
     }
 
     public void Dispose()
@@ -52,21 +82,17 @@ public sealed class HPacket : IMemoryOwner<byte>, IBufferWriter<byte>
         {
             if (disposing)
             {
-                _owner.Dispose();
+                _owner?.Dispose();
             }
             _disposed = true;
         }
     }
 
-    public void Advance(int count)
+    public static HPacket Create(HFormat format, short id, out HPacketWriter packetOut)
     {
+        var packet = new HPacket(format, id);
+        packetOut = new HPacketWriter(packet);
 
+        return packet;
     }
-
-    public Memory<byte> GetMemory(int sizeHint = 0)
-    {
-        // TODO: If there is not enough space available in the current buffer, rent a larger one and dispose the current one.
-        return Memory[..(sizeHint != 0 ? sizeHint : Memory.Length)];
-    }
-    public Span<byte> GetSpan(int sizeHint = 0) => GetMemory(sizeHint).Span;
 }

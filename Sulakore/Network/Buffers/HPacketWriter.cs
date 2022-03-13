@@ -1,6 +1,4 @@
-﻿using System.Buffers;
-
-using Sulakore.Network.Formats;
+﻿using Sulakore.Network.Formats;
 
 namespace Sulakore.Network.Buffers;
 
@@ -8,23 +6,21 @@ public ref struct HPacketWriter
 {
     private readonly HPacket _packet;
 
-    private Span<byte> _bufferSpan;
+    private Span<byte> _packetSpan;
 
     public int Position { get; set; }
     public HFormat Format { get; init; }
 
-    public HPacketWriter(HPacket packet)
-        : this(packet.Format, packet._buffer.Span)
+    public HPacketWriter(HFormat format, Span<byte> packetSpan)
+        : this(format, packetSpan, null)
+    { }
+    internal HPacketWriter(HFormat format, Span<byte> packetSpan, HPacket packet)
     {
         _packet = packet;
-    }
-    public HPacketWriter(HFormat format, Span<byte> bufferSpan)
-    {
-        _packet = null;
-        _bufferSpan = bufferSpan;
+        _packetSpan = packetSpan;
 
-        Position = 0;
         Format = format;
+        Position = format.MinBufferSize;
     }
 
     public void Write<T>(T value) where T : struct
@@ -46,15 +42,14 @@ public ref struct HPacketWriter
 
     private Span<byte> GetSpan(int size)
     {
-        if (size > _bufferSpan.Length - Position)
+        if (size > _packetSpan.Length - Position)
         {
-            if (_packet != null)
+            if (_packet == null)
             {
-                _packet.EnsureCapacity(size, Position);
-                _bufferSpan = _packet._buffer.Span;
+                throw new InsufficientMemoryException($"There is not enough room in the buffer for the given type, and unable to grow as no {nameof(HPacket)} instance is present.");
             }
-            else throw new InsufficientMemoryException($"There is not enough room in the buffer for the given type, and unable to grow as no {nameof(HPacket)} instance is present.");
+            _packet.EnsureMinimumCapacity(ref _packetSpan, size, Position);
         }
-        return _bufferSpan[Position..];
+        return _packetSpan[Position..];
     }
 }

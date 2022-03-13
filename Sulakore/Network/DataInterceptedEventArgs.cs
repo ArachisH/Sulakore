@@ -5,7 +5,7 @@ namespace Sulakore.Network;
 /// <summary>
 /// Represents an intercepted message that will be returned to the caller with blocking/replacing information.
 /// </summary>
-public class DataInterceptedEventArgs : EventArgs
+public sealed class DataInterceptedEventArgs : EventArgs
 {
     private readonly Func<DataInterceptedEventArgs, Task> _continuation;
     private readonly Func<DataInterceptedEventArgs, ValueTask<int>> _relayer;

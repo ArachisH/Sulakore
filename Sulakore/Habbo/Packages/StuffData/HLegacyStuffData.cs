@@ -9,7 +9,7 @@ public class HLegacyStuffData : HStuffData
     public HLegacyStuffData()
         : base(HStuffDataFormat.Legacy)
     { }
-    public HLegacyStuffData(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HLegacyStuffData(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
         : this()
     {
         Data = format.ReadUTF8(ref packetSpan);

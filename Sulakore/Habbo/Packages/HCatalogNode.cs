@@ -14,7 +14,7 @@ public class HCatalogNode
     public int[] OfferIds { get; set; }
     public HCatalogNode[] Children { get; set; }
 
-    public HCatalogNode(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HCatalogNode(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         Visible = format.Read<bool>(ref packetSpan);
 
@@ -36,7 +36,7 @@ public class HCatalogNode
         }
     }
 
-    public static HCatalogNode Parse(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public static HCatalogNode Parse(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         var root = new HCatalogNode(format, ref packetSpan);
         bool newAdditionsAvailable = format.Read<bool>(ref packetSpan);

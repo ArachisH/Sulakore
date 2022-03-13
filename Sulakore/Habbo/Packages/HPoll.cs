@@ -11,7 +11,7 @@ public class HPoll
 
     public HPollQuestion[] Questions { get; set; }
 
-    public HPoll(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HPoll(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         Id = format.Read<int>(ref packetSpan);
 

@@ -10,7 +10,7 @@ public class HVoteResultStuffData : HStuffData
     public HVoteResultStuffData()
         : base(HStuffDataFormat.VoteResult)
     { }
-    public HVoteResultStuffData(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HVoteResultStuffData(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
         : this()
     {
         State = format.ReadUTF8(ref packetSpan);

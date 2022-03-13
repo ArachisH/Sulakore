@@ -13,7 +13,7 @@ public class HHighScoreStuffData : HStuffData
     public HHighScoreStuffData()
         : base(HStuffDataFormat.HighScore)
     { }
-    public HHighScoreStuffData(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HHighScoreStuffData(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
         : this()
     {
         State = format.ReadUTF8(ref packetSpan);

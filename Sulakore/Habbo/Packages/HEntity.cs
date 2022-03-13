@@ -35,7 +35,7 @@ public class HEntity
         }
     }
 
-    public HEntity(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HEntity(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         Id = format.Read<int>(ref packetSpan);
         Name = format.ReadUTF8(ref packetSpan);
@@ -92,7 +92,7 @@ public class HEntity
         }
     }
 
-    public static HEntity[] Parse(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public static HEntity[] Parse(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         var entities = new HEntity[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < entities.Length; i++)

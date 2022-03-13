@@ -36,7 +36,7 @@ public class HRoomEntry
     public bool AllowPets { get; set; }
     public bool ShowEntryAd { get; set; }
 
-    public HRoomEntry(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HRoomEntry(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         Id = format.Read<int>(ref packetSpan);
         Name = format.ReadUTF8(ref packetSpan);

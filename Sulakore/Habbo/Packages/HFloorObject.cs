@@ -25,7 +25,7 @@ public class HFloorObject
 
     public string StaticClass { get; set; }
 
-    public HFloorObject(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HFloorObject(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         Id = format.Read<int>(ref packetSpan);
         TypeId = format.Read<int>(ref packetSpan);
@@ -50,7 +50,7 @@ public class HFloorObject
         }
     }
 
-    public static HFloorObject[] Parse(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public static HFloorObject[] Parse(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         int ownersCount = format.Read<int>(ref packetSpan);
         var owners = new Dictionary<int, string>(ownersCount);

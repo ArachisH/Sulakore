@@ -18,7 +18,7 @@ public class HEntityUpdate
     public HDirection HeadFacing { get; set; }
     public HDirection BodyFacing { get; set; }
 
-    public HEntityUpdate(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HEntityUpdate(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         Index = format.Read<int>(ref packetSpan);
 
@@ -77,7 +77,7 @@ public class HEntityUpdate
         }
     }
 
-    public static HEntityUpdate[] Parse(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public static HEntityUpdate[] Parse(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         var updates = new HEntityUpdate[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < updates.Length; i++)

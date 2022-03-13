@@ -13,7 +13,7 @@ public class HPollQuestion
 
     public HPollChoice[] Choices { get; set; }
 
-    public HPollQuestion(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HPollQuestion(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         Id = format.Read<int>(ref packetSpan);
         format.Read<int>(ref packetSpan);

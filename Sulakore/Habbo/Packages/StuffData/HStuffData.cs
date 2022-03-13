@@ -18,7 +18,7 @@ public class HStuffData
         Format = format;
     }
 
-    public static HStuffData Parse(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public static HStuffData Parse(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         int value = format.Read<int>(ref packetSpan);
         HStuffData stuffData = (HStuffDataFormat)(value & 0xFF) switch

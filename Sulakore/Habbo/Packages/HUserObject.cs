@@ -24,7 +24,7 @@ public class HUserObject
     public bool NameChangeAllowed { get; set; }
     public bool AccountSafetyLocked { get; set; }
 
-    public HUserObject(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HUserObject(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         Id = format.Read<int>(ref packetSpan);
         Name = format.ReadUTF8(ref packetSpan);

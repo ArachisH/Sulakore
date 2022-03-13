@@ -11,7 +11,7 @@ public class HCrackableStuffData : HStuffData
     public HCrackableStuffData()
         : base(HStuffDataFormat.Crackable)
     { }
-    public HCrackableStuffData(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HCrackableStuffData(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
         : this()
     {
         State = format.ReadUTF8(ref packetSpan);

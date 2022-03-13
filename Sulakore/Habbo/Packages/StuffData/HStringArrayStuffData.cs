@@ -9,7 +9,7 @@ public class HStringArrayStuffData : HStuffData
     public HStringArrayStuffData()
         : base(HStuffDataFormat.StringArray)
     { }
-    public HStringArrayStuffData(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HStringArrayStuffData(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
         : this()
     {
         Data = new string[format.Read<int>(ref packetSpan)];

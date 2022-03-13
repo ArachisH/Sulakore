@@ -29,32 +29,32 @@ public static class HExtensions
     {
         if (value.Length < 2) return HHotel.Unknown;
 
-        if (value.StartsWith("hh", StringComparison.OrdinalIgnoreCase)) value = value[2..4];
-        else if (value.StartsWith("game-", StringComparison.OrdinalIgnoreCase)) value = value[5..7];
+        if (value.StartsWith("hh", StringComparison.OrdinalIgnoreCase)) value = value.Slice(2, 2); // hhxz
+        else if (value.StartsWith("game-", StringComparison.OrdinalIgnoreCase)) value = value.Slice(5, 3);
 
         if (value.Length != 2 && value.Length != 5)
         {
             // Slice to the domain
             int hostIndex = value.LastIndexOf("habbo", StringComparison.OrdinalIgnoreCase);
             if (hostIndex != -1)
-                value = value[(hostIndex + "habbo".Length)..];
+                value = value.Slice(hostIndex + "habbo".Length);
 
             // Is second-level .com TLD
             int comDotIndex = value.IndexOf("com.", StringComparison.OrdinalIgnoreCase);
             if (comDotIndex != -1)
-                value = value[(comDotIndex + "com.".Length)..];
+                value = value.Slice(comDotIndex + "com.".Length);
             
             // Corner-case where value was domain including the dot
-            if (value[0] == '.') value = value[1..];
+            if (value[0] == '.') value = value.Slice(1);
 
             if (value.StartsWith("com", StringComparison.OrdinalIgnoreCase))
                 return HHotel.US;
             
             // Slice out rest of value
-            value = value[..2];
+            value = value.Slice(0, value.Length - 2);
         }
 
-        if (Enum.TryParse(value, ignoreCase: true, out HHotel hotel))
+        if (Enum.TryParse(value, ignoreCase: true, out HHotel hotel) && Enum.IsDefined(hotel))
             return hotel;
 
         return HHotel.Unknown;

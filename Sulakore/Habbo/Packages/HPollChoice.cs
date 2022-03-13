@@ -8,7 +8,7 @@ public class HPollChoice
     public string Text { get; set; }
     public int Type { get; set; }
 
-    public HPollChoice(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HPollChoice(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         Value = format.ReadUTF8(ref packetSpan);
         Text = format.ReadUTF8(ref packetSpan);

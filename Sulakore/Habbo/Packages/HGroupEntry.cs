@@ -14,7 +14,7 @@ public class HGroupEntry
     public int OwnerId { get; set; }
     public bool HasForum { get; set; }
 
-    public HGroupEntry(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HGroupEntry(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         Id = format.Read<int>(ref packetSpan);
         Name = format.ReadUTF8(ref packetSpan);

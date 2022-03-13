@@ -21,7 +21,7 @@ public class HUserProfile
     public int SinceLastAccessInSeconds { get; set; }
     public bool OpenProfileView { get; set; }
 
-    public HUserProfile(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HUserProfile(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         Id = format.Read<int>(ref packetSpan);
         Username = format.ReadUTF8(ref packetSpan);

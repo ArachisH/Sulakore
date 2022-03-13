@@ -16,7 +16,7 @@ public class HUserSearchResult
 
     public string RealName { get; set; }
 
-    public HUserSearchResult(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HUserSearchResult(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         Id = format.Read<int>(ref packetSpan);
         Name = format.ReadUTF8(ref packetSpan);
@@ -33,7 +33,7 @@ public class HUserSearchResult
         RealName = format.ReadUTF8(ref packetSpan);
     }
 
-    public static (HUserSearchResult[] friends, HUserSearchResult[] others) Parse(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public static (HUserSearchResult[] friends, HUserSearchResult[] others) Parse(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         var friends = new HUserSearchResult[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < friends.Length; i++)

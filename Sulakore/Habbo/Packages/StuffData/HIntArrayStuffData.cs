@@ -9,7 +9,7 @@ public class HIntArrayStuffData : HStuffData
     public HIntArrayStuffData()
         : base(HStuffDataFormat.IntArray)
     { }
-    public HIntArrayStuffData(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HIntArrayStuffData(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
         : this()
     {
         Data = new int[format.Read<int>(ref packetSpan)];

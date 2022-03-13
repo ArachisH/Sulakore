@@ -18,7 +18,7 @@ public class HCatalogPage
 
     public bool IsFrontPage { get; set; }
 
-    public HCatalogPage(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HCatalogPage(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         Id = format.Read<int>(ref packetSpan);
         CatalogType = format.ReadUTF8(ref packetSpan);

@@ -7,7 +7,7 @@ public class HHighScoreData
     public int Score { get; set; }
     public string[] Users { get; set; }
 
-    public HHighScoreData(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HHighScoreData(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         Score = format.Read<int>(ref packetSpan);
         Users = new string[format.Read<int>(ref packetSpan)];

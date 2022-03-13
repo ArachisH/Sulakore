@@ -22,7 +22,7 @@ public class HCatalogOffer
 
     public string PreviewImage { get; set; }
 
-    public HCatalogOffer(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HCatalogOffer(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         Id = format.Read<int>(ref packetSpan);
         DisplayName = format.ReadUTF8(ref packetSpan);

@@ -20,7 +20,7 @@ public class HFriendData
     public bool IsPocketHabboUser { get; set; }
     public HRelationship RelationshipStatus { get; set; }
 
-    public HFriendData(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HFriendData(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         Id = format.Read<int>(ref packetSpan);
         Username = format.ReadUTF8(ref packetSpan);
@@ -40,7 +40,7 @@ public class HFriendData
         RelationshipStatus = (HRelationship)format.Read<short>(ref packetSpan);
     }
 
-    public static HFriendData[] Parse(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public static HFriendData[] Parse(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         int removedFriends = format.Read<int>(ref packetSpan);
         int addedFriends = format.Read<int>(ref packetSpan);

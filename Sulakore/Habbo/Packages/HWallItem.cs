@@ -25,7 +25,7 @@ public class HWallItem
     public int OwnerId { get; set; }
     public string OwnerName { get; set; }
 
-    public HWallItem(HFormat format, ref ReadOnlySpan<byte> packetData)
+    public HWallItem(IHFormat format, ref ReadOnlySpan<byte> packetData)
     {
         Id = int.Parse(format.ReadUTF8(ref packetData));
         TypeId = format.Read<int>(ref packetData);
@@ -79,7 +79,7 @@ public class HWallItem
         }
     }
 
-    public static HWallItem[] Parse(HFormat format, ref ReadOnlySpan<byte> packetData)
+    public static HWallItem[] Parse(IHFormat format, ref ReadOnlySpan<byte> packetData)
     {
         int ownersCount = format.Read<int>(ref packetData);
         var owners = new Dictionary<int, string>(ownersCount);

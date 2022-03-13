@@ -8,7 +8,7 @@ public sealed class HAchievement
     public string Name { get; set; }
     public ACHLevel[] Levels { get; set; }
 
-    public HAchievement(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HAchievement(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         Name = format.ReadUTF8(ref packetSpan);
         Levels = new ACHLevel[format.Read<int>(ref packetSpan)];
@@ -18,7 +18,7 @@ public sealed class HAchievement
     {
         return Parse(packet.Format, packet.Buffer.Span);
     }
-    public static HAchievement[] Parse(HFormat format, ReadOnlySpan<byte> packetSpan)
+    public static HAchievement[] Parse(IHFormat format, ReadOnlySpan<byte> packetSpan)
     {
         var achievements = new HAchievement[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < achievements.Length; i++)
@@ -43,7 +43,7 @@ public sealed class HAchievement
         public int PointLimit { get; set; }
         public string BadgeId { get; set; }
 
-        public ACHLevel(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+        public ACHLevel(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
         {
             Level = format.Read<int>(ref packetSpan);
             PointLimit = format.Read<int>(ref packetSpan);

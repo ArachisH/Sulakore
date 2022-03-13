@@ -21,7 +21,7 @@ public class HSlideObjectBundle
     /// </summary>
     public HSlideObject Entity { get; set; }
 
-    public HSlideObjectBundle(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HSlideObjectBundle(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         int locationX = format.Read<int>(ref packetSpan);
         int locationY = format.Read<int>(ref packetSpan);

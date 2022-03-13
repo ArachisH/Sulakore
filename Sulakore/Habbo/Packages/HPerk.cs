@@ -15,7 +15,7 @@ public class HPerk
         IsAllowed = isAllowed;
     }
 
-    public static HPerk[] Parse(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public static HPerk[] Parse(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         var perkAllowances = new HPerk[format.Read<int>(ref packetSpan)];
         for (int i = 0; i < perkAllowances.Length; i++)

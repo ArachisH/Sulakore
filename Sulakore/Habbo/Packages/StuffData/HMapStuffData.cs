@@ -9,7 +9,7 @@ public class HMapStuffData : HStuffData
     public HMapStuffData()
         : base(HStuffDataFormat.Map)
     { }
-    public HMapStuffData(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HMapStuffData(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
         : this()
     {
         int length = format.Read<int>(ref packetSpan);

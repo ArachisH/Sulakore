@@ -13,7 +13,7 @@ public class HNavigatorSearchResult
 
     public HRoomEntry[] Rooms { get; set; }
 
-    public HNavigatorSearchResult(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HNavigatorSearchResult(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         SearchCode = format.ReadUTF8(ref packetSpan);
         Text = format.ReadUTF8(ref packetSpan);
@@ -29,7 +29,7 @@ public class HNavigatorSearchResult
         }
     }
 
-    public static HNavigatorSearchResult[] Parse(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public static HNavigatorSearchResult[] Parse(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         string searchCode = format.ReadUTF8(ref packetSpan);
         string filter = format.ReadUTF8(ref packetSpan);

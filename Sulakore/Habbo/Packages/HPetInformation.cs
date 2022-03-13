@@ -42,7 +42,7 @@ public class HPetInformation
     public int RemainingGrowingSeconds { get; set; }
     public bool HasBreedingPermission { get; set; }
 
-    public HPetInformation(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HPetInformation(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         Id = format.Read<int>(ref packetSpan);
         Name = format.ReadUTF8(ref packetSpan);

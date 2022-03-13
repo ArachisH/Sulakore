@@ -14,7 +14,7 @@ public class HCatalogProduct
     public int? LimitedTotal { get; set; }
     public int? LimitedRemaining { get; set; }
 
-    public HCatalogProduct(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HCatalogProduct(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         Type = (HProductType)format.ReadUTF8(ref packetSpan)[0];
         switch (Type)

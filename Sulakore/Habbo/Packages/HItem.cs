@@ -27,7 +27,7 @@ public class HItem
     public string SlotId { get; set; }
     public int Extra { get; set; }
 
-    public HItem(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public HItem(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         RoomItemId = format.Read<int>(ref packetSpan);
         Type = (HProductType)format.ReadUTF8(ref packetSpan)[0];
@@ -55,7 +55,7 @@ public class HItem
         }
     }
 
-    public static HItem[] Parse(HFormat format, ref ReadOnlySpan<byte> packetSpan)
+    public static HItem[] Parse(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
         format.Read<int>(ref packetSpan);
         format.Read<int>(ref packetSpan);

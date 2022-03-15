@@ -13,9 +13,9 @@ public struct HPoint : IEquatable<HPoint>, ISpanFormattable
     private static readonly HPoint _origin = new();
     public static ref readonly HPoint Origin => ref _origin;
     
-    public int X { readonly get; init; }
-    public int Y { readonly get; init; }
-    public float Z { readonly get; init; }
+    public int X { readonly get; set; }
+    public int Y { readonly get; set; }
+    public float Z { readonly get; set; }
 
     public HPoint()
         : this(0, 0, 0)

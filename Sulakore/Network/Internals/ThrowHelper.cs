@@ -13,8 +13,4 @@ internal static class ThrowHelper
 {
     [DoesNotReturn]
     internal static void ThrowIndexOutOfRangeException() => throw new IndexOutOfRangeException();
-    [DoesNotReturn]
-    internal static void ThrowArgumentOutOfRangeException() => throw new ArgumentOutOfRangeException();
-    [DoesNotReturn]
-    internal static void ThrowInsufficientMemoryException() => throw new InsufficientMemoryException();
 }

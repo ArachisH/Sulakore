@@ -12,7 +12,7 @@ public abstract class HPacket : IDisposable
     private IMemoryOwner<byte> _owner;
 
     public short Id { get; init; }
-    public HFormat Format { get; init; }
+    public IHFormat Format { get; init; }
 
     public ReadOnlyMemory<byte> Buffer { get; private set; }
 
@@ -24,7 +24,7 @@ public abstract class HPacket : IDisposable
     /// <param name="format"></param>
     /// <param name="id"></param>
     /// <param name="buffer"></param>
-    protected HPacket(HFormat format, short id, Memory<byte> buffer)
+    protected HPacket(IHFormat format, short id, Memory<byte> buffer)
     {
         Id = id;
         Format = format;
@@ -36,7 +36,7 @@ public abstract class HPacket : IDisposable
     /// <param name="format"></param>
     /// <param name="id"></param>
     /// <param name="packetOut"></param>
-    protected HPacket(HFormat format, short id, out HPacketWriter packetOut)
+    protected HPacket(IHFormat format, short id, out HPacketWriter packetOut)
     {
         Id = id;
         Format = format;
@@ -45,8 +45,8 @@ public abstract class HPacket : IDisposable
         Buffer = buffer;
 
         Span<byte> packetSpan = buffer.Span;
-        format.WriteId(packetSpan, Id);
-        format.WriteLength(packetSpan, format.MinPacketLength);
+        format.TryWriteId(packetSpan, Id, out _);
+        format.TryWriteLength(packetSpan, format.MinPacketLength, out _);
 
         packetOut = new HPacketWriter(format, packetSpan, this);
     }
@@ -57,7 +57,7 @@ public abstract class HPacket : IDisposable
     /// <param name="id"></param>
     /// <param name="length"></param>
     /// <param name="owner"></param>
-    protected HPacket(HFormat format, short id, int length, IMemoryOwner<byte> owner)
+    protected HPacket(IHFormat format, short id, int length, IMemoryOwner<byte> owner)
         : this(format, id, owner.Memory[..length])
     {
         _owner = owner;

@@ -6,7 +6,7 @@ public ref struct HPacketReader
 {
     private readonly ReadOnlySpan<byte> _packetSpan;
 
-    public HFormat Format { get; }
+    public IHFormat Format { get; }
     public int Position { get; set; }
     public int Available => _packetSpan.Length - Position;
 
@@ -15,7 +15,7 @@ public ref struct HPacketReader
     public HPacketReader(HPacket packet)
         : this(packet.Format, packet.Buffer.Span)
     { }
-    public HPacketReader(HFormat format, ReadOnlySpan<byte> packetSpan)
+    public HPacketReader(IHFormat format, ReadOnlySpan<byte> packetSpan)
     {
         _packetSpan = packetSpan;
 

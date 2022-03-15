@@ -1,61 +1,67 @@
 ﻿namespace Sulakore.Network.Formats;
 
+/// <summary>
+/// Provides a high-performance low-level APIs for reading and writing byte buffers.
+/// </summary>
+/// <remarks>
+/// Due to heavy optimizations, do not trust <c>out</c> parameters in <c>Try</c>-prefixed methods when the operation is unsuccessful (when the method returns <c>false</c>). 
+/// The <c>out</c> parameters contain un-initialized values when the operation is unsuccessful - this is standard behaviour and can be also seen in runtime libraries.
+/// </remarks>
 public interface IHFormat
 {
     public static EvaWireFormat EvaWire { get; } = new EvaWireFormat(isUnity: false);
     public static EvaWireFormat EvaWireUnity { get; } = new EvaWireFormat(isUnity: true);
 
+    /// <summary>
+    /// Minimum buffer size required from a packet in bytes.
+    /// </summary>
     public int MinBufferSize { get; }
+    /// <summary>
+    /// Minimum length required from a packet in bytes.
+    /// </summary>
     public int MinPacketLength { get; }
+    /// <summary>
+    /// Indicates whether the format has a length-prefix or not.
+    /// </summary>
     public bool HasLengthIndicator { get; }
 
+    /// <summary>
+    /// Returns the amount of bytes it takes to write <paramref name="value"/> of type <typeparamref name="T"/>.
+    /// </summary>
     public int GetSize<T>(T value) where T : struct;
+    /// <summary>
+    /// Returns the amount of bytes it takes to write <paramref name="value"/> string.
+    /// </summary>
     public int GetSize(ReadOnlySpan<char> value);
 
-    public short ReadId(ReadOnlySpan<byte> source);
-    public bool TryReadId(ReadOnlySpan<byte> source, out short id, out int bytesRead);
-    
-    public int ReadLength(ReadOnlySpan<byte> source);
     public bool TryReadLength(ReadOnlySpan<byte> source, out int length, out int bytesRead);
-
-    public void WriteId(Span<byte> destination, short id);
-    public bool TryWriteId(Span<byte> source, short id, out int bytesWritten);
-    
-    public void WriteLength(Span<byte> destination, int length);
     public bool TryWriteLength(Span<byte> source, int length, out int bytesWritten);
-
-    public void Write<T>(ref Span<byte> destination, T value) where T : struct
-    {
-        Write(destination, value);
-        destination = destination.Slice(GetSize(value));
-    }
-    public void Write<T>(Span<byte> destination, T value) where T : struct;
-    public bool TryWrite<T>(Span<byte> destination, T value, out int bytesWritten) where T : struct;
-
-    public void WriteUTF8(ref Span<byte> destination, ReadOnlySpan<char> value)
-    {
-        WriteUTF8(destination, value);
-        destination = destination.Slice(GetSize(value));
-    }
-    public void WriteUTF8(Span<byte> destination, ReadOnlySpan<char> value);
-    public bool TryWriteUTF8(Span<byte> destination, ReadOnlySpan<char> value, out int bytesWritten);
-
-    public T Read<T>(ref ReadOnlySpan<byte> source) where T : struct
-    {
-        T value = Read<T>(source, out int bytesRead);
-        source = source.Slice(bytesRead);
-        return value;
-    }
-    public T Read<T>(ReadOnlySpan<byte> source, out int bytesRead) where T : struct;
-    public bool TryRead<T>(ReadOnlySpan<byte> source, out T value, out int bytesRead) where T : struct;
     
-    public string ReadUTF8(ref ReadOnlySpan<byte> source)
-    {
-        string value = ReadUTF8(source, out int bytesRead);
-        source = source.Slice(bytesRead);
-        return value;
-    }
-    public string ReadUTF8(ReadOnlySpan<byte> source, out int bytesRead);
+    public bool TryReadId(ReadOnlySpan<byte> source, out short id, out int bytesRead);
+    public bool TryWriteId(Span<byte> source, short id, out int bytesWritten);
+
+    public bool TryReadHeader(ReadOnlySpan<byte> source, out int length, out short id, out int bytesRead);
+    public bool TryWriteHeader(Span<byte> destination, int length, short id, out int bytesWritten);
+
+    /// <summary>
+    /// Reads a value of type <typeparamref name="T"/> from <paramref name="source"/>.
+    /// </summary>
+    /// <param name="source">The source span from which <paramref name="value"/> is read.</param>
+    /// <param name="value">The value upon returning <c>true</c>.</param>
+    /// <param name="bytesRead">The amount of bytes read from <paramref name="source"/>.</param>
+    /// <returns>true if the value was read successfully; otherwise, false.</returns>
+    public bool TryRead<T>(ReadOnlySpan<byte> source, out T value, out int bytesRead) where T : struct;
+    /// <summary>
+    /// Writes a <paramref name="value"/> of type <typeparamref name="T"/> into <paramref name="destination"/>.
+    /// </summary>
+    /// <param name="destination">The destination span where <paramref name="value"/> is written.</param>
+    /// <param name="value">The value to write.</param>    
+    /// <param name="bytesWritten">The amount of bytes written into <paramref name="destination"/> span.</param>
+    /// <returns>true if the value was written successfully; otherwise, false.</returns>
+    public bool TryWrite<T>(Span<byte> destination, T value, out int bytesWritten) where T : struct;
+    
     public bool TryReadUTF8(ReadOnlySpan<byte> source, out string value, out int bytesRead);
+    
     public bool TryReadUTF8(ReadOnlySpan<byte> source, Span<char> destination, out int bytesRead, out int charsWritten);
+    public bool TryWriteUTF8(Span<byte> destination, ReadOnlySpan<char> value, out int bytesWritten);
 }

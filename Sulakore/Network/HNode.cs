@@ -36,8 +36,8 @@ public sealed class HNode : IDisposable
     public IStreamCipher Encrypter { get; set; }
     public IStreamCipher Decrypter { get; set; }
 
-    public HFormat SendFormat { get; set; }
-    public HFormat ReceiveFormat { get; set; }
+    public IHFormat SendFormat { get; set; }
+    public IHFormat ReceiveFormat { get; set; }
     public HotelEndPoint RemoteEndPoint { get; private set; }
 
     public bool IsClient { get; private set; }
@@ -74,8 +74,8 @@ public sealed class HNode : IDisposable
         socket.NoDelay = true;
         socket.LingerState = new LingerOption(false, 0);
 
-        SendFormat = HFormat.EvaWire;
-        ReceiveFormat = HFormat.EvaWire;
+        SendFormat = IHFormat.EvaWire;
+        ReceiveFormat = IHFormat.EvaWire;
         RemoteEndPoint = remoteEndPoint;
     }
 
@@ -134,7 +134,7 @@ public sealed class HNode : IDisposable
             while (received == 0);
 
             // Did the first buffer receive meet the minimum requirements?
-            if (received != buffer.Length || !ReceiveFormat.TryGetHeader(buffer.Span, out int length, out short id)) return null;
+            if (received != buffer.Length || !ReceiveFormat.TryReadHeader(buffer.Span, out int length, out short id, out _)) return null;
 
             int fullPacketLength = ReceiveFormat.MinBufferSize - ReceiveFormat.MinPacketLength + length;
             if (fullPacketLength > buffer.Length) // Should the buffer be enlarged to ensure it fits the full packet?
@@ -204,8 +204,8 @@ public sealed class HNode : IDisposable
         IsWebSocket = isWebSocket;
         if (IsWebSocket || possibleId == 4000)
         {
-            SendFormat = HFormat.EvaWire;
-            ReceiveFormat = HFormat.EvaWire;
+            SendFormat = IHFormat.EvaWire;
+            ReceiveFormat = IHFormat.EvaWire;
         }
         else if (possibleId == 206)
         {

@@ -9,12 +9,12 @@ public ref struct HPacketWriter
     private Span<byte> _packetSpan;
 
     public int Position { get; set; }
-    public HFormat Format { get; init; }
+    public IHFormat Format { get; init; }
 
-    public HPacketWriter(HFormat format, Span<byte> packetSpan)
+    public HPacketWriter(IHFormat format, Span<byte> packetSpan)
         : this(format, packetSpan, null)
     { }
-    internal HPacketWriter(HFormat format, Span<byte> packetSpan, HPacket packet)
+    internal HPacketWriter(IHFormat format, Span<byte> packetSpan, HPacket packet)
     {
         _packet = packet;
         _packetSpan = packetSpan;
@@ -28,7 +28,7 @@ public ref struct HPacketWriter
         int size = Format.GetSize(value);
         Span<byte> valueSpan = GetSpan(size);
 
-        Format.Write(valueSpan, value);
+        Format.Write(valueSpan, value, out _);
         Position += size;
     }
     public void WriteUTF8(ReadOnlySpan<char> value)
@@ -36,7 +36,7 @@ public ref struct HPacketWriter
         int size = Format.GetSize(value);
         Span<byte> valueSpan = GetSpan(size);
 
-        Format.WriteUTF8(valueSpan, value);
+        Format.WriteUTF8(valueSpan, value, out _);
         Position += size;
     }
 

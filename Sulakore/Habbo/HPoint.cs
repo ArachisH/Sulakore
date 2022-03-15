@@ -10,7 +10,8 @@ public struct HPoint : IEquatable<HPoint>, ISpanFormattable
 {
     public const float DEFAULT_EPSILON = 0.01f;
 
-    public static readonly HPoint Zero = new();
+    private static readonly HPoint _origin = new();
+    public static ref readonly HPoint Origin => ref _origin;
     
     public int X { readonly get; init; }
     public int Y { readonly get; init; }

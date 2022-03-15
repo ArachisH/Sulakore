@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Numerics;
+using System.Globalization;
 
 namespace Sulakore.Habbo;
 
@@ -55,9 +56,9 @@ public struct HPoint : IEquatable<HPoint>, ISpanFormattable
         && Math.Abs(point.Z - Z) < epsilon;
 
     public readonly bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format = default, IFormatProvider provider = default)
-        => destination.TryWrite($"{X}, {Y}, {Z}", out charsWritten);
+        => destination.TryWrite(CultureInfo.InvariantCulture, $"{X}, {Y}, {Z}", out charsWritten);
     public readonly string ToString(string format, IFormatProvider formatProvider = default)
-        => string.Create(formatProvider, $"{X}, {Y}, {Z}");
+        => string.Create(CultureInfo.InvariantCulture, stackalloc char[64], $"{X}, {Y}, {Z}");
 
     public static bool operator !=(HPoint left, HPoint right) => !(left == right);
     public static bool operator ==(HPoint left, HPoint right) => left.Equals(right);

@@ -2,12 +2,14 @@
 using System.Numerics;
 using System.Globalization;
 
+using Sulakore.Network.Formats;
+
 namespace Sulakore.Habbo;
 
 /// <summary>
 /// Represents an ordered pair of x-, y-, and z- coordinates that defines a point in a three-dimensional space.
 /// </summary>
-public struct HPoint : IEquatable<HPoint>, ISpanFormattable
+public struct HPoint : IEquatable<HPoint>, IHFormattable, ISpanFormattable
 {
     public const float DEFAULT_EPSILON = 0.01f;
 
@@ -59,6 +61,9 @@ public struct HPoint : IEquatable<HPoint>, ISpanFormattable
         => destination.TryWrite(CultureInfo.InvariantCulture, $"{X}, {Y}, {Z}", out charsWritten);
     public readonly string ToString(string format, IFormatProvider formatProvider = default)
         => string.Create(CultureInfo.InvariantCulture, stackalloc char[64], $"{X}, {Y}, {Z}");
+
+    public readonly bool TryFormat(Span<byte> destination, IHFormat format, out int bytesWritten, ReadOnlySpan<char> formatString)
+        => destination.TryWrite(format, $"{X}{Y}", out bytesWritten);
 
     public static bool operator !=(HPoint left, HPoint right) => !(left == right);
     public static bool operator ==(HPoint left, HPoint right) => left.Equals(right);

@@ -1,4 +1,6 @@
-﻿namespace Sulakore.Network.Formats;
+﻿using System.Runtime.CompilerServices;
+
+namespace Sulakore.Network.Formats;
 
 // TODO: once we get abstract static interfaces out of preview (.NET 7) add IHParseable & Parse<TParseable>() and array variant
 
@@ -257,5 +259,21 @@ public static class IHFormatExtensions
             return format.TryWrite(destination, (short)arrayLength, out bytesWritten);
         }
         return format.TryWrite(destination, arrayLength, out bytesWritten);
+    }
+
+    public static bool TryWrite(this Span<byte> destination, IHFormat format,
+        [InterpolatedStringHandlerArgument("format", "destination")] ref IHFormatTryWriteInterpolatedStringHandler handler, out int bytesWritten)
+        => TryWrite(format, destination, ref handler, out bytesWritten);
+    public static bool TryWrite(this IHFormat format, Span<byte> destination,
+        [InterpolatedStringHandlerArgument("format", "destination")] ref IHFormatTryWriteInterpolatedStringHandler handler, out int bytesWritten)
+    {
+        if (handler._success)
+        {
+            bytesWritten = handler._position;
+            return true;
+        }
+
+        bytesWritten = 0;
+        return false;
     }
 }

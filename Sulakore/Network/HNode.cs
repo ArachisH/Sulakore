@@ -26,18 +26,12 @@ public sealed class HNode : IDisposable
     private readonly Socket _socket;
     private readonly SemaphoreSlim _sendSemaphore, _receiveSemaphore, _packetReceiveSemaphore;
 
+    private byte[] _mask;
     private bool _disposed;
-    private byte[] _mask = null;
-    /// <summary>
-    /// Represents a possibly mutli-layered secured stream capable of reading/writing in the WebSocket protocol.
-    /// </summary>
     private Stream _socketStream, _webSocketStream;
 
     public IStreamCipher Encrypter { get; set; }
     public IStreamCipher Decrypter { get; set; }
-
-    public IHFormat SendFormat { get; set; }
-    public IHFormat ReceiveFormat { get; set; }
     public HotelEndPoint RemoteEndPoint { get; private set; }
 
     public bool IsClient { get; private set; }
@@ -74,117 +68,46 @@ public sealed class HNode : IDisposable
         socket.NoDelay = true;
         socket.LingerState = new LingerOption(false, 0);
 
-        SendFormat = IHFormat.EvaWire;
-        ReceiveFormat = IHFormat.EvaWire;
         RemoteEndPoint = remoteEndPoint;
     }
 
-    /// <summary>
-    /// Sends a mutable packet where if encryption is necessary then the buffer will be overwritten.
-    /// </summary>
-    /// <param name="buffer"></param>
-    /// <returns></returns>
-    /// <exception cref="NullReferenceException"></exception>
-    public ValueTask<int> SendPacketAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
-    {
-        if (SendFormat == null)
-        {
-            throw new NullReferenceException($"Cannot send structured data while {nameof(SendFormat)} is null.");
-        }
+    ///// <summary>
+    ///// Sends a mutable packet where if encryption is necessary then the buffer will be overwritten.
+    ///// </summary>
+    ///// <param name="buffer"></param>
+    ///// <returns></returns>
+    ///// <exception cref="NullReferenceException"></exception>
+    //public ValueTask<int> SendPacketAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
+    //{
+    //    if (SendFormat == null)
+    //    {
+    //        throw new NullReferenceException($"Cannot send structured data while {nameof(SendFormat)} is null.");
+    //    }
 
-        Encipher(Encrypter, buffer.Span, IsWebSocket);
-        return SendAsync(buffer, cancellationToken);
-    }
-    /// <summary>
-    /// Sends an immuttable packet where if encryption is necessary then the buffer will be copied.
-    /// </summary>
-    /// <param name="buffer"></param>
-    /// <returns></returns>
-    /// <exception cref="NullReferenceException"></exception>
-    public ValueTask<int> SendPacketAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
-    {
-        if (SendFormat == null)
-        {
-            throw new NullReferenceException($"Cannot send structured data while {nameof(SendFormat)} is null.");
-        }
+    //    Encipher(Encrypter, buffer.Span, IsWebSocket);
+    //    return SendAsync(buffer, cancellationToken);
+    //}
+    ///// <summary>
+    ///// Sends an immuttable packet where if encryption is necessary then the buffer will be copied.
+    ///// </summary>
+    ///// <param name="buffer"></param>
+    ///// <returns></returns>
+    ///// <exception cref="NullReferenceException"></exception>
+    //public ValueTask<int> SendPacketAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
+    //{
+    //    if (SendFormat == null)
+    //    {
+    //        throw new NullReferenceException($"Cannot send structured data while {nameof(SendFormat)} is null.");
+    //    }
 
-        using IMemoryOwner<byte> encryptedOwner = MemoryPool<byte>.Shared.Rent(buffer.Length);
-        Memory<byte> encryptedRegion = encryptedOwner.Memory[..buffer.Length];
-        buffer.CopyTo(encryptedRegion);
+    //    using IMemoryOwner<byte> encryptedOwner = MemoryPool<byte>.Shared.Rent(buffer.Length);
+    //    Memory<byte> encryptedRegion = encryptedOwner.Memory[..buffer.Length];
+    //    buffer.CopyTo(encryptedRegion);
 
-        Encipher(Encrypter, encryptedRegion.Span, IsWebSocket);
-        return SendAsync(encryptedRegion, cancellationToken);
-    }
-    public async Task<HPacket> ReceivePacketAsync(CancellationToken cancellationToken = default)
-    {
-        if (ReceiveFormat == null)
-        {
-            throw new NullReferenceException($"Cannot receive structured data while {nameof(ReceiveFormat)} is null.");
-        }
+    //    Encipher(Encrypter, encryptedRegion.Span, IsWebSocket);
+    //    return SendAsync(encryptedRegion, cancellationToken);
+    //}
 
-        HPacket packet = null;
-        await _packetReceiveSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
-        try
-        {
-            IMemoryOwner<byte> owner = null;
-            Memory<byte> buffer = new byte[ReceiveFormat.MinBufferSize];
-
-            int received;
-            do received = await ReceiveAsync(buffer, cancellationToken).ConfigureAwait(false);
-            while (received == 0);
-
-            // Did the first buffer receive meet the minimum requirements?
-            if (received != buffer.Length || !ReceiveFormat.TryReadHeader(buffer.Span, out int length, out short id, out _)) return null;
-
-            int fullPacketLength = ReceiveFormat.MinBufferSize - ReceiveFormat.MinPacketLength + length;
-            if (fullPacketLength > buffer.Length) // Should the buffer be enlarged to ensure it fits the full packet?
-            {
-                var enlargedBuffer = Memory<byte>.Empty;
-                if (fullPacketLength > HPacket.MAX_ALLOC_SIZE)
-                {
-                    owner = MemoryPool<byte>.Shared.Rent(fullPacketLength);
-                    enlargedBuffer = owner.Memory[..fullPacketLength];
-                }
-                else enlargedBuffer = new byte[fullPacketLength];
-                buffer.CopyTo(enlargedBuffer);
-                buffer = enlargedBuffer;
-            }
-            else if (length == -1) { /* Assume the packet ends with null/0 ?? */ }
-
-            // Continue attempting to receive more packet data
-            while (received < fullPacketLength)
-            {
-                received += await ReceiveAsync(buffer[received..], cancellationToken).ConfigureAwait(false);
-            }
-
-            if (received != fullPacketLength)
-            {
-                /* TODO: What's going on? */
-                if (Debugger.IsAttached)
-                {
-                    Debugger.Break();
-                }
-            }
-
-            if (Decrypter != null)
-            {
-                Encipher(Decrypter, buffer.Span, IsWebSocket);
-            }
-
-            packet = owner == null ?
-                new HPacket(ReceiveFormat, id, buffer) :
-                new HPacket(ReceiveFormat, id, length, owner);
-        }
-        finally { _packetReceiveSemaphore.Release(); }
-        return packet;
-    }
-
-    public bool ReflectFormats(HNode other)
-    {
-        SendFormat = other.ReceiveFormat;
-        ReceiveFormat = other.SendFormat;
-        return IsWebSocket = other.IsWebSocket;
-    }
     public async Task<bool> DetermineFormatsAsync()
     {
         static void ParseInitialBytes(Span<byte> initialBytesSpan, out bool isWebSocket, out ushort possibleId)
@@ -204,8 +127,8 @@ public sealed class HNode : IDisposable
         IsWebSocket = isWebSocket;
         if (IsWebSocket || possibleId == 4000)
         {
-            SendFormat = IHFormat.EvaWire;
-            ReceiveFormat = IHFormat.EvaWire;
+            //SendFormat = HFormat.EvaWire;
+            //ReceiveFormat = HFormat.EvaWire;
         }
         else if (possibleId == 206)
         {
@@ -246,7 +169,7 @@ public sealed class HNode : IDisposable
         if (!secureSocketStream.IsAuthenticated) return false;
 
         string webRequest = $"GET /websocket HTTP/1.1\r\nHost: {RemoteEndPoint}\r\n{requestHeaders}\r\nSec-WebSocket-Key: {GenerateWebSocketKey()}\r\n\r\n";
-        await SendPacketAsync(Encoding.UTF8.GetBytes(webRequest)).ConfigureAwait(false);
+        await SendAsync(Encoding.UTF8.GetBytes(webRequest)).ConfigureAwait(false);
 
         using IMemoryOwner<byte> receiveOwner = Rent(256, out Memory<byte> receiveRegion);
         int received = await ReceiveAsync(receiveRegion).ConfigureAwait(false);
@@ -258,7 +181,7 @@ public sealed class HNode : IDisposable
         IsUpgraded = true;
         _socketStream = _webSocketStream = new WebSocketStream(_socketStream, _mask, false); // Anything now being sent or received through the stream will be parsed using the WebSocket protocol.
 
-        await SendPacketAsync(_startTLSBytes).ConfigureAwait(false);
+        await SendAsync(_startTLSBytes).ConfigureAwait(false);
         received = await ReceiveAsync(receiveRegion).ConfigureAwait(false);
         if (!IsTLSAccepted(receiveRegion.Span.Slice(0, received))) return false;
 
@@ -299,7 +222,7 @@ public sealed class HNode : IDisposable
 
         using IMemoryOwner<byte> responseOwner = Rent(256, out Memory<byte> responseRegion);
         FillWebResponse(receivedRegion.Span.Slice(0, received), responseRegion.Span, out int responseWritten);
-        await SendPacketAsync(responseRegion.Slice(0, responseWritten)).ConfigureAwait(false);
+        await SendAsync(responseRegion.Slice(0, responseWritten)).ConfigureAwait(false);
 
         // Begin receiving/sending data as WebSocket frames.
         IsUpgraded = true;
@@ -308,14 +231,84 @@ public sealed class HNode : IDisposable
         received = await ReceiveAsync(receivedRegion).ConfigureAwait(false);
         if (IsTLSRequested(receivedRegion.Span.Slice(0, received)))
         {
-            await SendPacketAsync(_okBytes).ConfigureAwait(false);
+            await SendAsync(_okBytes).ConfigureAwait(false);
 
             var secureSocketStream = new SslStream(_socketStream, false, ValidateRemoteCertificate);
             _socketStream = secureSocketStream;
+
             await secureSocketStream.AuthenticateAsServerAsync(certificate).ConfigureAwait(false);
         }
         else throw new Exception("The client did not send 'StartTLS'.");
         return IsUpgraded;
+    }
+
+    public async Task<HPacket> ReceivePacketAsync(IHFormat format, CancellationToken cancellationToken = default)
+    {
+        if (format == null)
+        {
+            throw new ArgumentNullException(nameof(format));
+        }
+
+        HPacket packet = null;
+        await _packetReceiveSemaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            IMemoryOwner<byte> owner = null;
+            Memory<byte> buffer = new byte[format.MinBufferSize];
+
+            int received;
+            do received = await ReceiveAsync(buffer, cancellationToken).ConfigureAwait(false);
+            while (received == 0);
+
+            // Did the first buffer receive meet the minimum requirements?
+            if (received != buffer.Length || !format.TryGetHeader(buffer.Span, out int length, out short id)) return null;
+
+            int fullPacketLength = format.MinBufferSize - format.MinPacketLength + length;
+            if (fullPacketLength > buffer.Length) // Should the buffer be enlarged to ensure it fits the full packet?
+            {
+                var enlargedBuffer = Memory<byte>.Empty;
+                if (fullPacketLength > HPacket.MAX_ALLOC_SIZE)
+                {
+                    owner = MemoryPool<byte>.Shared.Rent(fullPacketLength);
+                    enlargedBuffer = owner.Memory[..fullPacketLength];
+                }
+                else enlargedBuffer = new byte[fullPacketLength];
+                buffer.CopyTo(enlargedBuffer);
+                buffer = enlargedBuffer;
+            }
+            else if (length == -1) { /* Assume the packet ends with null/0 ?? */ }
+
+            // Continue attempting to receive more packet data
+            while (received < fullPacketLength)
+            {
+                received += await ReceiveAsync(buffer[received..], cancellationToken).ConfigureAwait(false);
+            }
+
+            if (received != fullPacketLength)
+            {
+                /* TODO: What's going on? */
+                if (Debugger.IsAttached)
+                {
+                    Debugger.Break();
+                }
+            }
+
+            if (Decrypter != null)
+            {
+                Encipher(Decrypter, buffer.Span, IsWebSocket);
+            }
+
+            return null;
+            //packet = owner == null ?
+            //    new HPacket(ReceiveFormat, id, buffer) :
+            //    new HPacket(ReceiveFormat, id, length, owner);
+        }
+        finally { _packetReceiveSemaphore.Release(); }
+        return packet;
+    }
+    public async Task SendPacketAsync(HPacket packet, CancellationToken cancellationToken = default)
+    {
+
     }
 
     public async ValueTask<int> ReceiveAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)

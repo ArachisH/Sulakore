@@ -11,12 +11,27 @@ public abstract class HPacket : IDisposable
     private bool _disposed;
     private IMemoryOwner<byte> _owner;
 
-    public short Id { get; init; }
-    public IHFormat Format { get; init; }
+    public short Id { get; }
+    public IHFormat Format { get; }
 
-    public ReadOnlyMemory<byte> Buffer { get; private set; }
+    public int Length { get; internal set; }
+    internal Memory<byte> Buffer { get; private set; }
 
     public static implicit operator HPacketReader(HPacket packet) => packet.AsReader();
+
+    public HPacket(IHFormat format, short id)
+    {
+
+    }
+    public HPacket(IHFormat format, short id, out HPacketWriter packetOut)
+    {
+        Id = id;
+        Format = format;
+        Length = format.MinPacketLength;
+        Buffer = new byte[format.MinBufferSize];
+
+        packetOut = new HPacketWriter(format, Span<byte>.Empty, this);
+    }
 
     /// <summary>
     /// Initializes an instance of <see cref="HPacket"/> with a non-rented heap allocated buffer.
@@ -27,28 +42,9 @@ public abstract class HPacket : IDisposable
     protected HPacket(IHFormat format, short id, Memory<byte> buffer)
     {
         Id = id;
-        Format = format;
         Buffer = buffer;
-    }
-    /// <summary>
-    /// Initializes an expandable instance of <see cref="HPacket"/> that can be written to by accessing the <paramref name="packetOut"/> parameter.
-    /// </summary>
-    /// <param name="format"></param>
-    /// <param name="id"></param>
-    /// <param name="packetOut"></param>
-    protected HPacket(IHFormat format, short id, out HPacketWriter packetOut)
-    {
-        Id = id;
         Format = format;
-
-        Memory<byte> buffer = new byte[format.MinBufferSize];
-        Buffer = buffer;
-
-        Span<byte> packetSpan = buffer.Span;
-        format.TryWriteId(packetSpan, Id, out _);
-        format.TryWriteLength(packetSpan, format.MinPacketLength, out _);
-
-        packetOut = new HPacketWriter(format, packetSpan, this);
+        Length = buffer.Length - format.MinPacketLength;
     }
     /// <summary>
     /// Initializes an instance of <see cref="HPacket"/> with a buffer that is owned by a memory pool implementation.
@@ -64,33 +60,34 @@ public abstract class HPacket : IDisposable
     }
 
     public HPacketReader AsReader() => !_disposed
-        ? (new(this))
+        ? (new(Format, Buffer.Span.Slice(Format.MinBufferSize, Length - Format.MinPacketLength)))
         : throw new ObjectDisposedException("The underlying buffer has already been disposed.");
 
     internal void EnsureMinimumCapacity(ref Span<byte> packetSpan, int minimumCapacity, int position)
     {
         int capacity = packetSpan.Length - position;
-        int capacityRequired = packetSpan.Length + minimumCapacity - capacity;
-        if (minimumCapacity > capacity)
+        if (capacity > minimumCapacity) return;
+
+        int capacityRequired = packetSpan.Length + (minimumCapacity * (minimumCapacity <= 32 ? 2 : 1)) - capacity;
+        capacityRequired = Format.MinBufferSize + Math.Clamp(capacityRequired, Format.MinBufferSize, int.MaxValue);
+
+        Memory<byte> expandedBuffer;
+        if (capacityRequired >= MAX_ALLOC_SIZE)
         {
-            Memory<byte> expandedBuffer;
-            if (capacityRequired >= MAX_ALLOC_SIZE)
-            {
-                IMemoryOwner<byte> expandedOwner = MemoryPool<byte>.Shared.Rent(capacityRequired);
-                expandedBuffer = expandedOwner.Memory;
+            IMemoryOwner<byte> expandedOwner = MemoryPool<byte>.Shared.Rent(capacityRequired);
+            expandedBuffer = expandedOwner.Memory;
 
-                packetSpan.CopyTo(expandedBuffer.Span);
-
-                _owner?.Dispose();
-                _owner = expandedOwner;
-            }
-            else
-            {
-                expandedBuffer = new byte[capacityRequired * 2];
-                packetSpan.CopyTo(expandedBuffer.Span);
-            }
-            Buffer = expandedBuffer;
+            _owner?.Dispose();
+            _owner = expandedOwner;
         }
+        else expandedBuffer = new byte[capacityRequired];
+
+        Span<byte> expandedBodySpan = expandedBuffer.Span[Format.MinBufferSize..];
+
+        packetSpan.CopyTo(expandedBodySpan);
+        packetSpan = expandedBodySpan;
+
+        Buffer = expandedBuffer;
     }
 
     public void Dispose()
@@ -98,7 +95,7 @@ public abstract class HPacket : IDisposable
         Dispose(true);
         GC.SuppressFinalize(this);
     }
-    private void Dispose(bool disposing)
+    protected virtual void Dispose(bool disposing)
     {
         if (!_disposed)
         {

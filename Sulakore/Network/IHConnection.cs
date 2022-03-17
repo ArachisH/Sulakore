@@ -8,8 +8,8 @@ public interface IHConnection
     HNode Local { get; }
     HNode Remote { get; }
 
-    HFormat SendFormat { get; }
-    HFormat ReceiveFormat { get; }
+    IHFormat SendFormat { get; }
+    IHFormat ReceiveFormat { get; }
 
     Task SendToClientAsync(HPacket packet);
     Task SendToServerAsync(HPacket packet);

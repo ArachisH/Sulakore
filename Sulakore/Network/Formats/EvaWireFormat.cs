@@ -56,133 +56,109 @@ public sealed class EvaWireFormat : IHFormat
     {
         Unsafe.SkipInit(out value);
         Unsafe.SkipInit(out bytesRead);
-
-        ref byte sourcePtr = ref MemoryMarshal.GetReference(source);
-        if (typeof(T) == typeof(int))
+        if (Unsafe.SizeOf<T>() <= (uint)source.Length)
         {
-            if (source.Length < sizeof(int)) return false;
-            value = (T)(object)BinaryPrimitives.ReverseEndianness(Unsafe.As<byte, int>(ref sourcePtr));
-            bytesRead = sizeof(int);
-            return true;
-        }
-        if (typeof(T) == typeof(uint))
-        {
-            if (source.Length < sizeof(uint)) return false;
-            value = (T)(object)BinaryPrimitives.ReverseEndianness(Unsafe.As<byte, uint>(ref sourcePtr));
-            bytesRead = sizeof(uint);
-            return true;
-        }
-        else if (typeof(T) == typeof(short))
-        {
-            if (source.Length < sizeof(short)) return false;
-            value = (T)(object)BinaryPrimitives.ReverseEndianness(Unsafe.As<byte, short>(ref sourcePtr));
-            bytesRead = sizeof(short);
-            return true;
-        }
-        else if (typeof(T) == typeof(ushort))
-        {
-            if (source.Length < sizeof(ushort)) return false;
-            value = (T)(object)BinaryPrimitives.ReverseEndianness(Unsafe.As<byte, ushort>(ref sourcePtr));
-            bytesRead = sizeof(ushort);
-            return true;
-        }
-        else if (typeof(T) == typeof(bool) || typeof(T) == typeof(byte) || typeof(T) == typeof(sbyte))
-        {
-            if (source.IsEmpty) return false;
-            value = Unsafe.As<byte, T>(ref sourcePtr);
-            bytesRead = sizeof(byte);
-            return true;
-        }
-        else if (typeof(T) == typeof(long))
-        {
-            if (source.Length < sizeof(long)) return false;
-            value = (T)(object)BinaryPrimitives.ReverseEndianness(Unsafe.As<byte, long>(ref sourcePtr));
-            bytesRead = sizeof(long);
-            return true;
-        }
-        else if (typeof(T) == typeof(ulong))
-        {
-            if (source.Length < sizeof(ulong)) return false;
-            value = (T)(object)BinaryPrimitives.ReverseEndianness(Unsafe.As<byte, ulong>(ref sourcePtr));
-            bytesRead = sizeof(ulong);
-            return true;
-        }
-        else if (typeof(T) == typeof(float))
-        {
-            if (source.Length < sizeof(float)) return false;
-            value = (T)(object)BitConverter.Int32BitsToSingle(
-                BinaryPrimitives.ReverseEndianness(Unsafe.As<byte, int>(ref sourcePtr)));
-            bytesRead = sizeof(float);
-            return true;
-        }
-        else if (typeof(T) == typeof(double))
-        {
-            if (source.Length < sizeof(double)) return false;
-            value = (T)(object)BitConverter.Int64BitsToDouble(
-                BinaryPrimitives.ReverseEndianness(Unsafe.As<byte, long>(ref sourcePtr)));
-            bytesRead = sizeof(double);
+            bytesRead = Unsafe.SizeOf<T>();
+            ref byte sourcePtr = ref MemoryMarshal.GetReference(source);
+            if (BitConverter.IsLittleEndian)
+            {
+                if (typeof(T) == typeof(bool) || 
+                    typeof(T) == typeof(byte) || 
+                    typeof(T) == typeof(sbyte))
+                {
+                    value = Unsafe.As<byte, T>(ref sourcePtr);
+                }
+                else if (typeof(T) == typeof(int))
+                {
+                    value = (T)(object)BinaryPrimitives.ReverseEndianness(Unsafe.As<byte, int>(ref sourcePtr));
+                }
+                else if (typeof(T) == typeof(uint))
+                {
+                    value = (T)(object)BinaryPrimitives.ReverseEndianness(Unsafe.As<byte, uint>(ref sourcePtr));
+                }
+                else if (typeof(T) == typeof(short))
+                {
+                    value = (T)(object)BinaryPrimitives.ReverseEndianness(Unsafe.As<byte, short>(ref sourcePtr));
+                }
+                else if (typeof(T) == typeof(ushort))
+                {
+                    value = (T)(object)BinaryPrimitives.ReverseEndianness(Unsafe.As<byte, ushort>(ref sourcePtr));
+                }
+                else if (typeof(T) == typeof(long))
+                {
+                    value = (T)(object)BinaryPrimitives.ReverseEndianness(Unsafe.As<byte, long>(ref sourcePtr));
+                }
+                else if (typeof(T) == typeof(ulong))
+                {
+                    value = (T)(object)BinaryPrimitives.ReverseEndianness(Unsafe.As<byte, ulong>(ref sourcePtr));
+                }
+                else if (typeof(T) == typeof(float))
+                {
+                    value = (T)(object)BitConverter.Int32BitsToSingle(
+                        BinaryPrimitives.ReverseEndianness(Unsafe.As<byte, int>(ref sourcePtr)));
+                }
+                else if (typeof(T) == typeof(double))
+                {
+                    value = (T)(object)BitConverter.Int64BitsToDouble(
+                        BinaryPrimitives.ReverseEndianness(Unsafe.As<byte, long>(ref sourcePtr)));
+                }
+            }
+            else value = Unsafe.As<byte, T>(ref sourcePtr);
             return true;
         }
         return false;
     }
+
     public bool TryWrite<T>(Span<byte> destination, T value, out int bytesWritten) where T : struct
     {
         Unsafe.SkipInit(out bytesWritten);
 
         ref byte destPtr = ref MemoryMarshal.GetReference(destination);
-        if (typeof(T) == typeof(int))
+        if (Unsafe.SizeOf<T>() <= (uint)destination.Length)
         {
-            if (destination.Length < sizeof(int)) return false;
-            int @int = BinaryPrimitives.ReverseEndianness((int)(object)value);
-            Unsafe.WriteUnaligned(ref destPtr, @int);
-            bytesWritten = sizeof(int);
-            return true;
-        }
-        else if (typeof(T) == typeof(short))
-        {
-            if (destination.Length < sizeof(short)) return false;
-            short @short = BinaryPrimitives.ReverseEndianness((short)(object)value);
-            Unsafe.WriteUnaligned(ref destPtr, @short);
-            bytesWritten = sizeof(short);
-            return true;
-        }
-        else if (typeof(T) == typeof(bool))
-        {
-            if (destination.IsEmpty) return false;
-            bool @bool = (bool)(object)value;
-            Unsafe.WriteUnaligned(ref destPtr, Unsafe.As<bool, byte>(ref @bool));
-            bytesWritten = sizeof(bool);
-            return true;
-        }
-        else if (typeof(T) == typeof(byte))
-        {
-            if (destination.IsEmpty) return false;
-            Unsafe.WriteUnaligned(ref destPtr, (byte)(object)value);
-            bytesWritten = sizeof(byte);
-            return true;
-        }
-        else if (typeof(T) == typeof(long))
-        {
-            if (destination.Length < sizeof(long)) return false;
-            long @long = BinaryPrimitives.ReverseEndianness((long)(object)value);
-            Unsafe.WriteUnaligned(ref destPtr, @long);
-            bytesWritten = sizeof(long);
-            return true;
-        }
-        else if (typeof(T) == typeof(float))
-        {
-            if (destination.Length < sizeof(float)) return false;
-            int @float = BinaryPrimitives.ReverseEndianness(BitConverter.SingleToInt32Bits((float)(object)value));
-            Unsafe.WriteUnaligned(ref destPtr, @float);
-            bytesWritten = sizeof(float);
-            return true;
-        }
-        else if (typeof(T) == typeof(double))
-        {
-            if (destination.Length < sizeof(double)) return false;
-            long @double = BinaryPrimitives.ReverseEndianness(BitConverter.DoubleToInt64Bits((double)(object)value));
-            Unsafe.WriteUnaligned(ref destPtr, @double);
-            bytesWritten = sizeof(double);
+            bytesWritten = Unsafe.SizeOf<T>();
+            if (BitConverter.IsLittleEndian)
+            {
+                if (typeof(T) == typeof(int))
+                {
+                    value = (T)(object)BinaryPrimitives.ReverseEndianness((int)(object)value);
+                }
+                if (typeof(T) == typeof(uint))
+                {
+                    value = (T)(object)BinaryPrimitives.ReverseEndianness((uint)(object)value);
+                }
+                else if (typeof(T) == typeof(short))
+                {
+                    value = (T)(object)BinaryPrimitives.ReverseEndianness((short)(object)value);
+                }
+                else if (typeof(T) == typeof(ushort))
+                {
+                    value = (T)(object)BinaryPrimitives.ReverseEndianness((ushort)(object)value);
+                }
+                else if (typeof(T) == typeof(long))
+                {
+                    value = (T)(object)BinaryPrimitives.ReverseEndianness((long)(object)value);
+                }
+                else if (typeof(T) == typeof(ulong))
+                {
+                    value = (T)(object)BinaryPrimitives.ReverseEndianness((ulong)(object)value);
+                }
+                else if (typeof(T) == typeof(float))
+                {
+                    Unsafe.WriteUnaligned(ref destPtr,
+                        BinaryPrimitives.ReverseEndianness(
+                            BitConverter.SingleToInt32Bits((float)(object)value)));
+                    return true;
+                }
+                else if (typeof(T) == typeof(double))
+                {
+                    Unsafe.WriteUnaligned(ref destPtr, 
+                        BinaryPrimitives.ReverseEndianness(
+                            BitConverter.DoubleToInt64Bits((double)(object)value)));
+                    return true;
+                }
+            }
+            Unsafe.WriteUnaligned(ref destPtr, value);
             return true;
         }
         return false;

@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-using Sulakore.Network.Formats;
-
 namespace Sulakore.Network.Formats;
 
 #nullable enable

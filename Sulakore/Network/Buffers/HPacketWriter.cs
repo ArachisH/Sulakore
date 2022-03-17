@@ -19,37 +19,39 @@ public ref struct HPacketWriter
         _packet = packet;
         _packetSpan = packetSpan;
 
+        Position = 0;
         Format = format;
-        Position = format.MinBufferSize;
     }
 
     public void Write<T>(T value) where T : struct
     {
         int size = Format.GetSize(value);
-        Span<byte> valueSpan = GetSpan(size);
+        Span<byte> advanced = Advance(size);
 
-        Format.Write(valueSpan, value, out _);
-        Position += size;
+        Format.Write(advanced, value, out _);
     }
     public void WriteUTF8(ReadOnlySpan<char> value)
     {
         int size = Format.GetSize(value);
-        Span<byte> valueSpan = GetSpan(size);
+        Span<byte> advanced = Advance(size);
 
-        Format.WriteUTF8(valueSpan, value, out _);
-        Position += size;
+        Format.WriteUTF8(advanced, value, out _);
     }
 
-    private Span<byte> GetSpan(int size)
+    private Span<byte> Advance(int size)
     {
-        if (size > _packetSpan.Length - Position)
+        int capacity = _packetSpan.Length - Position;
+        if (_packet != null)
         {
-            if (_packet == null)
+            _packet.Length += size;
+            if (size > capacity)
             {
-                throw new InsufficientMemoryException($"There is not enough room in the buffer for the given type, and unable to grow as no {nameof(HPacket)} instance is present.");
+                _packet.EnsureMinimumCapacity(ref _packetSpan, size, Position);
             }
-            _packet.EnsureMinimumCapacity(ref _packetSpan, size, Position);
         }
-        return _packetSpan[Position..];
+
+        Span<byte> advanced = _packetSpan[Position..];
+        Position += size;
+        return advanced;
     }
 }

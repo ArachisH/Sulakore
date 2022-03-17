@@ -12,15 +12,12 @@ public ref struct HPacketReader
 
     public byte this[int index] => _packetSpan[index];
 
-    public HPacketReader(HPacket packet)
-        : this(packet.Format, packet.Buffer.Span)
-    { }
     public HPacketReader(IHFormat format, ReadOnlySpan<byte> packetSpan)
     {
         _packetSpan = packetSpan;
 
+        Position = 0;
         Format = format;
-        Position = format.MinBufferSize;
     }
 
     public T Read<T>() where T : struct

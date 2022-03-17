@@ -51,7 +51,7 @@ public static class HExtensions
                 return HHotel.US;
             
             // Slice out rest of value
-            value = value.Slice(0, value.Length - 2);
+            value = value.Slice(0, 2);
         }
 
         if (Enum.TryParse(value, ignoreCase: true, out HHotel hotel) && Enum.IsDefined(hotel))

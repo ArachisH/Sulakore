@@ -8,7 +8,7 @@ namespace Sulakore.Network;
 public sealed class DataInterceptedEventArgs : EventArgs
 {
     private readonly Func<DataInterceptedEventArgs, Task> _continuation;
-    private readonly Func<DataInterceptedEventArgs, ValueTask<int>> _relayer;
+    private readonly Func<DataInterceptedEventArgs, Task> _relayer;
 
     public int Step { get; }
     public bool IsOutgoing { get; }
@@ -23,7 +23,7 @@ public sealed class DataInterceptedEventArgs : EventArgs
     public bool WasRelayed { get; private set; }
     public bool HasContinued { get; private set; }
 
-    public DataInterceptedEventArgs(HPacket packet, int step, bool isOutgoing, Func<DataInterceptedEventArgs, Task> continuation = null, Func<DataInterceptedEventArgs, ValueTask<int>> relayer = null)
+    public DataInterceptedEventArgs(HPacket packet, int step, bool isOutgoing, Func<DataInterceptedEventArgs, Task> continuation = null, Func<DataInterceptedEventArgs, Task> relayer = null)
     {
         _relayer = relayer;
         _continuation = continuation;

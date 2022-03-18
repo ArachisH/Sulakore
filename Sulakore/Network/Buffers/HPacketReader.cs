@@ -4,32 +4,37 @@ namespace Sulakore.Network.Buffers;
 
 public ref struct HPacketReader
 {
-    private readonly ReadOnlySpan<byte> _packetSpan;
+    private readonly IHFormat _format;
+    private readonly ReadOnlySpan<byte> _source;
 
-    public IHFormat Format { get; }
-    public int Position { get; set; }
-    public int Available => _packetSpan.Length - Position;
+    public int Position { get; private set; }
+    public int Available => _source.Length - Position;
 
-    public byte this[int index] => _packetSpan[index];
+    public static implicit operator ReadOnlySpan<byte>(HPacketReader packetIn) => packetIn._source;
 
-    public HPacketReader(IHFormat format, ReadOnlySpan<byte> packetSpan)
+    public HPacketReader(IHFormat format, ReadOnlySpan<byte> source)
     {
-        _packetSpan = packetSpan;
+        _format = format;
+        _source = source;
 
         Position = 0;
-        Format = format;
     }
 
     public T Read<T>() where T : struct
     {
-        T value = Format.Read<T>(_packetSpan[Position..], out int bytesRead);
+        T value = Read<T>(Position, out int bytesRead);
         Position += bytesRead;
         return value;
     }
+    public T Read<T>(int position, out int bytesRead) where T : struct
+        => _format.Read<T>(_source[position..], out bytesRead);
+
     public string ReadUTF8()
     {
-        string value = Format.ReadUTF8(_packetSpan[Position..], out int bytesRead);
+        string value = ReadUTF8(Position, out int bytesRead);
         Position += bytesRead;
         return value;
     }
+    public string ReadUTF8(int position, out int bytesRead)
+        => _format.ReadUTF8(_source[position..], out bytesRead);
 }

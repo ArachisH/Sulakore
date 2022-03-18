@@ -6,18 +6,18 @@ public ref struct HPacketWriter
 {
     private readonly HPacket _packet;
 
-    private Span<byte> _packetSpan;
+    private Span<byte> _destination;
 
     public int Position { get; set; }
     public IHFormat Format { get; init; }
 
-    public HPacketWriter(IHFormat format, Span<byte> packetSpan)
-        : this(format, packetSpan, null)
+    public HPacketWriter(IHFormat format, Span<byte> destination)
+        : this(format, destination, null)
     { }
-    internal HPacketWriter(IHFormat format, Span<byte> packetSpan, HPacket packet)
+    internal HPacketWriter(IHFormat format, Span<byte> destination, HPacket packet)
     {
         _packet = packet;
-        _packetSpan = packetSpan;
+        _destination = destination;
 
         Position = 0;
         Format = format;
@@ -40,18 +40,15 @@ public ref struct HPacketWriter
 
     private Span<byte> Advance(int size)
     {
-        int capacity = _packetSpan.Length - Position;
         if (_packet != null)
         {
             _packet.Length += size;
-            if (size > capacity)
-            {
-                _packet.EnsureMinimumCapacity(ref _packetSpan, size, Position);
-            }
+            _packet.EnsureMinimumCapacity(ref _destination, size, Position);
         }
 
-        Span<byte> advanced = _packetSpan[Position..];
+        Span<byte> advanced = _destination[Position..];
         Position += size;
+
         return advanced;
     }
 }

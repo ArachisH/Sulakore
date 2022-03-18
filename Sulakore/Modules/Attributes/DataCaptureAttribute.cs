@@ -58,7 +58,7 @@ public sealed class DataCaptureAttribute : Attribute, IEquatable<DataCaptureAttr
             }
             values[i] = Type.GetTypeCode(parameter.ParameterType) switch
             {
-                TypeCode.Byte => packetIn[packetIn.Position++],
+                TypeCode.Byte => packetIn.Read<byte>(),
                 TypeCode.Int32 => packetIn.Read<int>(),
                 TypeCode.Int16 => packetIn.Read<short>(),
                 TypeCode.String => packetIn.ReadUTF8(),

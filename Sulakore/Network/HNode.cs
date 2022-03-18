@@ -242,6 +242,13 @@ public sealed class HNode : IDisposable
         return IsUpgraded;
     }
 
+    public async Task SendPacketAsync(HPacket packet, CancellationToken cancellationToken = default)
+    {
+        Memory<byte> buffer = packet.Buffer.Slice(0, packet.Length + packet.Format.MinBufferSize - packet.Format.MinPacketLength);
+        Encipher(Encrypter, buffer.Span, IsWebSocket);
+
+        await SendAsync(buffer, cancellationToken).ConfigureAwait(false);
+    }
     public async Task<HPacket> ReceivePacketAsync(IHFormat format, CancellationToken cancellationToken = default)
     {
         if (format == null)
@@ -261,7 +268,7 @@ public sealed class HNode : IDisposable
             while (received == 0);
 
             // Did the first buffer receive meet the minimum requirements?
-            if (received != buffer.Length || !format.TryGetHeader(buffer.Span, out int length, out short id)) return null;
+            if (received != buffer.Length || !format.TryReadHeader(buffer.Span, out int length, out short id, out _)) return null;
 
             int fullPacketLength = format.MinBufferSize - format.MinPacketLength + length;
             if (fullPacketLength > buffer.Length) // Should the buffer be enlarged to ensure it fits the full packet?
@@ -305,10 +312,6 @@ public sealed class HNode : IDisposable
         }
         finally { _packetReceiveSemaphore.Release(); }
         return packet;
-    }
-    public async Task SendPacketAsync(HPacket packet, CancellationToken cancellationToken = default)
-    {
-
     }
 
     public async ValueTask<int> ReceiveAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)

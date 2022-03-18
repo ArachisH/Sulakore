@@ -19,10 +19,6 @@ public abstract class HPacket : IDisposable
 
     public static implicit operator HPacketReader(HPacket packet) => packet.AsReader();
 
-    public HPacket(IHFormat format, short id)
-    {
-
-    }
     public HPacket(IHFormat format, short id, out HPacketWriter packetOut)
     {
         Id = id;

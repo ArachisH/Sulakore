@@ -4,7 +4,7 @@ using Sulakore.Network.Formats;
 
 namespace Sulakore.Network.Buffers;
 
-public abstract class HPacket : IDisposable
+public class HPacket : IDisposable
 {
     public const int MAX_ALLOC_SIZE = 256;
 
@@ -59,10 +59,10 @@ public abstract class HPacket : IDisposable
         ? (new(Format, Buffer.Span.Slice(Format.MinBufferSize, Length - Format.MinPacketLength)))
         : throw new ObjectDisposedException("The underlying buffer has already been disposed.");
 
-    internal void EnsureMinimumCapacity(ref Span<byte> packetSpan, int minimumCapacity, int position)
+    internal bool EnsureMinimumCapacity(ref Span<byte> packetSpan, int minimumCapacity, int position)
     {
         int capacity = packetSpan.Length - position;
-        if (capacity > minimumCapacity) return;
+        if (capacity > minimumCapacity) return true;
 
         int capacityRequired = packetSpan.Length + (minimumCapacity * (minimumCapacity <= 32 ? 2 : 1)) - capacity;
         capacityRequired = Format.MinBufferSize + Math.Clamp(capacityRequired, Format.MinBufferSize, int.MaxValue);
@@ -84,6 +84,7 @@ public abstract class HPacket : IDisposable
         packetSpan = expandedBodySpan;
 
         Buffer = expandedBuffer;
+        return false;
     }
 
     public void Dispose()

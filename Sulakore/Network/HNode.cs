@@ -118,7 +118,7 @@ public sealed class HNode : IDisposable
         }
 
         // Connection type can only be determined in the beginning. ("GET"/WebSocket/EvaWire, '4000'/Raw/EvaWire, '206'/Raw/Wedgie)
-        using IMemoryOwner<byte> initialBytesOwner = Rent(6, out Memory<byte> initialBytesRegion);
+        using IMemoryOwner<byte> initialBytesOwner = BufferHelper.Rent(6, out Memory<byte> initialBytesRegion);
 
         int initialBytesRead = await _socket.ReceiveAsync(initialBytesRegion, SocketFlags.Peek).ConfigureAwait(false);
         ParseInitialBytes(initialBytesRegion.Span[..initialBytesRead], out bool isWebSocket, out ushort possibleId);
@@ -171,7 +171,7 @@ public sealed class HNode : IDisposable
         string webRequest = $"GET /websocket HTTP/1.1\r\nHost: {RemoteEndPoint}\r\n{requestHeaders}\r\nSec-WebSocket-Key: {GenerateWebSocketKey()}\r\n\r\n";
         await SendAsync(Encoding.UTF8.GetBytes(webRequest)).ConfigureAwait(false);
 
-        using IMemoryOwner<byte> receiveOwner = Rent(256, out Memory<byte> receiveRegion);
+        using IMemoryOwner<byte> receiveOwner = BufferHelper.Rent(256, out Memory<byte> receiveRegion);
         int received = await ReceiveAsync(receiveRegion).ConfigureAwait(false);
 
         // Create the mask that will be used for the WebSocket payloads.
@@ -217,10 +217,10 @@ public sealed class HNode : IDisposable
         }
 
         if (IsUpgraded || !await DetermineFormatsAsync().ConfigureAwait(false)) return IsUpgraded;
-        using IMemoryOwner<byte> receivedOwner = Rent(1024, out Memory<byte> receivedRegion);
+        using IMemoryOwner<byte> receivedOwner = BufferHelper.Rent(1024, out Memory<byte> receivedRegion);
         int received = await ReceiveAsync(receivedRegion).ConfigureAwait(false);
 
-        using IMemoryOwner<byte> responseOwner = Rent(256, out Memory<byte> responseRegion);
+        using IMemoryOwner<byte> responseOwner = BufferHelper.Rent(256, out Memory<byte> responseRegion);
         FillWebResponse(receivedRegion.Span.Slice(0, received), responseRegion.Span, out int responseWritten);
         await SendAsync(responseRegion.Slice(0, responseWritten)).ConfigureAwait(false);
 
@@ -378,13 +378,6 @@ public sealed class HNode : IDisposable
         }
         else cipher.Process(buffer);
     }
-    [DebuggerStepThrough]
-    private static IMemoryOwner<byte> Rent(int minBufferSize, out Memory<byte> trimmedRegion)
-    {
-        var trimmedOwner = MemoryPool<byte>.Shared.Rent(minBufferSize);
-        trimmedRegion = trimmedOwner.Memory[..minBufferSize];
-        return trimmedOwner;
-    }
     private static bool ValidateRemoteCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) => true;
 
     public static async Task<HNode> AcceptAsync(int port)
@@ -420,263 +413,4 @@ public sealed class HNode : IDisposable
     public static Task<HNode> ConnectAsync(IPAddress address, int port) => ConnectAsync(new HotelEndPoint(address, port));
     public static Task<HNode> ConnectAsync(IPAddress[] addresses, int port) => ConnectAsync(new HotelEndPoint(addresses[0], port));
     public static Task<HNode> ConnectAsync(IPEndPoint endPoint) => ConnectAsync(endPoint as HotelEndPoint ?? new HotelEndPoint(endPoint));
-
-    private sealed class WebSocketStream : Stream
-    {
-        private const int MAX_WEBSOCKET_TOCLIENT_PAYLOAD_SIZE = 125;
-
-        private static readonly byte[] _emptyMask = new byte[4];
-
-        private readonly byte[] _mask;
-        private readonly bool _isClient;
-        private readonly bool _leaveOpen;
-        private readonly Stream _innerStream;
-
-        private bool _disposed;
-
-        public WebSocketStream(Stream innerStream)
-            : this(innerStream, null, false)
-        { }
-        public WebSocketStream(Stream innerStream, byte[] mask, bool leaveOpen)
-        {
-            _mask = mask;
-            _leaveOpen = leaveOpen;
-            _isClient = mask != null;
-            _innerStream = innerStream;
-        }
-
-        public override async ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
-        {
-            bool isMasked;
-            int op, received, payloadLength;
-            using IMemoryOwner<byte> headerOwner = Rent(14, out Memory<byte> headerRegion);
-            do
-            {
-                received = await _innerStream.ReadAsync(headerRegion.Slice(0, 2), cancellationToken).ConfigureAwait(false);
-                if (received != 2) return -1; // The size of the WebSocket frame header should at minimum be two bytes.
-                HeaderDecode(headerRegion.Span, out isMasked, out payloadLength, out op);
-            }
-            while (payloadLength == 0 || op != 2); // Continue to receive fragments until a binary frame with a payload size more than zero is found.
-
-            switch (payloadLength)
-            {
-                case 126:
-                {
-                    received += await _innerStream.ReadAsync(headerRegion.Slice(received, sizeof(ushort)), cancellationToken).ConfigureAwait(false);
-                    payloadLength = BinaryPrimitives.ReadUInt16BigEndian(headerRegion.Slice(2, sizeof(ushort)).Span);
-                    break;
-                }
-                case 127:
-                {
-                    received += await _innerStream.ReadAsync(headerRegion.Slice(received, sizeof(ulong)), cancellationToken).ConfigureAwait(false);
-                    payloadLength = (int)BinaryPrimitives.ReadUInt64BigEndian(headerRegion.Slice(2, sizeof(ulong)).Span); // I hope payloads aren't actually this big.
-                    break;
-                }
-            }
-
-            Memory<byte> maskRegion = null;
-            if (isMasked)
-            {
-                maskRegion = headerRegion.Slice(received, 4);
-                await _innerStream.ReadAsync(maskRegion, cancellationToken).ConfigureAwait(false);
-            }
-
-            received = 0;
-            Memory<byte> payloadRegion = buffer.Slice(0, Math.Min(payloadLength, buffer.Length));
-            do
-            {
-                // Attempt to copy the entire WebSocket payload into the buffer, otherwise, if there is not enough room, specify how much data has been left with the '_leftoverPayloadBytes' field.
-                received += await _innerStream.ReadAsync(payloadRegion.Slice(received, payloadRegion.Length - received), cancellationToken).ConfigureAwait(false);
-            }
-            while (received != payloadRegion.Length);
-
-            if (isMasked)
-            {
-                PayloadUnmask(payloadRegion.Slice(0, received).Span, maskRegion.Span);
-            }
-            return received;
-        }
-        public override async ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
-        {
-            using IMemoryOwner<byte> headerOwner = Rent(14, out Memory<byte> headerRegion);
-            for (int i = 0, payloadLeft = buffer.Length; payloadLeft > 0; payloadLeft -= MAX_WEBSOCKET_TOCLIENT_PAYLOAD_SIZE, i++)
-            {
-                int headerLength = HeaderEncode(headerRegion.Span, payloadLeft, i == 0, _isClient, out bool isFinalFragment);
-                int payloadLength = isFinalFragment ? payloadLeft : MAX_WEBSOCKET_TOCLIENT_PAYLOAD_SIZE;
-
-                IMemoryOwner<byte> maskedOwner = null;
-                ReadOnlyMemory<byte> payloadFragment = buffer.Slice(i * MAX_WEBSOCKET_TOCLIENT_PAYLOAD_SIZE, payloadLength);
-
-                await _innerStream.WriteAsync(headerRegion.Slice(0, headerLength), cancellationToken).ConfigureAwait(false);
-                if (_mask != null)
-                {
-                    await _innerStream.WriteAsync(_mask, cancellationToken).ConfigureAwait(false);
-                    maskedOwner = PayloadMask(payloadFragment.Span, _mask);
-                }
-
-                if (maskedOwner != null) // MaskPayload could return null, which means that we used the '_emptyMask' instance, WHICH also means no masking was done on the payload.
-                {
-                    await _innerStream.WriteAsync(maskedOwner.Memory.Slice(0, payloadFragment.Length), cancellationToken).ConfigureAwait(false);
-                    maskedOwner.Dispose();
-                }
-                else await _innerStream.WriteAsync(payloadFragment, cancellationToken).ConfigureAwait(false);
-
-                if (_isClient) break;
-            }
-        }
-
-        #region Stream Implementation
-        public override long Position
-        {
-            get => throw new NotSupportedException();
-            set => throw new NotSupportedException();
-        }
-        public override bool CanRead => true;
-        public override bool CanSeek => false;
-        public override bool CanWrite => true;
-        public override long Length => throw new NotSupportedException();
-
-        public override void Flush() => _innerStream.Flush();
-        public override Task FlushAsync(CancellationToken cancellationToken) => _innerStream.FlushAsync(cancellationToken);
-
-        public override int Read(byte[] buffer, int offset, int count) => throw new NotSupportedException();
-        public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
-
-        public override void SetLength(long value) => throw new NotSupportedException();
-        public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            if (disposing && !_disposed && !_leaveOpen)
-            {
-                _innerStream.Dispose();
-                _disposed = true;
-            }
-        }
-        #endregion
-
-        private static void PayloadUnmask(Span<byte> payload, Span<byte> mask)
-        {
-            for (int i = 0; i < payload.Length; i++)
-            {
-                payload[i] ^= mask[i % 4];
-            }
-        }
-        private static IMemoryOwner<byte> PayloadMask(ReadOnlySpan<byte> payload, ReadOnlySpan<byte> mask)
-        {
-            if (mask == _emptyMask) return null;
-            IMemoryOwner<byte> maskedOwner = Rent(payload.Length, out Memory<byte> maskedRegion);
-
-            Span<byte> masked = maskedRegion.Span;
-            for (int i = 0; i < payload.Length; i++)
-            {
-                masked[i] = (byte)(payload[i] ^ mask[i % 4]);
-            }
-            return maskedOwner;
-        }
-
-        [DebuggerStepThrough]
-        private static void HeaderDecode(Span<byte> header, out bool isMasked, out int payloadLength, out int op)
-        {
-            op = header[0] & 0b00001111;
-            payloadLength = header[1] & 0x7F;
-            isMasked = (header[1] & 0x80) == 0x80;
-        }
-        private static int HeaderEncode(Span<byte> header, int payloadLeft, bool isFirstFragment, bool isClient, out bool isFinalFragment)
-        {
-            isFinalFragment = isClient || payloadLeft <= MAX_WEBSOCKET_TOCLIENT_PAYLOAD_SIZE;
-
-            int headerBits = isFinalFragment ? 1 : 0;
-            headerBits = (headerBits << 1) + 0; // RSV1 - IsDataCompressed
-            headerBits = (headerBits << 1) + 0; // RSV2
-            headerBits = (headerBits << 1) + 0; // RSV3
-            headerBits = (headerBits << 4) + (isFirstFragment ? 2 : 0); // Mark as binary, otherwise continuation
-            headerBits = (headerBits << 1) + (isClient ? 1 : 0); // Payload should be masked when acting as the client, otherwise specify that no mask is present(0).
-
-            int headerLength = 2;
-            int payloadLength = isFinalFragment ? payloadLeft : MAX_WEBSOCKET_TOCLIENT_PAYLOAD_SIZE;
-            if (isClient && payloadLeft > 125) // Fragmenting the payload is not necessary when sending data to the server.
-            {
-                if (payloadLeft <= ushort.MaxValue)
-                {
-                    payloadLength = 126;
-                    headerLength += sizeof(ushort);
-                    BinaryPrimitives.WriteUInt16BigEndian(header.Slice(2), (ushort)payloadLeft);
-                }
-                else
-                {
-                    payloadLength = 127;
-                    headerLength += sizeof(ulong);
-                    BinaryPrimitives.WriteUInt64BigEndian(header.Slice(2), (ulong)payloadLeft);
-                }
-            }
-
-            headerBits = (headerBits << 7) + payloadLength;
-            BinaryPrimitives.WriteUInt16BigEndian(header, (ushort)headerBits);
-
-            return headerLength;
-        }
-    }
-    private sealed class BufferedNetworkStream : Stream
-    {
-        private const int DEFAULT_BUFFER_SIZE = 4096;
-
-        private readonly NetworkStream _networkStream;
-        private readonly BufferedStream _readBuffer, _writeBuffer;
-
-        private bool _disposed;
-
-        public int ReadBufferSize { get; init; }
-        public int WriteBufferSize { get; init; }
-
-        public BufferedNetworkStream(Socket socket)
-            : this(socket, DEFAULT_BUFFER_SIZE, DEFAULT_BUFFER_SIZE)
-        { }
-        public BufferedNetworkStream(Socket socket, int readBufferSize, int writeBufferSize)
-        {
-            ReadBufferSize = readBufferSize;
-            WriteBufferSize = writeBufferSize;
-
-            _networkStream = new NetworkStream(socket, true);
-            _readBuffer = new BufferedStream(_networkStream, readBufferSize);
-            _writeBuffer = new BufferedStream(_networkStream, writeBufferSize);
-        }
-
-        public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) => _readBuffer.ReadAsync(buffer, cancellationToken);
-        public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default) => _writeBuffer.WriteAsync(buffer, cancellationToken);
-
-        #region Stream Implementation
-        public override long Position
-        {
-            get => throw new NotSupportedException();
-            set => throw new NotSupportedException();
-        }
-        public override bool CanRead => true;
-        public override bool CanSeek => false;
-        public override bool CanWrite => true;
-        public override long Length => throw new NotSupportedException();
-
-        public override void Flush() => _writeBuffer.Flush();
-        public override Task FlushAsync(CancellationToken cancellationToken) => _writeBuffer.FlushAsync(cancellationToken);
-
-        public override int Read(byte[] buffer, int offset, int count) => throw new NotSupportedException();
-        public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
-
-        public override void SetLength(long value) => throw new NotSupportedException();
-        public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            if (disposing && _disposed)
-            {
-                _networkStream.Dispose();
-                _readBuffer.Dispose();
-                _writeBuffer.Dispose();
-                _disposed = true;
-            }
-        }
-        #endregion
-    }
 }

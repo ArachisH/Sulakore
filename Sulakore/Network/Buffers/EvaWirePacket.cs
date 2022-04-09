@@ -2,9 +2,10 @@
 
 namespace Sulakore.Network.Buffers;
 
-public sealed class EvaWirePacket : HPacket
+public static class EvaWirePacket // : IPacketFactory?
 {
-    public EvaWirePacket(short id, out HPacketWriter packetOut)
-        : base(IHFormat.EvaWire, id, out packetOut)
-    { }
+    public static HPacket Create(short id, out HPacketWriter packetOut)
+    {
+        return new HPacket(IHFormat.EvaWire, id, out packetOut);
+    }
 }

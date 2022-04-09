@@ -26,9 +26,8 @@ public class HPacket : IDisposable
         Length = format.MinPacketLength;
         Buffer = new byte[format.MinBufferSize];
 
-        packetOut = new HPacketWriter(format, Span<byte>.Empty, this);
+        packetOut = new HPacketWriter(this, Span<byte>.Empty);
     }
-
     /// <summary>
     /// Initializes an instance of <see cref="HPacket"/> with a non-rented heap allocated buffer.
     /// </summary>

@@ -12,15 +12,18 @@ public ref struct HPacketWriter
     public IHFormat Format { get; init; }
 
     public HPacketWriter(IHFormat format, Span<byte> destination)
-        : this(format, destination, null)
-    { }
-    internal HPacketWriter(IHFormat format, Span<byte> destination, HPacket packet)
     {
-        _packet = packet;
+        _packet = null;
         _destination = destination;
 
         Position = 0;
         Format = format;
+    }
+    internal HPacketWriter(HPacket packet, Span<byte> destination)
+        : this(packet.Format, destination)
+    {
+        _packet = packet;
+        _destination = destination;
     }
 
     public void Write<T>(T value) where T : struct

@@ -71,7 +71,7 @@ public sealed class HNode : IDisposable
         RemoteEndPoint = remoteEndPoint;
     }
 
-    public async Task<bool> DetermineFormatsAsync()
+    public async Task<bool> DetermineFormatsAsync(CancellationToken cancellationToken = default)
     {
         static void ParseInitialBytes(Span<byte> initialBytesSpan, out bool isWebSocket, out ushort possibleId)
         {
@@ -83,7 +83,7 @@ public sealed class HNode : IDisposable
         // Connection type can only be determined in the beginning. ("GET"/WebSocket/EvaWire, '4000'/Raw/EvaWire, '206'/Raw/Wedgie)
         using IMemoryOwner<byte> initialBytesOwner = BufferHelper.Rent(6, out Memory<byte> initialBytesRegion);
 
-        int initialBytesRead = await _socket.ReceiveAsync(initialBytesRegion, SocketFlags.Peek).ConfigureAwait(false);
+        int initialBytesRead = await _socket.ReceiveAsync(initialBytesRegion, SocketFlags.Peek, cancellationToken).ConfigureAwait(false);
         ParseInitialBytes(initialBytesRegion.Span.Slice(0, initialBytesRead), out bool isWebSocket, out ushort possibleId);
 
         bool wasDetermined = true;
@@ -347,18 +347,6 @@ public sealed class HNode : IDisposable
     }
     private static bool ValidateRemoteCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) => true;
 
-    public static async Task<HNode> AcceptAsync(int port)
-    {
-        using var listenSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        listenSocket.Bind(new IPEndPoint(IPAddress.Any, port));
-        listenSocket.LingerState = new LingerOption(false, 0);
-        listenSocket.Listen(1);
-
-        Socket socket = await listenSocket.AcceptAsync().ConfigureAwait(false);
-        listenSocket.Close();
-
-        return new HNode(socket);
-    }
     public static async Task<HNode> ConnectAsync(HotelEndPoint endPoint)
     {
         var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -376,6 +364,19 @@ public sealed class HNode : IDisposable
         }
         else return new HNode(socket, endPoint);
     }
+    public static async Task<HNode> AcceptAsync(int port, CancellationToken cancellationToken = default)
+    {
+        using var listenSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        listenSocket.Bind(new IPEndPoint(IPAddress.Any, port));
+        listenSocket.LingerState = new LingerOption(false, 0);
+        listenSocket.Listen(1);
+
+        Socket socket = await listenSocket.AcceptAsync(cancellationToken).ConfigureAwait(false);
+        listenSocket.Close();
+
+        return new HNode(socket);
+    }
+
     public static Task<HNode> ConnectAsync(string host, int port) => ConnectAsync(HotelEndPoint.Parse(host, port));
     public static Task<HNode> ConnectAsync(IPAddress address, int port) => ConnectAsync(new HotelEndPoint(address, port));
     public static Task<HNode> ConnectAsync(IPAddress[] addresses, int port) => ConnectAsync(new HotelEndPoint(addresses[0], port));

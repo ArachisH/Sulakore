@@ -207,8 +207,9 @@ public sealed class HNode : IDisposable
 
     public async Task SendPacketAsync(HPacket packet, CancellationToken cancellationToken = default)
     {
-        IMemoryOwner<byte> tempPacketOwner;
         Memory<byte> buffer = packet.Buffer;
+        IMemoryOwner<byte> tempPacketOwner = null;
+
         int fullPacketLength = packet.Length + packet.Format.MinBufferSize - packet.Format.MinPacketLength;
         if (!packet.IsReadOnly) // This packet CAN be modified, since it was NOT CREATED INTERNALLY. (IsReadOnly can only be true if the internal constructor was used)
         {
@@ -219,6 +220,7 @@ public sealed class HNode : IDisposable
         Encipher(Encrypter, buffer.Span, IsWebSocket);
 
         await SendAsync(buffer, cancellationToken).ConfigureAwait(false);
+        tempPacketOwner?.Dispose();
     }
     public async Task<HPacket> ReceivePacketAsync(IHFormat format, CancellationToken cancellationToken = default)
     {

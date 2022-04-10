@@ -12,9 +12,10 @@ public sealed class HPacket : IDisposable
     private IMemoryOwner<byte> _owner;
 
     public short Id { get; }
+    public IHFormat Format { get; }
     public int Length { get; internal set; }
 
-    public IHFormat Format { get; }
+    internal bool IsReadOnly { get; }
     internal Memory<byte> Buffer { get; private set; }
 
     public static implicit operator HPacketReader(HPacket packet) => packet.AsReader();
@@ -36,6 +37,7 @@ public sealed class HPacket : IDisposable
         Format = format;
         Length = length;
         Buffer = buffer;
+        IsReadOnly = true;
     }
 
     public HPacketReader AsReader() => !_disposed

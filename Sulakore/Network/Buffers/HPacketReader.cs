@@ -27,7 +27,7 @@ public ref struct HPacketReader
         return value;
     }
     public T Read<T>(int position, out int bytesRead) where T : struct
-        => _format.Read<T>(_source[position..], out bytesRead);
+        => _format.Read<T>(_source.Slice(position), out bytesRead);
 
     public string ReadUTF8()
     {
@@ -36,5 +36,5 @@ public ref struct HPacketReader
         return value;
     }
     public string ReadUTF8(int position, out int bytesRead)
-        => _format.ReadUTF8(_source[position..], out bytesRead);
+        => _format.ReadUTF8(_source.Slice(position), out bytesRead);
 }

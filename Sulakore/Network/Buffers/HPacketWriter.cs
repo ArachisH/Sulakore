@@ -49,7 +49,7 @@ public ref struct HPacketWriter
             _packet.EnsureMinimumCapacity(ref _destination, size, Position);
         }
 
-        Span<byte> advanced = _destination[Position..];
+        Span<byte> advanced = _destination.Slice(Position);
         Position += size;
 
         return advanced;

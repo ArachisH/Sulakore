@@ -250,7 +250,7 @@ public sealed class HNode : IDisposable
 
             while (received < fullPacketLength)
             {
-                received += await ReceiveAsync(buffer[received..], cancellationToken).ConfigureAwait(false);
+                received += await ReceiveAsync(buffer.Slice(received), cancellationToken).ConfigureAwait(false);
             }
 
             if (received != fullPacketLength)

@@ -46,19 +46,4 @@ public sealed class RC4 : IStreamCipher
             parsed[k] = (byte)(data[k] ^ rightXOR);
         }
     }
-
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-    private void Dispose(bool disposing)
-    {
-        if (_disposed) return;
-        if (disposing)
-        {
-            _table = null;
-        }
-        _disposed = true;
-    }
 }

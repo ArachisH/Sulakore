@@ -314,8 +314,6 @@ public sealed class HNode : IDisposable
         {
             try { _socketStream.Dispose(); }
             catch { /* The socket doesn't like being shutdown/closed and will throw a fit everytime. */ }
-            Encrypter?.Dispose();
-            Decrypter?.Dispose();
             _disposed = true;
         }
         _socketStream = null;

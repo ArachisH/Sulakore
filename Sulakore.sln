@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sulakore.Tests", "Sulakore.Tests\Sulakore.Tests.csproj", "{F3B0C9EA-7A96-4C6D-89A6-780FD4443E4B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{296C3C71-D370-426F-9020-DFDCC881AFDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{296C3C71-D370-426F-9020-DFDCC881AFDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{296C3C71-D370-426F-9020-DFDCC881AFDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3B0C9EA-7A96-4C6D-89A6-780FD4443E4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3B0C9EA-7A96-4C6D-89A6-780FD4443E4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3B0C9EA-7A96-4C6D-89A6-780FD4443E4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3B0C9EA-7A96-4C6D-89A6-780FD4443E4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

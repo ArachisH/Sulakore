@@ -4,7 +4,7 @@ using Sulakore.Network.Formats;
 
 namespace Sulakore.Network.Buffers;
 
-public class HPacket : IDisposable
+public sealed class HPacket : IDisposable
 {
     public const int MAX_ALLOC_SIZE = 256;
 
@@ -12,9 +12,9 @@ public class HPacket : IDisposable
     private IMemoryOwner<byte> _owner;
 
     public short Id { get; }
-    public IHFormat Format { get; }
-
     public int Length { get; internal set; }
+
+    public IHFormat Format { get; }
     internal Memory<byte> Buffer { get; private set; }
 
     public static implicit operator HPacketReader(HPacket packet) => packet.AsReader();
@@ -28,30 +28,14 @@ public class HPacket : IDisposable
 
         packetOut = new HPacketWriter(this, Span<byte>.Empty);
     }
-    /// <summary>
-    /// Initializes an instance of <see cref="HPacket"/> with a non-rented heap allocated buffer.
-    /// </summary>
-    /// <param name="format"></param>
-    /// <param name="id"></param>
-    /// <param name="buffer"></param>
-    protected HPacket(IHFormat format, short id, Memory<byte> buffer)
-    {
-        Id = id;
-        Buffer = buffer;
-        Format = format;
-        Length = buffer.Length - format.MinPacketLength;
-    }
-    /// <summary>
-    /// Initializes an instance of <see cref="HPacket"/> with a buffer that is owned by a memory pool implementation.
-    /// </summary>
-    /// <param name="format"></param>
-    /// <param name="id"></param>
-    /// <param name="length"></param>
-    /// <param name="owner"></param>
-    protected HPacket(IHFormat format, short id, int length, IMemoryOwner<byte> owner)
-        : this(format, id, owner.Memory[..length])
+    internal HPacket(IHFormat format, short id, int length, Memory<byte> buffer, IMemoryOwner<byte> owner = null)
     {
         _owner = owner;
+
+        Id = id;
+        Format = format;
+        Length = length;
+        Buffer = buffer;
     }
 
     public HPacketReader AsReader() => !_disposed
@@ -77,8 +61,7 @@ public class HPacket : IDisposable
         }
         else expandedBuffer = new byte[capacityRequired];
 
-        Span<byte> expandedBodySpan = expandedBuffer.Span[Format.MinBufferSize..];
-
+        Span<byte> expandedBodySpan = expandedBuffer.Span.Slice(Format.MinBufferSize);
         packetSpan.CopyTo(expandedBodySpan);
         packetSpan = expandedBodySpan;
 
@@ -91,7 +74,7 @@ public class HPacket : IDisposable
         Dispose(true);
         GC.SuppressFinalize(this);
     }
-    protected virtual void Dispose(bool disposing)
+    private void Dispose(bool disposing)
     {
         if (!_disposed)
         {

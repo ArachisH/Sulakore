@@ -29,8 +29,8 @@ public static class HExtensions
     {
         if (value.Length < 2) return HHotel.Unknown;
 
-        if (value.StartsWith("hh", StringComparison.OrdinalIgnoreCase)) value = value.Slice(2, 2); // hhxz
-        else if (value.StartsWith("game-", StringComparison.OrdinalIgnoreCase)) value = value.Slice(5, 3);
+        if (value.Length >= 4 && value.StartsWith("hh", StringComparison.OrdinalIgnoreCase)) value = value.Slice(2, 2); // hhxx
+        else if (value.Length >= 7 && value.StartsWith("game-", StringComparison.OrdinalIgnoreCase)) value = value.Slice(5, 2); // game-xx
 
         if (value.Length != 2 && value.Length != 5)
         {

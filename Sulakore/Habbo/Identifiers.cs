@@ -59,7 +59,7 @@ public abstract class Identifiers : IReadOnlyList<HMessage>
     protected virtual HMessage ResolveMessage(IGame game, string name, short unityId, string unityStructure, params uint[] postShuffleHashes)
     {
         HMessage message = default;
-        if (game.Kind != GameKind.Unity)
+        if (game.Architecture != HGameArchitecture.Unity)
         {
             for (int i = 0; i < postShuffleHashes.Length; i++)
             {
@@ -71,7 +71,7 @@ public abstract class Identifiers : IReadOnlyList<HMessage>
         if (message != default)
         {
             _byId.Add(message.Id, message);
-            if (game.Kind != GameKind.Unity)
+            if (game.Architecture != HGameArchitecture.Unity)
             {
                 _byHash.Add(message.Hash, message);
             }

@@ -12,6 +12,7 @@ public sealed class DataInterceptedEventArgs : EventArgs
 
     public int Step { get; }
     public bool IsOutgoing { get; }
+    public DateTime Timestamp { get; }
     public Task WaitUntil { get; set; }
 
     public bool IsContinuable => _continuation != null && !HasContinued;
@@ -31,6 +32,7 @@ public sealed class DataInterceptedEventArgs : EventArgs
         Step = step;
         Packet = packet;
         IsOutgoing = isOutgoing;
+        Timestamp = DateTime.Now;
     }
 
     public void Relay()

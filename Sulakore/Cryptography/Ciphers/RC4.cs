@@ -3,8 +3,7 @@
 public sealed class RC4 : IStreamCipher
 {
     private int _i, _j;
-    private int[] _table;
-    private bool _disposed;
+    private readonly int[] _table;
 
     public RC4(byte[] key)
     {

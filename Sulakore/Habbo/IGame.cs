@@ -2,7 +2,7 @@
 
 public interface IGame
 {
-    bool IsUnity { get; }
+    GameKind Kind { get; }
     bool IsPostShuffle { get; }
 
     string Path { get; }

@@ -101,7 +101,8 @@ public sealed class HNode : IDisposable
 
         return IsWebSocket || wasDetermined;
     }
-    public async Task<bool> UpgradeWebSocketAsClientAsync()
+
+    public async Task<bool> UpgradeWebSocketAsClientAsync(CancellationToken cancellationToken = default)
     {
         static string GenerateWebSocketKey()
         {
@@ -128,14 +129,19 @@ public sealed class HNode : IDisposable
         var secureSocketStream = new SslStream(_socketStream, false, ValidateRemoteCertificate);
         _socketStream = secureSocketStream; // Take ownership of the main input/output stream, and override the field with an SslStream instance that wraps around it.
 
-        await secureSocketStream.AuthenticateAsClientAsync(RemoteEndPoint.Host, null, false).ConfigureAwait(false);
+        var sslClientAuthOptions = new SslClientAuthenticationOptions()
+        {
+            TargetHost = RemoteEndPoint.Host
+        };
+
+        await secureSocketStream.AuthenticateAsClientAsync(sslClientAuthOptions, cancellationToken).ConfigureAwait(false);
         if (!secureSocketStream.IsAuthenticated) return false;
 
         string webRequest = $"GET /websocket HTTP/1.1\r\nHost: {RemoteEndPoint}\r\n{requestHeaders}\r\nSec-WebSocket-Key: {GenerateWebSocketKey()}\r\n\r\n";
-        await SendAsync(Encoding.UTF8.GetBytes(webRequest)).ConfigureAwait(false);
+        await SendAsync(Encoding.UTF8.GetBytes(webRequest), cancellationToken).ConfigureAwait(false);
 
         using IMemoryOwner<byte> receiveOwner = BufferHelper.Rent(256, out Memory<byte> receiveRegion);
-        int received = await ReceiveAsync(receiveRegion).ConfigureAwait(false);
+        int received = await ReceiveAsync(receiveRegion, cancellationToken).ConfigureAwait(false);
 
         // Create the mask that will be used for the WebSocket payloads.
         _mask = _emptyMask;
@@ -144,17 +150,18 @@ public sealed class HNode : IDisposable
         IsUpgraded = true;
         _socketStream = _webSocketStream = new WebSocketStream(_socketStream, _mask, false); // Anything now being sent or received through the stream will be parsed using the WebSocket protocol.
 
-        await SendAsync(_startTLSBytes).ConfigureAwait(false);
-        received = await ReceiveAsync(receiveRegion).ConfigureAwait(false);
+        await SendAsync(_startTLSBytes, cancellationToken).ConfigureAwait(false);
+        received = await ReceiveAsync(receiveRegion, cancellationToken).ConfigureAwait(false);
         if (!IsTLSAccepted(receiveRegion.Span.Slice(0, received))) return false;
 
         // Initialize the second secure tunnel layer where ONLY the WebSocket payload data will be read/written from/to.
         secureSocketStream = new SslStream(_socketStream, false, ValidateRemoteCertificate);
+
         _socketStream = secureSocketStream; // This stream layer will decrypt/encrypt the payload using the WebSocket protocol.
-        await secureSocketStream.AuthenticateAsClientAsync(RemoteEndPoint.Host, null, false).ConfigureAwait(false);
+        await secureSocketStream.AuthenticateAsClientAsync(sslClientAuthOptions, cancellationToken).ConfigureAwait(false);
         return IsUpgraded;
     }
-    public async Task<bool> UpgradeWebSocketAsServerAsync(X509Certificate certificate)
+    public async Task<bool> UpgradeWebSocketAsServerAsync(X509Certificate certificate, CancellationToken cancellationToken = default)
     {
         static bool IsTLSRequested(ReadOnlySpan<byte> message) => message.SequenceEqual(_startTLSBytes);
         static void FillWebResponse(ReadOnlySpan<byte> webRequest, Span<byte> webResponse, out int responseWritten)
@@ -179,22 +186,24 @@ public sealed class HNode : IDisposable
             responseWritten += 4; // \r\n\r\n
         }
 
-        if (IsUpgraded || !await DetermineFormatsAsync().ConfigureAwait(false)) return IsUpgraded;
+        // TODO: Is this check still needed?
+        //if (IsUpgraded || !await DetermineFormatsAsync(cancellationToken).ConfigureAwait(false)) return IsUpgraded;
+
         using IMemoryOwner<byte> receivedOwner = BufferHelper.Rent(1024, out Memory<byte> receivedRegion);
-        int received = await ReceiveAsync(receivedRegion).ConfigureAwait(false);
+        int received = await ReceiveAsync(receivedRegion, cancellationToken).ConfigureAwait(false);
 
         using IMemoryOwner<byte> responseOwner = BufferHelper.Rent(256, out Memory<byte> responseRegion);
         FillWebResponse(receivedRegion.Span.Slice(0, received), responseRegion.Span, out int responseWritten);
-        await SendAsync(responseRegion.Slice(0, responseWritten)).ConfigureAwait(false);
+        await SendAsync(responseRegion.Slice(0, responseWritten), cancellationToken).ConfigureAwait(false);
 
         // Begin receiving/sending data as WebSocket frames.
         IsUpgraded = true;
         _socketStream = _webSocketStream = new WebSocketStream(_socketStream);
 
-        received = await ReceiveAsync(receivedRegion).ConfigureAwait(false);
+        received = await ReceiveAsync(receivedRegion, cancellationToken).ConfigureAwait(false);
         if (IsTLSRequested(receivedRegion.Span.Slice(0, received)))
         {
-            await SendAsync(_okBytes).ConfigureAwait(false);
+            await SendAsync(_okBytes, cancellationToken).ConfigureAwait(false);
 
             var secureSocketStream = new SslStream(_socketStream, false, ValidateRemoteCertificate);
             _socketStream = secureSocketStream;
@@ -347,23 +356,6 @@ public sealed class HNode : IDisposable
     }
     private static bool ValidateRemoteCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) => true;
 
-    public static async Task<HNode> ConnectAsync(HotelEndPoint endPoint)
-    {
-        var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        try
-        {
-            await Task.Factory.FromAsync(socket.BeginConnect(endPoint, null, null), socket.EndConnect).ConfigureAwait(false);
-        }
-        catch { /* Ignore all exceptions. */ }
-
-        if (!socket.Connected)
-        {
-            socket.Shutdown(SocketShutdown.Both);
-            socket.Close();
-            return null;
-        }
-        else return new HNode(socket, endPoint);
-    }
     public static async Task<HNode> AcceptAsync(int port, CancellationToken cancellationToken = default)
     {
         using var listenSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -376,9 +368,26 @@ public sealed class HNode : IDisposable
 
         return new HNode(socket);
     }
+    public static async Task<HNode> ConnectAsync(HotelEndPoint endPoint, CancellationToken cancellationToken = default)
+    {
+        var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        try
+        {
+            await socket.ConnectAsync(endPoint, cancellationToken).ConfigureAwait(false);
+        }
+        catch { /* Ignore all exceptions. */ }
 
-    public static Task<HNode> ConnectAsync(string host, int port) => ConnectAsync(HotelEndPoint.Parse(host, port));
-    public static Task<HNode> ConnectAsync(IPAddress address, int port) => ConnectAsync(new HotelEndPoint(address, port));
-    public static Task<HNode> ConnectAsync(IPAddress[] addresses, int port) => ConnectAsync(new HotelEndPoint(addresses[0], port));
-    public static Task<HNode> ConnectAsync(IPEndPoint endPoint) => ConnectAsync(endPoint as HotelEndPoint ?? new HotelEndPoint(endPoint));
+        if (!socket.Connected)
+        {
+            socket.Shutdown(SocketShutdown.Both);
+            socket.Close();
+            return null;
+        }
+        else return new HNode(socket, endPoint);
+    }
+
+    public static Task<HNode> ConnectAsync(string host, int port, CancellationToken cancellationToken = default) => ConnectAsync(HotelEndPoint.Parse(host, port), cancellationToken);
+    public static Task<HNode> ConnectAsync(IPAddress address, int port, CancellationToken cancellationToken = default) => ConnectAsync(new HotelEndPoint(address, port), cancellationToken);
+    public static Task<HNode> ConnectAsync(IPAddress[] addresses, int port, CancellationToken cancellationToken = default) => ConnectAsync(new HotelEndPoint(addresses[0], port), cancellationToken);
+    public static Task<HNode> ConnectAsync(IPEndPoint endPoint, CancellationToken cancellationToken = default) => ConnectAsync(endPoint as HotelEndPoint ?? new HotelEndPoint(endPoint), cancellationToken);
 }

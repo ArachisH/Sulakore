@@ -1,6 +1,6 @@
 ﻿namespace Sulakore.Habbo;
 
-public enum HGameArchitecture
+public enum HPlatform
 {
     Unknown = 0,
     Flash = 1,

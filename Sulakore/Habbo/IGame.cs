@@ -3,7 +3,7 @@
 public interface IGame
 {
     bool IsPostShuffle { get; }
-    HGameArchitecture Architecture { get; }
+    HPlatform Platform { get; }
 
     string Path { get; }
     string Revision { get; }

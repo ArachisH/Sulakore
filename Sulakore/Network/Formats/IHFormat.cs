@@ -12,6 +12,9 @@ public interface IHFormat
     public static EvaWireFormat EvaWire { get; } = new EvaWireFormat(isUnity: false);
     public static EvaWireFormat EvaWireUnity { get; } = new EvaWireFormat(isUnity: true);
 
+    public static WedgieFormat WedgieIn { get; } = new WedgieFormat(isOutgoing: false);
+    public static WedgieFormat WedgieOut { get; } = new WedgieFormat(isOutgoing: true);
+
     /// <summary>
     /// Minimum buffer size required from a packet in bytes.
     /// </summary>

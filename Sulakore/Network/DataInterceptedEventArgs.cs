@@ -1,4 +1,6 @@
-﻿using Sulakore.Network.Buffers;
+﻿using Sulakore.Habbo;
+using Sulakore.Network.Buffers;
+using Sulakore.Network.Formats;
 
 namespace Sulakore.Network;
 
@@ -7,33 +9,36 @@ namespace Sulakore.Network;
 /// </summary>
 public sealed class DataInterceptedEventArgs : EventArgs
 {
-    private readonly Func<Task> _continuation;
-    private readonly Func<DataInterceptedEventArgs, Task> _relayer;
+    private readonly Func<Task>? _continuation;
+    private readonly Func<DataInterceptedEventArgs, ValueTask>? _relayer;
 
     public int Step { get; }
-    public bool IsOutgoing { get; }
     public DateTime Timestamp { get; }
-    public Task WaitUntil { get; set; }
+    public Task? WaitUntil { get; set; }
 
     public bool IsContinuable => _continuation != null && !HasContinued;
 
-    public HPacket Packet { get; }
-    public HPacket Replacement { get; set; }
+    public IHFormat Format { get; }
+    public HMessage Message { get; }
+    public ReadOnlyMemory<byte> Buffer { get; }
 
     public bool IsBlocked { get; set; }
     public bool WasRelayed { get; private set; }
     public bool HasContinued { get; private set; }
 
-    public DataInterceptedEventArgs(HPacket packet, int step, bool isOutgoing, Func<Task> continuation = null, Func<DataInterceptedEventArgs, Task> relayer = null)
+    public DataInterceptedEventArgs(ReadOnlyMemory<byte> buffer, IHFormat format, HMessage message, int step, Func<Task>? continuation = null, Func<DataInterceptedEventArgs, ValueTask>? relayer = null)
     {
         _relayer = relayer;
         _continuation = continuation;
 
         Step = step;
-        Packet = packet;
-        IsOutgoing = isOutgoing;
+        Buffer = buffer;
+        Format = format;
+        Message = message;
         Timestamp = DateTime.Now;
     }
+
+    public HPacketReader GetPacketReader() => new(Format, Buffer.Span);
 
     public void Relay()
     {

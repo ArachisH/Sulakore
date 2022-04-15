@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Sulakore.Network;
+namespace Sulakore;
 
 /// <summary>
 /// Helper class for better exception code-gen in hot-paths. <para />
@@ -13,4 +13,16 @@ internal static class ThrowHelper
 {
     [DoesNotReturn]
     internal static void ThrowIndexOutOfRangeException() => throw new IndexOutOfRangeException();
+
+    [DoesNotReturn]
+    internal static void ThrowArgumentOutOfRangeException(string? message, string? paramName, object? value) => throw new ArgumentOutOfRangeException(paramName, value, message);
+
+    [DoesNotReturn]
+    internal static void ThrowArgumentException(string? message, string? paramName) => throw new ArgumentException(message, paramName);
+
+    [DoesNotReturn]
+    internal static void ThrowInvalidOperationException(string? message) => throw new InvalidOperationException(message);
+
+    [DoesNotReturn]
+    internal static void ThrowNullReferenceException(string? message = null) => throw new NullReferenceException(message);
 }

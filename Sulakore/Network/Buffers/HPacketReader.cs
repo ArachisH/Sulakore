@@ -7,23 +7,34 @@ public ref struct HPacketReader
     private readonly IHFormat _format;
     private readonly ReadOnlySpan<byte> _source;
 
-    public int Position { get; private set; }
-    public int Available => _source.Length - Position;
+    public int _position;
 
-    public static implicit operator ReadOnlySpan<byte>(HPacketReader packetIn) => packetIn._source;
+    public short Id { get; }
+    public int Length { get; }
+
+    public int Available => _source.Length - _position;
+
+    public static implicit operator ReadOnlySpan<byte>(HPacketReader reader) => reader._source;
 
     public HPacketReader(IHFormat format, ReadOnlySpan<byte> source)
     {
         _format = format;
         _source = source;
 
-        Position = 0;
+        if (!format.TryReadHeader(source, out int length, out short id, out int bytesRead))
+        {
+            // TODO: Throw exception?
+        }
+        _position = bytesRead;
+
+        Id = id;
+        Length = length;
     }
 
     public T Read<T>() where T : struct
     {
-        T value = Read<T>(Position, out int bytesRead);
-        Position += bytesRead;
+        T value = Read<T>(_position, out int bytesRead);
+        _position += bytesRead;
         return value;
     }
     public T Read<T>(int position, out int bytesRead) where T : struct
@@ -31,8 +42,8 @@ public ref struct HPacketReader
 
     public string ReadUTF8()
     {
-        string value = ReadUTF8(Position, out int bytesRead);
-        Position += bytesRead;
+        string value = ReadUTF8(_position, out int bytesRead);
+        _position += bytesRead;
         return value;
     }
     public string ReadUTF8(int position, out int bytesRead)

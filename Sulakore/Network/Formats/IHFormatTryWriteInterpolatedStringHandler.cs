@@ -3,8 +3,6 @@ using System.Runtime.CompilerServices;
 
 namespace Sulakore.Network.Formats;
 
-#nullable enable
-
 /// <summary>
 /// Provides a handler used by the language compiler to format interpolated string into binary representation using specified <see cref="IHFormat"/>.
 /// </summary>

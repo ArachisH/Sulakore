@@ -10,7 +10,7 @@ internal sealed class WebSocketStream : Stream
 
     private static readonly byte[] _emptyMask = new byte[4];
 
-    private readonly byte[] _mask;
+    private readonly byte[]? _mask;
     private readonly bool _isClient;
     private readonly bool _leaveOpen;
     private readonly Stream _innerStream;
@@ -20,7 +20,7 @@ internal sealed class WebSocketStream : Stream
     public WebSocketStream(Stream innerStream)
         : this(innerStream, null, false)
     { }
-    public WebSocketStream(Stream innerStream, byte[] mask, bool leaveOpen)
+    public WebSocketStream(Stream innerStream, byte[]? mask, bool leaveOpen)
     {
         _mask = mask;
         _leaveOpen = leaveOpen;

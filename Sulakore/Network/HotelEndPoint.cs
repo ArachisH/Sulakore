@@ -6,7 +6,7 @@ namespace Sulakore.Network;
 
 public sealed class HotelEndPoint : IPEndPoint
 {
-    public string Host { get; init; }
+    public string? Host { get; init; }
     public HHotel Hotel { get; init; }
 
     public HotelEndPoint(IPEndPoint endPoint)
@@ -24,8 +24,15 @@ public sealed class HotelEndPoint : IPEndPoint
         Host = host;
     }
 
+    public static HotelEndPoint Create(HHotel hotel)
+    {
+        if (hotel == HHotel.Unknown)
+        {
+            ThrowHelper.ThrowArgumentException($"Unable to create a {nameof(HotelEndPoint)} object from {nameof(HHotel.Unknown)}.", nameof(hotel));
+        }
+        return Parse($"game-{hotel.ToRegion()}.habbo.com", 30001);
+    }
     public static HotelEndPoint Create(ReadOnlySpan<char> host) => Create(host.ToHotel());
-    public static HotelEndPoint Create(HHotel hotel) => hotel != HHotel.Unknown ? Parse($"game-{hotel.ToRegion()}.habbo.com", 30001) : null;
 
     public static HotelEndPoint Parse(string host, int port)
     {

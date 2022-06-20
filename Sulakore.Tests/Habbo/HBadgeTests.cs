@@ -7,7 +7,7 @@ namespace Sulakore.Tests.Habbo;
 public class HBadgeTests
 {
     [Fact]
-    public void HBadge_SingleLigthGrayTriangleBase_ToString()
+    public void HBadge_ToString_SingleLigthGrayTriangleBase()
     {
         var badge = new HBadge
         {
@@ -18,7 +18,7 @@ public class HBadgeTests
     }
 
     [Fact]
-    public void HBadge_PurpleSquareBaseWithDarkRedSkullSymbol_ToString()
+    public void HBadge_ToString_PurpleSquareBaseWithDarkRedSkullSymbol()
     {
         var badge = new HBadge
         {
@@ -30,7 +30,7 @@ public class HBadgeTests
     }
 
     [Fact]
-    public void HBadge_LightGreenTriangleOnTopOfSquare_ToString()
+    public void HBadge_ToString_LightGreenTriangleOnTopOfSquare()
     {
         var badge = new HBadge
         {
@@ -42,7 +42,7 @@ public class HBadgeTests
     }
 
     [Fact]
-    public void HBadge_NumberLetterSymbols_ToString()
+    public void HBadge_ToString_NumberLetterSymbols()
     {
         var badge = new HBadge
         {
@@ -61,8 +61,48 @@ public class HBadgeTests
     }
 
     [Fact]
+    public void HBadge_ToString_BadgeWithAllPartTypes()
+    {
+        var badge = new HBadge
+        {
+            new HBadgeBasePart(HBadgeBase.Ring, HBadgeColor.Black),
+            new HBadgeSymbolPart(HBadgeSymbol.Sphere, HBadgeColor.White, HBadgePosition.Center),
+            new HBadgeSymbolPart(HBadgeSymbol.Bobba, HBadgeColor.None, HBadgePosition.Center)
+        };
+
+        Assert.Equal("b22130t48114s06004", badge.ToString());
+    }
+
+    [Fact]
     public void HBadge_Empty_ToString_ShouldProduceEmptyString()
     {
         Assert.Equal(string.Empty, new HBadge().ToString());
+    }
+
+    [Fact]
+    public void HBadge_TryParse_BadgeWithAllPartTypes_IsCorrect()
+    {
+        Assert.True(HBadge.TryParse("b22130t48114s06004", out var badge));
+
+        Assert.Equal(3, badge.Count);
+
+        Assert.IsType<HBadgeBasePart>(badge[0]);
+        Assert.Equal(HBadgeBase.Ring, ((HBadgeBasePart)badge[0]).Type);
+        Assert.Equal(HBadgeColor.Black, badge[0].Color);
+        
+        Assert.IsType<HBadgeSymbolPart>(badge[1]);
+        Assert.Equal(HBadgeSymbol.Sphere, ((HBadgeSymbolPart)badge[1]).Symbol);
+        Assert.Equal(HBadgeColor.White, badge[1].Color);
+
+        Assert.IsType<HBadgeSymbolPart>(badge[2]);
+        Assert.Equal(HBadgeSymbol.Bobba, ((HBadgeSymbolPart)badge[2]).Symbol);
+        Assert.Equal(HBadgeColor.None, badge[2].Color);
+    }
+
+    [Fact]
+    public void HBadge_TryParse_EmptyString_ReturnsEmptyBadge()
+    {
+        Assert.True(HBadge.TryParse(string.Empty, out var badge));
+        Assert.Empty(badge);
     }
 }

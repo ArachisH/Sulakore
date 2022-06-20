@@ -3,19 +3,20 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Sulakore.Habbo.Badge;
 
-public record HBadgeBasePart(HBadgeBase Type, HBadgeColor Color, HBadgePosition Position = default) : IHBadgePart
+public sealed record HBadgeBasePart(HBadgeBase Type, HBadgeColor Color, HBadgePosition Position = default) : IHBadgePart
 {
-    public static bool TryParse(ReadOnlySpan<char> s, [NotNullWhen(true)] out HBadgeBasePart? value)
+    public static bool TryParse(ReadOnlySpan<char> value, [NotNullWhen(true)] out HBadgeBasePart? basePart)
     {
-        value = default;
-        if (s.Length < 6 && s[0] != 'b')
+        basePart = default;
+        if (value.Length < 6 && value[0] != 'b')
             return false;
 
-        if (!int.TryParse(s.Slice(1, 2), out int type) ||
-            !int.TryParse(s.Slice(3, 2), out int color) ||
-            !int.TryParse(s.Slice(5, 1), out int position)) return false;
+        if (!int.TryParse(value.Slice(1, 2), out int type) ||
+            !int.TryParse(value.Slice(3, 2), out int color) ||
+            !int.TryParse(value.Slice(5, 1), out int position)) 
+            return false;
 
-        value = new((HBadgeBase)type, (HBadgeColor)color, (HBadgePosition)position);
+        basePart = new((HBadgeBase)type, (HBadgeColor)color, (HBadgePosition)position);
         return true;
     }
 

@@ -134,4 +134,20 @@ public class HBadgeTests
     {
         Assert.Throws<ArgumentException>(() => HBadge.Parse("huuhaa"));
     }
+
+    [Fact]
+    public void HBadgeBasePart_ToString_RingLightBrown()
+    {
+        var basePart = new HBadgeBasePart(HBadgeBase.Ring, HBadgeColor.LightBrown);
+
+        Assert.Equal("b22230", basePart.ToString());
+    }
+
+    [Fact]
+    public void HBadgeSymbolPart_ToString_OrangeSphereCenter()
+    {
+        var symbolPart = new HBadgeSymbolPart(HBadgeSymbol.Sphere, HBadgeColor.Orange, HBadgePosition.Center);
+
+        Assert.Equal("t48024", symbolPart.ToString());
+    }
 }

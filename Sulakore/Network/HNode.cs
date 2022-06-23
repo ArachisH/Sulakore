@@ -14,7 +14,6 @@ namespace Sulakore.Network;
 
 public sealed class HNode : IDisposable
 {
-    private static readonly Random _rng;
     private static readonly byte[] _emptyMask;
     private static readonly byte[] _okBytes, _startTLSBytes;
     private static readonly byte[] _upgradeWebSocketResponseBytes;
@@ -44,7 +43,6 @@ public sealed class HNode : IDisposable
 
     static HNode()
     {
-        _rng = new Random();
         _emptyMask = new byte[4];
         _okBytes = Encoding.UTF8.GetBytes("OK");
         _startTLSBytes = Encoding.UTF8.GetBytes("StartTLS");
@@ -158,7 +156,7 @@ public sealed class HNode : IDisposable
         static string GenerateWebSocketKey()
         {
             Span<byte> keyGenerationBuffer = stackalloc byte[24];
-            _rng.NextBytes(keyGenerationBuffer.Slice(0, 16));
+            RandomNumberGenerator.Fill(keyGenerationBuffer.Slice(0, 16));
 
             Base64.EncodeToUtf8InPlace(keyGenerationBuffer, 16, out int encodedSize);
             return Encoding.UTF8.GetString(keyGenerationBuffer.Slice(0, encodedSize));

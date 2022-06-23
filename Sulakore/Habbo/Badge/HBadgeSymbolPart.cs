@@ -8,21 +8,20 @@ public sealed record HBadgeSymbolPart(HBadgeSymbol Symbol, HBadgeColor Color, HB
     public static bool TryParse(ReadOnlySpan<char> value, [NotNullWhen(true)] out HBadgeSymbolPart? symbolPart)
     {
         symbolPart = default;
-        if (value.Length < 6)
+
+        if (!IHBadgePart.TryParse(value, out int symbol, out var color, out var position))
             return false;
 
-        int type = value[0] - 's';
-        if (type != 0 && type != 1)
-            return false;
-
-        if (!int.TryParse(value.Slice(1, 2), out int symbolId) ||
-            !int.TryParse(value.Slice(3, 2), out int color) ||
-            !int.TryParse(value.Slice(5, 1), out int position)) 
-            return false;
-
-        // If type == 's', 0-99 else if type == 't', 100-199
-        symbolId += type * 100;
-        symbolPart = new((HBadgeSymbol)symbolId, (HBadgeColor)color, (HBadgePosition)position);
+        // If type is 's', symbolId is in range 0-99.
+        // else if the type is 't'; 100-199
+        switch (value[0])
+        {
+            case 't': symbol += 100; break;
+            case 's': break;
+            default: return false;
+        }
+        
+        symbolPart = new((HBadgeSymbol)symbol, color, position);
         return true;
     }
 

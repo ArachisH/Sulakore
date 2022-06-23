@@ -8,15 +8,12 @@ public sealed record HBadgeBasePart(HBadgeBase Type, HBadgeColor Color, HBadgePo
     public static bool TryParse(ReadOnlySpan<char> value, [NotNullWhen(true)] out HBadgeBasePart? basePart)
     {
         basePart = default;
-        if (value.Length < 6 && value[0] != 'b')
+
+        if (!IHBadgePart.TryParse(value, out int type, out var color, out var position) 
+            && value[0] != 'b')
             return false;
 
-        if (!int.TryParse(value.Slice(1, 2), out int type) ||
-            !int.TryParse(value.Slice(3, 2), out int color) ||
-            !int.TryParse(value.Slice(5, 1), out int position)) 
-            return false;
-
-        basePart = new((HBadgeBase)type, (HBadgeColor)color, (HBadgePosition)position);
+        basePart = new((HBadgeBase)type, color, position);
         return true;
     }
 

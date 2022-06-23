@@ -1,20 +1,9 @@
-﻿using System.Reflection;
-
-namespace Sulakore.Habbo;
+﻿namespace Sulakore.Habbo;
 
 public static class HExtensions
 {
-    private static readonly Random _rng = new();
-    private const BindingFlags BINDINGS = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance;
-
-    public static HSign GetRandomSign()
-    {
-        return (HSign)_rng.Next(0, 19);
-    }
-    public static HTheme GetRandomTheme()
-    {
-        return (HTheme)((_rng.Next(1, 7) + 2) & 7);
-    }
+    public static HSign GetRandomSign() => (HSign)Random.Shared.Next(0, 19);
+    public static HTheme GetRandomTheme() => (HTheme)(Random.Shared.Next(3, 9) & 7);
 
     public static HDirection ToLeft(this HDirection facing)
     {
@@ -74,29 +63,5 @@ public static class HExtensions
     public static Uri ToUri(this HHotel hotel, string subdomain = "www")
     {
         return new Uri($"https://{subdomain}.habbo.{hotel.ToDomain()}");
-    }
-
-    public static IEnumerable<MemberInfo> GetAllMembers(this Type type)
-    {
-        return type.Excavate(t => t.GetMembers(BINDINGS));
-    }
-    public static IEnumerable<MethodInfo> GetAllMethods(this Type type)
-    {
-        return type.Excavate(t => t.GetMethods(BINDINGS));
-    }
-    public static IEnumerable<PropertyInfo> GetAllProperties(this Type type)
-    {
-        return type.Excavate(t => t.GetProperties(BINDINGS));
-    }
-    public static IEnumerable<T> Excavate<T>(this Type type, Func<Type, IEnumerable<T>> excavator)
-    {
-        IEnumerable<T> excavated = null;
-        while (type != null)
-        {
-            IEnumerable<T> batch = excavator(type);
-            excavated = excavated?.Concat(batch) ?? batch;
-            type = type.BaseType;
-        }
-        return excavated;
     }
 }

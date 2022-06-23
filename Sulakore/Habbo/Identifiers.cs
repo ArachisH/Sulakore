@@ -56,7 +56,7 @@ public abstract class Identifiers : IReadOnlyList<HMessage>
         }
         _messages.Add(backingField);
     }
-    protected virtual HMessage ResolveMessage(IGame game, string name, short unityId, string unityStructure, params uint[] postShuffleHashes)
+    protected virtual HMessage ResolveMessage(IGame game, string name, short unityId, string? unityStructure, params uint[] postShuffleHashes)
     {
         HMessage message = default;
         if (game.Platform != HPlatform.Unity)

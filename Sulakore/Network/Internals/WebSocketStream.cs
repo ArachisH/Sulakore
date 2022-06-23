@@ -87,7 +87,7 @@ internal sealed class WebSocketStream : Stream
             int headerLength = HeaderEncode(headerRegion.Span, payloadLeft, i == 0, _isClient, out bool isFinalFragment);
             int payloadLength = isFinalFragment ? payloadLeft : MAX_WEBSOCKET_TOCLIENT_PAYLOAD_SIZE;
 
-            IMemoryOwner<byte> maskedOwner = null;
+            IMemoryOwner<byte>? maskedOwner = null;
             ReadOnlyMemory<byte> payloadFragment = buffer.Slice(i * MAX_WEBSOCKET_TOCLIENT_PAYLOAD_SIZE, payloadLength);
 
             await _innerStream.WriteAsync(headerRegion.Slice(0, headerLength), cancellationToken).ConfigureAwait(false);
@@ -146,7 +146,7 @@ internal sealed class WebSocketStream : Stream
             payload[i] ^= mask[i % 4];
         }
     }
-    private static IMemoryOwner<byte> PayloadMask(ReadOnlySpan<byte> payload, ReadOnlySpan<byte> mask)
+    private static IMemoryOwner<byte>? PayloadMask(ReadOnlySpan<byte> payload, ReadOnlySpan<byte> mask)
     {
         if (mask == _emptyMask) return null;
         IMemoryOwner<byte> maskedOwner = BufferHelper.Rent(payload.Length, out Memory<byte> maskedRegion);

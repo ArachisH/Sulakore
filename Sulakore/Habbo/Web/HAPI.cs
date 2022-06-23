@@ -37,13 +37,15 @@ public static class HAPI
         SerializerOptions.Converters.Add(new DateTimeConverter());
     }
 
-    public static Task<byte[]> GetFigureDataAsync(string query) => ReadContentAsync<byte[]>(HHotel.US.ToUri(), "/habbo-imaging/avatarimage?" + query);
-    public static Task<HUser> GetUserAsync(string name, HHotel hotel) => ReadContentAsync<HUser>(hotel.ToUri(), "/api/public/users?name=" + name);
-    public static Task<HProfile> GetProfileAsync(string uniqueId) => ReadContentAsync<HProfile>(uniqueId.AsSpan().ToHotel().ToUri(), $"/api/public/users/{uniqueId}/profile");
+    public static Task<byte[]?> GetFigureDataAsync(string query) => ReadContentAsync<byte[]?>(HHotel.US.ToUri(), "/habbo-imaging/avatarimage?" + query);
+    public static Task<HUser?> GetUserAsync(string name, HHotel hotel) => ReadContentAsync<HUser?>(hotel.ToUri(), "/api/public/users?name=" + name);
+    public static Task<HProfile?> GetProfileAsync(string uniqueId) => ReadContentAsync<HProfile?>(uniqueId.AsSpan().ToHotel().ToUri(), $"/api/public/users/{uniqueId}/profile");
 
-    public static async Task<string> GetLatestRevisionAsync(HHotel hotel)
+    public static async Task<string?> GetLatestRevisionAsync(HHotel hotel)
     {
-        string body = await ReadContentAsync<string>(hotel.ToUri(), "/gamedata/external_variables/1").ConfigureAwait(false);
+        string? body = await ReadContentAsync<string?>(hotel.ToUri(), "/gamedata/external_variables/1").ConfigureAwait(false);
+        if (body == null) return null;
+        
         int revisionStartIndex = body.LastIndexOf("/gordon/") + 8;
         if (revisionStartIndex != 7)
         {
@@ -55,17 +57,17 @@ public static class HAPI
         }
         return null;
     }
-    public static async Task<HProfile> GetProfileAsync(string name, HHotel hotel)
+    public static async Task<HProfile?> GetProfileAsync(string name, HHotel hotel)
     {
-        HUser user = await GetUserAsync(name, hotel).ConfigureAwait(false);
-        if (user.ProfileVisible == true)
+        HUser? user = await GetUserAsync(name, hotel).ConfigureAwait(false);
+        if (user?.ProfileVisible == true)
         {
             return await GetProfileAsync(user.UniqueId).ConfigureAwait(false);
         }
         return new HProfile { User = user };
     }
 
-    public static async Task<T> ReadContentAsync<T>(Uri baseUri, string path, Func<HttpContent, Task<T>> contentConverter = null)
+    public static async Task<T?> ReadContentAsync<T>(Uri baseUri, string path, Func<HttpContent, Task<T>>? contentConverter = null)
     {
         string uriAuthority = baseUri.GetLeftPart(UriPartial.Authority);
         using HttpRequestMessage request = new(HttpMethod.Get, uriAuthority + path);
@@ -86,7 +88,7 @@ public static class HAPI
         if (typeof(T) == typeof(byte[]))
             return (T)(object)await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
 
-        if (response.Content.Headers.ContentType.MediaType == "application/json")
+        if (response.Content.Headers.ContentType?.MediaType == "application/json")
             return await response.Content.ReadFromJsonAsync<T>(SerializerOptions).ConfigureAwait(false);
 
         return default;

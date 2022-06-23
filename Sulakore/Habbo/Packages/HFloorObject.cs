@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 
-using Sulakore.Habbo.Packages.StuffData;
 using Sulakore.Network.Formats;
+using Sulakore.Habbo.Packages.StuffData;
 
 namespace Sulakore.Habbo.Packages;
 
@@ -23,7 +23,7 @@ public class HFloorObject
     public int OwnerId { get; set; }
     public string OwnerName { get; set; }
 
-    public string StaticClass { get; set; }
+    public string? StaticClass { get; set; }
 
     public HFloorObject(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {

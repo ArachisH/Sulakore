@@ -28,11 +28,12 @@ public sealed class HBadge : IList<IHBadgePart>, ISpanFormattable
         _parts = parts;
     }
 
+    /// <inheritdoc cref="ToString(string?, IFormatProvider?)"/>
+    public override string ToString() => ToString(null);
+
     /// <summary>
     /// Formats the badge parts to into their structured text representation.
     /// </summary>
-    public override string ToString() => ToString(null);
-    /// <inheritdoc cref="ToString()"/>
     public string ToString(string? format, IFormatProvider? provider = default)
         => string.Create(FormattedLength, format, (chars, state) => TryFormat(chars, out _, state));
 
@@ -46,7 +47,8 @@ public sealed class HBadge : IList<IHBadgePart>, ISpanFormattable
         ReadOnlySpan<char> format = default, IFormatProvider? provider = default)
     {
         charsWritten = 0;
-        if (destination.Length < FormattedLength) return false;
+        if (destination.Length < FormattedLength) 
+            return false;
 
         foreach (var part in _parts)
         {
@@ -69,6 +71,7 @@ public sealed class HBadge : IList<IHBadgePart>, ISpanFormattable
 
         throw new ArgumentException(null, nameof(value));
     }
+
     /// <summary>
     /// Tries to parse a badge from the provided structured text representation.
     /// </summary>
@@ -98,7 +101,7 @@ public sealed class HBadge : IList<IHBadgePart>, ISpanFormattable
         return true;
     }
 
-    #region IList<T> Implementation
+    #region IList<IHBadgePart> Implementation
     public int IndexOf(IHBadgePart item) => _parts.IndexOf(item);
     public void Insert(int index, IHBadgePart item) => _parts.Insert(index, item);
     public void RemoveAt(int index) => _parts.RemoveAt(index);

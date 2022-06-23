@@ -7,10 +7,10 @@ public enum HBadgeBase : int
 {
     None = 0,
     Square,
-    Basic2,
+    Rhombus,
     Triangle,
-    Basic4,
-    Basi5c,
+    TriangleDown,
+    Circle,
     Advanced,
     Advanced2,
     Advanced3,

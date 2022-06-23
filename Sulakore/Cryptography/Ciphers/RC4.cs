@@ -45,4 +45,9 @@ public sealed class RC4 : IStreamCipher
             parsed[k] = (byte)(data[k] ^ rightXOR);
         }
     }
+
+    public void Dispose()
+    {
+        Array.Clear(_table);
+    }
 }

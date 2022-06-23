@@ -25,7 +25,7 @@ public class CipherTests
         byte[] nonceBytes = Convert.FromHexString(nonce);
         Span<byte> actualKeystreamBytes = stackalloc byte[64];
         
-        var chacha = new ChaCha20(keyBytes, nonceBytes, blockCount);
+        using var chacha = new ChaCha20(keyBytes, nonceBytes, blockCount);
         chacha.Process(actualKeystreamBytes);
 
         string actualKeystream = Convert.ToHexString(actualKeystreamBytes);
@@ -39,7 +39,7 @@ public class CipherTests
         byte[] keyStream = ArrayPool<byte>.Shared.Rent(8192);
         Array.Clear(keyStream); // ArrayPool buffers are not zeroed
 
-        var rc4 = new RC4(new byte[] { 0x01, 0x02, 0x03, 0x04, 0x05 });
+        using var rc4 = new RC4(new byte[] { 0x01, 0x02, 0x03, 0x04, 0x05 });
         rc4.Process(keyStream);
 
         AssertKeyStreamEqual(keyStream, 0, "b2396305f03dc027ccc3524a0a1118a8");
@@ -71,7 +71,7 @@ public class CipherTests
         Array.Clear(keyStream); // ArrayPool buffers are not zeroed
 
         // echo -n "Internet Engineering Task Force" | sha256sum
-        var rc4 = new RC4(Convert.FromHexString("1ada31d5cf688221c109163908ebe51debb46227c6cc8b37641910833222772a"));
+        using var rc4 = new RC4(Convert.FromHexString("1ada31d5cf688221c109163908ebe51debb46227c6cc8b37641910833222772a"));
         rc4.Process(keyStream);
 
         AssertKeyStreamEqual(keyStream, 0, "dd5bcb0018e922d494759d7c395d02d3");

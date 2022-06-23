@@ -74,7 +74,21 @@ public class HBadgeTests
     }
 
     [Fact]
-    public void HBadge_Empty_ToString_ShouldProduceEmptyString()
+    public void HBadge_TryFormat_ShouldReturnFalseWhenTooSmallDestination()
+    {
+        Span<char> destination = stackalloc char[4];
+
+        var badge = new HBadge
+        {
+            new HBadgeSymbolPart(HBadgeSymbol.Bobba, HBadgeColor.Black, HBadgePosition.Center)
+        };
+
+        Assert.False(badge.TryFormat(destination, out int charsWritten));
+        Assert.Equal(0, charsWritten);
+    }
+
+    [Fact]
+    public void HBadge_ToString_EmptyBadgeShouldReturnEmptyString()
     {
         Assert.Equal(string.Empty, new HBadge().ToString());
     }
@@ -89,7 +103,7 @@ public class HBadgeTests
         Assert.IsType<HBadgeBasePart>(badge[0]);
         Assert.Equal(HBadgeBase.Ring, ((HBadgeBasePart)badge[0]).Type);
         Assert.Equal(HBadgeColor.Black, badge[0].Color);
-        
+
         Assert.IsType<HBadgeSymbolPart>(badge[1]);
         Assert.Equal(HBadgeSymbol.Sphere, ((HBadgeSymbolPart)badge[1]).Symbol);
         Assert.Equal(HBadgeColor.White, badge[1].Color);
@@ -104,5 +118,20 @@ public class HBadgeTests
     {
         Assert.True(HBadge.TryParse(string.Empty, out var badge));
         Assert.Empty(badge);
+    }
+
+    [Fact]
+    public void HBadge_TryParse_ToString_ReturnsSame()
+    {
+        const string AllPartTypes = "b22130t48114s06004";
+
+        Assert.True(HBadge.TryParse(AllPartTypes, out var badge));
+        Assert.Equal(AllPartTypes, badge.ToString());
+    }
+
+    [Fact]
+    public void HBadge_Parse_ShouldThrowForInvalidArgumentValue()
+    {
+        Assert.Throws<ArgumentException>(() => HBadge.Parse("huuhaa"));
     }
 }

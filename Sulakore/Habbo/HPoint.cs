@@ -32,11 +32,11 @@ public struct HPoint : IEquatable<HPoint>, IHFormattable, ISpanFormattable
     public HPoint(int x, int y, float z)
         => (X, Y, Z) = (x, y, z);
 
-    public readonly override string ToString()
+    public override readonly string ToString()
         => ToString(format: null);
     
-    public readonly override int GetHashCode() => HashCode.Combine(X, Y, Z);
-    public readonly override bool Equals(object obj)
+    public override readonly int GetHashCode() => HashCode.Combine(X, Y, Z);
+    public override readonly bool Equals(object? obj)
     {
         if (obj is HPoint other)
             return Equals(other);
@@ -48,18 +48,19 @@ public struct HPoint : IEquatable<HPoint>, IHFormattable, ISpanFormattable
     }
 
     public readonly bool Equals(HPoint other) => Equals(other);
-    public readonly bool Equals(HPoint other, float epsilon = DEFAULT_EPSILON) => X == other.X && Y == other.Y
-        && Math.Abs(other.Z - Z) < epsilon;
+    public readonly bool Equals(HPoint other, float epsilon = DEFAULT_EPSILON) 
+        => X == other.X && Y == other.Y && Math.Abs(other.Z - Z) < epsilon;
 
-    public readonly bool Equals((int X, int Y) point) => X == point.X && Y == point.Y;
-    public readonly bool Equals((int X, int Y, int Z) point, float epsilon = DEFAULT_EPSILON) => X == point.X && Y == point.Y
-        && Math.Abs(point.Z - Z) < epsilon;
-    public readonly bool Equals((int X, int Y, float Z) point, float epsilon = DEFAULT_EPSILON) => X == point.X && Y == point.Y 
-        && Math.Abs(point.Z - Z) < epsilon;
+    public readonly bool Equals((int X, int Y) point) 
+        => X == point.X && Y == point.Y;
+    public readonly bool Equals((int X, int Y, int Z) point, float epsilon = DEFAULT_EPSILON) 
+        => X == point.X && Y == point.Y && Math.Abs(point.Z - Z) < epsilon;
+    public readonly bool Equals((int X, int Y, float Z) point, float epsilon = DEFAULT_EPSILON) 
+        => X == point.X && Y == point.Y  && Math.Abs(point.Z - Z) < epsilon;
 
-    public readonly bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format = default, IFormatProvider provider = default)
+    public readonly bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format = default, IFormatProvider? provider = default)
         => destination.TryWrite(CultureInfo.InvariantCulture, $"{X}, {Y}, {Z}", out charsWritten);
-    public readonly string ToString(string format, IFormatProvider formatProvider = default)
+    public readonly string ToString(string? format, IFormatProvider? formatProvider = default)
         => string.Create(CultureInfo.InvariantCulture, stackalloc char[64], $"{X}, {Y}, {Z}");
 
     public readonly bool TryFormat(Span<byte> destination, IHFormat format, out int bytesWritten, ReadOnlySpan<char> formatString)
@@ -92,14 +93,20 @@ public struct HPoint : IEquatable<HPoint>, IHFormattable, ISpanFormattable
 
     public static char ToLevel(float z)
     {
-        if (z >= 0 && z <= 9) return (char)(z + 48);
-        if (z >= 10 && z <= 29) return (char)(z + 87);
-        return 'x';
+        return z switch
+        {
+            >= 0 and <= 9 => (char)(z + 48),
+            >= 10 and <= 29 => (char)(z + 87),
+            _ => 'x'
+        };
     }
     public static float ToZ(char level)
     {
-        if (level >= '0' && level <= '9') return level - 48;
-        if (level >= 'a' && level <= 't') return level - 87;
-        return 0;
+        return level switch
+        {
+            >= '0' and <= '9' => level - 48,
+            >= 'a' and <= 't' => level - 87,
+            _ => 0
+        };
     }
 }

@@ -15,7 +15,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="..\.editorconfig" Link=".editorconfig" />
+	  <EditorConfigFiles Remove="C:\Users\null\Documents\Repositories\Sulakore-develop-namespaces\Sulakore\.editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="C:\Users\null\Documents\Repositories\Sulakore-develop-namespaces\Sulakore\.editorconfig" />
 	</ItemGroup>
 
 </Project>

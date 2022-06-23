@@ -7,11 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sulakore", "Sulakore\Sulako
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sulakore.Generators", "Sulakore.Generators\Sulakore.Generators.csproj", "{296C3C71-D370-426F-9020-DFDCC881AFDB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CC2BAFD1-6975-4CAB-9F0A-97DB320E87AA}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sulakore.Tests", "Sulakore.Tests\Sulakore.Tests.csproj", "{F3B0C9EA-7A96-4C6D-89A6-780FD4443E4B}"
 EndProject
 Global

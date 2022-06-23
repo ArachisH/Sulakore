@@ -1,8 +1,7 @@
-﻿namespace Sulakore.Habbo.Camera
+﻿namespace Sulakore.Habbo.Camera;
+
+public class Filter
 {
-    public class Filter
-    {
-        public int Alpha { get; set; }
-        public string Name { get; set; }
-    }
+    public int Alpha { get; set; }
+    public string Name { get; set; }
 }

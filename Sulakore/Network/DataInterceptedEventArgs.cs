@@ -1,4 +1,6 @@
-﻿using Sulakore.Habbo;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using Sulakore.Habbo;
 using Sulakore.Network.Buffers;
 using Sulakore.Network.Formats;
 
@@ -16,6 +18,7 @@ public sealed class DataInterceptedEventArgs : EventArgs
     public DateTime Timestamp { get; }
     public Task? WaitUntil { get; set; }
 
+    [MemberNotNullWhen(true, "_continuation")]
     public bool IsContinuable => _continuation != null && !HasContinued;
 
     public IHFormat Format { get; }

@@ -108,4 +108,10 @@ public sealed class ChaCha20 : IStreamCipher
         state_c = unchecked(state_c + state_d);
         state_b = BitOperations.RotateLeft(state_b ^ state_c, 7);
     }
+
+    public void Dispose()
+    {
+        Array.Clear(_state);
+        Array.Clear(_block);
+    }
 }

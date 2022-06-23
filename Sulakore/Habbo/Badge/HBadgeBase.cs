@@ -1,7 +1,7 @@
 ﻿namespace Sulakore.Habbo.Badge;
 
 /// <summary>
-/// Represents the base layer of the badge.
+/// Specifies the base layers that are available for <see cref="HBadge"/>.
 /// </summary>
 public enum HBadgeBase : int
 {

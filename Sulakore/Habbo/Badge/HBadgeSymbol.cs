@@ -1,5 +1,8 @@
 ﻿namespace Sulakore.Habbo.Badge;
 
+/// <summary>
+/// Specifies the symbol layers that are available for <see cref="HBadge"/>.
+/// </summary>
 public enum HBadgeSymbol : int
 {
     None = 0,

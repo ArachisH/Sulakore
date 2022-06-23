@@ -17,6 +17,8 @@ public sealed record HBadgeBasePart(HBadgeBase Type, HBadgeColor Color, HBadgePo
         return true;
     }
 
+    public override string ToString() => ToString(null);
+
     public string ToString(string? format, IFormatProvider? provider = default)
         => string.Create(CultureInfo.InvariantCulture, stackalloc char[8], $"b{(int)Type:00}{(int)Color:00}{(int)Position}");
 

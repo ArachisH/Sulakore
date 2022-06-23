@@ -25,6 +25,8 @@ public sealed record HBadgeSymbolPart(HBadgeSymbol Symbol, HBadgeColor Color, HB
         return true;
     }
 
+    public override string ToString() => ToString(null);
+
     public string ToString(string? format, IFormatProvider? provider = default)
         => string.Create(CultureInfo.InvariantCulture, stackalloc char[8],
             $"{(char)('s' + (byte)Symbol / 100)}{(int)Symbol % 100:00}{(int)Color:00}{(int)Position}");

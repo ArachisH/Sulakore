@@ -90,7 +90,7 @@ public sealed class HKeyExchange
             RandomNumberGenerator.Fill(integerData);
 
             integerData[^1] &= 0x7f;
-            probablePrime = new BigInteger(integerData);
+            probablePrime = new BigInteger(integerData, isUnsigned: true);
         }
         while (IsRandomProbablePrime(probablePrime, 16, integerData));
 
@@ -117,7 +117,7 @@ public sealed class HKeyExchange
             do
             {
                 RandomNumberGenerator.Fill(integerBuffer);
-                a = new BigInteger(integerBuffer);
+                a = new BigInteger(integerBuffer, isUnsigned: true);
             }
             while (a < 2 || a >= candidate - 2);
 
@@ -167,8 +167,9 @@ public sealed class HKeyExchange
         Span<byte> data = stackalloc byte[BlockSize];
         int messageLength = message.GetByteCount();
 
+        // Copy the message data to end of the encryption block, if it fits.
         if (messageLength > BlockSize - 11 ||
-            !message.TryWriteBytes(data.Slice(data.Length - messageLength), out int written)) // TODO: Unsigned?
+            !message.TryWriteBytes(data.Slice(data.Length - messageLength), out int written, isUnsigned: true))
         {
             throw new ArgumentOutOfRangeException(nameof(message));
         }
@@ -189,7 +190,7 @@ public sealed class HKeyExchange
         else padding.Fill(byte.MaxValue);
 
         padding[^1] = 0;
-        return new BigInteger(data);
+        return new BigInteger(data, isUnsigned: true);
     }
 
     /// <summary>
@@ -211,19 +212,22 @@ public sealed class HKeyExchange
     {
         Span<byte> data = stackalloc byte[BlockSize];
 
-        if (!message.TryWriteBytes(data, out int bytesWritten)) // TODO: Unsigned?
+        if (!message.TryWriteBytes(data, out int bytesWritten, isUnsigned: true))
         {
             throw new ArgumentOutOfRangeException(nameof(message));
         }
 
         int dataOffset = data.Slice(2, bytesWritten).IndexOf((byte)0) + 1;
-        return new BigInteger(data.Slice(dataOffset)); //TODO: Unsigned?
+        return new BigInteger(data.Slice(dataOffset), isUnsigned: true);
     }
 
     public static HKeyExchange Create(int keySizeInBits) => Create(RSA.Create(keySizeInBits));
     public static HKeyExchange Create(RSA rsa)
     {
         RSAParameters keys = rsa.ExportParameters(true);
-        return new HKeyExchange(new BigInteger(keys.Modulus), new BigInteger(keys.Exponent), new BigInteger(keys.D));
+        return new HKeyExchange(
+            new BigInteger(keys.Modulus, isUnsigned: true), 
+            new BigInteger(keys.Exponent, isUnsigned: true), 
+            new BigInteger(keys.D, isUnsigned: true));
     }
 }

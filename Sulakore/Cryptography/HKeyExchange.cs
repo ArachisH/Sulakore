@@ -43,7 +43,7 @@ public sealed class HKeyExchange
         if (privateExponent != BigInteger.Zero)
         {
             GenerateDHPrimes(dhBitSize);
-            GenerateDHKeys(DHPrime, DHGenerator);
+            GenerateDHKeys(DHPrime, DHGenerator, dhBitSize);
         }
     }
 
@@ -73,14 +73,13 @@ public sealed class HKeyExchange
         GenerateDHKeys(DHPrime, DHGenerator);
     }
 
-    // TODO: Consider trying to just use the OS RSA impl over interop. It's really painful to deal with though.
-    public BigInteger Sign(BigInteger value) => PKCSPad(CalculatePrivate(value));
-    public BigInteger Verify(BigInteger value) => CalculatePublic(PKCSUnpad(value));
+    // TODO: Consider trying to just use the OS RSA impl over interop. Will require keys to be kept as byte arrays.
+    public BigInteger Sign(BigInteger message) => PKCSPad(CalculatePrivate(message), PKCSPadding.MaxByte);
+    public BigInteger Verify(BigInteger message) => CalculatePublic(PKCSUnpad(message));
 
-    public BigInteger Encrypt(BigInteger value) => CalculatePublic(PKCSPad(value));
-    public BigInteger Decrypt(BigInteger value) => PKCSUnpad(CalculatePrivate(value));
+    public BigInteger Encrypt(BigInteger message) => CalculatePublic(PKCSPad(message, PKCSPadding.RandomByte));
+    public BigInteger Decrypt(BigInteger message) => PKCSUnpad(CalculatePrivate(message));
 
-    // TODO: Would using the MODP DH groups from RFC 3526 be easier?
     private static BigInteger CreateRandomProbablePrime(int bitSize)
     {
         Span<byte> integerData = stackalloc byte[(bitSize + 7) / 8];
@@ -156,56 +155,69 @@ public sealed class HKeyExchange
     }
 
     /// <summary>
-    /// Pads an integer using RSA PKCS#1 v1.5 mode 0x02. The value must be no longer than the length of <see cref="Modulus"/> minus 11 bytes.
+    /// Pads an message using RSA PKCS#1 v1.5 mode 0x02. The message must be no longer than the length of <see cref="Modulus"/> minus 11 bytes.
     /// </summary>
-    /// <param name="value">The integer to be padded.</param>
-    /// <exception cref="ArgumentOutOfRangeException">If the <paramref name="value"/> was too large.</exception>
+    /// <param name="message">The message to be padded.</param>
+    /// <exception cref="ArgumentOutOfRangeException">If the <paramref name="message"/> was too large.</exception>
     // SAFETY: Only overwritten slice of the uninitialized span is returned.
     [SkipLocalsInit]
-    private BigInteger PKCSPad(BigInteger value)
+    private BigInteger PKCSPad(BigInteger message, PKCSPadding mode)
     {
         // Value can be at most BlockSize - 11 bytes long
         Span<byte> data = stackalloc byte[BlockSize];
-        int valueLength = value.GetByteCount();
+        int messageLength = message.GetByteCount();
 
-        if (valueLength > BlockSize - 11 ||
-            !value.TryWriteBytes(data.Slice(data.Length - valueLength), out int written))
+        if (messageLength > BlockSize - 11 ||
+            !message.TryWriteBytes(data.Slice(data.Length - messageLength), out int written)) // TODO: Unsigned?
         {
-            throw new ArgumentOutOfRangeException(nameof(value));
+            throw new ArgumentOutOfRangeException(nameof(message));
         }
 
-        // padded_value = 0x00 || 0x02 || padding || 0x00 || value
+        // Encryption-block (EB) format with RFC 2313 abbreviations in parantheses.
+        // message (EB) = { 0x00, mode (BT), padding (PS), 0x00, data (D) }
         data[0] = 0;
-        data[1] = 2;
+        data[1] = (byte)mode;
 
         Span<byte> padding = data.Slice(2, data.Length - written - 3);
 
-        // FUTURE: This method will likely be obsoleted in near future. See https://github.com/dotnet/runtime/issues/42763
-        _rng.GetNonZeroBytes(padding);
+        // TODO: Strict padding mode checks?
+        if (mode == PKCSPadding.RandomByte)
+        {
+            // FUTURE: This method will likely be obsoleted in near future. See https://github.com/dotnet/runtime/issues/42763
+            _rng.GetNonZeroBytes(padding);
+        }
+        else padding.Fill(byte.MaxValue);
 
         padding[^1] = 0;
-        return new BigInteger(padding);
+        return new BigInteger(data);
     }
 
     /// <summary>
-    /// Unpads an integers from RSA PKCS#1 1.5 padded message.
+    /// Unpads RSA PKCS#1 1.5 message.
     /// </summary>
-    /// <param name="value">The padded value.</param>
-    /// <exception cref="ArgumentOutOfRangeException">If the <paramref name="value"/> was too large.</exception>
+    /// <param name="message">The padded message.</param>
+    /// <exception cref="ArgumentOutOfRangeException">If the <paramref name="message"/> was too large.</exception>
+    /// <remarks>
+    /// From RFC 2313: <para />
+    /// It is an error if any of the following conditions occurs: <para />
+    ///    o The encryption block EB cannot be parsed unambiguously(see notes to Section 8.1). <para />
+    ///    o The padding string PS consists of fewer than eight octets, or is inconsistent with the block type BT. <para />
+    ///    o The decryption process is a public-key operation and the block type BT is not 00 or 01, or the decryption
+    ///      process is a private-key operation and the block type is not 02.
+    /// </remarks>
     // SAFETY: Only overwritten slice of the uninitialized span is returned.
     [SkipLocalsInit]
-    private BigInteger PKCSUnpad(BigInteger value)
+    private BigInteger PKCSUnpad(BigInteger message)
     {
         Span<byte> data = stackalloc byte[BlockSize];
 
-        if (!value.TryWriteBytes(data, out int bytesWritten))
+        if (!message.TryWriteBytes(data, out int bytesWritten)) // TODO: Unsigned?
         {
-            throw new ArgumentOutOfRangeException(nameof(value));
+            throw new ArgumentOutOfRangeException(nameof(message));
         }
 
-        // TODO: Do some length checks
         int dataOffset = data.Slice(2, bytesWritten).IndexOf((byte)0) + 1;
-        return new BigInteger(data.Slice(dataOffset));
+        return new BigInteger(data.Slice(dataOffset)); //TODO: Unsigned?
     }
 
     public static HKeyExchange Create(int keySizeInBits) => Create(RSA.Create(keySizeInBits));

@@ -1,4 +1,8 @@
-﻿namespace Sulakore.Habbo.Web;
+﻿using Sulakore.Habbo.Web.Json;
+
+using System.Text.Json.Serialization;
+
+namespace Sulakore.Habbo.Web;
 
 [System.Diagnostics.DebuggerDisplay("Name: {Name}")]
 public class HUser
@@ -12,8 +16,13 @@ public class HUser
     public bool? BuildersClubMember { get; set; }
     public bool? HabboClubMember { get; set; }
 
+    [JsonConverter(typeof(DateTimeConverter.Nullable))]
     public DateTime? LastWebAccess { get; set; }
+    
+    [JsonConverter(typeof(DateTimeConverter.Nullable))]
     public DateTime? CreationTime { get; set; }
+
+    [JsonConverter(typeof(DateTimeConverter.Nullable))]
     public DateTime? MemberSince { get; set; }
 
     public long SessionLogId { get; set; }

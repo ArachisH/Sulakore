@@ -14,12 +14,4 @@
 		<AdditionalFiles Include="messages.json" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <EditorConfigFiles Remove="C:\Users\null\Documents\Repositories\Sulakore-develop-namespaces\Sulakore\.editorconfig" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Include="C:\Users\null\Documents\Repositories\Sulakore-develop-namespaces\Sulakore\.editorconfig" />
-	</ItemGroup>
-
 </Project>

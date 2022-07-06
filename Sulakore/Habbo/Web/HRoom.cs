@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using Sulakore.Habbo.Web.Json;
+using System.Diagnostics;
+using System.Text.Json.Serialization;
 
 namespace Sulakore.Habbo.Web;
 
@@ -9,6 +11,7 @@ public class HRoom
     public string Name { get; set; }
     public string Description { get; set; }
 
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime CreationTime { get; set; }
 
     public string HabboGroupId { get; set; }

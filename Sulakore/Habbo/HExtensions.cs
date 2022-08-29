@@ -1,4 +1,6 @@
-﻿namespace Sulakore.Habbo;
+﻿using System.Globalization;
+
+namespace Sulakore.Habbo;
 
 public static class HExtensions
 {
@@ -43,7 +45,7 @@ public static class HExtensions
             value = value.Slice(0, 2);
         }
 
-        if (Enum.TryParse(value, ignoreCase: true, out HHotel hotel) && Enum.IsDefined(hotel))
+        if (TryParse(value, StringComparison.OrdinalIgnoreCase, out HHotel hotel, allowNumeric: false))
             return hotel;
 
         return HHotel.Unknown;
@@ -64,4 +66,45 @@ public static class HExtensions
     {
         return new Uri($"https://{subdomain}.habbo.{hotel.ToDomain()}");
     }
+
+    /// <summary>
+    /// Internal reflection-free helper parser for <see cref="HHotel"/>.
+    /// </summary>
+    /// <param name="value">The span representation of the name or numeric value of one or more enumerated constants.</param>
+    /// <param name="comparisonType">The string comparison type used to compare enums values.</param>
+    /// <param name="allowNumeric">Attempt to parse input value as enums underlying integer representation.</param>
+    /// <param name="checkIsDefined">Checks whether the enum parsed from integer input is defined. Only applies if <paramref name="allowNumeric"/> is true.</param>
+    /// <returns></returns>
+    internal static bool TryParse(ReadOnlySpan<char> value,
+        StringComparison comparisonType,
+        out HHotel result,
+        bool allowNumeric = true,
+        bool checkIsDefined = false)
+    {
+        result = default;
+        if (value.IsEmpty) return false;
+
+        if (value.Equals(nameof(HHotel.US), comparisonType)) result = HHotel.US;
+        else if (value.Equals(nameof(HHotel.FI), comparisonType)) result = HHotel.FI;
+        else if (value.Equals(nameof(HHotel.ES), comparisonType)) result = HHotel.ES;
+        else if (value.Equals(nameof(HHotel.IT), comparisonType)) result = HHotel.IT;
+        else if (value.Equals(nameof(HHotel.NL), comparisonType)) result = HHotel.NL;
+        else if (value.Equals(nameof(HHotel.DE), comparisonType)) result = HHotel.DE;
+        else if (value.Equals(nameof(HHotel.FR), comparisonType)) result = HHotel.FR;
+        else if (value.Equals(nameof(HHotel.BR), comparisonType)) result = HHotel.BR;
+        else if (value.Equals(nameof(HHotel.TR), comparisonType)) result = HHotel.TR;
+
+        if (result == default && allowNumeric)
+        {
+            if (allowNumeric &&
+                int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int intValue))
+            {
+                if (checkIsDefined && intValue is < 0 or > 9) return false;
+                else result = (HHotel)intValue;
+            }
+            else return false;
+        }
+        return true;
+    }
+
 }

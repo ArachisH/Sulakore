@@ -34,7 +34,7 @@ public sealed class HBadge : IList<IHBadgePart>, ISpanFormattable
     /// <summary>
     /// Formats the badge parts to into their structured text representation.
     /// </summary>
-    public string ToString(string? format, IFormatProvider? provider = default)
+    public string ToString(string? format, IFormatProvider? formatProvider = default)
         => string.Create(FormattedLength, format, (chars, state) => TryFormat(chars, out _, state));
 
     /// <summary>

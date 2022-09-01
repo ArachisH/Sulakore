@@ -22,8 +22,7 @@ public class HMap
     {
         map = Adjust(map);
 
-        _rows = map.Split(new[] { '\r' },
-            StringSplitOptions.RemoveEmptyEntries);
+        _rows = map.Split('\r', StringSplitOptions.RemoveEmptyEntries);
 
         TileCount = map.Length - RowCount;
     }
@@ -33,7 +32,7 @@ public class HMap
 
     public static string Adjust(string map)
     {
-        return map?.ToLower().Trim()
+        return map?.ToLowerInvariant().Trim()
             .Replace("\n", string.Empty)
             .Replace("[13]", "\r") ?? string.Empty;
     }

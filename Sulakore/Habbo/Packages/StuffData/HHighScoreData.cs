@@ -2,7 +2,7 @@
 
 namespace Sulakore.Habbo.Packages.StuffData;
 
-public class HHighScoreData
+public sealed class HHighScoreData
 {
     public int Score { get; set; }
     public string[] Users { get; set; }

@@ -38,10 +38,10 @@ public interface IHFormat
     public int GetSize(ReadOnlySpan<char> value);
 
     public bool TryReadLength(ReadOnlySpan<byte> source, out int length, out int bytesRead);
-    public bool TryWriteLength(Span<byte> source, int length, out int bytesWritten);
+    public bool TryWriteLength(Span<byte> destination, int length, out int bytesWritten);
 
     public bool TryReadId(ReadOnlySpan<byte> source, out short id, out int bytesRead);
-    public bool TryWriteId(Span<byte> source, short id, out int bytesWritten);
+    public bool TryWriteId(Span<byte> destination, short id, out int bytesWritten);
 
     public bool TryReadHeader(ReadOnlySpan<byte> source, out int length, out short id, out int bytesRead);
     public bool TryWriteHeader(Span<byte> destination, int length, short id, out int bytesWritten);

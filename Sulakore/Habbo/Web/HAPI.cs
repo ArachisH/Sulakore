@@ -62,6 +62,8 @@ public static class HAPI
         CancellationToken cancellationToken = default,
         Func<HttpContent, CancellationToken, Task<T>>? contentConverter = null)
     {
+        ArgumentNullException.ThrowIfNull(baseUri);
+
         string uriAuthority = baseUri.GetLeftPart(UriPartial.Authority);
         using HttpRequestMessage request = new(HttpMethod.Get, uriAuthority + path);
         if (!string.IsNullOrWhiteSpace(path))

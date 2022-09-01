@@ -28,6 +28,8 @@ public sealed class HPacketWriter : IBufferWriter<byte>, IDisposable
     { }
     public HPacketWriter(IHFormat format, short id)
     {
+        ArgumentNullException.ThrowIfNull(format);
+
         Id = id;
         Format = format;
         WrittenCount -= format.MinBufferSize;

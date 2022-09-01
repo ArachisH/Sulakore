@@ -15,10 +15,10 @@ public abstract class Identifiers : IReadOnlyList<HMessage>
     public HMessage this[uint hash] => _byHash[hash];
     public HMessage this[string name] => _byName[name];
 
-    public Identifiers(bool isOutgoing)
+    protected Identifiers(bool isOutgoing)
         : this(768, isOutgoing)
     { }
-    public Identifiers(int count, bool isOutgoing)
+    protected Identifiers(int count, bool isOutgoing)
     {
         IsOutgoing = isOutgoing;
 

@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Sulakore.Habbo.Web.Json;
 
-public sealed class DateTimeConverter : JsonConverter<DateTime>
+internal sealed class DateTimeConverter : JsonConverter<DateTime>
 {
     public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         => DateTime.Parse(reader.GetString()!);
@@ -13,7 +13,7 @@ public sealed class DateTimeConverter : JsonConverter<DateTime>
         writer.WriteStringValue(value.ToString("yyyy-MM-dd'T'HH:mm:ss.fff+0000"));
     }
 
-    public sealed class Nullable : JsonConverter<DateTime?>
+    internal sealed class Nullable : JsonConverter<DateTime?>
     {
         public override DateTime? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

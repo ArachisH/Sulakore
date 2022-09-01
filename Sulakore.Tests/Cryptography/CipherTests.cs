@@ -24,7 +24,7 @@ public class CipherTests
         byte[] keyBytes = Convert.FromHexString(key);
         byte[] nonceBytes = Convert.FromHexString(nonce);
         Span<byte> actualKeystreamBytes = stackalloc byte[64];
-        
+
         using var chacha = new ChaCha20(keyBytes, nonceBytes, blockCount);
         chacha.Process(actualKeystreamBytes);
 

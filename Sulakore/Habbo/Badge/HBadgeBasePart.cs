@@ -19,7 +19,7 @@ public sealed record HBadgeBasePart(HBadgeBase Type, HBadgeColor Color, HBadgePo
 
     public override string ToString() => ToString(null);
 
-    public string ToString(string? format, IFormatProvider? provider = default)
+    public string ToString(string? format, IFormatProvider? formatProvider = default)
         => string.Create(CultureInfo.InvariantCulture, stackalloc char[8], $"b{(int)Type:00}{(int)Color:00}{(int)Position}");
 
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format = default, IFormatProvider? provider = default)

@@ -2,7 +2,7 @@
 
 namespace Sulakore.Habbo.Packages.StuffData;
 
-public class HLegacyStuffData : HStuffData
+public sealed class HLegacyStuffData : HStuffData
 {
     public string Data { get; set; }
 

@@ -2,7 +2,7 @@
 
 namespace Sulakore.Habbo.Packages.StuffData;
 
-public class HVoteResultStuffData : HStuffData
+public sealed class HVoteResultStuffData : HStuffData
 {
     public string State { get; set; }
     public int Result { get; set; }

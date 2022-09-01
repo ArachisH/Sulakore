@@ -14,15 +14,16 @@ namespace Sulakore.Network;
 
 public sealed class HNode : IDisposable
 {
-    private static readonly byte[] _emptyMask;
-    private static readonly byte[] _okBytes, _startTLSBytes;
-    private static readonly byte[] _upgradeWebSocketResponseBytes;
-    private static readonly byte[] _rfc6455GuidBytes, _secWebSocketKeyBytes;
+    private static ReadOnlySpan<byte> _okBytes => "OK"u8;
+    private static ReadOnlySpan<byte> _startTLSBytes => "StartTLS"u8;
+    private static ReadOnlySpan<byte> _rfc6455GuidBytes => "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"u8;
+    private static ReadOnlySpan<byte> _secWebSocketKeyBytes => "Sec-WebSocket-Key: "u8;
+    private static ReadOnlySpan<byte> _upgradeWebSocketResponseBytes => "HTTP/1.1 101 Switching Protocols\r\nConnection: Upgrade\r\nUpgrade: websocket\r\nSec-WebSocket-Accept: "u8;
 
     private readonly Socket _socket;
     private readonly SemaphoreSlim _sendSemaphore, _receiveSemaphore, _packetSendSemaphore, _packetReceiveSemaphore;
 
-    private byte[]? _mask;
+    private byte[] _mask;
     private bool _disposed;
     private Stream _socketStream;
     private Stream? _webSocketStream;
@@ -41,15 +42,6 @@ public sealed class HNode : IDisposable
     public bool IsWebSocket { get; private set; }
     public bool IsConnected => !_disposed && _socket.Connected;
 
-    static HNode()
-    {
-        _emptyMask = new byte[4];
-        _okBytes = Encoding.UTF8.GetBytes("OK");
-        _startTLSBytes = Encoding.UTF8.GetBytes("StartTLS");
-        _secWebSocketKeyBytes = Encoding.UTF8.GetBytes("Sec-WebSocket-Key: ");
-        _rfc6455GuidBytes = Encoding.UTF8.GetBytes("258EAFA5-E914-47DA-95CA-C5AB0DC85B11");
-        _upgradeWebSocketResponseBytes = Encoding.UTF8.GetBytes("HTTP/1.1 101 Switching Protocols\r\nConnection: Upgrade\r\nUpgrade: websocket\r\nSec-WebSocket-Accept: ");
-    }
     private HNode(Socket socket)
     {
         _socket = socket;
@@ -59,6 +51,8 @@ public sealed class HNode : IDisposable
         _receiveSemaphore = new SemaphoreSlim(1, 1);
         _packetSendSemaphore = new SemaphoreSlim(1, 1);
         _packetReceiveSemaphore = new SemaphoreSlim(1, 1);
+
+        _mask = new byte[4];
 
         socket.NoDelay = true;
         socket.LingerState = new LingerOption(false, 0);
@@ -198,13 +192,12 @@ public sealed class HNode : IDisposable
         int received = await ReceiveAsync(receiveRegion, cancellationToken).ConfigureAwait(false);
 
         // Create the mask that will be used for the WebSocket payloads.
-        _mask = _emptyMask;
-        //_rng.NextBytes(_mask);
+        //RandomNumberGenerator.Fill(_mask);
 
         IsUpgraded = true;
         _socketStream = _webSocketStream = new WebSocketStream(_socketStream, _mask, false); // Anything now being sent or received through the stream will be parsed using the WebSocket protocol.
 
-        await SendAsync(_startTLSBytes, cancellationToken).ConfigureAwait(false);
+        await SendAsync(_startTLSBytes.ToArray(), cancellationToken).ConfigureAwait(false);
         received = await ReceiveAsync(receiveRegion, cancellationToken).ConfigureAwait(false);
         if (!IsTLSAccepted(receiveRegion.Span.Slice(0, received))) return false;
 
@@ -257,7 +250,7 @@ public sealed class HNode : IDisposable
         received = await ReceiveAsync(receivedRegion, cancellationToken).ConfigureAwait(false);
         if (IsTLSRequested(receivedRegion.Span.Slice(0, received)))
         {
-            await SendAsync(_okBytes, cancellationToken).ConfigureAwait(false);
+            await SendAsync(_okBytes.ToArray(), cancellationToken).ConfigureAwait(false);
 
             var secureSocketStream = new SslStream(_socketStream, false, ValidateRemoteCertificate);
             _socketStream = secureSocketStream;
@@ -272,12 +265,20 @@ public sealed class HNode : IDisposable
     {
         if (_disposed) return;
 
-        try { _socketStream.Dispose(); }
+        try
+        {
+            _socketStream.Dispose();
+            _webSocketStream?.Dispose();
+
+            _sendSemaphore.Dispose();
+            _receiveSemaphore.Dispose();
+            _packetSendSemaphore.Dispose();
+            _packetReceiveSemaphore.Dispose();
+        }
         catch { /* The socket doesn't like being shutdown/closed and will throw a fit everytime. */ }
         finally
         {
             _disposed = true;
-            Encrypter = Decrypter = null;
         }
     }
 

@@ -2,7 +2,7 @@
 
 namespace Sulakore.Habbo.Packages.StuffData;
 
-public class HStringArrayStuffData : HStuffData
+public sealed class HStringArrayStuffData : HStuffData
 {
     public string[] Data { get; set; }
 

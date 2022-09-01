@@ -27,7 +27,7 @@ public class HWallItem
 
     public HWallItem(IHFormat format, ref ReadOnlySpan<byte> packetData)
     {
-        Id = int.Parse(format.ReadUTF8(ref packetData));
+        Id = int.Parse(format.ReadUTF8(ref packetData), CultureInfo.InvariantCulture);
         TypeId = format.Read<int>(ref packetData);
         Location = format.ReadUTF8(ref packetData);
         Data = format.ReadUTF8(ref packetData);
@@ -35,13 +35,13 @@ public class HWallItem
         UsagePolicy = (HUsagePolicy)format.Read<int>(ref packetData);
         OwnerId = format.Read<int>(ref packetData);
 
-        if (float.TryParse(Data, out _))
+        if (int.TryParse(Data, NumberStyles.Integer, CultureInfo.InvariantCulture, out int state))
         {
-            State = int.Parse(Data);
+            State = state;
         }
 
         string[] locations = Location.Split(' ');
-        if (Location.IndexOf(":") == 0 && locations.Length >= 3)
+        if (Location.IndexOf(":", StringComparison.InvariantCulture) == 0 && locations.Length >= 3)
         {
             Placement = locations[2];
 
@@ -52,12 +52,12 @@ public class HWallItem
             locations = firstLoc.Split(',');
             if (locations.Length >= 2)
             {
-                Global = new HPoint(int.Parse(locations[0]), int.Parse(locations[1]));
+                Global = new HPoint(int.Parse(locations[0], CultureInfo.InvariantCulture), int.Parse(locations[1], CultureInfo.InvariantCulture));
                 locations = secondLoc.Split(',');
 
                 if (locations.Length >= 2)
                 {
-                    Local = new HPoint(int.Parse(locations[0]), int.Parse(locations[1]));
+                    Local = new HPoint(int.Parse(locations[0], CultureInfo.InvariantCulture), int.Parse(locations[1], CultureInfo.InvariantCulture));
                 }
             }
         }

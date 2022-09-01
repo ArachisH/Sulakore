@@ -2,7 +2,7 @@
 
 namespace Sulakore.Habbo.Packages.StuffData;
 
-public class HCrackableStuffData : HStuffData
+public sealed class HCrackableStuffData : HStuffData
 {
     public string State { get; set; }
     public int Hits { get; set; }

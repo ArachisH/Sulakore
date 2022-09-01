@@ -41,7 +41,7 @@ public sealed class DataInterceptedEventArgs : EventArgs
         Timestamp = DateTime.Now;
     }
 
-    public HPacketReader GetPacketReader() => new(Format, Buffer.Span);
+    public HPacketReader PacketReader => new(Format, Buffer.Span);
 
     public void Relay()
     {

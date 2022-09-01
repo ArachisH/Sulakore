@@ -2,9 +2,9 @@
 
 namespace Sulakore.Habbo.Packages.StuffData;
 
-public class HMapStuffData : HStuffData
+public sealed class HMapStuffData : HStuffData
 {
-    public Dictionary<string, string> Data { get; set; }
+    public Dictionary<string, string> Data { get; }
 
     public HMapStuffData()
         : base(HStuffDataFormat.Map)

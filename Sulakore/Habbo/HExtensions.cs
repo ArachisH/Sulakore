@@ -52,7 +52,7 @@ public static class HExtensions
     }
 
     public static string ToRegion(this HHotel hotel)
-        => hotel.ToString().ToLower();
+        => hotel.ToString().ToLowerInvariant();
     public static string ToDomain(this HHotel hotel)
         => hotel switch
         {
@@ -60,7 +60,7 @@ public static class HExtensions
             HHotel.BR => "com.br",
             HHotel.Unknown => throw new ArgumentException($"Hotel cannot be '{nameof(HHotel.Unknown)}'.", nameof(hotel)),
 
-            _ => hotel.ToString().ToLower()
+            _ => hotel.ToString().ToLowerInvariant()
         };
     public static Uri ToUri(this HHotel hotel, string subdomain = "www")
     {

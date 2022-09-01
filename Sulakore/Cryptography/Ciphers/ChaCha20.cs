@@ -48,16 +48,16 @@ public sealed class ChaCha20 : IStreamCipher
     }
 
     public void Process(Span<byte> data) => Process(data, data);
-    public void Process(ReadOnlySpan<byte> data, Span<byte> parsed)
+    public void Process(ReadOnlySpan<byte> source, Span<byte> destination)
     {
-        for (int i = 0; i < parsed.Length; i++)
+        for (int i = 0; i < destination.Length; i++)
         {
             if (_position == -1 || _position == 64)
             {
                 RefreshBlock();
                 _position = 0;
             }
-            parsed[i] = (byte)(data[i] ^ _block[_position++]);
+            destination[i] = (byte)(source[i] ^ _block[_position++]);
         }
     }
 

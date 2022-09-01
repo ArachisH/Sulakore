@@ -2,5 +2,5 @@
 
 public sealed record TextureColumn
 {
-    public List<string> AssetNames { get; set; } = new List<string>();
+    public ICollection<string> AssetNames { get; } = new List<string>();
 }

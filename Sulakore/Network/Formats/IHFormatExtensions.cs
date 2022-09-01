@@ -91,7 +91,7 @@ public static class IHFormatExtensions
     /// Reads a value of type <typeparamref name="T"/> from <paramref name="source"/>.
     /// </summary>
     /// <exception cref="IndexOutOfRangeException">Thrown if the <paramref name="source"/> does not have enough data to read a value of type <typeparamref name="T"/>.</exception>
-    public static T Read<T>(this IHFormat format, ReadOnlySpan<byte> source, out int bytesRead) 
+    public static T Read<T>(this IHFormat format, ReadOnlySpan<byte> source, out int bytesRead)
         where T : struct
     {
         if (!format.TryRead(source, out T value, out bytesRead))
@@ -179,7 +179,7 @@ public static class IHFormatExtensions
     /// <param name="uniqueId">The unique identifier.</param>
     /// <param name="bytesWritten">The amount of bytes written into <paramref name="destination"/>.</param>
     /// <returns>true if the unique identifier was written successfully; otherwise, false.</returns>
-    public static bool TryWriteUniqueId<TFormat>(this TFormat format, Span<byte> destination, long uniqueId, out int bytesWritten) 
+    public static bool TryWriteUniqueId<TFormat>(this TFormat format, Span<byte> destination, long uniqueId, out int bytesWritten)
         where TFormat : IHFormat
     {
         // TODO: Check the if the type check is elided by JIT or do we have to do it all manually
@@ -205,8 +205,8 @@ public static class IHFormatExtensions
         return TryWriteArray(format, destination, new ReadOnlySpan<TFormattable>(values), out bytesWritten);
     }
     /// <inheritdoc cref="TryWriteArray{TFormat, TFormattable}(TFormat, Span{byte}, TFormattable[], out int)"/>
-    public static bool TryWriteArray<TFormat, TFormattable>(this TFormat format, Span<byte> destination, ReadOnlySpan<TFormattable> values, out int bytesWritten) 
-        where TFormat : IHFormat 
+    public static bool TryWriteArray<TFormat, TFormattable>(this TFormat format, Span<byte> destination, ReadOnlySpan<TFormattable> values, out int bytesWritten)
+        where TFormat : IHFormat
         where TFormattable : IHFormattable
     {
         if (!format.TryWriteArrayLength(destination, destination.Length, out bytesWritten))

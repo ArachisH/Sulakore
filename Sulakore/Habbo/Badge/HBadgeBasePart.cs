@@ -9,7 +9,7 @@ public sealed record HBadgeBasePart(HBadgeBase Type, HBadgeColor Color, HBadgePo
     {
         basePart = default;
 
-        if (!IHBadgePart.TryParse(value, out int type, out var color, out var position) 
+        if (!IHBadgePart.TryParse(value, out int type, out var color, out var position)
             && value[0] != 'b')
             return false;
 

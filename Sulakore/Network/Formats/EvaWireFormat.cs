@@ -21,10 +21,10 @@ public sealed class EvaWireFormat : IHFormat
         => TryRead(source, out length, out bytesRead);
     public bool TryWriteLength(Span<byte> destination, int length, out int bytesWritten)
         => TryWrite(destination, length, out bytesWritten);
-    
+
     public bool TryReadId(ReadOnlySpan<byte> source, out short id, out int bytesRead)
         => TryRead(source.Slice(4), out id, out bytesRead);
-    public bool TryWriteId(Span<byte> destination, short id, out int bytesWritten) 
+    public bool TryWriteId(Span<byte> destination, short id, out int bytesWritten)
         => TryWrite(destination.Slice(4), id, out bytesWritten);
 
     public bool TryReadHeader(ReadOnlySpan<byte> source, out int length, out short id, out int bytesRead)
@@ -62,8 +62,8 @@ public sealed class EvaWireFormat : IHFormat
             ref byte sourcePtr = ref MemoryMarshal.GetReference(source);
             if (BitConverter.IsLittleEndian)
             {
-                if (typeof(T) == typeof(bool) || 
-                    typeof(T) == typeof(byte) || 
+                if (typeof(T) == typeof(bool) ||
+                    typeof(T) == typeof(byte) ||
                     typeof(T) == typeof(sbyte))
                 {
                     value = Unsafe.As<byte, T>(ref sourcePtr);
@@ -152,7 +152,7 @@ public sealed class EvaWireFormat : IHFormat
                 }
                 else if (typeof(T) == typeof(double))
                 {
-                    Unsafe.WriteUnaligned(ref destPtr, 
+                    Unsafe.WriteUnaligned(ref destPtr,
                         BinaryPrimitives.ReverseEndianness(
                             BitConverter.DoubleToInt64Bits((double)(object)value)));
                     return true;
@@ -194,8 +194,8 @@ public sealed class EvaWireFormat : IHFormat
     public bool TryReadUTF8(ReadOnlySpan<byte> source, Span<char> destination, out int bytesRead, out int charsWritten)
     {
         Unsafe.SkipInit(out charsWritten);
-        if (!TryRead(source, out short length, out bytesRead) || 
-            source.Length < sizeof(short) + length || 
+        if (!TryRead(source, out short length, out bytesRead) ||
+            source.Length < sizeof(short) + length ||
             destination.Length < length) return false;
 
         OperationStatus status = Utf8.ToUtf16(source, destination.Slice(sizeof(short), length), out int actualLength, out charsWritten);

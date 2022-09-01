@@ -25,19 +25,19 @@ public sealed class HPhoto
         using var writer = new Utf8JsonWriter(bufferWriter);
 
         writer.WriteStartObject();
-        
+
         writer.WritePropertyName("planes"u8);
         JsonSerializer.Serialize(writer, Planes, HPhotoJsonContext.Default.IListPlane);
-        
+
         writer.WritePropertyName("sprites"u8);
         JsonSerializer.Serialize(writer, Sprites, HPhotoJsonContext.Default.IListSprite);
-        
+
         writer.WritePropertyName("modifiers"u8);
         JsonSerializer.Serialize(writer, Modifiers, HPhotoJsonContext.Default.Modifiers);
 
         writer.WritePropertyName("filters"u8);
         JsonSerializer.Serialize(writer, Filters, HPhotoJsonContext.Default.IListFilter);
-        
+
         writer.WriteNumber("roomid"u8, RoomId);
         if (Zoom is not null) writer.WriteNumber("zoom"u8, Zoom.GetValueOrDefault());
 
@@ -48,14 +48,14 @@ public sealed class HPhoto
 
         // Flush the writer to get entire buffer for checksum calculation
         writer.Flush();
-        
+
         uint key = ((uint)bufferWriter.WrittenCount + (uint)quotinent * 17) % 1493;
-        
+
         timestamp += Fletcher100(bufferWriter.WrittenSpan, key, RoomId) * 100;
         writer.WriteNumber("timestamp"u8, timestamp);
 
         writer.WriteNumber("checksum"u8, (remainder + 13) * (key + 29));
-        
+
         writer.WriteEndObject();
         writer.Flush();
 

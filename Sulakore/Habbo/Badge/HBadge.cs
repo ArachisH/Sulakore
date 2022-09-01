@@ -47,7 +47,7 @@ public sealed class HBadge : IList<IHBadgePart>, ISpanFormattable
         ReadOnlySpan<char> format = default, IFormatProvider? provider = default)
     {
         charsWritten = 0;
-        if (destination.Length < FormattedLength) 
+        if (destination.Length < FormattedLength)
             return false;
 
         foreach (var part in _parts)

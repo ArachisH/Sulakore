@@ -15,7 +15,7 @@ public struct HPoint : IEquatable<HPoint>, IHFormattable, ISpanFormattable
 
     private static readonly HPoint _origin = new();
     public static ref readonly HPoint Origin => ref _origin;
-    
+
     public int X { readonly get; set; }
     public int Y { readonly get; set; }
     public float Z { readonly get; set; }
@@ -34,7 +34,7 @@ public struct HPoint : IEquatable<HPoint>, IHFormattable, ISpanFormattable
 
     public override readonly string ToString()
         => ToString(format: null);
-    
+
     public override readonly int GetHashCode() => HashCode.Combine(X, Y, Z);
     public override readonly bool Equals(object? obj)
     {
@@ -48,15 +48,15 @@ public struct HPoint : IEquatable<HPoint>, IHFormattable, ISpanFormattable
     }
 
     public readonly bool Equals(HPoint other) => Equals(other);
-    public readonly bool Equals(HPoint other, float epsilon = DEFAULT_EPSILON) 
+    public readonly bool Equals(HPoint other, float epsilon = DEFAULT_EPSILON)
         => X == other.X && Y == other.Y && Math.Abs(other.Z - Z) < epsilon;
 
-    public readonly bool Equals((int X, int Y) point) 
+    public readonly bool Equals((int X, int Y) point)
         => X == point.X && Y == point.Y;
-    public readonly bool Equals((int X, int Y, int Z) point, float epsilon = DEFAULT_EPSILON) 
+    public readonly bool Equals((int X, int Y, int Z) point, float epsilon = DEFAULT_EPSILON)
         => X == point.X && Y == point.Y && Math.Abs(point.Z - Z) < epsilon;
-    public readonly bool Equals((int X, int Y, float Z) point, float epsilon = DEFAULT_EPSILON) 
-        => X == point.X && Y == point.Y  && Math.Abs(point.Z - Z) < epsilon;
+    public readonly bool Equals((int X, int Y, float Z) point, float epsilon = DEFAULT_EPSILON)
+        => X == point.X && Y == point.Y && Math.Abs(point.Z - Z) < epsilon;
 
     public readonly bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format = default, IFormatProvider? provider = default)
         => destination.TryWrite(CultureInfo.InvariantCulture, $"{X}, {Y}, {Z}", out charsWritten);

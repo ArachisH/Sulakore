@@ -36,7 +36,7 @@ public static class HAPI
     {
         string? body = await GetAsync<string?>(hotel.ToUri(), "/gamedata/external_variables/1", cancellationToken).ConfigureAwait(false);
         if (body == null) return null;
-        
+
         int revisionStartIndex = body.LastIndexOf("/gordon/") + 8;
         if (revisionStartIndex != 7)
         {
@@ -83,7 +83,7 @@ public static class HAPI
 
         if (response.Content.Headers.ContentType?.MediaType == "application/json")
             return (T?)await response.Content.ReadFromJsonAsync(typeof(T), HJsonContext.Default, cancellationToken).ConfigureAwait(false);
-        
+
         return default;
     }
 

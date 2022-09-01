@@ -49,7 +49,7 @@ public ref struct IHFormatTryWriteInterpolatedStringHandler
     /// </summary>
     /// <param name="value">The value to write.</param>
     /// <typeparam name="T">The type of the value to write.</typeparam>
-    public bool AppendFormatted<T>(T value) 
+    public bool AppendFormatted<T>(T value)
         where T : unmanaged
     {
         if (_format.TryWrite(_destination.Slice(_position), value, out int bytesWritten))
@@ -66,7 +66,7 @@ public ref struct IHFormatTryWriteInterpolatedStringHandler
     /// <param name="value">The value to write.</param>
     /// <param name="format">The format string.</param>
     /// <typeparam name="T">The type of the value to write.</typeparam>
-    public bool AppendFormatted<T>(T value, string? format = default) 
+    public bool AppendFormatted<T>(T value, string? format = default)
         where T : IHFormattable
     {
         // constrained call avoiding boxing for value types

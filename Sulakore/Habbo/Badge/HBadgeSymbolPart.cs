@@ -20,7 +20,7 @@ public sealed record HBadgeSymbolPart(HBadgeSymbol Symbol, HBadgeColor Color, HB
             case 's': break;
             default: return false;
         }
-        
+
         symbolPart = new((HBadgeSymbol)symbol, color, position);
         return true;
     }

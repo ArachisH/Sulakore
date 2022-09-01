@@ -8,7 +8,7 @@ public interface IHBadgePart : ISpanFormattable
     HBadgeColor Color { get; init; }
     HBadgePosition Position { get; init; }
 
-    protected static bool TryParse(ReadOnlySpan<char> value, out int partId, out HBadgeColor color, out HBadgePosition position) 
+    protected static bool TryParse(ReadOnlySpan<char> value, out int partId, out HBadgeColor color, out HBadgePosition position)
     {
         partId = default;
         color = default;

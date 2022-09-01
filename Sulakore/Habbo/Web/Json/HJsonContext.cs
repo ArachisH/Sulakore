@@ -9,7 +9,7 @@ namespace Sulakore.Habbo.Web.Json;
 [JsonSerializable(typeof(HRoom))]
 [JsonSerializable(typeof(HUser))]
 [JsonSourceGenerationOptions(
-    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull, 
+    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
     PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase)]
 public sealed partial class HJsonContext : JsonSerializerContext
 { }

@@ -64,12 +64,12 @@ public class HKeyExchange : IDisposable
     public virtual string GetSignedP() => Sign(DHPrime);
     public virtual string GetSignedG() => Sign(DHGenerator);
 
-    public virtual string GetPublicKey() 
+    public virtual string GetPublicKey()
         => CanDecrypt ? Sign(DHPublic) : Encrypt(DHPublic);
     public virtual byte[] GetSharedKey(string publicKey)
     {
         BigInteger bigInteger = CanDecrypt ? Decrypt(publicKey) : Verify(publicKey);
-        
+
         byte[] sharedKey = BigInteger.ModPow(bigInteger, DHPrivate, DHPrime)
             .ToByteArray(isBigEndian: true);
 
@@ -188,7 +188,7 @@ public class HKeyExchange : IDisposable
 
     public virtual BigInteger CalculatePublic(BigInteger value)
         => BigInteger.ModPow(value, Exponent, Modulus);
-    public virtual BigInteger CalculatePrivate(BigInteger value) 
+    public virtual BigInteger CalculatePrivate(BigInteger value)
         => BigInteger.ModPow(value, PrivateExponent, Modulus);
 
     public void Dispose()

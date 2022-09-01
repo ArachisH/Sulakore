@@ -34,13 +34,13 @@ public static class HExtensions
             int comDotIndex = value.IndexOf("com.", StringComparison.OrdinalIgnoreCase);
             if (comDotIndex != -1)
                 value = value.Slice(comDotIndex + "com.".Length);
-            
+
             // Corner-case where value was domain including the dot
             if (value[0] == '.') value = value.Slice(1);
 
             if (value.StartsWith("com", StringComparison.OrdinalIgnoreCase))
                 return HHotel.US;
-            
+
             // Slice out rest of value
             value = value.Slice(0, 2);
         }
@@ -51,7 +51,7 @@ public static class HExtensions
         return HHotel.Unknown;
     }
 
-    public static string ToRegion(this HHotel hotel) 
+    public static string ToRegion(this HHotel hotel)
         => hotel.ToString().ToLower();
     public static string ToDomain(this HHotel hotel)
         => hotel switch
@@ -59,7 +59,7 @@ public static class HExtensions
             HHotel.TR => "com.tr",
             HHotel.BR => "com.br",
             HHotel.Unknown => throw new ArgumentException($"Hotel cannot be '{nameof(HHotel.Unknown)}'.", nameof(hotel)),
-            
+
             _ => hotel.ToString().ToLower()
         };
     public static Uri ToUri(this HHotel hotel, string subdomain = "www")

@@ -18,7 +18,7 @@ public class HUser
 
     [JsonConverter(typeof(DateTimeConverter.Nullable))]
     public DateTime? LastWebAccess { get; set; }
-    
+
     [JsonConverter(typeof(DateTimeConverter.Nullable))]
     public DateTime? CreationTime { get; set; }
 
@@ -51,6 +51,6 @@ public class HUser
     public int? CurrentLevel { get; set; }
     public int? CurrentLevelCompletePercent { get; set; }
     public int? TotalExperience { get; set; }
-    
+
     public int? StarGemCount { get; set; }
 }

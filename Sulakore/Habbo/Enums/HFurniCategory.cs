@@ -13,12 +13,12 @@ public enum HFurniCategory
 
     SoundSet = 7,
     TraxSong = 8,
-    
+
     Present = 9,
     EcotronBox = 10,
-    
+
     Trophy = 11,
-    
+
     CreditFurni = 12,
 
     PetShampoo = 13,

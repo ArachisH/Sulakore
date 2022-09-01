@@ -39,7 +39,7 @@ public interface IHFormat
 
     public bool TryReadLength(ReadOnlySpan<byte> source, out int length, out int bytesRead);
     public bool TryWriteLength(Span<byte> source, int length, out int bytesWritten);
-    
+
     public bool TryReadId(ReadOnlySpan<byte> source, out short id, out int bytesRead);
     public bool TryWriteId(Span<byte> source, short id, out int bytesWritten);
 
@@ -62,9 +62,9 @@ public interface IHFormat
     /// <param name="bytesWritten">The amount of bytes written into <paramref name="destination"/> span.</param>
     /// <returns>true if the value was written successfully; otherwise, false.</returns>
     public bool TryWrite<T>(Span<byte> destination, T value, out int bytesWritten) where T : struct;
-    
+
     public bool TryReadUTF8(ReadOnlySpan<byte> source, out string value, out int bytesRead);
-    
+
     public bool TryReadUTF8(ReadOnlySpan<byte> source, Span<char> destination, out int bytesRead, out int charsWritten);
     public bool TryWriteUTF8(Span<byte> destination, ReadOnlySpan<char> value, out int bytesWritten);
 }

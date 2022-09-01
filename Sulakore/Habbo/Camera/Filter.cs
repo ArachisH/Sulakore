@@ -1,7 +1,7 @@
 ﻿namespace Sulakore.Habbo.Camera;
 
-public class Filter
+public sealed record Filter
 {
     public int Alpha { get; set; }
-    public string Name { get; set; }
+    public string Name { get; set; } = default!;
 }

@@ -1,8 +1,12 @@
-﻿namespace Sulakore.Habbo.Camera;
+﻿using System.Drawing;
+using System.Text.Json.Serialization;
 
-public class Sprite
+namespace Sulakore.Habbo.Camera;
+
+public sealed record Sprite
 {
-    public bool? FlipH { get; set; }
+    [JsonPropertyName("flipH")]
+    public bool? FlipHorizantally { get; set; }
 
     public int X { get; set; }
     public int? Width { get; set; }
@@ -13,10 +17,10 @@ public class Sprite
     public bool? Frame { get; set; }
     public double? Skew { get; set; }
     public int? Alpha { get; set; }
-    public int? Color { get; set; }
-    public string BlendMode { get; set; }
-    
-    public string Name { get; set; }
 
-    public override string ToString() => Name;
+    [JsonConverter(typeof(PhotoColorConverter.Nullable))]
+    public Color? Color { get; set; }
+
+    public string BlendMode { get; set; } = default!;
+    public string Name { get; set; } = default!;
 }

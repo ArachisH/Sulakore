@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 #nullable enable
 namespace Sulakore.Habbo.Camera;
 
-public class Plane
+public sealed record Plane
 {
     public IList<Point> CornerPoints { get; set; } = new List<Point>();
 
@@ -12,8 +12,12 @@ public class Plane
     public bool IsBottomAligned { get; set; }
 
     public IList<Mask>? Masks { get; set; }
-    public IList<TextureColumn> TexCols { get; set; } = new List<TextureColumn>();
+
+    [JsonPropertyName("texCols")]
+    public IList<TextureColumn> TextureColumns { get; set; } = new List<TextureColumn>();
 
     public double Z { get; set; }
-    public int Color { get; set; }
+
+    [JsonConverter(typeof(PhotoColorConverter))]
+    public Color Color { get; set; }
 }

@@ -1,12 +1,16 @@
 ﻿using System.Drawing;
+using System.Text.Json.Serialization;
 
-#nullable enable
 namespace Sulakore.Habbo.Camera;
 
-public class Mask
+public sealed record Mask
 {
     public string? Name { get; set; }
     public Point Location { get; set; }
-    public bool? FlipH { get; set; }
-    public bool? FlipV { get; set; }
+    
+    [JsonPropertyName("flipH")]
+    public bool? FlipHorizantally { get; set; }
+
+    [JsonPropertyName("flipV")]
+    public bool? FlipVertically { get; set; }
 }

@@ -58,7 +58,7 @@ public abstract class Identifiers : IReadOnlyList<HMessage>
     }
     protected virtual HMessage ResolveMessage(IGame game, string name, short unityId, string? unityStructure, params uint[] postShuffleHashes)
     {
-        HMessage message = default;
+        HMessage? message = default;
         if (game.Platform != HPlatform.Unity)
         {
             for (int i = 0; i < postShuffleHashes.Length; i++)
@@ -68,7 +68,7 @@ public abstract class Identifiers : IReadOnlyList<HMessage>
         }
         else if (unityId > 0) message = new HMessage(name, unityId, 0, unityStructure, IsOutgoing, null, null, 0);
 
-        if (message != default)
+        if (message is not null)
         {
             _byId.Add(message.Id, message);
             if (game.Platform != HPlatform.Unity)
@@ -76,6 +76,7 @@ public abstract class Identifiers : IReadOnlyList<HMessage>
                 _byHash.Add(message.Hash, message);
             }
         }
+        else throw new MessageResolvingException(game.Revision ?? "<none>", name);
 
         _byName.Add(name, message);
         _messages.Add(message);

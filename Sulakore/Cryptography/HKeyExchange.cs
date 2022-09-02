@@ -196,16 +196,23 @@ public sealed class HKeyExchange
     /// <summary>
     /// Unpads RSA PKCS#1 1.5 message.
     /// </summary>
+    /// <remarks>
+    /// RFC 2313; It is an error if any of the following conditions occurs:
+    /// <list type="bullet">
+    /// <item>
+    /// <description>The encryption block EB cannot be parsed unambiguously(see notes to Section 8.1).</description>
+    /// </item>
+    /// <item>
+    /// <description>The padding string PS consists of fewer than eight octets, or is inconsistent with the block type BT. </description>
+    /// </item>
+    /// <item>
+    /// <description>The decryption process is a public-key operation and the block type BT is not 00 or 01, or the decryption
+    /// process is a private-key operation and the block type is not 02.</description>
+    /// </item>
+    /// </list>
+    /// </remarks>
     /// <param name="message">The padded message.</param>
     /// <exception cref="ArgumentOutOfRangeException">If the <paramref name="message"/> was too large.</exception>
-    /// <remarks>
-    /// From RFC 2313: <para />
-    /// It is an error if any of the following conditions occurs: <para />
-    ///    o The encryption block EB cannot be parsed unambiguously(see notes to Section 8.1). <para />
-    ///    o The padding string PS consists of fewer than eight octets, or is inconsistent with the block type BT. <para />
-    ///    o The decryption process is a public-key operation and the block type BT is not 00 or 01, or the decryption
-    ///      process is a private-key operation and the block type is not 02.
-    /// </remarks>
     // SAFETY: Only overwritten slice of the uninitialized span is returned.
     [SkipLocalsInit]
     private BigInteger PKCSUnpad(BigInteger message)
@@ -226,8 +233,8 @@ public sealed class HKeyExchange
     {
         RSAParameters keys = rsa.ExportParameters(true);
         return new HKeyExchange(
-            new BigInteger(keys.Modulus, isUnsigned: true), 
-            new BigInteger(keys.Exponent, isUnsigned: true), 
+            new BigInteger(keys.Modulus, isUnsigned: true),
+            new BigInteger(keys.Exponent, isUnsigned: true),
             new BigInteger(keys.D, isUnsigned: true));
     }
 }

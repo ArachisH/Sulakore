@@ -37,9 +37,8 @@ public sealed class HNode : IDisposable
     public EndPoint? RemoteEndPoint { get; }
     public int BypassReceiveSecureTunnel { get; set; }
 
-    public bool IsClient { get; private set; }
     public bool IsUpgraded { get; private set; }
-    public bool IsWebSocket { get; private set; }
+    public bool IsWebSocket => _webSocketStream != null;
     public bool IsConnected => !_disposed && _socket.Connected;
 
     private HNode(Socket socket)
@@ -166,9 +165,7 @@ public sealed class HNode : IDisposable
                                       + "Accept-Encoding: gzip, deflate, br\r\n"
                                       + "Accept-Language: en-US,en;q=0.9";
 
-        IsClient = true;
         // Initialize the top-most secure tunnel where ALL data will be read/written from/to.
-
         var secureSocketStream = new SslStream(_socketStream, false, ValidateRemoteCertificate);
         _socketStream = secureSocketStream; // Take ownership of the main input/output stream, and override the field with an SslStream instance that wraps around it.
 

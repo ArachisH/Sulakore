@@ -1,11 +1,9 @@
-﻿using Sulakore.Habbo;
-
-namespace Sulakore.Network;
+﻿namespace Sulakore.Network;
 
 public interface IHConnection
 {
-    Incoming? In { get; }
-    Outgoing? Out { get; }
+    Habbo.Incoming? In { get; }
+    Habbo.Outgoing? Out { get; }
     HotelEndPoint RemoteEndPoint { get; }
 
     ValueTask SendToClientAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default);

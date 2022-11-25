@@ -1,18 +1,17 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
-namespace Sulakore.Habbo.Packages.StuffData
+namespace Sulakore.Habbo.Packages.StuffData;
+
+public sealed class HLegacyStuffData : HStuffData
 {
-    public class HLegacyStuffData : HStuffData
-    {
-        public string Data { get; set; }
+    public string Data { get; set; }
 
-        public HLegacyStuffData()
-            : base(HStuffDataFormat.Legacy)
-        { }
-        public HLegacyStuffData(HPacket packet)
-            : this()
-        {
-            Data = packet.ReadUTF8();
-        }
+    public HLegacyStuffData()
+        : base(HStuffDataFormat.Legacy)
+    { }
+    public HLegacyStuffData(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
+        : this()
+    {
+        Data = format.ReadUTF8(ref packetSpan);
     }
 }

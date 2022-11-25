@@ -1,10 +1,9 @@
-﻿namespace Sulakore.Habbo
+﻿namespace Sulakore.Habbo;
+
+public enum HPollType
 {
-    public enum HPollType
-    {
-        None = 0,
-        Promoter = 1,
-        Passive = 2,
-        Detractor = 3
-    }
+    None = 0,
+    Promoter = 1,
+    Passive = 2,
+    Detractor = 3
 }

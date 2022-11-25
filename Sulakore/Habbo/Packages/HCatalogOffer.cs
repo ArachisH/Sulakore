@@ -1,49 +1,48 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
-namespace Sulakore.Habbo.Packages
+namespace Sulakore.Habbo.Packages;
+
+public class HCatalogOffer
 {
-    public class HCatalogOffer
+    public int Id { get; set; }
+    public string DisplayName { get; set; }
+
+    public bool IsRentable { get; set; }
+
+    public int CreditCost { get; set; }
+    public int OtherCurrencyCost { get; set; }
+    public int OtherCurrencyType { get; set; }
+
+    public bool CanGift { get; set; }
+    public HCatalogProduct[] Products { get; set; }
+
+    public int ClubLevel { get; set; }
+    public bool IsPet { get; set; }
+    public bool AllowBundle { get; set; }
+
+    public string PreviewImage { get; set; }
+
+    public HCatalogOffer(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        public int Id { get; set; }
-        public string DisplayName { get; set; }
+        Id = format.Read<int>(ref packetSpan);
+        DisplayName = format.ReadUTF8(ref packetSpan);
+        IsRentable = format.Read<bool>(ref packetSpan);
 
-        public bool IsRentable { get; set; }
+        CreditCost = format.Read<int>(ref packetSpan);
+        OtherCurrencyCost = format.Read<int>(ref packetSpan);
+        OtherCurrencyType = format.Read<int>(ref packetSpan);
+        CanGift = format.Read<bool>(ref packetSpan);
 
-        public int CreditCost { get; set; }
-        public int OtherCurrencyCost { get; set; }
-        public int OtherCurrencyType { get; set; }
-
-        public bool CanGift { get; set; }
-        public HCatalogProduct[] Products { get; set; }
-
-        public int ClubLevel { get; set; }
-        public bool IsPet { get; set; }
-        public bool AllowBundle { get; set; }
-
-        public string PreviewImage { get; set; }
-
-        public HCatalogOffer(HPacket packet)
+        Products = new HCatalogProduct[format.Read<int>(ref packetSpan)];
+        for (int i = 0; i < Products.Length; i++)
         {
-            Id = packet.ReadInt32();
-            DisplayName = packet.ReadUTF8();
-            IsRentable = packet.ReadBoolean();
-
-            CreditCost = packet.ReadInt32();
-            OtherCurrencyCost = packet.ReadInt32();
-            OtherCurrencyType = packet.ReadInt32();
-            CanGift = packet.ReadBoolean();
-
-            Products = new HCatalogProduct[packet.ReadInt32()];
-            for (int i = 0; i < Products.Length; i++)
-            {
-                Products[i] = new HCatalogProduct(packet);
-            }
-
-            ClubLevel = packet.ReadInt32();
-            AllowBundle = packet.ReadBoolean();
-            IsPet = packet.ReadBoolean();
-
-            PreviewImage = packet.ReadUTF8();
+            Products[i] = new HCatalogProduct(format, ref packetSpan);
         }
+
+        ClubLevel = format.Read<int>(ref packetSpan);
+        AllowBundle = format.Read<bool>(ref packetSpan);
+        IsPet = format.Read<bool>(ref packetSpan);
+
+        PreviewImage = format.ReadUTF8(ref packetSpan);
     }
 }

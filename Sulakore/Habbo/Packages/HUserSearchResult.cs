@@ -1,52 +1,51 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
-namespace Sulakore.Habbo.Packages
+namespace Sulakore.Habbo.Packages;
+
+public class HUserSearchResult
 {
-    public class HUserSearchResult
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Motto { get; set; }
+
+    public bool IsOnline { get; set; }
+    public bool CanFollow { get; set; }
+
+    public HGender Gender { get; set; }
+    public string Figure { get; set; }
+
+    public string RealName { get; set; }
+
+    public HUserSearchResult(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Motto { get; set; }
-        
-        public bool IsOnline { get; set; }
-        public bool CanFollow { get; set; }
-        
-        public HGender Gender { get; set; }
-        public string Figure { get; set; }
+        Id = format.Read<int>(ref packetSpan);
+        Name = format.ReadUTF8(ref packetSpan);
+        Motto = format.ReadUTF8(ref packetSpan);
 
-        public string RealName { get; set; }
+        IsOnline = format.Read<bool>(ref packetSpan);
+        CanFollow = format.Read<bool>(ref packetSpan);
 
-        public HUserSearchResult(HPacket packet)
+        format.ReadUTF8(ref packetSpan);
+
+        Gender = format.Read<int>(ref packetSpan) == 1 ? HGender.Male : HGender.Female;
+        Figure = format.ReadUTF8(ref packetSpan);
+
+        RealName = format.ReadUTF8(ref packetSpan);
+    }
+
+    public static (HUserSearchResult[] friends, HUserSearchResult[] others) Parse(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
+    {
+        var friends = new HUserSearchResult[format.Read<int>(ref packetSpan)];
+        for (int i = 0; i < friends.Length; i++)
         {
-            Id = packet.ReadInt32();
-            Name = packet.ReadUTF8();
-            Motto = packet.ReadUTF8();
-
-            IsOnline = packet.ReadBoolean();
-            CanFollow = packet.ReadBoolean();
-
-            packet.ReadUTF8();
-
-            Gender = packet.ReadInt32() == 1 ? HGender.Male : HGender.Female; //TODO: HExtension, ffs sulake
-            Figure = packet.ReadUTF8();
-            
-            RealName = packet.ReadUTF8();
+            friends[i] = new HUserSearchResult(format, ref packetSpan);
         }
 
-        public static (HUserSearchResult[] friends, HUserSearchResult[] others) Parse(HPacket packet)
+        var others = new HUserSearchResult[format.Read<int>(ref packetSpan)];
+        for (int i = 0; i < others.Length; i++)
         {
-            var friends = new HUserSearchResult[packet.ReadInt32()];
-            for (int i = 0; i < friends.Length; i++)
-            {
-                friends[i] = new HUserSearchResult(packet);
-            }
-
-            var others = new HUserSearchResult[packet.ReadInt32()];
-            for (int i = 0; i < others.Length; i++)
-            {
-                others[i] = new HUserSearchResult(packet);
-            }
-            return (friends, others);
+            others[i] = new HUserSearchResult(format, ref packetSpan);
         }
+        return (friends, others);
     }
 }

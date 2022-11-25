@@ -1,30 +1,47 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
-namespace Sulakore.Habbo.Packages
+namespace Sulakore.Habbo.Packages;
+
+public sealed class HAchievement
 {
-    public class HAchievement
-    {
-        public string Name { get; set; }
-        public HAchievementLevel[] Levels { get; set; }
+    public string Name { get; set; }
+    public ACHLevel[] Levels { get; set; }
 
-        public HAchievement(HPacket packet)
+    public HAchievement(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
+    {
+        Name = format.ReadUTF8(ref packetSpan);
+        Levels = new ACHLevel[format.Read<int>(ref packetSpan)];
+    }
+
+    public static HAchievement[] Parse(IHFormat format, ReadOnlySpan<byte> packetSpan)
+    {
+        var achievements = new HAchievement[format.Read<int>(ref packetSpan)];
+        for (int i = 0; i < achievements.Length; i++)
         {
-            Name = packet.ReadUTF8();
-            Levels = new HAchievementLevel[packet.ReadInt32()];
-            for (int i = 0; i < Levels.Length; i++)
+            var achievement = new HAchievement(format, ref packetSpan);
+            achievements[i] = achievement;
+
+            for (int j = 0; j < achievement.Levels.Length; j++)
             {
-                Levels[i] = new HAchievementLevel(Name, packet);
+                var level = new ACHLevel(format, ref packetSpan);
+                level.BadgeId = $"ACH_{achievement.Name}{level.Level}";
+
+                achievement.Levels[j] = level;
             }
         }
+        return achievements;
+    }
 
-        public static HAchievement[] Parse(HPacket packet)
+    public sealed class ACHLevel
+    {
+        public int Level { get; set; }
+        public int PointLimit { get; set; }
+        public string BadgeId { get; set; }
+
+        public ACHLevel(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
         {
-            var achievements = new HAchievement[packet.ReadInt32()];
-            for (int i = 0; i < achievements.Length; i++)
-            {
-                achievements[i] = new HAchievement(packet);
-            }
-            return achievements;
+            Level = format.Read<int>(ref packetSpan);
+            PointLimit = format.Read<int>(ref packetSpan);
         }
     }
 }

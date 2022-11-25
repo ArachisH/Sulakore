@@ -1,5 +1,4 @@
-﻿namespace Sulakore.Habbo.Camera
-{
-    public class Modifiers
-    { }
-}
+﻿namespace Sulakore.Habbo.Camera;
+
+public sealed record Modifiers
+{ }

@@ -1,7 +1,6 @@
-﻿namespace Sulakore.Habbo.Camera
+﻿namespace Sulakore.Habbo.Camera;
+
+public sealed record TextureColumn
 {
-    public class TextureColumn
-    {
-        public List<string> AssetNames { get; set; } = new List<string>();
-    }
+    public ICollection<string> AssetNames { get; } = new List<string>();
 }

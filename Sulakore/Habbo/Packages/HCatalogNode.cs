@@ -1,48 +1,46 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
-namespace Sulakore.Habbo.Packages
+namespace Sulakore.Habbo.Packages;
+
+public class HCatalogNode
 {
-    public class HCatalogNode
+    public bool Visible { get; set; }
+
+    public int Icon { get; set; }
+    public int PageId { get; set; }
+    public string PageName { get; set; }
+    public string Localization { get; set; }
+
+    public int[] OfferIds { get; set; }
+    public HCatalogNode[] Children { get; set; }
+
+    public HCatalogNode(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        public bool Visible { get; set; }
+        Visible = format.Read<bool>(ref packetSpan);
 
-        public int Icon { get; set; }
-        public int PageId { get; set; }
-        public string PageName { get; set; }
-        public string Localization { get; set; }
-        
-        public int[] OfferIds { get; set; }
-        public HCatalogNode[] Children { get; set; }
+        Icon = format.Read<int>(ref packetSpan);
+        PageId = format.Read<int>(ref packetSpan);
+        PageName = format.ReadUTF8(ref packetSpan);
+        Localization = format.ReadUTF8(ref packetSpan);
 
-        public HCatalogNode(HPacket packet)
+        OfferIds = new int[format.Read<int>(ref packetSpan)];
+        for (int i = 0; i < OfferIds.Length; i++)
         {
-            Visible = packet.ReadBoolean();
-            
-            Icon = packet.ReadInt32();
-            PageId = packet.ReadInt32();
-            PageName = packet.ReadUTF8();
-            Localization = packet.ReadUTF8();
-
-            OfferIds = new int[packet.ReadInt32()];
-            for (int i = 0; i < OfferIds.Length; i++)
-            {
-                OfferIds[i] = packet.ReadInt32();
-            }
-
-            Children = new HCatalogNode[packet.ReadInt32()];
-            for (int i = 0; i < Children.Length; i++)
-            {
-                Children[i] = new HCatalogNode(packet);
-            }
+            OfferIds[i] = format.Read<int>(ref packetSpan);
         }
 
-        public static HCatalogNode Parse(HPacket packet)
+        Children = new HCatalogNode[format.Read<int>(ref packetSpan)];
+        for (int i = 0; i < Children.Length; i++)
         {
-            var root = new HCatalogNode(packet);
-            bool newAdditionsAvailable = packet.ReadBoolean();
-            string catalogType = packet.ReadUTF8();
-            
-            return root;
+            Children[i] = new HCatalogNode(format, ref packetSpan);
         }
+    }
+
+    public static HCatalogNode Parse(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
+    {
+        var root = new HCatalogNode(format, ref packetSpan);
+        bool newAdditionsAvailable = format.Read<bool>(ref packetSpan);
+        string catalogType = format.ReadUTF8(ref packetSpan);
+        return root;
     }
 }

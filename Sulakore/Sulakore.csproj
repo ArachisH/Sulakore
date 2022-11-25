@@ -3,6 +3,11 @@
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<LangVersion>preview</LangVersion>
+
+		<IsTrimmable>true</IsTrimmable>
+		<TrimmerSingleWarn>false</TrimmerSingleWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -10,7 +15,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<AdditionalFiles Include="messages.json" />
+		<CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="IsOutgoing" />
+
+		<AdditionalFiles Include=".\incoming.json" IsOutgoing="false" />
+		<AdditionalFiles Include=".\outgoing.json" IsOutgoing="true" />
 	</ItemGroup>
 
 </Project>

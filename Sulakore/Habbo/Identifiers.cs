@@ -15,10 +15,10 @@ public abstract class Identifiers : IReadOnlyList<HMessage>
     public HMessage this[uint hash] => _byHash[hash];
     public HMessage this[string name] => _byName[name];
 
-    public Identifiers(bool isOutgoing)
+    protected Identifiers(bool isOutgoing)
         : this(768, isOutgoing)
     { }
-    public Identifiers(int count, bool isOutgoing)
+    protected Identifiers(int count, bool isOutgoing)
     {
         IsOutgoing = isOutgoing;
 
@@ -28,9 +28,9 @@ public abstract class Identifiers : IReadOnlyList<HMessage>
         _byName = new Dictionary<string, HMessage>(count);
     }
 
-    public bool TryGetMessage(short id, out HMessage message) => _byId.TryGetValue(id, out message);
-    public bool TryGetMessage(uint hash, out HMessage message) => _byHash.TryGetValue(hash, out message);
-    public bool TryGetMessage(string name, out HMessage message) => _byName.TryGetValue(name, out message);
+    public bool TryGetMessage(short id, out HMessage? message) => _byId.TryGetValue(id, out message);
+    public bool TryGetMessage(uint hash, out HMessage? message) => _byHash.TryGetValue(hash, out message);
+    public bool TryGetMessage(string name, out HMessage? message) => _byName.TryGetValue(name, out message);
 
     public void TrimExcess()
     {
@@ -56,10 +56,10 @@ public abstract class Identifiers : IReadOnlyList<HMessage>
         }
         _messages.Add(backingField);
     }
-    protected virtual HMessage ResolveMessage(IGame game, string name, short unityId, string unityStructure, params uint[] postShuffleHashes)
+    protected virtual HMessage ResolveMessage(IGame game, string name, short unityId, string? unityStructure, params uint[] postShuffleHashes)
     {
-        HMessage message = default;
-        if (!game.IsUnity)
+        HMessage? message = default;
+        if (game.Platform != HPlatform.Unity)
         {
             for (int i = 0; i < postShuffleHashes.Length; i++)
             {
@@ -68,14 +68,15 @@ public abstract class Identifiers : IReadOnlyList<HMessage>
         }
         else if (unityId > 0) message = new HMessage(name, unityId, 0, unityStructure, IsOutgoing, null, null, 0);
 
-        if (message != default)
+        if (message is not null)
         {
             _byId.Add(message.Id, message);
-            if (!game.IsUnity)
+            if (game.Platform != HPlatform.Unity)
             {
                 _byHash.Add(message.Hash, message);
             }
         }
+        else throw new MessageResolvingException(game.Revision ?? "<none>", name);
 
         _byName.Add(name, message);
         _messages.Add(message);

@@ -1,74 +1,72 @@
 ﻿using System.Globalization;
 
-using Sulakore.Network.Protocol;
+using Sulakore.Network.Formats;
 using Sulakore.Habbo.Packages.StuffData;
 
-namespace Sulakore.Habbo.Packages
+namespace Sulakore.Habbo.Packages;
+
+public class HFloorObject
 {
-    public class HFloorObject
+    public int Id { get; set; }
+    public int TypeId { get; set; }
+    public HPoint Tile { get; set; }
+    public HDirection Facing { get; set; }
+
+    public double Height { get; set; }
+    public int Extra { get; set; }
+
+    public HStuffData StuffData { get; set; }
+
+    public int SecondsToExpiration { get; set; }
+    public HUsagePolicy UsagePolicy { get; set; }
+
+    public int OwnerId { get; set; }
+    public string OwnerName { get; set; }
+
+    public string? StaticClass { get; set; }
+
+    public HFloorObject(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        public int Id { get; set; }
-        public int TypeId { get; set; }
-        public HPoint Tile { get; set; }
-        public HDirection Facing { get; set; }
+        Id = format.Read<int>(ref packetSpan);
+        TypeId = format.Read<int>(ref packetSpan);
 
-        public double Height { get; set; }
-        public int Extra { get; set; }
+        int x = format.Read<int>(ref packetSpan);
+        int y = format.Read<int>(ref packetSpan);
+        Facing = (HDirection)format.Read<int>(ref packetSpan);
+        Tile = new HPoint(x, y, float.Parse(format.ReadUTF8(ref packetSpan), CultureInfo.InvariantCulture));
 
-        public HStuffData StuffData { get; set; }
+        Height = double.Parse(format.ReadUTF8(ref packetSpan), CultureInfo.InvariantCulture);
+        Extra = format.Read<int>(ref packetSpan);
 
-        public int SecondsToExpiration { get; set; }
-        public HUsagePolicy UsagePolicy { get; set; }
+        StuffData = HStuffData.Parse(format, ref packetSpan);
 
-        public int OwnerId { get; set; }
-        public string? OwnerName { get; set; }
+        SecondsToExpiration = format.Read<int>(ref packetSpan);
+        UsagePolicy = (HUsagePolicy)format.Read<int>(ref packetSpan);
 
-        public string? StaticClass { get; set; }
-
-        public HFloorObject(HPacket packet)
+        OwnerId = format.Read<int>(ref packetSpan);
+        if (TypeId < 0)
         {
-            Id = packet.ReadInt32();
-            TypeId = packet.ReadInt32();
+            StaticClass = format.ReadUTF8(ref packetSpan);
+        }
+    }
 
-            var tile = new HPoint(packet.ReadInt32(), packet.ReadInt32());
-            Facing = (HDirection)packet.ReadInt32();
-
-            tile.Z = double.Parse(packet.ReadUTF8(), CultureInfo.InvariantCulture);
-            Tile = tile;
-
-            Height = double.Parse(packet.ReadUTF8(), CultureInfo.InvariantCulture);
-            Extra = packet.ReadInt32();
-
-            StuffData = HStuffData.Parse(packet);
-
-            SecondsToExpiration = packet.ReadInt32();
-            UsagePolicy = (HUsagePolicy)packet.ReadInt32();
-
-            OwnerId = packet.ReadInt32();
-            if (TypeId < 0)
-            {
-                StaticClass = packet.ReadUTF8();
-            }
+    public static HFloorObject[] Parse(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
+    {
+        int ownersCount = format.Read<int>(ref packetSpan);
+        var owners = new Dictionary<int, string>(ownersCount);
+        for (int i = 0; i < ownersCount; i++)
+        {
+            owners.Add(format.Read<int>(ref packetSpan), format.ReadUTF8(ref packetSpan));
         }
 
-        public static HFloorObject[] Parse(HPacket packet)
+        var floorObjects = new HFloorObject[format.Read<int>(ref packetSpan)];
+        for (int i = 0; i < floorObjects.Length; i++)
         {
-            int ownersCount = packet.ReadInt32();
-            var owners = new Dictionary<int, string>(ownersCount);
-            for (int i = 0; i < ownersCount; i++)
-            {
-                owners.Add(packet.ReadInt32(), packet.ReadUTF8());
-            }
+            var floorObject = new HFloorObject(format, ref packetSpan);
+            floorObject.OwnerName = owners[floorObject.OwnerId];
 
-            var floorObjects = new HFloorObject[packet.ReadInt32()];
-            for (int i = 0; i < floorObjects.Length; i++)
-            {
-                var floorObject = new HFloorObject(packet);
-                floorObject.OwnerName = owners[floorObject.OwnerId];
-
-                floorObjects[i] = floorObject;
-            }
-            return floorObjects;
+            floorObjects[i] = floorObject;
         }
+        return floorObjects;
     }
 }

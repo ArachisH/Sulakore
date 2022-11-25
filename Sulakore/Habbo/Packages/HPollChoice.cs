@@ -1,18 +1,17 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
-namespace Sulakore.Habbo.Packages
+namespace Sulakore.Habbo.Packages;
+
+public class HPollChoice
 {
-    public class HPollChoice
-    {
-        public string Value { get; set; }
-        public string Text { get; set; }
-        public int Type { get; set; }
+    public string Value { get; set; }
+    public string Text { get; set; }
+    public int Type { get; set; }
 
-        public HPollChoice(HPacket packet)
-        {
-            Value = packet.ReadUTF8();
-            Text = packet.ReadUTF8();
-            Type = packet.ReadInt32();
-        }
+    public HPollChoice(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
+    {
+        Value = format.ReadUTF8(ref packetSpan);
+        Text = format.ReadUTF8(ref packetSpan);
+        Type = format.Read<int>(ref packetSpan);
     }
 }

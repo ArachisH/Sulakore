@@ -1,22 +1,21 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
-namespace Sulakore.Habbo.Packages.StuffData
+namespace Sulakore.Habbo.Packages.StuffData;
+
+public sealed class HStringArrayStuffData : HStuffData
 {
-    public class HStringArrayStuffData : HStuffData
-    {
-        public string[] Data { get; set; }
+    public string[] Data { get; set; }
 
-        public HStringArrayStuffData()
-            : base(HStuffDataFormat.StringArray)
-        { }
-        public HStringArrayStuffData(HPacket packet)
-            : this()
+    public HStringArrayStuffData()
+        : base(HStuffDataFormat.StringArray)
+    { }
+    public HStringArrayStuffData(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
+        : this()
+    {
+        Data = new string[format.Read<int>(ref packetSpan)];
+        for (int i = 0; i < Data.Length; i++)
         {
-            Data = new string[packet.ReadInt32()];
-            for (int i = 0; i < Data.Length; i++)
-            {
-                Data[i] = packet.ReadUTF8();
-            }
+            Data[i] = format.ReadUTF8(ref packetSpan);
         }
     }
 }

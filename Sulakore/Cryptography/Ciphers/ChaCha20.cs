@@ -1,114 +1,117 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Numerics;
+using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 
-namespace Sulakore.Cryptography.Ciphers
+namespace Sulakore.Cryptography.Ciphers;
+
+public sealed class ChaCha20 : IStreamCipher
 {
-    public class ChaCha20 : IStreamCipher
+    private readonly uint[] _state;
+    private readonly byte[] _block;
+
+    private int _position = -1;
+
+    public ChaCha20(ReadOnlySpan<byte> key, ReadOnlySpan<byte> nonce, uint blockCount = 0)
     {
-        private static readonly uint[] _constants = new uint[4] { 0x61707865, 0x3320646e, 0x79622d32, 0x6b206574 };
+        if (key.Length != 32) throw new ArgumentException("The provided key is not 256-bits.");
+        if (nonce.Length != 8 && nonce.Length != 12) throw new ArgumentException("The provided nonce can only be 96-bit or 64-bit.");
 
-        private readonly byte[] _state;
+        // c = constant, k = key, b = blockCount, n = nonce
 
-        public bool IsDecrypting { get; set; }
+        // cccccccc cccccccc  cccccccc cccccccc
+        _state = new uint[16];
+        _state[0] = 0x61707865;
+        _state[1] = 0x3320646e;
+        _state[2] = 0x79622d32;
+        _state[3] = 0x6b206574;
 
-        private byte[] _block;
-        private bool _disposed;
-        private int _position = -1;
+        // kkkkkkkk kkkkkkkk  kkkkkkkk kkkkkkkk
+        // kkkkkkkk kkkkkkkk  kkkkkkkk kkkkkkkk
+        MemoryMarshal.Cast<byte, uint>(key).CopyTo(_state.AsSpan(4));
 
-        public ChaCha20(ReadOnlySpan<byte> key, ReadOnlySpan<byte> nonce, uint blockCount = 0)
+        // bbbbbbbb nnnnnnnn  nnnnnnnn nnnnnnnn
+        _state[12] = blockCount;
+
+        MemoryMarshal.Cast<byte, uint>(nonce)
+            .CopyTo(_state.AsSpan(_state.Length - (nonce.Length / sizeof(uint))));
+
+        _block = new byte[64];
+
+        if (blockCount > 0)
         {
-            if (key.Length != 32) throw new ArgumentException("The provided key is not 256-bits.");
-            if (nonce.Length != 8 && nonce.Length != 12) throw new ArgumentException("The provided nonce can only be 96-bit or 64-bit.");
-
-            _state = new byte[64];
-            Span<uint> state = MemoryMarshal.Cast<byte, uint>(_state);
-
-            // 4 Unsigned Integers
-            _constants.CopyTo(state);
-
-            // 8 Unsigned Integers
-            key.CopyTo(_state.AsSpan(_constants.Length * sizeof(uint)));
-
-            // 1 Unsigned Integer
-            state[12] = blockCount;
-
-            // 3 Unsigned Integers
-            nonce.CopyTo(_state.AsSpan((nonce.Length == 8 ? 14 : 13) * sizeof(uint)));
-
-            if (blockCount > 0)
+            for (int i = 0; i < blockCount; i++)
             {
-                for (int i = 0; i < blockCount; i++)
-                {
-                    RefreshBlock();
-                }
-                _position = 0; // Change from -1, as -1 will force the creation of a new block.
+                RefreshBlock();
             }
+            _position = 0; // Change from -1, as -1 will force the creation of a new block.
         }
+    }
 
-        public void Process(Span<byte> data) => Process(data, data);
-        public void Process(ReadOnlySpan<byte> data, Span<byte> parsed)
+    public void Process(Span<byte> data) => Process(data, data);
+    public void Process(ReadOnlySpan<byte> source, Span<byte> destination)
+    {
+        for (int i = 0; i < destination.Length; i++)
         {
-            for (int i = 0; i < parsed.Length; i++)
+            if (_position == -1 || _position == 64)
             {
-                if (_position == -1 || _position == 64)
-                {
-                    RefreshBlock();
-                    _position = 0;
-                }
-                parsed[i] = (byte)(data[i] ^ _block[_position++]);
+                RefreshBlock();
+                _position = 0;
             }
+            destination[i] = (byte)(source[i] ^ _block[_position++]);
         }
+    }
 
-        private void RefreshBlock()
+    // SAFETY: The temporary stack-allocation is initialized with a copy of _state
+    private void RefreshBlock()
+    {
+        Span<uint> block = stackalloc uint[16];
+        _state.CopyTo(block);
+
+        for (int i = 0; i < 10; i++)
         {
-            _block = new byte[64];
-            _state.CopyTo(_block, 0);
-
-            Span<uint> block = MemoryMarshal.Cast<byte, uint>(_block);
-            for (int i = 0; i < 10; i++)
-            {
-                QuarterRound(block, 0, 4, 8, 12);
-                QuarterRound(block, 1, 5, 9, 13);
-                QuarterRound(block, 2, 6, 10, 14);
-                QuarterRound(block, 3, 7, 11, 15);
-                QuarterRound(block, 0, 5, 10, 15);
-                QuarterRound(block, 1, 6, 11, 12);
-                QuarterRound(block, 2, 7, 8, 13);
-                QuarterRound(block, 3, 4, 9, 14);
-            }
-
-            Span<uint> state = MemoryMarshal.Cast<byte, uint>(_state);
-            for (int i = 0; i < 16; i++)
-            {
-                block[i] = CarrylessAdd(block[i], state[i]);
-            }
-            state[12]++;
+            QuarterRound(block, 0, 4, 8, 12);
+            QuarterRound(block, 1, 5, 9, 13);
+            QuarterRound(block, 2, 6, 10, 14);
+            QuarterRound(block, 3, 7, 11, 15);
+            QuarterRound(block, 0, 5, 10, 15);
+            QuarterRound(block, 1, 6, 11, 12);
+            QuarterRound(block, 2, 7, 8, 13);
+            QuarterRound(block, 3, 4, 9, 14);
         }
 
-        private static void QuarterRound(Span<uint> state, int a, int b, int c, int d)
+        for (int i = 0; i < 16; i++)
         {
-            state[d] = RotateLeft(CarrylessXor(state[d], (state[a] = CarrylessAdd(state[a], state[b]))), 16);
-            state[b] = RotateLeft(CarrylessXor(state[b], (state[c] = CarrylessAdd(state[c], state[d]))), 12);
-            state[d] = RotateLeft(CarrylessXor(state[d], (state[a] = CarrylessAdd(state[a], state[b]))), 8);
-            state[b] = RotateLeft(CarrylessXor(state[b], (state[c] = CarrylessAdd(state[c], state[d]))), 7);
+            block[i] = unchecked(block[i] + _state[i]);
         }
 
-        private static uint CarrylessXor(uint left, uint right) => unchecked(left ^ right);
-        private static uint CarrylessAdd(uint left, uint right) => unchecked(left + right);
-        private static uint RotateLeft(uint value, int count) => unchecked((value << count) | (value >> (32 - count)));
+        MemoryMarshal.Cast<uint, byte>(block).CopyTo(_block);
+        _state[12]++;
+    }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_disposed) return;
-            if (disposing)
-            {
-                _block = null;
-            }
-            _disposed = true;
-        }
+    // SAFETY: The arguments MUST BE indices inside the state table.
+    private static void QuarterRound(Span<uint> state, int a, int b, int c, int d)
+    {
+        ref uint state_a = ref Unsafe.Add(ref MemoryMarshal.GetReference(state), a);
+        ref uint state_b = ref Unsafe.Add(ref MemoryMarshal.GetReference(state), b);
+        ref uint state_c = ref Unsafe.Add(ref MemoryMarshal.GetReference(state), c);
+        ref uint state_d = ref Unsafe.Add(ref MemoryMarshal.GetReference(state), d);
+
+        state_a = unchecked(state_a + state_b);
+        state_d = BitOperations.RotateLeft(state_d ^ state_a, 16);
+
+        state_c = unchecked(state_c + state_d);
+        state_b = BitOperations.RotateLeft(state_b ^ state_c, 12);
+
+        state_a = unchecked(state_a + state_b);
+        state_d = BitOperations.RotateLeft(state_d ^ state_a, 8);
+
+        state_c = unchecked(state_c + state_d);
+        state_b = BitOperations.RotateLeft(state_b ^ state_c, 7);
+    }
+
+    public void Dispose()
+    {
+        Array.Clear(_state);
+        Array.Clear(_block);
     }
 }

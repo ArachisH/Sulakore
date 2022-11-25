@@ -1,29 +1,31 @@
-﻿using System.Diagnostics;
+﻿using Sulakore.Habbo.Web.Json;
+using System.Diagnostics;
+using System.Text.Json.Serialization;
 
-namespace Sulakore.Habbo.Web
+namespace Sulakore.Habbo.Web;
+
+[DebuggerDisplay("Name: {Name}")]
+public class HRoom
 {
-    [DebuggerDisplay("Name: {Name}")]
-    public class HRoom
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
 
-        public DateTime CreationTime { get; set; }
+    [JsonConverter(typeof(DateTimeConverter))]
+    public DateTime CreationTime { get; set; }
 
-        public string HabboGroupId { get; set; }
+    public string HabboGroupId { get; set; }
 
-        public IEnumerable<string> Tags { get; set; }
-        public int MaximumVisitors { get; set; }
+    public IEnumerable<string> Tags { get; set; }
+    public int MaximumVisitors { get; set; }
 
-        public bool ShowOwnerName { get; set; }
+    public bool ShowOwnerName { get; set; }
 
-        public string OwnerName { get; set; }
-        public string OwnerUniqueId { get; set; }
-        public IEnumerable<string> Categories { get; set; }
-        public int Rating { get; set; }
-        public string ThumbnailUrl { get; set; }
-        public string ImageUrl { get; set; }
-        public string UniqueId { get; set; }
-    }
+    public string OwnerName { get; set; }
+    public string OwnerUniqueId { get; set; }
+    public IEnumerable<string> Categories { get; set; }
+    public int Rating { get; set; }
+    public string ThumbnailUrl { get; set; }
+    public string ImageUrl { get; set; }
+    public string UniqueId { get; set; }
 }

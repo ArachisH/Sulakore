@@ -1,79 +1,86 @@
 ﻿using System.Text;
+using System.Buffers;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Sulakore.Habbo.Camera
+namespace Sulakore.Habbo.Camera;
+
+public sealed class HPhoto
 {
-    public class HPhoto
+    public IList<Plane> Planes { get; set; } = new List<Plane>();
+    public IList<Sprite> Sprites { get; set; } = new List<Sprite>();
+    public Modifiers Modifiers { get; set; } = new Modifiers();
+    public IList<Filter> Filters { get; set; } = new List<Filter>();
+
+    [JsonPropertyName("roomid")]
+    public uint RoomId { get; set; }
+    public int? Zoom { get; set; }
+
+    /// <summary>
+    /// Serializes the photo into a valid JSON representation and returns it.
+    /// </summary>
+    public override string ToString()
     {
-        private static readonly JsonSerializerOptions _serializerOptions;
+        var bufferWriter = new ArrayBufferWriter<byte>(256);
+        using var writer = new Utf8JsonWriter(bufferWriter);
 
-        public IList<Plane> Planes { get; set; } = new List<Plane>();
-        public IList<Sprite> Sprites { get; set; } = new List<Sprite>();
-        public Modifiers Modifiers { get; set; } = new Modifiers();
-        public IList<Filter> Filters { get; set; } = new List<Filter>();
+        writer.WriteStartObject();
 
-        [JsonPropertyName("roomid")]
-        public int RoomId { get; set; }
-        public int? Zoom { get; set; }
+        writer.WritePropertyName("planes"u8);
+        JsonSerializer.Serialize(writer, Planes, HPhotoJsonContext.Default.IListPlane);
 
-        static HPhoto()
-        {
-            _serializerOptions = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                IgnoreReadOnlyProperties = true,
-                IgnoreNullValues = true
-            };
-        }
+        writer.WritePropertyName("sprites"u8);
+        JsonSerializer.Serialize(writer, Sprites, HPhotoJsonContext.Default.IListSprite);
 
-        private long GetStatus(ref long mod, ref long timestamp)
-        {
-            timestamp -= (mod = timestamp % 100);
-            return timestamp / 100 % 23;
-        }
-        private long GetChecksum(long mod, long key)
-        {
-            return (mod + 13) * (key + 29);
-        }
-        private long GetTimestamp(string blob, long timestamp, long key)
-        {
-            byte[] data = Encoding.Default.GetBytes(blob);
-            return timestamp + Calculate(data, key, RoomId);
-        }
-        private long Calculate(byte[] data, long key, int roomId)
-        {
-            long tKey = key, tRoomId = roomId;
-            for (int i = 0; i < data.Length; i++)
-            {
-                tKey = (tKey + data[i]) % 255;
-                tRoomId = (tKey + tRoomId) % 255;
-            }
-            return (tKey + tRoomId) % 100;
-        }
+        writer.WritePropertyName("modifiers"u8);
+        JsonSerializer.Serialize(writer, Modifiers, HPhotoJsonContext.Default.Modifiers);
 
-        /// <summary>
-        /// Serializes the photo data into a valid JSON representation and returns it.
-        /// </summary>
-        public override string ToString()
-        {
-            string json = JsonSerializer.Serialize(this, _serializerOptions)[..^1];
+        writer.WritePropertyName("filters"u8);
+        JsonSerializer.Serialize(writer, Filters, HPhotoJsonContext.Default.IListFilter);
 
-            long timestamp = (long)(
-                DateTime.UtcNow - DateTime.UnixEpoch).TotalMilliseconds;
+        writer.WriteNumber("roomid"u8, RoomId);
+        if (Zoom is not null) writer.WriteNumber("zoom"u8, Zoom.GetValueOrDefault());
 
-            long mod = 0;
-            json += ",\"status\":" + GetStatus(ref mod, ref timestamp);
+        ulong timestamp = (ulong)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        (ulong quotinent, ulong remainder) = Math.DivRem(timestamp, 100);
 
-            long key = (json.Length + timestamp / 100 * 17) % 1493;
+        writer.WriteNumber("status"u8, quotinent % 23);
 
-            return $"{json},\"timestamp\":{GetTimestamp(json, timestamp, key)},\"checksum\":{GetChecksum(mod, key)}}}";
-        }
+        // Flush the writer to get entire buffer for checksum calculation
+        writer.Flush();
 
-        public static HPhoto Create(byte[] photoJsonData)
-            => JsonSerializer.Deserialize<HPhoto>(photoJsonData, _serializerOptions);
+        uint key = ((uint)bufferWriter.WrittenCount + (uint)quotinent * 17) % 1493;
 
-        public static HPhoto Create(string photoJson)
-            => JsonSerializer.Deserialize<HPhoto>(photoJson, _serializerOptions);
+        timestamp += Fletcher100(bufferWriter.WrittenSpan, key, RoomId) * 100;
+        writer.WriteNumber("timestamp"u8, timestamp);
+
+        writer.WriteNumber("checksum"u8, (remainder + 13) * (key + 29));
+
+        writer.WriteEndObject();
+        writer.Flush();
+
+        return Encoding.UTF8.GetString(bufferWriter.WrittenSpan);
     }
+
+    /// <summary>
+    /// Calculates slightly modified version of the position-dependent Fletcher-16 checksum.
+    /// </summary>
+    private static uint Fletcher100(ReadOnlySpan<byte> data, uint a, uint b)
+    {
+        for (int i = 0; i < data.Length; i++)
+        {
+            a = (a + data[i]) % 255;
+            b = (a + b) % 255;
+        }
+        return (a + b) % 100;
+    }
+
+    /// <summary>
+    /// Deserializes a photo object from its JSON representation.
+    /// </summary>
+    public static HPhoto? Create(string json)
+        => JsonSerializer.Deserialize(json, HPhotoJsonContext.Default.HPhoto);
+    /// <inheritdoc cref="Create(string)"/>
+    public static HPhoto? Create(ReadOnlySpan<byte> utf8Json)
+        => JsonSerializer.Deserialize(utf8Json, HPhotoJsonContext.Default.HPhoto);
 }

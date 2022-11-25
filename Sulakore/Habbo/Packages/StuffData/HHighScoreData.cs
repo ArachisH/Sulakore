@@ -1,20 +1,19 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
-namespace Sulakore.Habbo.Packages.StuffData
+namespace Sulakore.Habbo.Packages.StuffData;
+
+public sealed class HHighScoreData
 {
-    public class HHighScoreData
-    {
-        public int Score { get; set; }
-        public string[] Users { get; set; }
+    public int Score { get; set; }
+    public string[] Users { get; set; }
 
-        public HHighScoreData(HPacket packet)
+    public HHighScoreData(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
+    {
+        Score = format.Read<int>(ref packetSpan);
+        Users = new string[format.Read<int>(ref packetSpan)];
+        for (int i = 0; i < Users.Length; i++)
         {
-            Score = packet.ReadInt32();
-            Users = new string[packet.ReadInt32()];
-            for (int i = 0; i < Users.Length; i++)
-            {
-                Users[i] = packet.ReadUTF8();
-            }
+            Users[i] = format.ReadUTF8(ref packetSpan);
         }
     }
 }

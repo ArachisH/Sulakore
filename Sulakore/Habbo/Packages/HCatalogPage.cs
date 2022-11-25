@@ -1,51 +1,50 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
-namespace Sulakore.Habbo.Packages
+namespace Sulakore.Habbo.Packages;
+
+public class HCatalogPage
 {
-    public class HCatalogPage
+    public int Id { get; set; }
+    public string CatalogType { get; set; }
+    public string LayoutCode { get; set; }
+
+    public string[] Images { get; set; }
+    public string[] Texts { get; set; }
+
+    public HCatalogOffer[] Offers { get; set; }
+
+    public int OfferId { get; set; }
+    public bool AcceptSeasonCurrencyAsCredits { get; set; }
+
+    public bool IsFrontPage { get; set; }
+
+    public HCatalogPage(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        public int Id { get; set; }
-        public string CatalogType { get; set; }
-        public string LayoutCode { get; set; }
+        Id = format.Read<int>(ref packetSpan);
+        CatalogType = format.ReadUTF8(ref packetSpan);
+        LayoutCode = format.ReadUTF8(ref packetSpan);
 
-        public string[] Images { get; set; }
-        public string[] Texts { get; set; }
-
-        public HCatalogOffer[] Offers { get; set; }
-
-        public int OfferId { get; set; }
-        public bool AcceptSeasonCurrencyAsCredits { get; set; }
-
-        public bool IsFrontPage { get; set; }
-
-        public HCatalogPage(HPacket packet)
+        Images = new string[format.Read<int>(ref packetSpan)];
+        for (int i = 0; i < Images.Length; i++)
         {
-            Id = packet.ReadInt32();
-            CatalogType = packet.ReadUTF8();
-            LayoutCode = packet.ReadUTF8();
-
-            Images = new string[packet.ReadInt32()];
-            for (int i = 0; i < Images.Length; i++)
-            {
-                Images[i] = packet.ReadUTF8();
-            }
-
-            Texts = new string[packet.ReadInt32()];
-            for (int i = 0; i < Texts.Length; i++)
-            {
-                Texts[i] = packet.ReadUTF8();
-            }
-
-            Offers = new HCatalogOffer[packet.ReadInt32()];
-            for (int i = 0; i < Offers.Length; i++)
-            {
-                Offers[i] = new HCatalogOffer(packet);
-            }
-
-            OfferId = packet.ReadInt32();
-            AcceptSeasonCurrencyAsCredits = packet.ReadBoolean();
-            
-            IsFrontPage = packet.ReadableBytes > 0;
+            Images[i] = format.ReadUTF8(ref packetSpan);
         }
+
+        Texts = new string[format.Read<int>(ref packetSpan)];
+        for (int i = 0; i < Texts.Length; i++)
+        {
+            Texts[i] = format.ReadUTF8(ref packetSpan);
+        }
+
+        Offers = new HCatalogOffer[format.Read<int>(ref packetSpan)];
+        for (int i = 0; i < Offers.Length; i++)
+        {
+            Offers[i] = new HCatalogOffer(format, ref packetSpan);
+        }
+
+        OfferId = format.Read<int>(ref packetSpan);
+        AcceptSeasonCurrencyAsCredits = format.Read<bool>(ref packetSpan);
+
+        IsFrontPage = !packetSpan.IsEmpty;
     }
 }

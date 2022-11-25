@@ -1,29 +1,28 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
-namespace Sulakore.Habbo.Packages
+namespace Sulakore.Habbo.Packages;
+
+public class HPerk
 {
-    public class HPerk
+    public string Code { get; set; }
+    public string ErrorMessage { get; set; }
+    public bool IsAllowed { get; set; }
+
+    public HPerk(string code, string errorMessage, bool isAllowed)
     {
-        public string Code { get; set; }
-        public string ErrorMessage { get; set; }
-        public bool IsAllowed { get; set; }
+        Code = code;
+        ErrorMessage = errorMessage;
+        IsAllowed = isAllowed;
+    }
 
-        public HPerk(string code, string errorMessage, bool isAllowed)
+    public static HPerk[] Parse(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
+    {
+        var perkAllowances = new HPerk[format.Read<int>(ref packetSpan)];
+        for (int i = 0; i < perkAllowances.Length; i++)
         {
-            Code = code;
-            ErrorMessage = errorMessage;
-            IsAllowed = isAllowed;
+            perkAllowances[i] = new HPerk(format.ReadUTF8(ref packetSpan),
+                format.ReadUTF8(ref packetSpan), format.Read<bool>(ref packetSpan));
         }
-
-        public static HPerk[] Parse(HPacket packet)
-        {
-            var perkAllowances = new HPerk[packet.ReadInt32()];
-            for (int i = 0; i < perkAllowances.Length; i++)
-            {
-                perkAllowances[i] = new HPerk(packet.ReadUTF8(),
-                    packet.ReadUTF8(), packet.ReadBoolean());
-            }
-            return perkAllowances;
-        }
+        return perkAllowances;
     }
 }

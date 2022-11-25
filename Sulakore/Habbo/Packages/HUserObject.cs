@@ -1,52 +1,53 @@
-﻿using Sulakore.Network.Protocol;
+﻿using Sulakore.Network.Formats;
 
-namespace Sulakore.Habbo.Packages
+namespace Sulakore.Habbo.Packages;
+
+public class HUserObject
 {
-    public class HUserObject
+    public int Id { get; set; }
+    public string Name { get; set; }
+
+    public string Figure { get; set; }
+    public HGender Gender { get; set; }
+
+    public string CustomData { get; set; }
+    public string RealName { get; set; }
+    public bool DirectMail { get; set; }
+
+    public int RespectTotal { get; set; }
+    public int RespectLeft { get; set; }
+    public int ScratchesLeft { get; set; }
+
+    public bool StreamPublishingAllowed { get; set; }
+    public DateTime LastAccess { get; set; }
+
+    public bool NameChangeAllowed { get; set; }
+    public bool AccountSafetyLocked { get; set; }
+
+    public HUserObject(IHFormat format, ref ReadOnlySpan<byte> packetSpan)
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        Id = format.Read<int>(ref packetSpan);
+        Name = format.ReadUTF8(ref packetSpan);
 
-        public string Figure { get; set; }
-        public HGender Gender { get; set; }
+        Figure = format.ReadUTF8(ref packetSpan);
+        Gender = (HGender)format.ReadUTF8(ref packetSpan)[0];
 
-        public string CustomData { get; set; }
-        public string RealName { get; set; }
-        public bool DirectMail { get; set; }
+        CustomData = format.ReadUTF8(ref packetSpan);
+        RealName = format.ReadUTF8(ref packetSpan);
+        DirectMail = format.Read<bool>(ref packetSpan);
 
-        public int RespectTotal { get; set; }
-        public int RespectLeft { get; set; }
-        public int ScratchesLeft { get; set; }
+        RespectTotal = format.Read<int>(ref packetSpan);
+        RespectLeft = format.Read<int>(ref packetSpan);
+        ScratchesLeft = format.Read<int>(ref packetSpan);
 
-        public bool StreamPublishingAllowed { get; set; }
-        public DateTime? LastAccess { get; set; }
+        StreamPublishingAllowed = format.Read<bool>(ref packetSpan);
 
-        public bool NameChangeAllowed { get; set; }
-        public bool AccountSafetyLocked { get; set; }
-
-        public HUserObject(HPacket packet)
+        if (DateTime.TryParse(format.ReadUTF8(ref packetSpan), out DateTime lastAccess))
         {
-            Id = packet.ReadInt32();
-            Name = packet.ReadUTF8();
-
-            Figure = packet.ReadUTF8();
-            Gender = (HGender)packet.ReadUTF8()[0];
-
-            CustomData = packet.ReadUTF8();
-            RealName = packet.ReadUTF8();
-            DirectMail = packet.ReadBoolean();
-            
-            RespectTotal = packet.ReadInt32();
-            RespectLeft = packet.ReadInt32();
-            ScratchesLeft = packet.ReadInt32();
-
-            StreamPublishingAllowed = packet.ReadBoolean();
-
-            if (DateTime.TryParse(packet.ReadUTF8(), out DateTime lastAccess)) //only save if parsing was successful to not save a default DateTime value
-                LastAccess = lastAccess;
-
-            NameChangeAllowed = packet.ReadBoolean();
-            AccountSafetyLocked = packet.ReadBoolean();
+            LastAccess = lastAccess;
         }
+
+        NameChangeAllowed = format.Read<bool>(ref packetSpan);
+        AccountSafetyLocked = format.Read<bool>(ref packetSpan);
     }
 }

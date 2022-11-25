@@ -1,18 +1,11 @@
-﻿using Sulakore.Network.Protocol;
+﻿namespace Sulakore.Network;
 
-namespace Sulakore.Network
+public interface IHConnection
 {
-    public interface IHConnection
-    {
-        HNode Local { get; }
-        HNode Remote { get; }
+    Habbo.Incoming? In { get; }
+    Habbo.Outgoing? Out { get; }
+    HotelEndPoint RemoteEndPoint { get; }
 
-        ValueTask<int> SendToServerAsync(byte[] data);
-        ValueTask<int> SendToServerAsync(HPacket packet);
-        ValueTask<int> SendToServerAsync(ushort id, params object[] values);
-
-        ValueTask<int> SendToClientAsync(byte[] data);
-        ValueTask<int> SendToClientAsync(HPacket packet);
-        ValueTask<int> SendToClientAsync(ushort id, params object[] values);
-    }
+    ValueTask SendToClientAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default);
+    ValueTask SendToServerAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default);
 }

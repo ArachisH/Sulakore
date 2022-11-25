@@ -5,7 +5,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<LangVersion>preview</LangVersion>
-		
+
 		<IsTrimmable>true</IsTrimmable>
 		<TrimmerSingleWarn>false</TrimmerSingleWarn>
 	</PropertyGroup>
@@ -16,7 +16,7 @@
 
 	<ItemGroup>
 		<CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="IsOutgoing" />
-		
+
 		<AdditionalFiles Include=".\incoming.json" IsOutgoing="false" />
 		<AdditionalFiles Include=".\outgoing.json" IsOutgoing="true" />
 	</ItemGroup>

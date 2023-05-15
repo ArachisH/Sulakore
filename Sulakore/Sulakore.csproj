@@ -1,13 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
+		<TargetFramework>net7.0</TargetFramework>
+    
 		<Nullable>enable</Nullable>
-
+		<ImplicitUsings>enable</ImplicitUsings>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<LangVersion>preview</LangVersion>
-		
+    
 		<IsTrimmable>true</IsTrimmable>
 		<TrimmerSingleWarn>false</TrimmerSingleWarn>
 	</PropertyGroup>
@@ -18,7 +17,7 @@
 
 	<ItemGroup>
 		<CompilerVisibleItemMetadata Include="AdditionalFiles" MetadataName="IsOutgoing" />
-		
+
 		<AdditionalFiles Include=".\incoming.json" IsOutgoing="false" />
 		<AdditionalFiles Include=".\outgoing.json" IsOutgoing="true" />
 	</ItemGroup>

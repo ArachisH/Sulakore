@@ -122,10 +122,9 @@ public sealed class HPacketWriter : IBufferWriter<byte>, IDisposable
 
     public void Dispose()
     {
-        if (!_diposed)
-        {
-            _owner?.Dispose();
-            _diposed = true;
-        }
+        if (_diposed || _owner == null) return;
+
+        _owner.Dispose();
+        _diposed = true;
     }
 }

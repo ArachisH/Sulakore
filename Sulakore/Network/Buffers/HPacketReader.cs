@@ -9,8 +9,8 @@ public ref struct HPacketReader
 
     public int Position { get; set; }
 
-    public short Id { get; }
-    public int Length { get; }
+    public readonly short Id { get; }
+    public readonly int Length { get; }
 
     public int Available => _source.Length - Position;
 

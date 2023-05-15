@@ -7,8 +7,8 @@ public interface IGame
     bool IsPostShuffle { get; }
     HPlatform Platform { get; }
 
-    IHFormat ClientSendPacketFormat { get; }
-    IHFormat ClientReceivePacketFormat { get; }
+    IHFormat SendPacketFormat { get; }
+    IHFormat ReceivePacketFormat { get; }
 
     string? Path { get; }
     string? Revision { get; }

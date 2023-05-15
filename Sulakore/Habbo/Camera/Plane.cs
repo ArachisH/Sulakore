@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using System.Text.Json.Serialization;
 
-#nullable enable
 namespace Sulakore.Habbo.Camera;
 
 public sealed record Plane

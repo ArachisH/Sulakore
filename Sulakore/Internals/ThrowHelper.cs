@@ -25,4 +25,8 @@ internal static class ThrowHelper
 
     [DoesNotReturn]
     internal static void ThrowNullReferenceException(string? message = null) => throw new NullReferenceException(message);
+
+    [DoesNotReturn]
+    internal static void ThrowFormatException(string? message = null) => throw new FormatException(message);
+
 }

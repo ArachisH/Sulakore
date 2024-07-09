@@ -11,12 +11,12 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
 
-		<PackageReference Include="System.Text.Json" Version="6.0.5" PrivateAssets="all" GeneratePathProperty="true" />
+		<PackageReference Include="System.Text.Json" Version="8.0.4" PrivateAssets="all" GeneratePathProperty="true" />
 		
 		<!-- System.Text.Json dependencies workaround for source generators -->
-		<PackageReference Include="System.Text.Encodings.Web" Version="6.0" PrivateAssets="All" GeneratePathProperty="true" />
+		<PackageReference Include="System.Text.Encodings.Web" Version="8.0.0" PrivateAssets="All" GeneratePathProperty="true" />
 		<PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0" PrivateAssets="All" GeneratePathProperty="true" />
-		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0" PrivateAssets="all" GeneratePathProperty="true" />
+		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" PrivateAssets="all" GeneratePathProperty="true" />
 	</ItemGroup>
 
 	<ItemGroup>
